@@ -1,0 +1,443 @@
+/*
+ * 「我的战绩」整页 Stage 样式（1672×941 固定画布）。
+ * 坐标来源：results_ui_handoff/layout.json（人工量测 ±3px）+ 01 规格；与 PNG 冲突时以 PNG 为准校准。
+ * tokens.json 的颜色/阴影/字体为建议值（非原图反解）；字体为本地打包的 Noto CJK 衍生
+ * （StatsSerif/StatsBody，OFL，已按保留名条款改名），大数字优先 Georgia（系统字体，见交件说明）。
+ * 全部类名 sp- 前缀，作用域限定 #sp-root，避免与全局 styles.css 冲突。
+ */
+
+@font-face {
+  font-family: StatsSerif;
+  src: url('/fonts/StatsSerif-Regular.otf') format('opentype');
+  font-weight: 400 500;
+  font-display: block;
+}
+@font-face {
+  font-family: StatsSerif;
+  src: url('/fonts/StatsSerif-Bold.otf') format('opentype');
+  font-weight: 600 700;
+  font-display: block;
+}
+@font-face {
+  font-family: StatsBody;
+  src: url('/fonts/StatsBody-Regular.otf') format('opentype');
+  font-weight: 400 500;
+  font-display: block;
+}
+
+#sp-root {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #F5F2EC;
+  color: #111719;
+  font-family: StatsBody, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+#sp-root, #sp-root *, #sp-root *::before, #sp-root *::after { box-sizing: border-box; }
+#sp-root .sp-content button, #sp-root .sp-header button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 140ms cubic-bezier(0.2, 0.8, 0.2, 1), color 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#sp-root button:focus-visible, #sp-root [tabindex]:focus-visible {
+  outline: 2px solid #215C3B;
+  outline-offset: 3px;
+}
+#sp-root button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+#sp-stage {
+  position: absolute;
+  width: 1672px;
+  height: 941px;
+  transform-origin: 0 0;
+  background: linear-gradient(135deg, #FAF8F3, #EEEAE2);
+  isolation: isolate;
+}
+#sp-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/sp/paper.svg');
+  opacity: 0.38;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 右上斜压纹：低对比装饰，不承载信息，不穿越文字（规格§2 保守实现） */
+.sp-decor { position: absolute; right: 0; top: 57px; width: 242px; height: 142px; overflow: hidden; pointer-events: none; }
+.sp-decor i {
+  position: absolute;
+  width: 260px;
+  height: 0.8px;
+  background: #C9C2B5;
+  opacity: 0.35;
+  transform: rotate(-45deg);
+}
+.sp-decor i:first-child { left: 40px; top: 88px; }
+.sp-decor i:last-child { left: 51px; top: 99px; }
+
+/* ---------- 页头 ---------- */
+.sp-header {
+  height: 57px;
+  border-bottom: 1px solid rgba(213, 208, 199, 0.55);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 60px 0 70px;
+}
+.sp-brand {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-family: StatsSerif, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 700;
+  font-size: 23px;
+  letter-spacing: 1px;
+  color: #111719;
+  text-decoration: none;
+}
+.sp-brand svg { width: 26px; height: 28px; color: #111719; }
+.sp-nav { display: flex; align-items: center; gap: 32px; }
+.sp-nav-item {
+  width: 57px;
+  height: 57px;
+  font-family: StatsSerif, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-size: 22px;
+  color: #5E6060;
+  position: relative;
+  padding: 0;
+  text-align: center;
+}
+.sp-nav-item:hover { background: rgba(231, 226, 215, 0.5); color: #111719; }
+.sp-nav-active { font-weight: 700; color: #111719; }
+.sp-nav-active::after {
+  content: '';
+  height: 4px;
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  right: 0;
+  background: #111719;
+}
+.sp-settings {
+  margin-left: 23px; /* flex gap 32 + 23 = 55：设置钮左缘落在 x1565，nav 三项中心 = 1303.5/1392.5/1481.5 */
+  width: 47px;
+  height: 47px;
+  border: 1px solid #D5D0C7;
+  border-radius: 50%;
+  color: #62625E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sp-settings:hover { background: rgba(231, 226, 215, 0.5); }
+.sp-gear { font-size: 25px; line-height: 1; }
+
+/* ---------- 标题区 ---------- */
+.sp-heading { position: absolute; left: 75px; top: 84px; }
+.sp-heading h1 {
+  margin: 0;
+  font-family: StatsSerif, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 700;
+  font-size: 58px;
+  line-height: 65px;
+  letter-spacing: 2px;
+  color: #111719;
+}
+.sp-heading p {
+  margin: 6px 0 0;
+  font-family: StatsSerif, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 35px;
+  letter-spacing: 3px;
+  color: #767570;
+}
+
+/* ---------- 摘要总条 ---------- */
+.sp-summary {
+  position: absolute;
+  left: 50px;
+  top: 199px;
+  width: 1578px;
+  height: 164px;
+  border: 1px solid #C5BEB3;
+  border-radius: 19px;
+  background: linear-gradient(#F7F4EF, #EAE6DE);
+  box-shadow: 0 8px 22px rgba(39, 33, 22, 0.10), inset 0 0 0 1px #FFFDF8;
+  overflow: hidden;
+}
+.sp-hero {
+  position: absolute;
+  left: 3px; /* 摘要 1px 边框补偿：暗区左缘落在 x54 */
+  top: 4px;
+  width: 465px;
+  height: 154px;
+  clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);
+  border-radius: 13px 0 0 13px;
+  background: linear-gradient(#30322F, #222420);
+  color: #F7F1DF;
+  padding: 20px 0 0 47px;
+}
+.sp-hero-rate { display: flex; align-items: baseline; gap: 19px; }
+.sp-hero-rate strong {
+  font-family: 'Times New Roman', Georgia, StatsSerif, serif;
+  font-weight: 700;
+  font-size: 76px;
+  line-height: 1;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+.sp-hero-rate span { font-size: 22px; }
+.sp-hero-wl {
+  border-top: 1px solid rgba(136, 120, 83, 0.5);
+  margin: 7px 0 0 5px;
+  padding-top: 7px;
+  width: 257px;
+  font-family: StatsSerif, 'Noto Serif CJK SC', serif;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.4;
+}
+.sp-hero-watermark { position: absolute; left: 332px; top: 9px; width: 112px; height: 130px; color: #4C4D45; opacity: 0.35; }
+
+.sp-metric { position: absolute; top: 37px; display: flex; flex-direction: column; }
+.sp-metric b {
+  font-family: 'Times New Roman', Georgia, StatsSerif, serif;
+  font-weight: 500;
+  font-size: 54px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+}
+.sp-metric span { font-size: 22px; line-height: 1.4; color: #767570; margin-top: 4px; }
+.sp-m1 { left: 524px; width: 161px; }
+.sp-m2 { left: 748px; width: 183px; }
+.sp-m2 b { color: #806125; }
+.sp-m3 { left: 988px; width: 182px; }
+.sp-divider { position: absolute; top: 41px; height: 81px; width: 1px; background: #CBC5BB; }
+.sp-d1 { left: 685px; }
+.sp-d2 { left: 931px; }
+.sp-d3 { left: 1170px; }
+
+/* ---------- 最近6场 ---------- */
+.sp-recent { position: absolute; left: 1221px; top: 45px; } /* +24 行高 +11 间距 = 圆点顶 y279.5（abs），标题字形 ~y247 */
+.sp-recent > p { font-size: 19px; line-height: 24px; color: #767570; margin: 0 0 11px; }
+.sp-recent-empty { line-height: 37px; }
+.sp-recent-dots { display: flex; gap: 15px; }
+.sp-check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 37px;
+  height: 37px;
+  border-radius: 50%;
+  background: linear-gradient(#286A47, #17492F);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.19);
+  color: #FFF;
+}
+.sp-check-loss { background: linear-gradient(#8A857C, #5E5B54); }
+.sp-check-mark { width: 24px; height: 24px; }
+
+/* ---------- 对局记录标题 ---------- */
+.sp-record-heading { position: absolute; left: 70px; top: 393px; display: flex; align-items: center; gap: 22px; }
+.sp-record-heading h2 {
+  margin: 0;
+  font-family: StatsSerif, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: 1px;
+}
+.sp-record-heading span { font-size: 20px; color: #767570; border-left: 1px solid #D5D0C7; padding-left: 20px; height: 34px; line-height: 34px; }
+
+/* ---------- 表格 ---------- */
+.sp-records {
+  position: absolute;
+  left: 54px;
+  top: 441px;
+  width: 1114px;
+  height: 437px;
+  border: 1px solid #DDD7CE;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(247, 244, 239, 0.33);
+}
+.sp-table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+.sp-th {
+  height: 52px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #767570;
+  border-bottom: 1px solid #DDD7CE;
+  padding-left: 9px;
+}
+.sp-th-time { padding-left: 28px; }
+.sp-row { height: 63px; cursor: pointer; border-bottom: 1px solid #DED9D0; transition: background 140ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.sp-row:first-child { height: 65px; }
+.sp-row:last-child { border-bottom: 0; }
+.sp-row:hover { background: #F5EFE3; }
+.sp-row-selected { background: #F7EEDF; box-shadow: inset 7px 0 0 #272A27; }
+.sp-row-selected:hover { background: #F7EEDF; }
+.sp-td { font-size: 18px; line-height: 26px; white-space: nowrap; font-variant-numeric: tabular-nums; padding-left: 9px; }
+.sp-td-time { padding-left: 37px; color: #767570; }
+.sp-empty-row td { color: #767570; padding: 24px 37px; cursor: default; }
+.sp-win {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 59px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(#383B37, #1C1E1C);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: #FFF;
+  font-family: StatsSerif, 'Noto Serif CJK SC', serif;
+  font-weight: 600;
+  font-size: 24px;
+}
+.sp-win-loss { background: linear-gradient(#6E6A62, #4B4842); }
+.sp-special {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  min-width: 87px;
+  padding: 0 12px;
+  border: 1px solid #9A7736;
+  border-radius: 8px;
+  color: #806125;
+  font-size: 18px;
+}
+.sp-missing { color: #92918B; }
+.sp-diff-pill {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  min-width: 67px;
+  padding: 0 10px;
+  background: #E8E4DC;
+  border: 1px solid #DED9D0;
+  border-radius: 10px;
+}
+.sp-td-more { position: relative; }
+.sp-more { width: 40px; height: 40px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
+.sp-more:hover { background: rgba(231, 226, 215, 0.7); }
+.sp-more-icon { width: 24px; height: 24px; color: #5E6060; }
+.sp-menu {
+  position: absolute;
+  right: 6px;
+  top: 44px;
+  z-index: 60;
+  min-width: 148px;
+  background: #252724;
+  border-radius: 10px;
+  box-shadow: 0 8px 22px rgba(39, 33, 22, 0.25);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+}
+.sp-menu button {
+  text-align: left;
+  color: #F5F2EC;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 9px 14px;
+  border-radius: 7px;
+}
+.sp-menu button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.08); }
+
+/* ---------- 右侧对手强度 ---------- */
+.sp-aside {
+  position: absolute;
+  left: 1189px;
+  top: 380px;
+  width: 439px;
+  height: 505px;
+  border: 1px solid #D5D0C7;
+  border-radius: 14px;
+  padding: 15px 20px;
+  background: rgba(247, 244, 239, 0.38);
+  box-shadow: 0 10px 24px rgba(39, 33, 22, 0.04);
+}
+.sp-aside-title {
+  margin: 0 0 11px 2px; /* 行高 1.2 的 38.4px + 11 ≈ 50px：三卡顶落在 445/588/735 */
+  font-family: StatsSerif, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: 1px;
+}
+.sp-diff-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #D5D0C7;
+  border-radius: 13px;
+  padding: 10px 21px;
+  background: linear-gradient(rgba(248, 245, 240, 0.67), rgba(235, 231, 223, 0.5));
+}
+.sp-diff-card:nth-of-type(1) { height: 128px; margin-bottom: 15px; }
+.sp-diff-card:nth-of-type(2) { height: 132px; margin-bottom: 15px; }
+.sp-diff-card:nth-of-type(3) { height: 132px; }
+.sp-diff-card > * { position: relative; z-index: 1; }
+.sp-diff-head {
+  height: 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: StatsSerif, 'Noto Serif CJK SC', serif;
+  font-weight: 600;
+  font-size: 24px;
+}
+.sp-diff-games { font-variant-numeric: tabular-nums; }
+.sp-diff-rate { font-size: 18px; color: #767570; margin: 0 0 7px; line-height: 26px; }
+.sp-track { height: 11px; width: 351px; background: #D9D6CF; border-radius: 6px; overflow: hidden; margin-bottom: 3px; }
+.sp-track-fill { height: 100%; background: linear-gradient(#286A47, #17492F); }
+.sp-diff-wl { font-size: 18px; color: #767570; margin: 0; line-height: 26px; font-variant-numeric: tabular-nums; }
+.sp-aside-watermark { position: absolute; right: 10px; bottom: 2px; z-index: 0 !important; }
+.sp-aside-watermark .sp-wm-a { width: 92px; height: 110px; color: rgba(203, 196, 184, 0.5); }
+.sp-aside-watermark .sp-wm-b { width: 66px; height: 79px; color: rgba(203, 196, 184, 0.45); margin-left: -14px; }
+
+/* ---------- 页脚 ---------- */
+.sp-footer {
+  position: absolute;
+  left: 59px;
+  right: 61px;
+  top: 901px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  line-height: 24px;
+  color: #767570;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- toast / a11y ---------- */
+.sp-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 70px;
+  transform: translateX(-50%);
+  z-index: 400;
+  padding: 15px 25px;
+  background: #252724;
+  color: #FFF;
+  border-radius: 10px;
+  font-size: 18px;
+}
+.sp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
+
+#sp-root svg { display: block; }
+#sp-root svg use { pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  #sp-root *, #sp-root *::before, #sp-root *::after { transition: none !important; }
+}

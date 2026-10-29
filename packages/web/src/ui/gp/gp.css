@@ -1,0 +1,478 @@
+/*
+ * 整页打牌界面 Stage 样式。
+ * 逐值移植自 ui_full_gameplay_handoff/styles.css（组件参考），全部选择器限定在
+ * #gp-root 下，避免与 app 全局 styles.css 的 .topbar/.nav/.actions 等类名冲突。
+ * 数值来源：docs/全元素精确规格.md；光照/渐变/字体光栅为组件实现建议（近似项），
+ * 牌面 PNG、坐标、角度、层级为精确项。
+ */
+
+@font-face {
+  font-family: TableSans;
+  src: url('/fonts/TableSans.otf') format('opentype');
+  font-weight: 400;
+  /* block 而非参考包的 swap：子集字体本地加载极快，block 可保证加载期不闪回系统字体 */
+  font-display: block;
+}
+@font-face {
+  font-family: TableSans;
+  src: url('/fonts/TableSans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-display: block;
+}
+
+#gp-root {
+  min-height: 100vh;
+  background: #d7d4ca;
+  color: #171e1b;
+  font-family: TableSans, 'Noto Sans CJK SC', 'PingFang SC', sans-serif;
+}
+#gp-root, #gp-root *, #gp-root *::before, #gp-root *::after { box-sizing: border-box; }
+#gp-root button, #gp-root a, #gp-root input { -webkit-tap-highlight-color: transparent; }
+#gp-root button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+}
+#gp-root button:focus-visible, #gp-root a:focus-visible {
+  outline: 3px solid #a98a51;
+  outline-offset: 5px;
+}
+
+#gp-viewport { position: relative; margin: auto; overflow: hidden; }
+#gp-stage {
+  position: absolute;
+  width: 2560px;
+  height: 1440px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  background: linear-gradient(120deg, #faf7ee, #ded8ce 70%, #ece6dc);
+}
+
+/* ---- 顶部导航 ---- */
+#gp-root .topbar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2560px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 92px;
+  background: linear-gradient(95deg, #fffefb, #f2eee8);
+}
+#gp-root .brand {
+  display: flex;
+  gap: 35px;
+  align-items: center;
+  text-decoration: none;
+  color: #101915;
+  font-weight: 700;
+  font-size: 44px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+#gp-root .brand-mark { position: relative; display: block; width: 74px; height: 72px; font-size: 61px; line-height: 1; }
+#gp-root .brand-mark i { position: absolute; left: -22px; top: 30px; font-size: 42px; font-style: normal; }
+#gp-root .brand-mark b { position: absolute; right: -13px; top: 33px; font-size: 36px; color: #b49569; }
+#gp-root nav { display: flex; align-items: center; gap: 62px; }
+#gp-root .nav { position: relative; background: none; border: 0; height: 74px; padding: 0 10px; font-size: 32px; }
+#gp-root .nav.active { font-weight: 700; }
+#gp-root .nav.active::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: -3px;
+  right: -3px;
+  height: 5px;
+  background: #302d22;
+}
+#gp-root .settings {
+  width: 80px;
+  height: 80px;
+  margin-left: 40px;
+  border: 2px solid #c7beb0;
+  border-radius: 50%;
+  background: none;
+  font-size: 43px;
+}
+
+/* ---- 工具条 ---- */
+#gp-root .toolbar { position: absolute; left: 0; top: 96px; width: 2560px; height: 108px; display: flex; align-items: center; }
+#gp-root .back {
+  position: absolute;
+  left: 56px;
+  top: 20px;
+  width: 190px;
+  height: 68px;
+  border: 2px solid #d7cbbb;
+  border-radius: 40px;
+  background: #faf6ed;
+  box-shadow: 0 3px 4px #4d412015;
+  font-size: 32px;
+}
+#gp-root .levels {
+  position: absolute;
+  left: 958px;
+  top: 20px;
+  width: 790px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border: 2px solid #d5ccbf;
+  border-radius: 40px;
+  background: #ece7dd;
+}
+#gp-root .level {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 68px;
+  padding: 0 25px;
+  border-radius: 40px;
+  background: linear-gradient(#3b3d39, #1a1e1b);
+  color: #fff9ec;
+  font-size: 29px;
+  box-shadow: 0 4px 8px #0002;
+}
+#gp-root .level strong { font-size: 45px; font-weight: 700; color: #d9bf91; }
+#gp-root .levels i { height: 42px; width: 2px; background: #948f83; }
+#gp-root .wild-rule { white-space: nowrap; font-size: 28px; font-weight: 700; padding-right: 20px; }
+#gp-root .game-status {
+  position: absolute;
+  right: 82px;
+  top: 28px;
+  line-height: 51px;
+  padding-left: 50px;
+  border-left: 2px solid #a9a294;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+/* ---- 通知条 ---- */
+#gp-root .notice {
+  position: absolute;
+  left: 0;
+  top: 204px;
+  height: 48px;
+  width: 2560px;
+  display: flex;
+  gap: 17px;
+  align-items: center;
+  justify-content: center;
+  color: #6c5231;
+  font-size: 29px;
+  background: linear-gradient(90deg, #eee3d1, #ddd5c8);
+}
+#gp-root .info {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #7e6643;
+  color: #f9f3e5;
+  font-family: Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  flex: none;
+}
+
+/* ---- 牌桌 ---- */
+#gp-root .table {
+  position: absolute;
+  left: 5px;
+  top: 250px;
+  width: 2550px;
+  height: 984px;
+  border: 7px solid #8d8067;
+  border-radius: 60px;
+  overflow: hidden;
+  /* 光照两层为实现建议（非原图材质反解）；毡纹为原背景整数裁切平铺 */
+  background-image:
+    radial-gradient(ellipse at 20% 12%, #8ea46344, transparent 50%),
+    linear-gradient(100deg, #18492f22, #001e17aa),
+    url('/img/felt-clean-400.png');
+  background-size: auto, auto, 612px 612px;
+  box-shadow:
+    inset 0 6px 16px #000a,
+    0 2px 1px #fff8,
+    0 6px 8px #30281566;
+}
+
+/* ---- 玩家牌 / 头像 / pass / 出牌区标签 ---- */
+#gp-root .player {
+  position: absolute;
+  z-index: 10;
+  height: 118px;
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  padding: 14px 24px;
+  border: 3px solid #d7cbb2;
+  border-radius: 33px;
+  background: linear-gradient(140deg, #31372f, #161d19);
+  box-shadow: 0 3px 5px #0004;
+  color: #fffaf0;
+}
+#gp-root .player.north { left: 1143px; top: 290px; width: 276px; }
+#gp-root .player.west { left: 46px; top: 631px; width: 312px; height: 123px; }
+#gp-root .player.east { left: 2202px; top: 631px; width: 312px; height: 123px; }
+#gp-root .avatar {
+  position: relative;
+  display: block;
+  width: 78px;
+  height: 78px;
+  border: 2px solid #e1d3b5;
+  border-radius: 50%;
+  background: linear-gradient(#383d36, #131a17);
+  box-shadow: inset 0 0 0 5px #1c231d;
+  flex: none;
+}
+#gp-root .avatar::before {
+  content: '';
+  position: absolute;
+  left: 27px;
+  top: 15px;
+  width: 24px;
+  height: 24px;
+  background: #faf5e8;
+  border-radius: 50%;
+}
+#gp-root .avatar::after {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 42px;
+  width: 42px;
+  height: 24px;
+  background: #faf5e8;
+  border-radius: 22px 22px 5px 5px;
+}
+#gp-root .player-name { font-size: 28px; font-weight: 700; white-space: nowrap; }
+#gp-root .player-name small {
+  margin-left: 10px;
+  border-radius: 20px;
+  padding: 0 14px;
+  background: #7a7468;
+  font-size: 23px;
+  font-weight: 400;
+}
+#gp-root .player p { margin: 0; font-size: 27px; line-height: 48px; white-space: nowrap; }
+#gp-root .player p strong { font-size: 48px; font-weight: 400; margin-right: 10px; }
+#gp-root .player.is-turn { border-color: #e5cf9f; }
+/* 名次徽章：真实对局业务状态（头游/二游/三游/末游），批准图未含，样式沿用 app 既有金色系 */
+#gp-root .player .sp-rank {
+  position: absolute;
+  right: -6px;
+  top: -13px;
+  background: linear-gradient(#eac475, #c1922f);
+  color: #241a05;
+  font-weight: 700;
+  font-size: 20px;
+  padding: 3px 10px;
+  border-radius: 16px;
+  box-shadow: 0 2px 4px #0004;
+  white-space: nowrap;
+}
+#gp-root .pass {
+  position: absolute;
+  height: 61px;
+  min-width: 147px;
+  padding: 6px 26px;
+  border: 3px solid #d7cbb2;
+  border-radius: 34px;
+  background: linear-gradient(#30382e, #17231b);
+  box-shadow: 0 3px 6px #0004;
+  color: #fcf8ef;
+  text-align: center;
+  font-size: 34px;
+  line-height: 43px;
+}
+/* north/west pass 坐标来自批准图；east/self pass 为真实对局扩展位（批准图未定义） */
+#gp-root .north-pass { left: 1206px; top: 460px; }
+#gp-root .west-pass { left: 659px; top: 670px; }
+#gp-root .east-pass { left: 1600px; top: 590px; }
+#gp-root .self-pass { left: 1030px; top: 702px; }
+#gp-root .zone-label { position: absolute; color: #d9ddd1; font-size: 22px; line-height: 32px; }
+#gp-root .east-label { left: 1600px; top: 548px; }
+#gp-root .own-label { left: 1030px; top: 662px; }
+
+/* ---- 牌 ---- */
+#gp-root .cards-layer { position: absolute; inset: 0; pointer-events: none; }
+#gp-root .card {
+  position: absolute;
+  width: var(--w);
+  height: calc(var(--w) * 880 / 630);
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  z-index: var(--z);
+  pointer-events: auto;
+  transform: translateY(var(--lift, 0px));
+  transition: transform 140ms ease-out;
+  touch-action: manipulation;
+}
+#gp-root .card-pose {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--a));
+  transform-origin: 50% 50%;
+  /* 两层 drop-shadow 对应原合成 阴影B(1,3,r2,.28)+阴影A(3,10,r9,.30)；与 Pillow 高斯非同算法，近似项 */
+  filter: drop-shadow(3px 10px 9px #0000004d) drop-shadow(1px 3px 2px #00000047);
+}
+#gp-root .card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+/* 纸厚层（y+1/2/3 三色细层简化为单层近似） */
+#gp-root .card-pose::before {
+  content: '';
+  position: absolute;
+  inset: 3px 1px -3px;
+  border-radius: 8px;
+  background: #d7d4ca;
+  z-index: -1;
+}
+#gp-root .wild-badge {
+  position: absolute;
+  left: calc(var(--w) * 42 / 184);
+  top: calc(var(--w) * 6.5 / 184);
+  width: calc(var(--w) * 25 / 184);
+  height: calc(var(--w) * 24 / 184);
+  border-radius: 4px;
+  text-align: center;
+  background: #bd9c60;
+  color: #332c20;
+  font-size: calc(var(--w) * 19 / 184);
+  font-weight: 700;
+  line-height: 1.18;
+  pointer-events: none;
+}
+#gp-root .card.wild img { outline: 1.5px solid #b2925d; outline-offset: -2px; border-radius: 8px; }
+#gp-root .card[aria-pressed='true'] { --lift: -18px; }
+#gp-root .card:not(.selectable) { cursor: default; }
+#gp-root .card:disabled { cursor: default; }
+#gp-root .card[aria-pressed='true'] .card-pose::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 2px #c0a471;
+  border-radius: 8px;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  #gp-root .card.selectable:not(:disabled):not([aria-pressed='true']):hover { --lift: -6px; }
+}
+
+/* ---- 手牌标签 ---- */
+#gp-root .hand-tag {
+  position: absolute;
+  left: 51px;
+  top: 1120px;
+  width: 269px;
+  height: 95px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 14px 24px;
+  border: 3px solid #d7cbb2;
+  border-radius: 30px;
+  background: linear-gradient(140deg, #31372f, #161d19);
+  color: #fffaf0;
+  font-size: 28px;
+  font-weight: 700;
+}
+#gp-root .hand-tag .avatar { width: 64px; height: 64px; }
+#gp-root .hand-tag .avatar::before { left: 22px; top: 10px; width: 20px; height: 20px; }
+#gp-root .hand-tag .avatar::after { left: 14px; top: 34px; width: 36px; height: 21px; }
+#gp-root .hand-count { position: absolute; left: 338px; top: 1159px; color: #d6d0c1; font-size: 22px; line-height: 32px; }
+
+/* ---- 动作栏 ---- */
+#gp-root .actions {
+  position: absolute;
+  left: 24px;
+  top: 1246px;
+  width: 2512px;
+  height: 163px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 38px 0 68px;
+  border: 3px solid #f6f3e9;
+  border-radius: 45px;
+  background: linear-gradient(105deg, #eee9df, #dcd5c9 60%, #f0ece3);
+  box-shadow: 0 6px 10px #6556424d, inset 0 1px #fff;
+}
+#gp-root .action-message {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  font-size: 32px;
+  color: #5c574c;
+  min-width: 370px;
+  max-width: 1100px;
+  padding-right: 55px;
+  border-right: 2px solid #b1aa9c;
+  line-height: 55px;
+}
+#gp-root .action-buttons { display: flex; gap: 28px; align-items: center; }
+#gp-root .action-buttons button {
+  width: 261px;
+  height: 97px;
+  border: 3px solid #c9bfb0;
+  border-radius: 25px;
+  background: linear-gradient(#f6f2ea, #e6dfd3);
+  box-shadow: 0 4px 5px #0002, inset 0 2px #fff9;
+  font-size: 40px;
+  transition: transform 100ms, filter 100ms;
+}
+#gp-root .action-buttons .primary {
+  width: 355px;
+  height: 114px;
+  background: linear-gradient(130deg, #393c35, #171d19);
+  color: #f4ead5;
+  border: 3px solid #7c786c;
+  box-shadow: 0 5px 9px #0005, inset 0 2px #b6b09a55;
+}
+#gp-root .action-buttons button:active { transform: translateY(2px); }
+#gp-root .action-buttons button:disabled { opacity: 0.52; cursor: not-allowed; filter: saturate(0.5); }
+
+/* ---- toast（demo/错误提示，批准图无此元素） ---- */
+#gp-root .toast {
+  position: absolute;
+  z-index: 400;
+  left: 760px;
+  top: 840px;
+  width: 1040px;
+  padding: 28px 36px;
+  border: 2px solid #b9aa8f;
+  border-radius: 22px;
+  background: #17251bf2;
+  color: #fff8e9;
+  text-align: center;
+  font-size: 28px;
+  box-shadow: 0 8px 25px #0006;
+  pointer-events: none;
+}
+
+/* 神经模型回退横幅：复用 app 既有类，钉在通知条位置（真实业务状态，批准图无此元素） */
+#gp-root .tz-neural-fallback {
+  position: absolute;
+  left: 0;
+  top: 204px;
+  width: 2560px;
+  z-index: 300;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #gp-root *, #gp-root *::before, #gp-root *::after { transition: none !important; }
+}

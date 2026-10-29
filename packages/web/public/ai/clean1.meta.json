@@ -1,0 +1,30 @@
+{
+  "layers": [
+    385,
+    256,
+    256,
+    1
+  ],
+  "paramCount": 164865,
+  "modelVersion": "clean1-ck180-20261026",
+  "source": "lab/clean1/clean1-2026102609500/ck180",
+  "holdout": {
+    "vsEasy": {
+      "p": 1,
+      "ci95": [
+        0.88,
+        1
+      ],
+      "matches": 256
+    },
+    "vsMid": {
+      "p": 0.9844,
+      "ci95": [
+        0.9688,
+        0.9961
+      ],
+      "matches": 256
+    }
+  },
+  "note": "CLEAN1 干净重训产物（守卫修复后管线）。旧 armA.f32 为污染体制事故存档，不再使用。"
+}

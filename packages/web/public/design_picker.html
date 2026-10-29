@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<style>
+:root { --page:#e8e6e0; --ink:#151b20; --muted:#70736f; --line:#b0b1ab; --red:#b62d20; --red-light:#c6291a; --gold:#c9a13b; --win:#1d4530; }
+* { box-sizing:border-box; margin:0; }
+body { background:var(--page); color:var(--ink); font-family:'PingFang SC','Microsoft YaHei',sans-serif; }
+.topbar { display:flex; justify-content:space-between; align-items:center; height:72px; padding:0 84px; background:#fbfbf9; border-bottom:1px solid #e2e1dc; }
+.brand { font-weight:800; font-size:20px; display:flex; }
+.brand .s { font-size:24px; } .brand .d { color:var(--red); font-size:14px; margin:4px 6px 0 -4px; }
+nav { display:flex; gap:48px; }
+nav .tab { font-size:18px; color:#43474a; } nav .tab.active { color:var(--ink); font-weight:700; border-bottom:3px solid var(--red-light); padding-bottom:4px; }
+.pagehead { padding:24px 135px 6px; }
+.pagehead h1 { font-size:46px; font-weight:800; letter-spacing:8px; }
+.pagehead p { margin-top:8px; font-size:21px; color:#454a47; letter-spacing:2px; }
+.wrap { margin:20px 82px 0; }
+/* 选择条：一行两个维度 */
+.selbar {
+  display:flex; align-items:center; gap:34px; flex-wrap:wrap;
+  background:linear-gradient(180deg,#f2f1ec,#dcdbd5);
+  border:1px solid #b0b1ab; border-radius:18px; padding:18px 30px;
+  box-shadow: inset 0 1px 0 #fff, 0 6px 16px rgba(30,30,25,.10);
+}
+.selgroup { display:flex; align-items:center; gap:14px; }
+.selgroup .lab { font-size:17px; color:#70736f; letter-spacing:2px; }
+.seg { display:flex; background:rgba(255,255,255,.4); border:1.5px solid #9a9d97; border-radius:12px; overflow:hidden; }
+.seg button {
+  border:none; background:transparent; font-size:17px; color:#43474a;
+  padding:9px 24px; cursor:pointer; font-family:inherit; white-space:nowrap;
+}
+.seg button + button { border-left:1px solid #b8b9b4; }
+.seg button.on { background:#1d4530; color:#f2edd9; font-weight:700; }
+.seg button.star.on { color:#f2d488; }
+.count { margin-left:auto; font-size:19px; color:#70736f; }
+.count b { color:#1d4530; font-size:24px; }
+/* 列表 */
+.rows { display:flex; flex-direction:column; gap:14px; margin-top:18px; }
+.row { display:flex; align-items:center; gap:20px;
+  background:linear-gradient(180deg,#f4f3ee,#e2e1db);
+  border:1px solid var(--line); border-radius:16px; padding:20px 28px;
+  box-shadow: inset 0 1px 0 #fff, 0 4px 12px rgba(30,30,25,.08); }
+.star { font-size:22px; width:30px; text-align:center; cursor:pointer; }
+.star.on { color:var(--gold); } .star.off { color:#b0b1ab; }
+.star.off:hover { color:#c9a13b; }
+.when { font-size:17px; color:var(--muted); min-width:180px; }
+.chip { font-size:16px; font-weight:700; padding:5px 16px; border-radius:999px; color:#fff; }
+.chip.win { background:linear-gradient(180deg,#2e6b45,#1d4530); }
+.chip.lose { background:linear-gradient(180deg,#c07a3a,#9a4e22); }
+.rank { font-size:19px; font-weight:700; }
+.rank small { font-size:13px; color:var(--muted); font-weight:400; margin-left:3px; }
+.badge { font-size:15px; color:#43474a; border:1px solid var(--line); border-radius:8px; padding:4px 12px; background:#fbfaf5; }
+.badge.du { color:#8a6d1c; border-color:#c9a13b; background:#f8f2df; }
+.grow { flex:1; }
+.cta { font-size:18px; font-weight:700; letter-spacing:2px; color:#f7ead9; background:linear-gradient(180deg,#b62d20,#77150e);
+  border:1px solid #5c0f08; border-radius:999px; padding:11px 28px;
+  box-shadow: inset 0 1px 0 rgba(238,106,68,.85), 0 6px 14px rgba(60,10,5,.3); }
+.foot { margin:26px 82px 0; padding-top:16px; border-top:1px solid #cfcec9; display:flex; justify-content:space-between;
+  font-size:16px; color:#8b8e89; letter-spacing:2px; }
+.empty { padding:60px 0; text-align:center; color:#8b8e89; font-size:20px; }
+</style></head><body>
+
+<div class="topbar">
+  <div class="brand"><span class="s">♠</span><span class="d">♦</span>掼蛋训练场</div>
+  <nav><span class="tab">训练</span><span class="tab">战绩</span><span class="tab active">复盘</span></nav>
+</div>
+
+<div class="pagehead"><h1>复盘</h1><p>选一局 · 回放每一手，看引擎标注与教练讲解</p></div>
+
+<div class="wrap">
+  <!-- 选择条：结果 × 难度，两个维度 -->
+  <div class="selbar">
+    <div class="selgroup">
+      <span class="lab">结果</span>
+      <div class="seg">
+        <button class="on">全部</button>
+        <button class="star">★ 收藏</button>
+        <button>胜</button>
+        <button>负</button>
+      </div>
+    </div>
+    <div class="selgroup">
+      <span class="lab">难度</span>
+      <div class="seg">
+        <button class="on">不限</button>
+        <button>初级</button>
+        <button>中级</button>
+        <button>高级</button>
+      </div>
+    </div>
+    <span class="count"><b>4</b> 场</span>
+  </div>
+
+  <div class="rows">
+    <div class="row">
+      <span class="star">☆</span>
+      <span class="when">2026/10/25 20:42</span>
+      <span class="chip win">胜</span>
+      <span class="rank">第一名<small>头游</small></span>
+      <span class="badge du">双上游</span>
+      <span class="badge">中级 · 94 手</span>
+      <span class="grow"></span>
+      <span class="cta">开始复盘 →</span>
+    </div>
+    <div class="row">
+      <span class="star on">★</span>
+      <span class="when">2026/10/25 19:41</span>
+      <span class="chip win">胜</span>
+      <span class="rank">第一名<small>头游</small></span>
+      <span class="badge">中级 · 95 手</span>
+      <span class="grow"></span>
+      <span class="cta">开始复盘 →</span>
+    </div>
+    <div class="row">
+      <span class="star off">☆</span>
+      <span class="when">2026/10/25 10:55</span>
+      <span class="chip win">胜</span>
+      <span class="rank">第一名<small>头游</small></span>
+      <span class="badge">中级 · 94 手</span>
+      <span class="grow"></span>
+      <span class="cta">开始复盘 →</span>
+    </div>
+    <div class="row">
+      <span class="star off">☆</span>
+      <span class="when">2026/10/25 00:10</span>
+      <span class="chip lose">负</span>
+      <span class="rank">第四名<small>末游</small></span>
+      <span class="badge">中级 · 109 手</span>
+      <span class="grow"></span>
+      <span class="cta">开始复盘 →</span>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <span>★ 点击点亮收藏 · 收藏的局永远排最上</span>
+  <span>共 4 场 · 最多保留 40 场</span>
+</div>
+
+</body></html>

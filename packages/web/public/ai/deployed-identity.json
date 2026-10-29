@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-28T01:11:38.552Z",
+  "productLoads": {
+    "weights": "packages/web/public/ai/clean2.f32",
+    "weightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+    "paramCount": 164865,
+    "modelVersion": "clean2-ck7051-20261027",
+    "sourceRun": "lab/review2/runs/clean2-main/ck-7051（与部署文件逐字节一致，见 lab/src/deploy_check.ts）",
+    "encoderVersion": "gd-lab-schema-v1",
+    "passEncoding": "legacy-phys10",
+    "candidateVersion": "cand-dedup-v2",
+    "policyId": "frozenChampion-clean2-ck7051-encv1-candv2"
+  },
+  "rules": {
+    "defaults": "DEFAULT_RULES（stage 官方级牌口径）",
+    "webOptions": "App.tsx 规则选项 → MatchController"
+  },
+  "difficulty": {
+    "neuralTiers": {
+      "easy": 0.5,
+      "standard": 0.3,
+      "hard": 0
+    },
+    "difficultySource": "tiered.ts D1 三档（ε 近并列随机）"
+  },
+  "runtimeCode": {
+    "candidateGenerator": "cand-suit-v3",
+    "note": "NeuralPlayer 默认绑定 frozenChampion 包（cand-v2 兼容折叠 + legacy pass 编码）；REVIEW5 T0.1 修复"
+  },
+  "namedPackages": {
+    "frozenChampion": "clean2-ck7051 权重 + cand-dedup-v2 + gd-lab-schema-v1(legacy pass) —— 当前产品",
+    "U0": "（T6 冻结时生成）clean2 父 + 399 rule-context + pass 迁移 action64 + cand-suit-v3，零新增训练",
+    "researchCandidates": "（T6/T7 产生）通过开发门并一次性确认后才可替换产品默认"
+  },
+  "bundle": {
+    "built": true,
+    "distFiles": 150,
+    "indexHtml": "7ef60335dff07aa7c9cae14a920225b088ca88bd76016d0831dd08f478da5acc",
+    "largestJs": [
+      [
+        "assets/index-CV3id2ee.js",
+        "10b156846edfc361e45c6c0313c5839ac2b2a337a07b64b7f50a5c2d377a915d"
+      ]
+    ]
+  },
+  "verification": {
+    "productEqualsExplicitBinding": "40/40",
+    "v3CandidatesDifferOnRealStates": "5/40（>0 即证明：不绑定时重建包会改变出牌行为）"
+  }
+}

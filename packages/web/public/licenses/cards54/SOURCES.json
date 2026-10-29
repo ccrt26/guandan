@@ -1,0 +1,32 @@
+{
+  "Latin_font": {
+    "family": "Liberation Serif",
+    "style": "Bold",
+    "file": "fonts/LiberationSerif-Bold.ttf",
+    "sha256": "443a4dbd694b6e4689925947b456e0532e10b19c90fa32eb39ea6c2cd9db9ebd",
+    "license": "SIL OFL 1.1"
+  },
+  "standard_courts": {
+    "source": "bundled original playing-cards-assets vectors",
+    "attribution": "Howard Yeh, copyright 2018 (bundled MIT license)",
+    "paths": "source/original_vectors",
+    "palette": "blue→graphite31,39,36; gold→202,160,49; red→165,24,22"
+  },
+  "jokers": {
+    "generation": "OpenAI image generation tool, 2026-10-27 UTC",
+    "source_files": [
+      "source/jokers/BJ_original.png",
+      "source/jokers/RJ_original.png"
+    ],
+    "style_reference": "approved QC classic printed court art",
+    "new_art": "generated jester half portraits; double-ended layout and labels composited deterministically",
+    "license_notice": "AI-generated project artwork, not covered by the upstream card-art MIT license; do not misattribute it as the upstream original. Service-generated asset, not a pure-vector artwork.",
+    "printed_text": "JOKER only; no Chinese on either face"
+  },
+  "runtime_tested": {
+    "python": "3.12.14",
+    "Pillow": "12.3.0",
+    "numpy": "2.3.5",
+    "rasterizer": "Inkscape installed CLI"
+  }
+}

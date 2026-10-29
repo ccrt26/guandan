@@ -1,0 +1,20 @@
+import {expect,it} from 'vitest';
+import {applyMove,createMatch,DEFAULT_RULES,legalCombos,startGame,type GameRecord} from '@gd/engine';
+import {MLP,NeuralDecider,FROZEN_CHAMPION_IDENTITY} from '@gd/ai';
+import {buildDecisionReviews} from '../src/decisionReview';
+import {analyzeWithModel} from '../src/nnAdvisor';
+it('review explicitly scores the same frozen candidate and pass semantics as the loaded policy',()=>{
+ const match=createMatch({...DEFAULT_RULES},6102808),state=startGame(match),seat=state.turn;
+ const rec:GameRecord={schemaVersion:2,id:'frozen-review',matchId:'frozen-review',createdAt:0,ruleOpts:match.opts,levelsBefore:[...state.levelsBefore],stageTeam:state.stageTeam,leader:state.leader,humanSeat:seat,difficulties:[0,0,0,0],initialHands:state.hands.map(h=>[...h]),moves:[],result:null};
+ const first=legalCombos(state)[0];applyMove(state,{pass:false,combo:first});rec.moves=[{moveNo:1,player:seat,pass:false,cards:first.cards,comboKind:first.kind,mainRank:first.mainRank,handsAfter:state.hands.map(h=>h.length)}];
+ const mlp=new MLP(611);const encoder={candidateCompat:'v2' as const,passEncoding:FROZEN_CHAMPION_IDENTITY.passEncoding};
+ const ev=buildDecisionReviews(rec,{mlp,moves:[1],maxPoints:1,encoder} as Parameters<typeof buildDecisionReviews>[1])[0];
+ expect(ev.candidates?.candidateVersion).toBe('cand-dedup-v2');
+ expect(ev.heuristic.topActionId).not.toBe(ev.actual.actionId);
+ expect(ev.heuristic.terms).toEqual(ev.heuristicBreakdowns.find(h=>h.actionId===ev.heuristic.topActionId)?.terms);
+ const before=startGame(createMatch({...DEFAULT_RULES},6102808));
+ const direct=new NeuralDecider(seat,mlp,0,()=>0,encoder).decide(before,{wantRanking:true});
+ expect(ev.candidates?.n).toBe(direct.nCands);
+ const summary=analyzeWithModel(rec,mlp,'frozen',encoder as never);
+ expect(summary.moves[0].nCandidates).toBe(direct.nCands);
+});

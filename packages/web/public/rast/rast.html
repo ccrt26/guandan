@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;padding:0;overflow:hidden}
+svg{display:block}
+</style></head><body>
+<script>
+const q = new URLSearchParams(location.search);
+const f = q.get('file');
+const w = q.get('w') || '630', h = q.get('h') || '880';
+if (q.get('bg')) document.body.style.background = q.get('bg');
+if (f) fetch(f + '.svg').then(r => r.text()).then(t => {
+  document.body.innerHTML = t;
+  const svg = document.querySelector('svg');
+  svg.setAttribute('width', w); svg.setAttribute('height', h);
+  svg.style.display = 'block';
+});
+</script>
+</body></html>

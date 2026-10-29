@@ -1,0 +1,4 @@
+import{spawnSync}from'node:child_process';import{fileURLToPath}from'node:url';
+/** Synchronous parent stays alive through every ownedchild's final termination.
+ * Cleanup executes from this frozen bundle andispartofchargeddevicewindow. */
+export function spawnOwnedSync(executable,args,options){const result=spawnSync(executable,args,{...options,detached:true}),pid=result.pid;let cleanup={pgid:pid??null,remaining:false,spawned:false};if(Number.isSafeInteger(pid)&&pid>1){const end=spawnSync(executable,[fileURLToPath(new URL('./owned-process-group.mjs',import.meta.url)),String(pid)],{cwd:options.cwd,env:options.env,encoding:'utf8',timeout:8000,killSignal:'SIGKILL'});if(end.status!==0){const error=Error('ownedprocessgroup cleanup failedbeforebudgetsettlement:'+end.stderr);error.ownedGroupCleanupUnconfirmed=true;error.ownedPID=pid;error.childResult=result;throw error;}cleanup={...JSON.parse(end.stdout),spawned:true};}return{result,cleanup};}

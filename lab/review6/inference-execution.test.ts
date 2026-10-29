@@ -1,0 +1,2 @@
+import{test}from'node:test';import assert from'node:assert/strict';import{runCompleteMatch}from'./match-play';
+test('unregistered inference execution is rejected before a match or score can run',()=>{const policies=Array.from({length:4},(_,seat)=>({policyId:'mechanical-h0-'+seat,kind:'heuristic' as const,difficulty:0 as const}));assert.throws(()=>runCompleteMatch({seed:71,policies,maxGames:0,inferenceExecution:'invented-backend' as any}),/unknown inference execution/);});

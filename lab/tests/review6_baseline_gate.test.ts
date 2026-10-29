@@ -1,0 +1,3 @@
+import{it,expect}from'vitest';import{readFileSync}from'node:fs';import{assertBaselineBranch}from'../review6/development-baseline';
+it('C2 baseline cannot open development results before the data-readiness branch lock',()=>{expect(()=>assertBaselineBranch({selectedExperiment:null,data:{}})).toThrow(/branch/);});
+it('C2 baseline uses the actual same-cycle branch and rejects a caller-selected different branch',()=>{const c=JSON.parse(readFileSync('lab/review6/cycle.draft.json','utf8'));expect(assertBaselineBranch(c).selectedExperiment).toBe('direct_teacher_no_h');expect(()=>assertBaselineBranch({...c,selectedExperiment:'direct_teacher_with_h'})).toThrow(/branch/);});

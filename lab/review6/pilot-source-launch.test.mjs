@@ -1,0 +1,2 @@
+import{test}from'node:test';import assert from'node:assert/strict';import{launchPilotSource}from'./pilot-source-launch.mjs';
+test('completed pilot source official route is retired before any config, ledger or snapshot can be read',()=>{for(const request of[{},null,{configPath:'/private/tmp/shadow/config.json',authorizationPath:'/private/tmp/self.json'}])assert.throws(()=>launchPilotSource(request),/completed.*retired|retired.*completed/);});

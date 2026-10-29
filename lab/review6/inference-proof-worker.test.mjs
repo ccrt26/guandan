@@ -1,0 +1,2 @@
+import{test}from'node:test';import assert from'node:assert/strict';import{spawnSync}from'node:child_process';import{resolve}from'node:path';
+test('inference proof refuses direct entry before dataset, policy or rollout access',()=>{const r=spawnSync(process.execPath,['--import',resolve('node_modules/tsx/dist/loader.mjs'),resolve('lab/review6/inference-proof-worker.ts')],{encoding:'utf8'});assert.notEqual(r.status,0);assert.match(r.stderr,/verified canonical frozen launch required/);});

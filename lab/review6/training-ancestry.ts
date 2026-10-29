@@ -1,0 +1,4 @@
+import type{GameState}from'@gd/engine';import{engineDealFamily}from'./capability-lineage';
+/** Full-world metadata for split auditing only. Call before the round's FIRST
+ * action. This value and these hands never enter any student feature vector. */
+export function dealtFamilyBeforeExchange(state:GameState){if(state.moveNo!==0)throw Error('ancestry requires beforefirstaction');const hands=state.hands.map(h=>[...h]),flows=state.tribute?[...state.tribute.tributes,...state.tribute.returns]:[];for(const f of[...flows].reverse()){const i=hands[f.to].findIndex(c=>c.id===f.card.id);if(i<0)throw Error('public exchange ancestry ownership violated');hands[f.from].push(hands[f.to].splice(i,1)[0]);}if(hands.some(h=>h.length!==27)||new Set(hands.flat().map(c=>c.id)).size!==108)throw Error('ancestry must conserve108/27 cards');return engineDealFamily(hands);}

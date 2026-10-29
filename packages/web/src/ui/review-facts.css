@@ -1,0 +1,27 @@
+.review-wrap .ev-card {
+  color: #252c27;
+  background: #fdfbf5;
+  line-height: 1.55;
+}
+.review-wrap .ev-card p { margin: 6px 0; font-size: 13px; }
+.review-wrap .ev-card h4 { color: inherit; margin: 4px 0 8px; }
+.review-wrap .ev-card summary { color: #55451e; cursor: pointer; }
+.review-wrap .ev-card .sub { color: #5d665e; }
+.review-wrap .ev-card .btn-ghost { color: #51451f; border-color: #c9bea5; }
+.review-wrap > [data-testid="capability-card"] {
+  flex: 0 0 auto;
+  margin: 8px 12px;
+  padding: 10px 14px;
+  max-height: 34vh;
+  overflow: auto;
+}
+.review-wrap > [data-testid="capability-card"] > b { font-size: 13px; }
+.review-wrap .report-page-wrap .report-page {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: 12px 20px 28px;
+  box-sizing: border-box;
+}
+.review-wrap [data-testid="accepted-coach-output"] { line-height: 1.7; }
+.review-wrap .detail-panel [data-testid="decision-facts-v3"] { overflow-wrap: anywhere; }

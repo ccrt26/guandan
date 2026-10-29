@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<style>
+:root { --page:#e8e6e0; --ink:#151b20; --muted:#70736f; --line:#b8b9b4; --metal-hi:#f4f3ee; --metal:#cececa;
+        --red:#b62d20; --red-light:#c6291a; --win:#1d6b45; --lose:#b0552e; --gold:#c9a13b; }
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--page); color: var(--ink); font-family: 'PingFang SC','Microsoft YaHei',sans-serif; padding-bottom: 60px; }
+.topbar { display:flex; justify-content:space-between; align-items:center; height:72px; padding:0 84px; background:#fbfbf9; border-bottom:1px solid #e2e1dc; }
+.brand { font-weight:800; font-size:20px; display:flex; gap:2px; align-items:center; }
+.brand .s { font-size:24px; } .brand .d { color:var(--red); font-size:14px; margin:4px 6px 0 -4px; }
+nav { display:flex; gap:48px; align-items:center; }
+nav .tab { font-size:18px; color:#43474a; position:relative; padding-bottom:4px; }
+nav .tab.active { color:var(--ink); font-weight:700; border-bottom:3px solid var(--red-light); }
+nav .tab .note { display:block; position:absolute; left:50%; top:-34px; transform:translateX(-50%); font-size:13px; color:#8b8e89; white-space:nowrap; font-weight:400; letter-spacing:0; }
+.wrap { max-width: 1720px; margin: 0 auto; padding: 0 40px; }
+.pagehead { display:flex; justify-content:space-between; align-items:flex-end; padding:36px 0 28px; }
+.pagehead h1 { font-size:44px; font-weight:800; letter-spacing:4px; }
+.pagehead p { margin-top:10px; font-size:19px; color:var(--muted); letter-spacing:2px; }
+.tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; margin-bottom:26px; }
+.tile { background:linear-gradient(180deg,#f2f1ec,#dcdbd5); border:1px solid #b0b1ab; border-radius:20px; padding:24px 30px;
+        box-shadow: inset 0 1px 0 #fff, 0 8px 18px rgba(30,30,25,.10); }
+.tile .num { font-size:52px; font-weight:800; line-height:1; }
+.tile .lbl { margin-top:8px; font-size:18px; color:var(--muted); }
+.tile.green .num { color:var(--win); } .tile.gold .num { color:#8a6d1c; }
+.sub { font-size:22px; font-weight:700; color:#22251f; letter-spacing:2px; margin:34px 0 16px; display:flex; align-items:center; gap:10px; }
+.sub::before { content:''; width:5px; height:20px; background:var(--gold); border-radius:3px; }
+.rows { display:flex; flex-direction:column; gap:14px; }
+.row { display:flex; align-items:center; gap:26px; background:linear-gradient(180deg,#f4f3ee,#e2e1db);
+       border:1px solid #b0b1ab; border-radius:16px; padding:20px 30px;
+       box-shadow: inset 0 1px 0 #fff, 0 4px 12px rgba(30,30,25,.08); }
+.row .when { font-size:17px; color:var(--muted); min-width:190px; }
+.chip { font-size:17px; font-weight:700; padding:5px 16px; border-radius:999px; }
+.chip.win { color:#fff; background:linear-gradient(180deg,#2e6b45,#1d4530); }
+.chip.lose { color:#fff; background:linear-gradient(180deg,#c07a3a,#9a4e22); }
+.badge { font-size:16px; color:#43474a; border:1px solid #b0b1ab; border-radius:8px; padding:4px 12px; background:#fbfaf5; }
+.rank { font-size:20px; font-weight:700; }
+.rank small { font-size:14px; color:var(--muted); font-weight:400; margin-left:2px; }
+.row .grow { flex:1; }
+.del { color:#9a9d97; font-size:16px; background:none; border:none; cursor:pointer; }
+.del:hover { color:var(--red); }
+.cta { margin-left:auto; font-size:18px; font-weight:700; letter-spacing:2px; color:#f7ead9; background:linear-gradient(180deg,#b62d20,#77150e);
+       border:1px solid #5c0f08; border-radius:999px; padding:12px 30px; box-shadow: inset 0 1px 0 rgba(238,106,68,.85), 0 6px 14px rgba(60,10,5,.3); }
+.sectionlabel { margin:56px 0 8px; font-size:15px; letter-spacing:3px; color:#9a9d97; }
+hr.dashed { border:none; border-top:2px dashed #c9c8c2; margin:56px 0 0; }
+.empty-hint { font-size:16px; color:#9a9d97; margin-top:14px; }
+.winrate-bar { height:10px; border-radius:999px; background:#d8d7d1; margin-top:12px; overflow:hidden; }
+.winrate-bar i { display:block; height:100%; background:linear-gradient(90deg,#2e6b45,#1d4530); border-radius:999px; }
+.mini { display:flex; justify-content:space-between; font-size:15px; color:var(--muted); margin-top:10px; }
+</style></head><body>
+
+<div class="topbar">
+  <div class="brand"><span class="s">♠</span><span class="d">♦</span>掼蛋训练场</div>
+  <nav>
+    <span class="tab">训练</span>
+    <span class="tab active">战绩</span>
+    <span class="tab">复盘</span>
+  </nav>
+</div>
+
+<!-- ① 战绩 tab：只有结果，没有复盘按钮 -->
+<div class="wrap">
+  <div class="pagehead">
+    <div><h1>我的战绩</h1><p>只记录每一场的结果。想研究哪一局，去「复盘」页选它。</p></div>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="num">4</div><div class="lbl">总场次</div></div>
+    <div class="tile green"><div class="num">50%</div><div class="lbl">总胜率</div></div>
+    <div class="tile gold"><div class="num">1</div><div class="lbl">头游次数</div></div>
+    <div class="tile"><div class="num">0</div><div class="lbl">被双上游</div></div>
+  </div>
+
+  <div class="sub">按对手强度</div>
+  <div class="tiles" style="grid-template-columns:repeat(3,1fr)">
+    <div class="tile"><div class="num" style="font-size:34px">0 场</div><div class="lbl">初级 · —</div>
+      <div class="winrate-bar"><i style="width:0%"></i></div><div class="mini"><span>胜 0</span><span>负 0</span></div></div>
+    <div class="tile"><div class="num" style="font-size:34px">4 场</div><div class="lbl">中级 · 50%</div>
+      <div class="winrate-bar"><i style="width:50%"></i></div><div class="mini"><span>胜 2</span><span>负 2</span></div></div>
+    <div class="tile"><div class="num" style="font-size:34px">0 场</div><div class="lbl">高级 · —</div>
+      <div class="winrate-bar"><i style="width:0%"></i></div><div class="mini"><span>胜 0</span><span>负 0</span></div></div>
+  </div>
+
+  <div class="sub">对局记录</div>
+  <div class="rows">
+    <div class="row">
+      <span class="when">2026/10/25 20:42</span>
+      <span class="chip win">胜</span>
+      <span class="badge">双上游</span>
+      <span class="rank">第一名<small>（头游）</small></span>
+      <span class="badge">中级</span>
+      <span class="badge">94 手</span>
+      <span class="grow"></span>
+      <button class="del">✕</button>
+    </div>
+    <div class="row">
+      <span class="when">2026/10/25 19:41</span>
+      <span class="chip win">胜</span>
+      <span class="badge">双上游</span>
+      <span class="rank">第一名<small>（头游）</small></span>
+      <span class="badge">中级</span>
+      <span class="badge">95 手</span>
+      <span class="grow"></span>
+      <button class="del">✕</button>
+    </div>
+    <div class="row">
+      <span class="when">2026/10/25 10:55</span>
+      <span class="chip win">胜</span>
+      <span class="rank">第一名<small>（头游）</small></span>
+      <span class="badge">中级</span>
+      <span class="badge">94 手</span>
+      <span class="grow"></span>
+      <button class="del">✕</button>
+    </div>
+    <div class="row">
+      <span class="when">2026/10/25 00:10</span>
+      <span class="chip lose">负</span>
+      <span class="rank">第四名</span>
+      <span class="badge">中级</span>
+      <span class="badge">109 手</span>
+      <span class="grow"></span>
+      <button class="del">✕</button>
+    </div>
+  </div>
+  <p class="empty-hint">记录保存在浏览器本地，最多保留最近 40 场。</p>
+</div>
+
+<hr class="dashed">
+
+<!-- ② 复盘 tab：选一局来复盘 -->
+<div class="wrap" style="padding-top:8px">
+  <div class="pagehead">
+    <div><h1>复盘</h1><p>选择一局，回放每一手、看引擎标注与教练讲解。</p></div>
+  </div>
+  <div class="rows">
+    <div class="row">
+      <span class="when">2026/10/25 20:42</span>
+      <span class="chip win">胜</span>
+      <span class="rank">第一名<small>（头游）</small></span>
+      <span class="badge">中级 · 94 手</span>
+      <span class="grow"></span>
+      <span class="cta">开始复盘 →</span>
+    </div>
+    <div class="row">
+      <span class="when">2026/10/25 19:41</span>
+      <span class="chip win">胜</span>
+      <span class="rank">第一名<small>（头游）</small></span>
+      <span class="badge">中级 · 95 手</span>
+      <span class="grow"></span>
+      <span class="cta">开始复盘 →</span>
+    </div>
+    <div class="row" style="opacity:.55">
+      <span class="when">2026/10/24 22:00</span>
+      <span class="chip lose">负</span>
+      <span class="rank">第三名</span>
+      <span class="badge">初级 · 88 手</span>
+      <span class="grow"></span>
+      <span class="badge" style="border-style:dashed">此局为旧版引擎记录，无法复盘</span>
+    </div>
+  </div>
+  <p class="empty-hint">没有可复盘的对局时，这里显示空态提示。</p>
+</div>
+
+</body></html>

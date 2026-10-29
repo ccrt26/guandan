@@ -1,0 +1,13 @@
+{
+  "layers": [385, 256, 256, 1],
+  "paramCount": 164865,
+  "modelVersion": "clean2-ck7051-20261027",
+  "source": "lab/review2/runs/clean2-main/ck-7051",
+  "confirm": {
+    "M1_NN_vs_旧部署包": { "p": 0.574, "ci97.5": [0.504, 0.645], "blocks": 128 },
+    "M2_NN+H搭档_vs_旧包+H": { "p": 0.520, "ci97.5": [0.473, 0.564], "blocks": 256 }
+  },
+  "training": { "updates": 7051, "activeMin": 103.2, "samples": 7220224, "waves": 1651, "counters": "五项全零" },
+  "replication": "clean2-replica 独立种子重训 dev M1=60.9%（跨种子复现成立）",
+  "note": "CLEAN2：stage 官方级牌口径 + 候选 v2（万能替代变体）+ 8-worker 波并行自博弈。旧 clean1.f32 训练于 both 口径，留档不用。"
+}

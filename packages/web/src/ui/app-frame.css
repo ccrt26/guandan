@@ -1,0 +1,100 @@
+/* The approved statistics frame is shared by all landing pages. Sizes below
+   are design units; AppFrame uniformly scales the entire 1672×941 canvas. */
+#sp-stage.app-stage {display:flex;flex-direction:column;overflow:hidden;}
+.sp-content {display:contents;}
+.app-stage > .sp-header {flex:none;z-index:2;}
+#sp-root .sp-header button {border-radius:0;transform:none;}
+#sp-root .sp-header .sp-nav-item {font-size:16px;font-weight:400;line-height:normal;}
+#sp-root .sp-header .sp-settings {padding:0;background:none;border:0;}
+.app-stage > .review-wrap {background:#0d1412;color:#e8e6df;font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;}
+
+/* Keep content sizing independent of the outer window's media-query width. */
+#sp-stage > .tz {background:transparent;overflow:hidden;font-family:StatsBody,'PingFang SC',sans-serif;}
+#sp-stage .tz-head {height:142px;flex:none;flex-direction:row;align-items:flex-start;padding:27px 75px 8px;gap:24px;}
+#sp-stage .tz-head-title h1 {font:700 58px/65px StatsSerif,'Songti SC',serif;letter-spacing:2px;}
+#sp-stage .tz-head-title p {font:500 25px/35px StatsSerif,'Songti SC',serif;letter-spacing:3px;margin:6px 0 0;color:#767570;}
+#sp-stage .tz-head-stats {align-self:flex-end;gap:24px;padding:0 0 14px;}
+#sp-stage .tz-stat b {font-size:32px;}
+#sp-stage .tz-stat i,#sp-stage .tz-stat-empty {font-size:17px;}
+#sp-stage .tz-vsep {height:32px;}
+#sp-stage .tz-stat-note {font-size:15px;}
+#sp-stage .tz-console {margin:0 44px 0 50px;padding:8px;flex:1;min-height:0;grid-template-columns:416px minmax(0,1fr);gap:5px;border-radius:26px;}
+#sp-stage .tz-console::before {border-radius:26px;}
+#sp-stage .tz-settings {border-radius:20px;padding:16px 22px 14px;min-height:0;overflow-y:auto;}
+#sp-stage .tz-panel-title {font-size:22px;line-height:28px;gap:10px;letter-spacing:1px;}
+#sp-stage .tz-panel-title svg {width:20px;height:20px;}
+#sp-stage .tz-hr {margin:6px 0;}
+#sp-stage .tz-section {font-size:20px;line-height:26px;margin:2px 0 6px;}
+#sp-stage .tz-row {height:44px;flex:none;gap:10px;padding:0 14px;margin-bottom:6px;border-radius:10px;}
+#sp-stage .tz-row:last-child {margin-bottom:0;}
+#sp-stage .tz-row-thin {height:40px;}
+#sp-stage .tz-led {width:15px;height:15px;}
+#sp-stage .tz-row .tz-name {font-size:18px;white-space:nowrap;}
+#sp-stage .tz-row .tz-no {font-size:13px;}
+#sp-stage .tz-row .tz-hint {font-size:12px;line-height:1.4;min-width:0;}
+#sp-stage .tz-settings > p {font-size:12px;line-height:18px;margin:6px 0;}
+#sp-stage .tz-resume {padding:6px 10px;gap:8px;border-radius:10px;flex:none;}
+#sp-stage .tz-resume-txt {gap:8px;}
+#sp-stage .tz-resume-txt b {font-size:13px;}
+#sp-stage .tz-resume-txt i {font-size:12px;}
+#sp-stage .tz-resume-btn {font-size:13px;padding:6px 10px;}
+#sp-stage .tz-resume-drop {font-size:16px;padding:4px;}
+#sp-stage .tz-neural {margin-top:8px;padding:10px 14px;border-radius:12px;column-gap:12px;flex:none;}
+#sp-stage .tz-neural-head {gap:8px;}
+#sp-stage .tz-neural-head b {font-size:18px;letter-spacing:1px;}
+#sp-stage .tz-neural-head svg {width:20px;height:20px;}
+#sp-stage .tz-neural-warn {font-size:12px;line-height:18px;margin-top:8px;}
+#sp-stage .tz-right {min-height:0;}
+#sp-stage .tz-preview {flex:1;height:auto;min-height:0;border-radius:26px;}
+#sp-stage .tz-preview::after,#sp-stage .tz-scene {border-radius:20px;}
+#sp-stage .tz-preview-tag {top:18px;right:20px;font-size:16px;letter-spacing:3px;padding:9px 18px;border-radius:16px;}
+#sp-stage .tz-actionbar {height:82px;flex:none;flex-wrap:nowrap;padding:0 20px;gap:14px;border-radius:20px;}
+#sp-stage .tz-ab-label {font-size:15px;letter-spacing:1px;white-space:nowrap;}
+#sp-stage .tz-ab-item {gap:8px;white-space:nowrap;}
+#sp-stage .tz-ab-item b {font-size:16px;letter-spacing:1px;}
+#sp-stage .tz-ab-item svg {width:20px;height:20px;}
+#sp-stage .tz-ab-sep {height:32px;margin:0 12px;}
+#sp-stage .tz-cta {width:270px;height:62px;font-size:25px;letter-spacing:4px;gap:12px;border-radius:14px;}
+#sp-stage .tz-cta svg {width:24px;height:24px;}
+#sp-stage .tz-foot {flex:none;margin:12px 44px 0 50px;padding:8px 12px 12px;font-size:13px;line-height:20px;letter-spacing:2px;}
+#sp-stage .tz-foot-ready {gap:8px;}
+#sp-stage .tz-foot-ready i {width:8px;height:8px;}
+
+/* Review picker keeps the existing list/detail layout at the shared scale. */
+#sp-stage .rv::before {position:absolute;top:57px;right:55px;font-size:110px;}
+#sp-stage .rv-console {display:flex;flex-direction:column;padding:14px 16px 0;gap:10px;}
+#sp-stage .rv-filterbar {padding:13px 22px;gap:20px;border-radius:16px;}
+#sp-stage .rv-fgroup {gap:12px;}
+#sp-stage .rv-flab {font-size:17px;}
+#sp-stage .rv-vsep {height:34px;}
+#sp-stage .rv-seg button {font-size:16px;padding:9px 21px;}
+#sp-stage .rv-count {font-size:16px;}
+#sp-stage .rv-count b {font-size:24px;}
+#sp-stage .rv .tz-switch {width:64px;height:30px;}
+#sp-stage .rv .tz-switch i {width:24px;height:24px;top:2px;left:2px;}
+#sp-stage .rv .tz-switch.on i {left:36px;}
+#sp-stage .rv-body {grid-template-columns:minmax(0,1fr) 37%;gap:10px;}
+#sp-stage .rv-list {max-height:none;border-radius:16px;}
+#sp-stage .rv-thead,#sp-stage .rv-row {display:grid;grid-template-columns:54px 185px minmax(0,1fr) 160px 26px;padding:16px 18px;letter-spacing:0;}
+#sp-stage .rv-thead {font-size:15px;}
+#sp-stage .rv-row {min-height:64px;padding-top:14px;padding-bottom:14px;}
+#sp-stage .rv-row .rv-meta {display:block;}
+#sp-stage .rv-when {font-size:15px;}
+#sp-stage .rv-result {gap:10px;flex-wrap:wrap;}
+#sp-stage .rv-result b {font-size:18px;}
+#sp-stage .rv-rchip {font-size:14px;padding:5px 10px;}
+#sp-stage .rv-du {font-size:12px;padding:3px 7px;}
+#sp-stage .rv-badge {font-size:14px;padding:5px 9px;white-space:nowrap;}
+#sp-stage .rv-badd {font-size:13px;}
+#sp-stage .rv-chev {font-size:24px;}
+#sp-stage .rv-detail {order:0;min-height:0;padding:26px 28px;border-radius:16px;}
+#sp-stage .rv-dtag {font-size:15px;margin-bottom:20px;padding:6px 13px;}
+#sp-stage .rv-date {font-size:17px;}
+#sp-stage .rv-bigline {gap:18px;}
+#sp-stage .rv-bigrank {font-size:58px;letter-spacing:4px;}
+#sp-stage .rv-rchip.big {font-size:20px;padding:8px 16px;}
+#sp-stage .rv-metaline {gap:26px;margin:26px 0 20px;}
+#sp-stage .rv-metaline b {font-size:24px;}
+#sp-stage .rv-metaline i,#sp-stage .rv-note {font-size:16px;}
+#sp-stage .rv-start {height:64px;font-size:23px;letter-spacing:4px;border-radius:13px;}
+#sp-stage .rv-bottom {font-size:14px;padding:12px 18px;}
