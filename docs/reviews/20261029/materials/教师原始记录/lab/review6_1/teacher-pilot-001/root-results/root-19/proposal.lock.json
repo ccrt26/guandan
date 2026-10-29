@@ -1,0 +1,74 @@
+{
+  "selectedActionIds": [
+    "action-0008",
+    "action-0000",
+    "action-0010",
+    "action-0006",
+    "action-0009",
+    "action-0004"
+  ],
+  "proposalReasons": {
+    "action-0008": [
+      "student_preferred",
+      "four_card_bomb",
+      "fixed_score_then_index_fill",
+      "fixed_score_then_index_fill"
+    ],
+    "action-0000": [
+      "actual_source_action",
+      "fixed_score_then_index_fill",
+      "fixed_score_then_index_fill"
+    ],
+    "action-0010": [
+      "legal_pass",
+      "fixed_score_then_index_fill"
+    ],
+    "action-0006": [
+      "independent_legal_nonbomb_takeover_or_only_bomb",
+      "fixed_score_then_index_fill",
+      "fixed_score_then_index_fill"
+    ],
+    "action-0009": [
+      "fixed_score_then_index_fill",
+      "fixed_score_then_index_fill"
+    ],
+    "action-0004": [
+      "fixed_score_then_index_fill",
+      "fixed_score_then_index_fill"
+    ]
+  },
+  "unsearchedActionIds": [
+    "action-0001",
+    "action-0002",
+    "action-0003",
+    "action-0005",
+    "action-0007"
+  ],
+  "maxComparedCandidates": 6,
+  "priorityOrder": [
+    "student_preferred",
+    "actual_source_action",
+    "legal_pass",
+    "independent_nonbomb_takeover",
+    "four_card_bomb",
+    "five_card_bomb",
+    "finish_hand_if_capacity",
+    "fixed_score_then_index_fill"
+  ],
+  "scope": "bounded exploration only; not global optimality",
+  "preferredActionId": "action-0008",
+  "scores": [
+    0.03595029562711716,
+    -0.0015771908219903708,
+    0.004841180983930826,
+    0.03739383444190025,
+    0.042905375361442566,
+    0.002181763295084238,
+    0.06027883663773537,
+    -0.11625947058200836,
+    0.758644163608551,
+    0.22775301337242126,
+    0.2225545197725296
+  ],
+  "observedBeforeSHA256": "a36c9ba419c825d62b6831d73a37f5bd348fd62614724ed40526ebe35296df91"
+}

@@ -1,0 +1,122 @@
+{
+  "stageStatus": "completed",
+  "resultCode": "ambiguous",
+  "rootId": "C3-pilot-source-001:root-04",
+  "slot": 4,
+  "sourceFamilyId": "first-deal-family:93766cf4d2bdd722a49850d9f3a289030a45167964e9a624712f950f17e38d24",
+  "category": "context_sensitive_candidate",
+  "supported": false,
+  "direction": "takeover_over_pass",
+  "pair": {
+    "preferredActionId": "action-0000",
+    "otherActionId": "action-0001",
+    "selectedFrom": "exploration_only",
+    "validatedPairs": 1,
+    "selectionRule": "pass_vs_best_explored_takeover",
+    "explorationMeansOriginalY": {
+      "action-0000": -0.78125,
+      "action-0001": -0.875
+    },
+    "verificationWorlds": 256,
+    "secondaryVerificationWorlds": 128,
+    "selectedBeforeValidation": true
+  },
+  "statsPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-04/stats-result.json",
+  "statsSHA256": "7eac00e7447396ef410bce98fe368cdad07166844869ca4c85727e8ac258b756",
+  "teacherLabelPath": null,
+  "allFourComparisonsReported": true,
+  "learnedPlanClaim": false,
+  "branchWorkerTaskSecondsAllWindows": 311.03371454699993,
+  "currentWindowResourceOnly": true,
+  "resource": [
+    {
+      "complete": true,
+      "completedTasks": 32,
+      "plannedTasks": 32,
+      "deviceWallSeconds": 9.548488707999999,
+      "workerTaskSeconds": 18.305454997000005,
+      "workerLifetimeSeconds": 18.813630251,
+      "workerRecords": [
+        {
+          "index": 0,
+          "threadId": 2,
+          "startedMs": 240.279458,
+          "endedMs": 9505.851042,
+          "tasks": 17,
+          "taskSeconds": 9.005317916000003,
+          "peakRSSBytes": 467599360
+        },
+        {
+          "index": 1,
+          "threadId": 3,
+          "startedMs": 240.59,
+          "endedMs": 9788.648667,
+          "tasks": 15,
+          "taskSeconds": 9.300137081000004,
+          "peakRSSBytes": 467664896
+        }
+      ]
+    },
+    {
+      "complete": true,
+      "completedTasks": 256,
+      "plannedTasks": 256,
+      "deviceWallSeconds": 110.22891937500002,
+      "workerTaskSeconds": 217.43560596499998,
+      "workerLifetimeSeconds": 219.798656208,
+      "workerRecords": [
+        {
+          "index": 0,
+          "threadId": 6,
+          "startedMs": 9798.107167,
+          "endedMs": 119368.147625,
+          "tasks": 126,
+          "taskSeconds": 108.40671462400005,
+          "peakRSSBytes": 621920256
+        },
+        {
+          "index": 1,
+          "threadId": 7,
+          "startedMs": 9798.325375,
+          "endedMs": 120026.941125,
+          "tasks": 130,
+          "taskSeconds": 109.02889134099995,
+          "peakRSSBytes": 621740032
+        }
+      ]
+    },
+    {
+      "complete": true,
+      "completedTasks": 128,
+      "plannedTasks": 128,
+      "deviceWallSeconds": 39.16450774999999,
+      "workerTaskSeconds": 75.39201220799988,
+      "workerLifetimeSeconds": 77.270926626,
+      "workerRecords": [
+        {
+          "index": 0,
+          "threadId": 10,
+          "startedMs": 120027.097208,
+          "endedMs": 158133.8105,
+          "tasks": 66,
+          "taskSeconds": 37.145477333999914,
+          "peakRSSBytes": 693387264
+        },
+        {
+          "index": 1,
+          "threadId": 11,
+          "startedMs": 120027.327958,
+          "endedMs": 159191.541292,
+          "tasks": 62,
+          "taskSeconds": 38.24653487399997,
+          "peakRSSBytes": 692191232
+        }
+      ]
+    }
+  ],
+  "deviceWallSeconds": 160.622049333,
+  "workerLifetimeSeconds": 315.883213085,
+  "actualEntry": "file:///Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/pilot-execution-snapshot-003/lab/review6/pilot-worker.ts",
+  "mainTrainingUpdates": 0,
+  "formalOpened": 0
+}

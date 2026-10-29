@@ -1,0 +1,650 @@
+{
+  "schemaVersion": "r6-independent-engineering-review-v1",
+  "role": "engineering",
+  "reviewId": "C3-variance-execution-engineering-review-004",
+  "at": "2026-10-28T22:49:54.476939+00:00",
+  "requestPath": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-request-004.json",
+  "requestSHA256": "5d092cf94b6ee924b85e273fc7698a69d6d178e2880045bc17603365551331b0",
+  "reviewedContractPath": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-contract-002.json",
+  "reviewedContractSHA256": "c9fd1f76aa17cae2cfb085c293be32f02df4dcbdd8a8678e8a3095360d2de519",
+  "reviewedSnapshotPath": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/snapshot-manifest.json",
+  "reviewedSnapshotSHA256": "a1eede035856027fb7386168083abdcdc1b631d90a58decfc2e91e07561707dc",
+  "reviewedSourceManifestSHA256": "84adc7f5e23516f4d22f87eb701087278d30b1b07960913ca1a9e01ba83007fe",
+  "reviewedSpecSHA256": "e1bf9af7a5155e037f0b395226eafe38620f126ab2602b0aad7d9231315a7a84",
+  "overallDecision": "APPROVE_PILOT_EXECUTION",
+  "findings": [],
+  "P1OpenCount": 0,
+  "P2OpenCount": 0,
+  "decisionSummary": "Approve only the exact004 contract for technical executionOrdinal2 of the same fixed64-block variance pilot. The selfcontained literal bootstrap is independently produced through actualTSX creation and is byteidentical to the184-file actual snapshot boot, then executes only a pure synthetic entry. Closure/tamper negatives all reject before that entry. The original001 failure, original-budget settlement0.363005, absent business output and unused002 are verified. Twenty-one retry/canonical/current-contract negative probes pass. No scientific fields, source seeds, exclusion set, weights, roles, metric definitions or budgets are reset or weakened. Current dual approval and every original launch gate remain required.",
+  "scope": "Concentrated read-only engineering review of the bootstrap serialization fix, narrow once-only ordinal2 retry, actual frozen references/source closure and current authorization propagation. Reuse unchanged002 source/science/ancestry/count/pool findings. No actual variance entry, neural forward/decide, rollout, match, Torch, learner, formal evaluation, real reserve, receipt, settlement or lease write is performed by this review.",
+  "closedFindings": [
+    {
+      "id": "C3-VARIANCE-E01",
+      "severity": "P1",
+      "status": "closed in002 and preserved004",
+      "title": "Previously incomplete consumed-ancestry exclusions",
+      "evidence": "The whole excludedFamilyIds array and seedRows are byte-value identical to002. All3062 exclusions,192fixed initial families,0replacement and the independently closed141 omitted proof families are preserved; no unrelated raw-source rebuild is repeated."
+    },
+    {
+      "id": "C3-VARIANCE-E02",
+      "severity": "P1",
+      "status": "closed for004",
+      "title": "Transpiled function serialization produced an unbootable snapshot",
+      "originalFailure": {
+        "officialLaunchPath": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-001.json",
+        "officialLaunchSHA256": "7febd89fb1bdbe363b16177adcb301c526d20cb570134d48b869b6e8b53dac3b",
+        "settlementPath": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-001-settlement.json",
+        "settlementSHA256": "c87df49c9d9e22986c44097dda8889deae34def2f673869406102ad66f28d11f",
+        "stderrPath": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-001.stderr",
+        "stderrSHA256": "cd95ae5d7434d22995ce90f6668540b7fa8b176a069d937baa044aeea31669c7",
+        "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "childPID": 36579,
+        "exitCode": 1,
+        "deviceWallSeconds": 0.09075125,
+        "originalBudgetChargeSeconds": 0.363005,
+        "originalSettlementEntryHash": "28646539600488c4cabc31cc01df3b88a5f4f157472c80171c03a51f7106e808",
+        "observedException": "ReferenceError: import_node_path is not defined inside generated assertSnapshotTreeClosed",
+        "varianceEntryLoadedSignals": 0,
+        "stdoutBytes": 0,
+        "businessOutputDirectoryExists": false
+      },
+      "rootCause": "The prior generator embedded assertSnapshotTreeClosed.toString(). ActualTSX transformation renamed imported helper references and introduced __name, so the serialized function depended on absent module-local transpiler bindings in boot.mjs. The failure preceded the final await import of variance-worker.",
+      "repair": "The generator now emits explicit literal selfcontained closed-tree code using its own imported dirname/resolve/readdirSync and local sets/walk. No Function.toString or transformed module-local name is serialized; all previous manifest/file/realpath/alias/tree checks remain.",
+      "independentGreenProof": {
+        "actualFrozenBootSHA256": "6d52068041904d37f279aa0419e2f9896acbe336c77eae5e08cf2707ebda27b4",
+        "creationThroughActualCopiedTSX": true,
+        "generatedBootByteIdenticalToActualSnapshot": true,
+        "personalSyntheticSnapshotFiles": 58,
+        "pureSyntheticEntryOnly": true,
+        "validEntryExitCode": 0,
+        "tamperNegativeCases": 5,
+        "actualVarianceEntryExecuted": false
+      },
+      "limits": "This closes the observed bootstrap availability defect for the exact004 snapshot. It does not retroactively rewrite002 approval/report, delete the actual failure or refund/reset the original charge, and it does not claim successful1024-match execution."
+    }
+  ],
+  "independentChecks": [
+    {
+      "area": "Frozen identity and strict delta",
+      "status": "pass",
+      "details": [
+        "The exact004 requestSHA5d092cf94b6ee924b85e273fc7698a69d6d178e2880045bc17603365551331b0, contractSHA c9fd1f76aa17cae2cfb085c293be32f02df4dcbdd8a8678e8a3095360d2de519, snapshotSHA a1eede035856027fb7386168083abdcdc1b631d90a58decfc2e91e07561707dc and specSHA e1bf9af7a5155e037f0b395226eafe38620f126ab2602b0aad7d9231315a7a84 match. All22 request references and14 frozen source copies match.",
+        "Relative to002, changed runtime sources are only variance-worker.ts (allowordinal1/2), frozen-launch-guard.mjs (routeordinal1/2), pilot-launch.mjs (invoke retry precondition and derive ordinal receipt/task) and executable-snapshot.mjs (literal bootstrap). pilot-retry.mjs is the sole new runtime source.",
+        "The whole specification differs only in at and sourceFiles. All192seed rows,3062exclusions, scientific floor/threshold/probe/policy/role/match counts/namespaces and no-replacement settings are unchanged. Registry semantics are unchanged after weight-path relocation; confirmation paths remain absent and no confirmation bytes are opened.",
+        "All27 protected packages/ai and packages/engine paths remain byte-identical to002. Match-policy/data/statistics implementations are unchanged."
+      ]
+    },
+    {
+      "area": "Actual closure and pure executable bootstrap",
+      "status": "pass",
+      "details": [
+        "The actual copied verifier checks all184 snapshot files, hashes, realpaths, alias parents/targets and closed-tree contents. All14 approved source modules are present with matching hashes. Copied spec/registry hashes match actual contract inputs.",
+        "A personal minimal fixture contains dummy AI/engine modules and a pure console-only TypeScript entry. No model files, policies or actual science entry are used. Importing the exact copied generator through the copiedTSX loader creates a58-file snapshot. Its boot bytes exactly match the actual004 bootSHA6d52068041904d37f279aa0419e2f9896acbe336c77eae5e08cf2707ebda27b4.",
+        "Running that generated boot through Node plus the copiedTSX loader prints the expected synthetic marker and preserves forwarded argv. The boot text contains no import_node_path,import_node_fs,__name or toString capture.",
+        "Independent tamper probes reject an unlisted nested package, changed listed source bytes, a symlink replacement of a listed-file parent, a symlink replacement of an alias parent and a wrong manifestSHA. No negative case executes the pure entry. The first four also reject in the source verifier.",
+        "The unchanged source verifier and newly literal bootstrap retain the same full-tree semantics rather than removing the guard that exposed the bootstrap failure."
+      ]
+    },
+    {
+      "area": "Original failure and original-budget continuity",
+      "status": "pass",
+      "details": [
+        "Read original official receipt/stdout/stderr/settlement and the canonical original ledger without mutation. Receipt binds actual failed contract3c09037d... and snapshot5f1db5aa.... Child36579 exits1 after0.09075125device seconds; actual charge is4*wall=.363005.",
+        "The full canonical original budget chain is verified through verifyOriginalBudget. Task001 has exactly reserve3000 and settle.363005 entries; the settled entry hash equals the original settlement budgetHead. No charge is removed and no cycle/genesis/reset path is introduced.",
+        "stderr shows the serialized closure ReferenceError before variance entry import; no variance-worker/task module-load signal is found. stdout is empty and the fixed business output directory is absent.",
+        "Preparation-package003 is not referenced by the actual002 retry contract and creates no new execution ordinal. This report approves only004 executionOrdinal2, using actual original001 failure evidence."
+      ]
+    },
+    {
+      "area": "Narrow technical retry eligibility",
+      "status": "pass",
+      "details": [
+        "assertUnopenedVarianceRetry is invoked by the copied parent before any lease, reservation or official receipt mutation. It requires variance/ordinal2, original001 settled,002 not settled, exact canonical prior receipt/settlement paths and the current contract-pinned hashes, original task IDs, an integer nonzero failed exit and absence of the entire canonical business output directory.",
+        "The positive check uses actual current original budget state and actual pinned old receipt hashes; output directory and new002 official receipt are absent. Thus this is a zero-business-output technical retry, not an incomplete-match or source-selection retry.",
+        "Twenty-one independent negative checks cover missing001settlement, already-used002, any output directory, missing/shadow/changed prior evidence, wrong task IDs, success/null/string/fractional exit, invalid ordinals including3, wrong official receipt, shadow budget and stale002-package contract. All reject.",
+        "The unchanged parent also refuses an existing new002 receipt/active lease/final report or any existing reservation before it writes a lease; reserveBudget rejects an already settled/used task. Consequently a future second attempt cannot be reopened after its own receipt/reservation/settlement. Canonical routing permits noordinal3.",
+        "Current contract explicitlypins ordinal2 and original001 evidence. No actor/seed/source replacement is available, and the canonical output remains variance-results-001."
+      ]
+    },
+    {
+      "area": "Exact contract, copied parent and authorization propagation",
+      "status": "pass",
+      "details": [
+        "The exact004 contract is accepted only as a listed current request contract. The previous002-package contract is rejected. The fixed canonical new task is C3-variance-pilot-execution-002 with its own officialreceipt and3000reservation on the same original ledger/cycle.",
+        "The copied launchBoundedPilot body still checks two distinct current engineering/method report bodies, actual roles, unique IDs/paths, requestSHA and APPROVE_PILOT_EXECUTION, current contract hash, approved source copies, node runtime, closed actual snapshot and copied inputs. The child official-parent/lease/genesis/contract/snapshot checks remain.",
+        "Temporary esbuild static graphs for copied parent,variance-worker andvariance-task contain48 module inputs, all inside the current snapshot. The new retry module is in the parent graph. No future mature/Python-RPC/service prototype is imported. Emitted bundles are not executed.",
+        "Approval requires importing this exact copied pilot-launch.mjs. It does not authorize a replacement parent in the active workspace or an arbitrary outer starter. Existing budget reconciliation/authorization gates must complete before actual launch.",
+        "Resources remain four workers,3000reservation,600soft/570pool/660hard and4times whole-device-wall charging. The original72hour cycle, charge history and all scientific settings persist."
+      ]
+    },
+    {
+      "area": "Unaffected prior conclusions",
+      "status": "retained by exact identity",
+      "details": [
+        "Reuse002 full1635-reference/896-family reconstruction, exact3062-exclusion union and zero collision of192fixed first families. The entire exclusion and seed arrays are unchanged.",
+        "Reuse001/002 16-layout four-seat identities,1024typed-complete requirement, no incomplete-as-loss, paired64-unit statistics/floors, metadata-only ancestry audit, counter-per-seat RNG/indexed future deals and fail-closed final report paths.",
+        "Reuse unchanged pool startup/deadline/terminate/await behavior and exact-prefix arithmetic/48actualproof. No NN, actual complete-match or unrelated C1/C2/H/baseline/teacher/formal task was rerun."
+      ]
+    }
+  ],
+  "probes": {
+    "bootstrap": {
+      "status": "passed",
+      "syntheticOnly": true,
+      "actualFrozenBootSHA256": "6d52068041904d37f279aa0419e2f9896acbe336c77eae5e08cf2707ebda27b4",
+      "generatedThroughActualTSX": true,
+      "generatedBootByteIdenticalToActual184Snapshot": true,
+      "syntheticSnapshotFiles": 58,
+      "cases": [
+        {
+          "name": "actualTSX create -> byteidentical actualboot -> synthetic entry",
+          "passed": true,
+          "status": 0
+        },
+        {
+          "name": "unlisted nested package shadow tree",
+          "passed": true,
+          "verifierRejected": true,
+          "bootStatus": 1,
+          "entryExecuted": false,
+          "errorTail": "-execution-engineering-004/synthetic-snapshot/lab/review6/node_modules\n    at walk (/private/tmp/C3-variance-execution-engineering-004/synthetic-snapshot/boot.mjs:1:1895)\n    at walk (/private/tmp/C3-variance-execution-engineering-004/synthetic-snapshot/boot.mjs:1:1951)\n    at walk (/private/tmp/C3-variance-execution-engineering-004/synthetic-snapshot/boot.mjs:1:1951)\n    at <anonymous> (/private/tmp/C3-variance-execution-engineering-004/synthetic-snapshot/boot.mjs:1:2066)\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:633:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.16.0\n"
+        },
+        {
+          "name": "listed source byte tamper",
+          "passed": true,
+          "verifierRejected": true,
+          "bootStatus": 1,
+          "entryExecuted": false,
+          "errorTail": "                                                                                                                                                                                                                       ^\n\nError: snapshot source/input changed or realpath escaped: /private/tmp/C3-variance-execution-engineering-004/synthetic-snapshot/lab/review6/pure-entry.ts\n    at <anonymous> (/private/tmp/C3-variance-execution-engineering-004/synthetic-snapshot/boot.mjs:1:732)\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:633:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.16.0\n"
+        },
+        {
+          "name": "listed file parent replaced by symlink",
+          "passed": true,
+          "verifierRejected": true,
+          "bootStatus": 1,
+          "entryExecuted": false,
+          "errorTail": "                                                                                                                                                                                                                       ^\n\nError: snapshot source/input changed or realpath escaped: /private/tmp/C3-variance-execution-engineering-004/synthetic-snapshot/lab/review6/pure-entry.ts\n    at <anonymous> (/private/tmp/C3-variance-execution-engineering-004/synthetic-snapshot/boot.mjs:1:732)\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:633:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.16.0\n"
+        },
+        {
+          "name": "alias parent replaced by symlink",
+          "passed": true,
+          "verifierRejected": true,
+          "bootStatus": 1,
+          "entryExecuted": false,
+          "errorTail": "                                                                                                                                                                                                                                                                                                                                                  ^\n\nError: snapshot alias escaped\n    at <anonymous> (/private/tmp/C3-variance-execution-engineering-004/synthetic-snapshot/boot.mjs:1:1013)\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:633:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.16.0\n"
+        },
+        {
+          "name": "wrong manifest SHA",
+          "passed": true,
+          "bootStatus": 1,
+          "entryExecuted": false
+        }
+      ],
+      "actualVarianceEntryExecuted": false,
+      "neuralForwards": 0,
+      "rollouts": 0,
+      "Torch": 0,
+      "realLedgerOrLeaseWrites": 0
+    },
+    "retryAndIdentity": {
+      "status": "passed",
+      "requestReferencesVerified": 22,
+      "immutableSourcesVerified": 14,
+      "changedSources": [
+        "/Users/ccrt/game/guandan/lab/review6/variance-worker.ts",
+        "/Users/ccrt/game/guandan/lab/review6/frozen-launch-guard.mjs",
+        "/Users/ccrt/game/guandan/lab/review6/pilot-launch.mjs",
+        "/Users/ccrt/game/guandan/lab/review6/executable-snapshot.mjs"
+      ],
+      "newSources": [
+        "/Users/ccrt/game/guandan/lab/review6/pilot-retry.mjs"
+      ],
+      "changedSpecKeys": [
+        "at",
+        "sourceFiles"
+      ],
+      "snapshotFilesVerified": 184,
+      "scientificFieldsChanged": false,
+      "excludedCount": 3062,
+      "existing141ClosurePreserved": true,
+      "originalTask001Settled": true,
+      "originalSettledCharge": 0.363005,
+      "originalBudgetSettlementEntry": "28646539600488c4cabc31cc01df3b88a5f4f157472c80171c03a51f7106e808",
+      "originalFailureBeforeVarianceEntry": true,
+      "outputDirectoryAbsent": true,
+      "ordinal002Unused": true,
+      "canonicalNewTaskId": "C3-variance-pilot-execution-002",
+      "negativeCases": 21,
+      "rejected": [
+        "001notsettled",
+        "002alreadysettled",
+        "anybusinessoutputdirexists",
+        "missingpriorproof",
+        "shadowlaunchPath",
+        "shadowsettlementPath",
+        "wronglaunchSHA256",
+        "wrongsettlementSHA256",
+        "wrongoriginaltasklaunch",
+        "wrongsettletask",
+        "invalidfailedexit=0",
+        "invalidfailedexit=null",
+        "invalidfailedexit=\"1\"",
+        "invalidfailedexit=1.5",
+        "invalidordinal=0",
+        "invalidordinal=3",
+        "invalidordinal=\"2\"",
+        "invalidordinal=null",
+        "oldreceiptfornewordinal",
+        "shadowbudget",
+        "oldcontractnotcurrentapproved"
+      ],
+      "exactNewContractAccepted": true,
+      "oldContractRejected": true,
+      "copiedParentRetryBeforeAnyLeaseOrBudgetMutation": true,
+      "priorEngineeringApprovalUnchanged": true,
+      "activity": {
+        "NN": 0,
+        "completeMatches": 0,
+        "rollouts": 0,
+        "Torch": 0,
+        "realLedgerOrLeaseWrites": 0
+      }
+    },
+    "staticImportGraph": {
+      "status": "passed",
+      "staticModuleInputs": 48,
+      "allInsideCurrentSnapshot": true,
+      "newRetryImportedByParent": true,
+      "futurePrototypeImported": false,
+      "paths": [
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/runtime.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/executable-snapshot.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/frozen-launch-guard.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/compute-pool.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/types.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/types.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/rank.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/rng.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/deck.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/combo.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/game.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/record.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/index.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/memory.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/planner.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/heuristic.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/sim.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/player.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/schema.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/mlp.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/neuralSeat.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/legal.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/tiered.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/nnplayer.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/observationAudit.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/wave.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/index.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/product-artifacts.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/policy-registry.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/variance-layout.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/variance-worker.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/src/review5_tuning/kscbReplay.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/action-effect.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/data-replay.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/plan-dsl.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/exact-inference.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/match-play.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/data-provenance.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/capability-lineage.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/training-ancestry.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/variance-task.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/pilot-retry.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/execution-authority.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/pilot-recovery.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/pilot-ledger.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/stats-admission.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/pilot-progress.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/pilot-launch.mjs"
+      ]
+    },
+    "artifacts": [
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/bootstrap-probe.mjs",
+        "sha256": "257372ccf5edef8292d2364eb86ee2ceb1af6bcaea64277d644f458fc90697bc",
+        "bytes": 5526
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/bootstrap-probe-output.json",
+        "sha256": "903311d65f1c51b5394ac6e1e6af6bc86f46661998006172e178b79f84016cf0",
+        "bytes": 4279
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/bootstrap-probe.stdout",
+        "sha256": "f7beb77312c52c5d97817fa0e1f023f64787cf124fa3c7354c1bfb52b8c51b98",
+        "bytes": 3919
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/bootstrap-probe.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/prepare.stdout",
+        "sha256": "d009178af5ecff93732a0b89edc920c3d4e3e72c060ec6eeb68bd81fcfb7ff0a",
+        "bytes": 21784
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/prepare.stderr",
+        "sha256": "6625bceb12185382e979aa0f81cb6a128ec68a3339d5780f6c203881734aa30f",
+        "bytes": 544473
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/valid-boot.stdout",
+        "sha256": "b2e2339c51c25cbd4c9eddff900d854dc9fb79c1600f9affab380121b5954003",
+        "bytes": 58
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/valid-boot.stderr",
+        "sha256": "acd0f6029809ca7035e9d55347a16aa4197f0ebbb7d4430a7d0f96d488fb05e4",
+        "bytes": 570526
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/retry-probe.mjs",
+        "sha256": "e7e9e4d693cc252acb0a74ea2fbbf35b5da00ee2bb6a3bb10a1828173ac65c2d",
+        "bytes": 8285
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/retry-probe-output.json",
+        "sha256": "16aa948acc24b60acf531c3a9ae0533bfc11cf7ea209af050d274e3cf3fd2542",
+        "bytes": 1905
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/retry-probe.stdout",
+        "sha256": "7e5242754982c498ec6c5e29951695d0e7960e16e6ab6c7616aaec5412978d2a",
+        "bytes": 1623
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/retry-probe.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/import-metafile.json",
+        "sha256": "fdaf6f9f2b5152add7f7a33ccfba1604eee69c4f0edaa2d42b93da779d9345bb",
+        "bytes": 48691
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/static-graph-output.json",
+        "sha256": "e070951ad8ba26aa34186b4d025e1e2ad7689b64149314e151f60e0eb569ae0e",
+        "bytes": 5818
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/variance-worker.ts.diff",
+        "sha256": "404a7cb65cd963575a957c900218b2a59f6f10c1168a3aff9052a5b21b9fe3ff",
+        "bytes": 6018
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/frozen-launch-guard.mjs.diff",
+        "sha256": "a996e2af6943ea08fc2501dfb19608d2e2419dd3b602dbe817251f5ec502bfd2",
+        "bytes": 2071
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/pilot-launch.mjs.diff",
+        "sha256": "aed327d1f6c97401a957d8d5b06558ba1a5e1c7008d7eb8d8b7de30da3eec25c",
+        "bytes": 7842
+      },
+      {
+        "path": "/private/tmp/C3-variance-execution-engineering-004/executable-snapshot.mjs.diff",
+        "sha256": "7ed9d97153a2256ae83d1fa48768bf6568f53debefe2c8b6415fc81bb67c2c07",
+        "bytes": 5758
+      }
+    ],
+    "providedEvidenceRead": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-snapshot-transpilation-red-001.log",
+        "sha256": "d7026ac4fd3b78cea2509c0be7894eca0778ccb4769142a3b40c6401057f4717"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-snapshot-transpilation-green-001.log",
+        "sha256": "262c6a24186857487976e21fd274eaffa163f555a35c2317f89564d468b3b3fb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-retry-red-001.log",
+        "sha256": "a173642b794449f320c1811e7d40a4e89bf9595cec620872d8c9eb50ad90fc71"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-retry-green-001.log",
+        "sha256": "8c4eef39c7a307660092a1c09109c0bb048052e4c7e604ae43b8900e1089411c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-bootstrap-runtime-green-001.log",
+        "sha256": "f9b9b062ddeb8dd4540c03f710a7242d5edd4bf5df7ec78298d0e5505663bc90"
+      }
+    ],
+    "providedEvidenceQualification": "The supplied red log reproduces the original transformed-function ReferenceError, green log executes a safe test entry, and14runtime tests are green. Reviewer independently executes only the pure synthetic snapshot path and pure retry/identity checks; tests that temporarily edit live source or run complete mechanical matches are not rerun.",
+    "auxiliaryReadNote": "An initial read tried a guessed executable-snapshot-transpilation.test.mjs name; the actual provided file is snapshot-transpilation.test.mjs and was read directly. No business source or evidence was changed."
+  },
+  "priorReviewReused": {
+    "path": "/private/tmp/C3-variance-execution-engineering-review-002.json",
+    "sha256": "fda0b932a1f7df72cdfa68ca3f6cc266213638ff4c244cde0efcd2094d773a08",
+    "priorDecisionUnmodified": "APPROVE_PILOT_EXECUTION for exact002 package only",
+    "retroactiveReportRewrite": false,
+    "request002SHA256": "47e8e0b8d2575a583c24dae31adfcdb64e6fa52b4f3e0adb0ac7d747f414708e"
+  },
+  "reviewedImmutableSources": [
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-retry.mjs",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/pilot-retry.mjs",
+      "sha256": "347acb595947da98bbe21495b98fa62d02edd3f106d6c14c0238513798b46e38"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/variance-worker.ts",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/variance-worker.ts",
+      "sha256": "abbdd04f425990075c87deedd3655c04a4d93e653e0663cacb12e2a0c35791ec"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/variance-task.ts",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/variance-task.ts",
+      "sha256": "76285afb3def5dd7fd98d52ee38e8deb370111db01f3b99e5a000348479e684f"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/variance-layout.ts",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/variance-layout.ts",
+      "sha256": "e02d93d18d5133f84504f7bc346eb3d65e28fd7c272e57b0c362cdcddddb0a0f"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/training-ancestry.ts",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/training-ancestry.ts",
+      "sha256": "02112f77ff3557cb7bbc493581589af12baa03b5e527e773989fc585845ff78e"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/match-play.ts",
+      "sha256": "67c7d83609e872b453ff97d7919c7e1a576001b94bc678a082b6369de6dbb51d"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/exact-inference.ts",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/exact-inference.ts",
+      "sha256": "17c694d24cbe5d45c7c7e044f7a8ed3437ed336026d03b569138886971b4fd6c"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/policy-registry.ts",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/policy-registry.ts",
+      "sha256": "3aaf1e9b7a6e0ce4e4eafa73747b983479efb8b61d7dfd95373e67c8c2e59f2d"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/compute-pool.mjs",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/compute-pool.mjs",
+      "sha256": "7b85aa9a02e42644cf3e5cacab7d0a897f6f1ce6d3dfdc5ff3af87087bc8c765"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/frozen-launch-guard.mjs",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/frozen-launch-guard.mjs",
+      "sha256": "bd5707594fa1f0bef85d52aa83c46f786c0b96dd1ef5f91bb2cdfe7d3b6793da"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-launch.mjs",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/pilot-launch.mjs",
+      "sha256": "f2b9da46669b48f997b71fcb3b7628579a118603f47f055337f3ba8326b0e480"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/execution-authority.mjs",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/execution-authority.mjs",
+      "sha256": "bb67b09acb540591679db49ccd162669c9449a2b4964ef7895fc3cc6e175a727"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/executable-snapshot.mjs",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/executable-snapshot.mjs",
+      "sha256": "512fc290142578981d5e68964214fbcc88022189a08dfb54e8462da5b352eef3"
+    },
+    {
+      "originalPath": "/Users/ccrt/game/guandan/lab/review6/runtime.mjs",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/runtime.mjs",
+      "sha256": "44df2c9dae95dfea538ecd71c50ff9ecf01458863a74124b735b86e7057c8f30"
+    }
+  ],
+  "verifiedRequestReferences": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-004/source-manifest.json",
+      "sha256": "84adc7f5e23516f4d22f87eb701087278d30b1b07960913ca1a9e01ba83007fe"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/snapshot-manifest.json",
+      "sha256": "a1eede035856027fb7386168083abdcdc1b631d90a58decfc2e91e07561707dc"
+    },
+    {
+      "mode": "variance",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-contract-002.json",
+      "sha256": "c9fd1f76aa17cae2cfb085c293be32f02df4dcbdd8a8678e8a3095360d2de519"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/spec.lock.json",
+      "sha256": "e1bf9af7a5155e037f0b395226eafe38620f126ab2602b0aad7d9231315a7a84"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/consumed-source-ancestry-001.json",
+      "sha256": "bf791862d993dd8f360751d9700d78e296c5e82a47ea4147c22d352b0368c4ec"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-001.json",
+      "sha256": "7febd89fb1bdbe363b16177adcb301c526d20cb570134d48b869b6e8b53dac3b"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-001-settlement.json",
+      "sha256": "c87df49c9d9e22986c44097dda8889deae34def2f673869406102ad66f28d11f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-snapshot-transpilation-red-001.log",
+      "sha256": "d7026ac4fd3b78cea2509c0be7894eca0778ccb4769142a3b40c6401057f4717"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-snapshot-transpilation-green-001.log",
+      "sha256": "262c6a24186857487976e21fd274eaffa163f555a35c2317f89564d468b3b3fb"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-retry-red-001.log",
+      "sha256": "a173642b794449f320c1811e7d40a4e89bf9595cec620872d8c9eb50ad90fc71"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-retry-green-001.log",
+      "sha256": "8c4eef39c7a307660092a1c09109c0bb048052e4c7e604ae43b8900e1089411c"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-bootstrap-runtime-green-001.log",
+      "sha256": "f9b9b062ddeb8dd4540c03f710a7242d5edd4bf5df7ec78298d0e5505663bc90"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/statistics-probe-pair-preregistration-002.json",
+      "sha256": "891733f26938fee016a18d091d757846535f0134d609418df1d3ca73225aafd7"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/statistics-probe-behavior-001.json",
+      "sha256": "a2d20cd4e3799b8c125186d614417985f67da7485a3080113402a7c7087f9751"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/proof-report.json",
+      "sha256": "3d9e87b37aba80f54f69488a8736cc63cf83f1d9a975caa9fc86a15d7145bc19"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-layout-red-001.log",
+      "sha256": "830e929c728f1cbb26874a6931984efd55d9129c9ee9b6bc8beb419afb380e07"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-layout-green-001.log",
+      "sha256": "f01d1a8cdf7c7d6292fbb8814a7d13b07553b90c45c512a1f8c41a023694ebca"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-guard-red-001.log",
+      "sha256": "a4407a777776dfc1d7ca07f8463343a6ea35686935eb2ffb38399d21923e8e15"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-guard-green-001.log",
+      "sha256": "048b4f884124a030e5aacc9c26316c8bed65f00807a644d2b1567196ea51dfdd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-training-ancestry-red-001.log",
+      "sha256": "ee845c50123754d92ce2265b5f9294077cda7a403cf8628f4817cc7592e2fa7d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-training-ancestry-green-001.log",
+      "sha256": "e25306d108798ddac541521ea6348b0ca5bc57d07c9c868a21e1f3fb78877559"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-request-002.json",
+      "sha256": "47e8e0b8d2575a583c24dae31adfcdb64e6fa52b4f3e0adb0ac7d747f414708e",
+      "reason": "Officialexecution001 failedbeforeentry/0NN/0matches/nooutput atgeneratedboot ReferenceError. Preservefailureand0.363005charge. Selfcontainedliteralbootstrap closure fixesTSX-toString capture; narrowordinal2 originalsame64retry onlyafterfailedsettlement/noanyoutput/no prior002. Same192seeds/excluded3062/policies/thresholds unchanged, no replacement."
+    }
+  ],
+  "approvalLimits": [
+    "Only exactcontract c9fd1f76aa17cae2cfb085c293be32f02df4dcbdd8a8678e8a3095360d2de519 for executionOrdinal2 with snapshot a1eede035856027fb7386168083abdcdc1b631d90a58decfc2e91e07561707dc is approved. A current independent method approval and all canonical original ledger/lease/once-only gates remain mandatory.",
+    "This authorizes only the same fixed64-base/1024complete-match variance and cost pilot. It approves no actual result, finalN, candidate selection, learner/main, optimized teacher, future prototype, confirmation policy, formal evaluation, teacher quality or C3 acceptance.",
+    "No authority to erase original001 charge/evidence, restart any used ordinal, replace seeds/blocks, bypass an existing business output directory or createordinal3.",
+    "The actual production variance entry was not executed in review. Synthetic boot equivalence plus full184-file verification/static import checks establish the scoped bootstrap repair; they do not claim the proposed1024 physical matches will all finish or be affordable. Actual results require post-run audit.",
+    "No confirmation/heldout model bytes or model scores are opened. Reading original preserved baseline/source-lineage evidence is reused from002 rather than repeated; no sealed/formal content is accessed.",
+    "All real repository/business/evidence/ledger/lease paths remain read-only. Only personal/tmp probes, fixtures, generated snapshots, graph builds and reports are written."
+  ],
+  "reviewerActivity": {
+    "neuralForwardCalls": 0,
+    "neuralDecideCalls": 0,
+    "actualVarianceEntriesExecuted": 0,
+    "actualCompleteMatches": 0,
+    "rollouts": 0,
+    "TorchCalls": 0,
+    "trainingUpdates": 0,
+    "teacherLabels": 0,
+    "formalEvaluations": 0,
+    "confirmationWeightBytesRead": 0,
+    "realBudgetWrites": 0,
+    "realLeaseWrites": 0,
+    "actualLaunches": 0,
+    "businessOrEvidenceWrites": 0,
+    "syntheticSnapshotCreatesThroughTSX": 1,
+    "syntheticValidBoots": 1,
+    "syntheticRejectedBoots": 5,
+    "pureRetryNegativeCases": 21,
+    "temporaryStaticGraphBuilds": 1
+  },
+  "requiredExecutionBinding": {
+    "copiedParentModule": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/pilot-launch.mjs",
+    "copiedParentSHA256": "f2b9da46669b48f997b71fcb3b7628579a118603f47f055337f3ba8326b0e480",
+    "currentRequestSHA256": "5d092cf94b6ee924b85e273fc7698a69d6d178e2880045bc17603365551331b0",
+    "contractPath": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-contract-002.json",
+    "contractSHA256": "c9fd1f76aa17cae2cfb085c293be32f02df4dcbdd8a8678e8a3095360d2de519",
+    "snapshotManifestPath": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/snapshot-manifest.json",
+    "snapshotManifestSHA256": "a1eede035856027fb7386168083abdcdc1b631d90a58decfc2e91e07561707dc",
+    "canonicalTaskId": "C3-variance-pilot-execution-002",
+    "officialReceiptPath": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-002.json",
+    "executionOrdinal": 2,
+    "workers": 4,
+    "reservationSeconds": 3000,
+    "softSeconds": 600,
+    "hardSeconds": 660,
+    "outputDirectory": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001",
+    "priorExecution": {
+      "launchPath": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-001.json",
+      "launchSHA256": "7febd89fb1bdbe363b16177adcb301c526d20cb570134d48b869b6e8b53dac3b",
+      "settlementPath": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-001-settlement.json",
+      "settlementSHA256": "c87df49c9d9e22986c44097dda8889deae34def2f673869406102ad66f28d11f"
+    }
+  }
+}

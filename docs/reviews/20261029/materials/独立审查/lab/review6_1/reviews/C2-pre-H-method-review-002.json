@@ -1,0 +1,167 @@
+{
+  "reviewId": "C2-pre-H-method-002",
+  "role": "method",
+  "requestSHA256": "b77bd6510135acc6e25cf1f253a7611097bcb0a2c4f80e37b73d1a0ce8e5d345",
+  "reviewedContractSHA256": "f299ff6f9d1bdaac13fb3338a22f9b5425951fa231487b2b9b6cb89953715405",
+  "scope": "首次 H 拟合前的修复、消费者、冻结训练与质量门审查；不是 H 质量或 C2 整体验收。",
+  "overallDecision": "BLOCK_H_FIT",
+  "reviewedFileHashes": {
+    "sourceManifest": "93829a1f4dc1e260affa78415948bb7031ac5460df8afe1f35bed667c5d5eaf4",
+    "dataReplay": "4805ee2ee63a9fac9944f47809b88d36e53b5820b5e1b4b87d71bf7e63c65d63",
+    "humanFeatures": "768ca6af7d7e81a02dd11e5444f1db7809972336ed5a378983fa04e16d1674c6",
+    "featureManifest": "0df3dcc45c4d96a176e77091bbff0c2ee127a8c2fa9157257bf75d89d32a7580",
+    "frozenTrainer": "aa9eee825e34d91981f53bce502d584792b48bdc7677a6decb1703ab04b4e0f2",
+    "frozenNetwork": "3b3f050ab7a2624774978f6dd2e5fa67e1bf87497baa3f65ab2e624bef3a323f",
+    "humanFitLauncher": "d430114bdd9cd2656b409251c9adc94e595d11120e8a0f82047417e89d5315bb",
+    "preflight": "7072a4d1b2af3f902a1f6a82651f751df20b619bf7d4da7666bcdd868e458585"
+  },
+  "integrity": {
+    "requestReferencesChecked": 16,
+    "requestReferenceMismatches": 0,
+    "immutableSourceCopiesChecked": 20,
+    "immutableSourceCopyMismatches": 0,
+    "featureManifestReferencesChecked": 11,
+    "featureReferenceMismatches": 0,
+    "contractPinnedFileMismatches": 0,
+    "workingSourceDriftDuringRepair": [
+      "lab/review6/human_proxy.py"
+    ],
+    "boundary": "本决定针对不可变002副本；主执行者后续修复不自动获得本报告批准。"
+  },
+  "closedFindings": [
+    {
+      "id": "C2-METHOD-P1-001",
+      "status": "closed",
+      "evidence": "真实 GD_MATCH_0004 的还贡与 GD_MATCH_0043 的抗贡均成功重建。tribute存在、pendingReturns为空、首行动席正确、leader与lastPlayer一致；抗贡特征分别为0和1。两例故意改错首行动席均被拒绝。全量新账中没有旧的“当前没有待还的贡牌”截断。"
+    }
+  ],
+  "openFindings": [
+    {
+      "id": "C2-H-GUARD-P1-001",
+      "severity": "P1",
+      "title": "直接 Python fit 入口绕过审批、预算和周期唯一拟合约束",
+      "locations": [
+        "lab/review6_1/data/H-fit-source-001/human_proxy.py:243",
+        "lab/review6_1/data/H-fit-source-001/human_proxy.py:283",
+        "lab/review6_1/data/H-fit-source-001/human_proxy.py:409"
+      ],
+      "evidence": "公开 fit CLI 直接调用 fit(args)。该路径只核合同和输入文件，没有核验 Node 启动器签发的当前审批、预算预留或周期唯一运行许可；args.output也未与contract.outputDirectory绑定。fit-opened仅限制指定输出目录，换目录可形成另一运行。",
+      "probeBoundary": "静态核查冻结执行源；没有调用fit或执行训练。",
+      "requiredResolution": "让实际Python训练入口在任何拟合、模型评分或输出创建前核验绑定当前合同、输出、预算预留及唯一fit身份的有效启动许可；直接调用应关闭失败。"
+    },
+    {
+      "id": "C2-H-REVIEW-P2-001",
+      "severity": "P2",
+      "title": "同一审批文件可冒充两种独立审查，报告自身未绑定当前合同",
+      "location": "lab/review6/human-fit.mjs",
+      "independentReproduction": {
+        "input": "临时授权文件把同一份APPROVE_H_FIT报告列两次，分别标为engineering和method；报告自身的reviewedContractSHA256为全零。",
+        "actualResult": "通过审批检查，直到故意设置的无效runtime才被拒绝。",
+        "rejection": "actual H runtime differs from its contract",
+        "businessWritesReservationsOrSpawns": 0
+      },
+      "cause": "入口仅检查数组长度、外置role标签和overallDecision，不要求两份不同报告，也不检查报告自身角色、请求身份和当前合同hash。",
+      "requiredResolution": "要求不同报告路径和reviewId，并从各份已hash报告本身核验role、requestSHA256及reviewedContractSHA256；不得信任外置角色标签。",
+      "blockingReason": "请求要求拟合前关闭本范围所有P1/P2。"
+    }
+  ],
+  "independentDataRecomputation": {
+    "sourceAndSplit": "原source、原100场消费隔离及723/241/241分组保持。",
+    "replay005": {
+      "ledgerRows": 1217604,
+      "matchGroups": 1305,
+      "classes": {
+        "A": 0,
+        "B": 1261,
+        "C": 44
+      },
+      "compatiblePrefixActions": 98473,
+      "targetLegalAuditedActions": 98675,
+      "usableBehaviorRows": 97020,
+      "outsideVerifiedPrefixRows": 1118237,
+      "usableBySplit": {
+        "historical_diagnostic": 6621,
+        "train": 53413,
+        "dev": 17736,
+        "holdout": 19250
+      },
+      "badUsableOrSplitRows": 0,
+      "ledgerSHA256": "18b8a3f918ae2cc7b2880d81b0da183cac74ca218c156c68b993d56f9f8594c3"
+    },
+    "selection": {
+      "method": "独立重算固定hash的源match排序、组内决策排序及round-robin选择。",
+      "train": 6000,
+      "dev": 8000,
+      "holdout": 8000,
+      "selectionDifferences": 0,
+      "historicalConsumedRowsSelected": 0,
+      "duplicateOrCrossSplitFamilyRows": 0,
+      "selectedSourceMatches": {
+        "train": 694,
+        "dev": 234,
+        "holdout": 235
+      }
+    },
+    "actualFeatureConsumer": {
+      "method": "只读重放全部选中原谱，重新编码并逐行比较观察、候选、目标身份和二进制特征。",
+      "decisionsChecked": 22000,
+      "candidatesChecked": 469366,
+      "f32ValuesChecked": 39198888,
+      "identityOrFeatureDifferences": 0,
+      "unreachedTargets": 0,
+      "neuralForwardCalls": 0,
+      "trainingUpdates": 0
+    },
+    "cleanParent": {
+      "originWeightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+      "migratedParameterCount": 168449,
+      "independentMigrationEqualsFrozenParentBytes": true,
+      "inputDimension": 399,
+      "passEncoding": "action64",
+      "updates": 0
+    }
+  },
+  "lossAndStatistics": {
+    "equivalenceSetLoss": "正确使用负log-sum-exp的目标集合概率；分批时分别归一化每个决策，再按决策平均。",
+    "frequencyBaseline": "只统计训练集实际动作类别；先在当前不同合法类别上归一化，再在该类候选内均分。合成例概率和为1。",
+    "bootstrap": "按源match等概率有放回抽样，以聚类总差除以聚类总决策数；固定20000次、97.5%双侧、线性分位。",
+    "independentSyntheticBootstrap": {
+      "point": -0.3333333333333333,
+      "low": -1.5,
+      "high": 2.0,
+      "matchesIndependentClusterCalculation": true
+    },
+    "qualityGates": "两个NLL差区间上界均须小于0；pass、nonpass、mate_control、bomb、takeover五层覆盖及0.1 nats门均检查；类别概率坍缩门及硬Top1比例、校准报告已接线。",
+    "heldoutMetadataCoverage": {
+      "pass": [4349, 235],
+      "nonpass": [3651, 235],
+      "mate_control": [1793, 235],
+      "bomb": [545, 213],
+      "takeover": [143, 105],
+      "units": "决策数、源match数；仅元数据覆盖，不是模型成绩。"
+    },
+    "syntheticSelftest": "六类损失、梯度、归一化、无效目标、bootstrap和质量门检查通过；未读取人类特征或运行模型。"
+  },
+  "trainerAssessment": {
+    "recipe": "冻结一次3epoch、batch32、CPU双线程、原RMSprop参数及固定种子。",
+    "networkReuse": "冻结network.py导入后仅使用Net；旧BC、旧评估和旧selftest优化器路径不会因import执行。",
+    "resume": "已完成epoch恢复模型、优化器和RNG；已打开但无完整checkpoint的epoch拒绝静默重跑。",
+    "qualityOpening": "固定epoch3后才评分dev/holdout；holdout为主门，dev描述性使用，不据其提前停止或选模。",
+    "remainingIssue": "上述训练语义正确不弥补未封闭的实际启动授权边界。"
+  },
+  "independentProbeArtifacts": {
+    "/private/tmp/c2-method-H-guard-probe-002.mjs": "5cfdf4e8e670027ff1934eba6f5822c92ca30beb262d79d200b6a8cd4305df3d",
+    "/private/tmp/c2-method-feature-replay-002.mts": "a0e1831ae405424b2502270e711d61d7a6c2de67a3d4ae5d3260ee9b4b40be8a",
+    "/private/tmp/c2-method-feature-replay-002.json": "b06e14e4bdbd491d8fac748cf8fb2bc68461037931b794b6665f7396880bf781",
+    "/private/tmp/c2-method-tribute-closure-002.mts": "990545a7f4fce872330e5d4e320a1bf3d0a284105860bfada92e9299029b1b47"
+  },
+  "blockedReasons": [
+    "C2-H-GUARD-P1-001",
+    "C2-H-REVIEW-P2-001"
+  ],
+  "limitations": [
+    "未拟合H、未运行优化器step、未打开heldout模型预测或修改证据、业务、预算。",
+    "H拟合是否成功、H质量、with_h资格与C2整体仍未验收。",
+    "批准数据与数学边界不等于批准当前启动入口；修订执行源需新请求复核。"
+  ]
+}

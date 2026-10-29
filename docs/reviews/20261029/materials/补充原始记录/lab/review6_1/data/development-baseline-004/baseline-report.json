@@ -1,0 +1,659 @@
+{
+  "schemaVersion": "r6-C2-baseline-report-v1",
+  "at": "2026-10-28T15:28:05.418Z",
+  "stageStatus": "completed",
+  "resultCode": "old_complete_policy_development_baseline",
+  "planSHA256": "93d2e702fe09f03b64b04e75fde934b4489e738efa34b54ca263b2315eaaf705",
+  "policy": {
+    "policyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+    "kind": "neural",
+    "weightsPath": "/Users/ccrt/game/guandan/packages/web/public/ai/clean2.f32",
+    "weightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+    "inputDim": 385,
+    "encoder": {
+      "candidateCompat": "v2",
+      "passEncoding": "legacy-phys10"
+    },
+    "epsilon": 0
+  },
+  "metrics": {
+    "M1": {
+      "rawGames": 64,
+      "completedGames": 64,
+      "incompleteGames": 0,
+      "completedPairedBlocks": 32,
+      "win": 0.5,
+      "blocks": [
+        {
+          "block": 0,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 1,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 2,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 3,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 4,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 5,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 6,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 7,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 8,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 9,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 10,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 11,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 12,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 13,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 14,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 15,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 16,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 17,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 18,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 19,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 20,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 21,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 22,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 23,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 24,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 25,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 26,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 27,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 28,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 29,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 30,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 31,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        }
+      ],
+      "scope": "self-control measurement alignment; complementary role outcomes, not independent strength evidence"
+    },
+    "M2": {
+      "rawGames": 64,
+      "completedGames": 64,
+      "incompleteGames": 0,
+      "completedPairedBlocks": 32,
+      "win": 0.5,
+      "blocks": [
+        {
+          "block": 0,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 1,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 2,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 3,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 4,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 5,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 6,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 7,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 8,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 9,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 10,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 11,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 12,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 13,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 14,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 15,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 16,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 17,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 18,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 19,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 20,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 21,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 22,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 23,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 24,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 25,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 26,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 27,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 28,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 29,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 30,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        },
+        {
+          "block": 31,
+          "complete": true,
+          "teamWin": 0.5,
+          "samePolicyMapAndTrace": true
+        }
+      ],
+      "scope": "self-control measurement alignment; complementary role outcomes, not independent strength evidence"
+    }
+  },
+  "openRoots": 60,
+  "openStrategicScores": null,
+  "unqualifiedOpenStrategicLabels": 60,
+  "elapsedSeconds": 80.206160875,
+  "formalConfirmationsOpened": 0,
+  "scope": "old complete policy on original REVIEW5 dev list and open60facts roots; not a candidate, new formal exam or human-compatibility evidence",
+  "sourceFiles": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/development-baseline.ts",
+      "sha256": "b1d62a45fd1778ec136da1b61fb0cc9b1fe12380372f910d2afc02b46985e6a8"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/baseline-cli.ts",
+      "sha256": "c2fedbad2115cfa49c1aa7266e7a5cef14839cb22dc870d2bf648cbfdbddcf15"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+      "sha256": "246b3ea3994939ab9a584e24745526128d2877d1f902d98255b307effd6ee619"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/action-effect.ts",
+      "sha256": "9e2a8eb4841cedc92f3543a82a79bbc87d36ebca254e86736099c2174629f863"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/data-replay.ts",
+      "sha256": "991e893a1bc256de4e3cb1d05965cf64e431ef9957d98515e25f08c20150227e"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/product-artifacts.ts",
+      "sha256": "1c87788643c9277cff858daca1a23f4237fd6b33ee5e0f492f90ddab47c4652b"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/src/review5_tuning/kscbReplay.ts",
+      "sha256": "3b7e41ed476ae447858373f602d73fa793cca1490843cf1ac921179a6a0f3440"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/src/review5eval.ts",
+      "sha256": "1747e1ea7fba711d39b37a5d1788a1228ccaf8bcfae58741a15eb637986ea6ca"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/package.json",
+      "sha256": "f9ac11ef5d27bc55f38bef4eb81b177a8fdb0893614ac8e2d5f183ea6c8665ce"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/package-lock.json",
+      "sha256": "1621d54965b9b339149172789e0849b443d230682d87a50b65fdcdfe48895f6b"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/tsconfig.base.json",
+      "sha256": "2379837df225dd00e5474b209e07899177a2eda6c36e1467dea138c71c38fb2f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/engine/src/combo.ts",
+      "sha256": "9619a3912f757fce8a7e4842559789dbafe54aa1f71763057ae44b6a78035bb2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/engine/src/deck.ts",
+      "sha256": "083c547bdb3203908dbc3a29f8b8e2378fafd9a42b06ac9691a93b1209f26888"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/engine/src/game.ts",
+      "sha256": "dc99988cdf82e3ed73782aa5c0d0050221f50b5291b7e767a3cc79d4db3df763"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/engine/src/index.ts",
+      "sha256": "bdb43175b8826881901b016445b967804bec8620f6f4d156f7243b20ab83e934"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/engine/src/rank.ts",
+      "sha256": "030bd2bf0dec2c2847c7d459874ad16677374f7628ac5c69883bde9ffa1f795f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/engine/src/record.ts",
+      "sha256": "946dd97ca0dbc1377b61f24d96eda0b518cfeb21cc50af134eef57d0cdf5e983"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/engine/src/rng.ts",
+      "sha256": "787efe5ffbea7a21917b20bb30d48d7073d914a7d3a7ed01916078798da82b10"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/engine/src/types.ts",
+      "sha256": "6ca0b3e1392e7ed055f2bf169f7480f63882017bd8be6adb52fc5f35f3e91609"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/heuristic.ts",
+      "sha256": "7326256937e4f2fbb9cc20ccdf87e5de0c60b3e8addd0a7efd285078b3b79c67"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/index.ts",
+      "sha256": "effde0207522327307d10df8c23d84ebccc38085a4b5c52e09c9b0a49babafdd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/legal.ts",
+      "sha256": "adfdb04186b188e42b511cdbcafb1196762627318d34de52a84d5ea94406ec33"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/memory.ts",
+      "sha256": "e51dd273d7adc41d553b83c2bb57f3d4590d1fa99da2c95cbcc7f468185006cf"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/planner.ts",
+      "sha256": "066e31111ff77de464ecd97564e5335a31d83c037168c11dc6b9a6726d1730f9"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/player.ts",
+      "sha256": "5a3107e641d680979f13338ac92d732dd969d9d439976c2b1b01da63096e55d1"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/sim.ts",
+      "sha256": "5ebbf481fb7b024ba71d3999b00d6f0f71e3be720d4b96dcf2909486e49d767c"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/types.ts",
+      "sha256": "5d006d09beecf4be7070e768806dfbf45fcb7a2e69ac1fc944c5c220e7f7e932"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/mlp.ts",
+      "sha256": "404326a8665e82bf071c1dc655a0e714dab913ff79e8ce9882c580fef7070521"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/neuralSeat.ts",
+      "sha256": "cb9d0aa9dbfbd66a44c444e8531abf7b633d1c293e9ec6292d1192e9b9d2eb50"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/nnplayer.ts",
+      "sha256": "cf5318978857a44baf362f1f2889bc25b236bb73fee8c194ce1ef2d459ee7e49"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/observationAudit.ts",
+      "sha256": "9cecaaaa0b291476629264b2b9e799ae22f086e1b12b7182ac2f4a9336a304c6"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/schema.ts",
+      "sha256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/tiered.ts",
+      "sha256": "20ad2e55d201e0fca54f07b064669094bd41dea6cd2d69d9628893e62bc6cf09"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/wave.ts",
+      "sha256": "3e90ca6520477384d407f6f4b6e82165c0ed8bd0a385d5ad8f8b7676ac85090a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/actionIdentity.ts",
+      "sha256": "91c910a97c4cd9fd524afb164f7be743dfcc1d68ad48ef98003d9c80fd0c27f6"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/analyzer.ts",
+      "sha256": "30888557057b6660e52bdfba39ff116528ccc99a598a5529ba71faae65ad19b2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/coach.ts",
+      "sha256": "6a2a557410f1ed7e2c8b9a1ba9adb155b02556c1184f731e6fcd27aab0bdbb39"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/coachJson.ts",
+      "sha256": "fce6574e859afd86093f22bf5957b973154a47cd7e2a5df7ea1114fd47bbbe10"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/counterfactual.ts",
+      "sha256": "2c933a350c44a03cdd2ae5e1d5da2403a107b68d0317a867d20d28d4fb59aa01"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/decisionFacts.ts",
+      "sha256": "f783d00594776386fd4481e721cd19db199c5916822033aa1ca4ca2d6eb2dccb"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/decisionReview.ts",
+      "sha256": "e28e5c78e7a46f3832734819607b46d3037a72a5a84b4166300d1dcf896861da"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/describeAction.ts",
+      "sha256": "f6a6f4c21d5f5a295727dd7aa4dd3e91f345be0159ea237f4f38c5ff7b676dbc"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/index.ts",
+      "sha256": "1c459dfeb42446166b414cde074024c5e9cece1464e0b381b4ff2b0bbb4bf003"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/infoset.ts",
+      "sha256": "7f00a9ae1a322ed817a0f2660e8176f46315c8fb320e52a3509c7adfd9d33a3a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/knowledge.ts",
+      "sha256": "d216bd4422eb5ab22bc8e9954b5e0190074f31d955c22c77a89c75d73fc4de2f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/nnAdvisor.ts",
+      "sha256": "854ec03ccce63dfa48c638ef1cdf19004b192ed3fb8b55d889920b1606b19b39"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/replay.ts",
+      "sha256": "985cdb2a7b993f2ea43bdd3da364b62350cd3dfd32ad2a06e918fab04c8d4c78"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/replayStatus.ts",
+      "sha256": "374310e28f6fe47dd8f3b909b74a8121d41a2b9e7ea78c267346d5121876de07"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/reviewHeuristic.ts",
+      "sha256": "bb9b4589b89fcd563cecd063c9a94076c4b2094974fd65bb8230de4062776848"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/teach.ts",
+      "sha256": "78734417e8b569b0a8b09f2b90610681f36870cfc9ede3bf832e9402d5b397a6"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/teamContext.ts",
+      "sha256": "442f72ca3e0b02f903c575aa6ad006f0a67ba5fc4c00cfa97bfefadb76411dae"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/review/src/teamReview.ts",
+      "sha256": "8c33210e1c568be3a2a0a7c03339261f8ab8c0a9f9519fb5c695165d7156b848"
+    }
+  ],
+  "files": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/development-baseline-004/baseline-plan.lock.json",
+      "sha256": "93d2e702fe09f03b64b04e75fde934b4489e738efa34b54ca263b2315eaaf705"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/development-baseline-004/baseline-opened.json",
+      "sha256": "a03b791250078fb732435d9ce2ac6a0af586076bbe1a20359d47a54d95c2964c"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/development-baseline-004/match-results.jsonl",
+      "sha256": "ea0238d7733878303028c1a6ecf30bc0bd9efb89e0a832ce6c5ac5307f5a2450"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/development-baseline-004/open-root-results.json",
+      "sha256": "4d611b07942004bacf4bd44c1afad8f78820e2417d2624c7804ee45afd14f1b5"
+    }
+  ]
+}

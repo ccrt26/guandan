@@ -1,0 +1,829 @@
+{
+  "at": "2026-10-28T17:22:11.717Z",
+  "stageStatus": "completed",
+  "sourceReportPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/source-report.json",
+  "sourceReportSHA256": "f6fa19d9264bac7f3603426b62c8e047bb6f9c4277159d3f0781dd309a568854",
+  "snapshotManifestSHA256": "afd4d712d2ca2cb71629ba2049f624f38bd5da1980bc66294025bc5ddc833199",
+  "snapshotFilesVerified": 124,
+  "actualLoadedFiles": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/boot.mjs",
+      "sha256": "0f5319cc21a78c35f438aac7fa007af3ed097d8f972a78ada4d5cd4462abe478"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/action-effect.ts",
+      "sha256": "9e2a8eb4841cedc92f3543a82a79bbc87d36ebca254e86736099c2174629f863"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/capability-lineage.ts",
+      "sha256": "4fba44b9fba88df15e175c49d479916e651961c92bd6fe7149d8d4467e1b344c"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/data-provenance.ts",
+      "sha256": "2bdb2ab61b02ff3a41a9d00495659edd3104a56d872916bced29a554c6a576b9"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/data-replay.ts",
+      "sha256": "991e893a1bc256de4e3cb1d05965cf64e431ef9957d98515e25f08c20150227e"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/match-play.ts",
+      "sha256": "af76eaa21e6a2f438e3cd9503ad0893aa9e3f0a88abbf18117c556effbb721ab"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/plan-dsl.ts",
+      "sha256": "8d6b93e96d62b4e737ed945a84fa405d6bd2b96b1ae131088fc8bf0061c0676f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/policy-registry.ts",
+      "sha256": "3aaf1e9b7a6e0ce4e4eafa73747b983479efb8b61d7dfd95373e67c8c2e59f2d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/product-artifacts.ts",
+      "sha256": "1c87788643c9277cff858daca1a23f4237fd6b33ee5e0f492f90ddab47c4652b"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/runtime.mjs",
+      "sha256": "44df2c9dae95dfea538ecd71c50ff9ecf01458863a74124b735b86e7057c8f30"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/source-worker.ts",
+      "sha256": "88885b76a3bfb19fa6d707a77c516e516c3e1e2bf54092e5dba44fdca4e0bd7a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/teacher-roots.ts",
+      "sha256": "755634f4e15097b578ed2a64a9e0e3f1e5bc0bfea7cbb38148bc9cbe63eb1b34"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/visible-schema.ts",
+      "sha256": "bc8757519a53419c7ef84d1559a30744fb29256e2c294d4659af14a40bfaeccd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/review6/visible-world.ts",
+      "sha256": "3eda3db2aac56d0a33514e18b77405746071cd204799bab3e8b7ec09dfdb7b66"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/lab/src/review5_tuning/kscbReplay.ts",
+      "sha256": "3b7e41ed476ae447858373f602d73fa793cca1490843cf1ac921179a6a0f3440"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/esbuild/lib/main.js",
+      "sha256": "61ec0ba144ff93f4bf0e96ad6fab6f430ede0aa13e27ace8063ed63ba416b3cd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/cjs/index.cjs",
+      "sha256": "97a9d7b9d959f9528c46660beedcef69adc1ae29c71948b1e695860511a711d5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/esm/index.mjs",
+      "sha256": "a57842a725ba112ab029d3a0748f4ba5dc7b7a38bc9d38e7c4985af36aaa3c84"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/index-Bqjv9TxC.mjs",
+      "sha256": "180e6425aa9ba5716e9141cc049a7ee5367c7127b03b81aea22612ef04d425ba"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/index-DE3OBZuV.mjs",
+      "sha256": "2e0d42c5a8b65e752ce2fc27d95d382f463e419e12a5ad397b481c705c65fbf2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/lexer-CGfpMDSb.cjs",
+      "sha256": "e35faacc23082bc2ad2e1d47896932d804914edee932642558fa55098124ac12"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/lexer-CanA6ArK.mjs",
+      "sha256": "e12988f68fd477e488d99c23aae1a9f5be78719e8c0b055642340b25a76e621a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/loader.mjs",
+      "sha256": "17e2a92c5f1f70065b01c65d5ee9ac260839d4fc0ea78fdbb4db7b1155ccd32f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/register-B1c7OH6V.cjs",
+      "sha256": "dcda008e1b6774abe04d6e7f0c783804e88046691c44615510b628167e5e5179"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/register-nyXW-TH3.mjs",
+      "sha256": "45628eebec60ddb365201377158bbace219ffd8cf5edab1bcde6b8f7f14b0574"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/require-CBjy4Foe.mjs",
+      "sha256": "b1156f2ecff29ef55801df8f4e1d9b34a5eae32e04dfcf3b8c2557fe191264c2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/node_modules/tsx/dist/temporary-directory-Du7LpLp9.mjs",
+      "sha256": "cb94c0a5d95542df12c0393e2bb5221ab0977bb80df2d031498cda3dbfdfcef7"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/heuristic.ts",
+      "sha256": "7326256937e4f2fbb9cc20ccdf87e5de0c60b3e8addd0a7efd285078b3b79c67"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/index.ts",
+      "sha256": "effde0207522327307d10df8c23d84ebccc38085a4b5c52e09c9b0a49babafdd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/legal.ts",
+      "sha256": "adfdb04186b188e42b511cdbcafb1196762627318d34de52a84d5ea94406ec33"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/memory.ts",
+      "sha256": "e51dd273d7adc41d553b83c2bb57f3d4590d1fa99da2c95cbcc7f468185006cf"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/nn/mlp.ts",
+      "sha256": "404326a8665e82bf071c1dc655a0e714dab913ff79e8ce9882c580fef7070521"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/nn/neuralSeat.ts",
+      "sha256": "cb9d0aa9dbfbd66a44c444e8531abf7b633d1c293e9ec6292d1192e9b9d2eb50"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/nn/nnplayer.ts",
+      "sha256": "cf5318978857a44baf362f1f2889bc25b236bb73fee8c194ce1ef2d459ee7e49"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/nn/observationAudit.ts",
+      "sha256": "9cecaaaa0b291476629264b2b9e799ae22f086e1b12b7182ac2f4a9336a304c6"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/nn/schema.ts",
+      "sha256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/nn/tiered.ts",
+      "sha256": "20ad2e55d201e0fca54f07b064669094bd41dea6cd2d69d9628893e62bc6cf09"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/nn/wave.ts",
+      "sha256": "3e90ca6520477384d407f6f4b6e82165c0ed8bd0a385d5ad8f8b7676ac85090a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/planner.ts",
+      "sha256": "066e31111ff77de464ecd97564e5335a31d83c037168c11dc6b9a6726d1730f9"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/player.ts",
+      "sha256": "5a3107e641d680979f13338ac92d732dd969d9d439976c2b1b01da63096e55d1"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/sim.ts",
+      "sha256": "5ebbf481fb7b024ba71d3999b00d6f0f71e3be720d4b96dcf2909486e49d767c"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/ai/src/types.ts",
+      "sha256": "5d006d09beecf4be7070e768806dfbf45fcb7a2e69ac1fc944c5c220e7f7e932"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/engine/src/combo.ts",
+      "sha256": "9619a3912f757fce8a7e4842559789dbafe54aa1f71763057ae44b6a78035bb2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/engine/src/deck.ts",
+      "sha256": "083c547bdb3203908dbc3a29f8b8e2378fafd9a42b06ac9691a93b1209f26888"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/engine/src/game.ts",
+      "sha256": "dc99988cdf82e3ed73782aa5c0d0050221f50b5291b7e767a3cc79d4db3df763"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/engine/src/index.ts",
+      "sha256": "bdb43175b8826881901b016445b967804bec8620f6f4d156f7243b20ab83e934"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/engine/src/rank.ts",
+      "sha256": "030bd2bf0dec2c2847c7d459874ad16677374f7628ac5c69883bde9ffa1f795f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/engine/src/record.ts",
+      "sha256": "946dd97ca0dbc1377b61f24d96eda0b518cfeb21cc50af134eef57d0cdf5e983"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/engine/src/rng.ts",
+      "sha256": "787efe5ffbea7a21917b20bb30d48d7073d914a7d3a7ed01916078798da82b10"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-snapshot-001/packages/engine/src/types.ts",
+      "sha256": "6ca0b3e1392e7ed055f2bf169f7480f63882017bd8be6adb52fc5f35f3e91609"
+    }
+  ],
+  "allActualLoadedFilesInsideSnapshot": true,
+  "sourceRows": 48,
+  "completeSources": 48,
+  "rootDecisions": 40,
+  "sourceFamilies": 40,
+  "categoryCounts": {
+    "cooperation_open": 8,
+    "cooperation_urgent": 12,
+    "resource_structure": 11,
+    "context_sensitive_candidate": 9
+  },
+  "neuralSourceDecisions": 34620,
+  "infoAuditWorlds": 40,
+  "infoAuditScope": "one fresh non-teacher-score world per root; no branch scores or labels",
+  "checks": [
+    {
+      "slot": 1,
+      "rootId": "C3-pilot-source-001:root-01",
+      "familyId": "first-deal-family:32d1da77cabcc6695599902630ef8137cd72938b6911a581f0654f6e094a64c0",
+      "candidateCount": 2,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_open",
+      "observationSHA256": "6d3dae435bf37447186569a51d467cb3be5f0baeb46ecc2dae9a782c720ce092",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 2,
+      "rootId": "C3-pilot-source-001:root-02",
+      "familyId": "first-deal-family:9fd97f2ea8d975d26c62ec77a7ed4193bcf90905a203116da328737fedc5eec4",
+      "candidateCount": 2,
+      "gameNo": 3,
+      "levels": [
+        2,
+        8
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "00ccc8e1f369f5d0ccd38a590fe5626a6667705a55db9fd157fe1ebebb41e055",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 3,
+      "rootId": "C3-pilot-source-001:root-03",
+      "familyId": "first-deal-family:176f7f6cbc4d3cd46cb1d8c12ea553d6f4cffe19e13fb6bf07b4a65f9818b3f3",
+      "candidateCount": 21,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "6805d7a34f83351d57826c41c2a02c3b6f0168dcc6334fb6938c7c89eee93bbc",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 4,
+      "rootId": "C3-pilot-source-001:root-04",
+      "familyId": "first-deal-family:93766cf4d2bdd722a49850d9f3a289030a45167964e9a624712f950f17e38d24",
+      "candidateCount": 2,
+      "gameNo": 4,
+      "levels": [
+        10,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "context_sensitive_candidate",
+      "observationSHA256": "6ae580ae965d4340ecb6a93778a16aa1d5be57092f54f7d3f9107c86fbd50fe5",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 5,
+      "rootId": "C3-pilot-source-001:root-05",
+      "familyId": "first-deal-family:2635c29064ba467728c374095f4db4430fd8e79abb802bdab8e92fa5afefb979",
+      "candidateCount": 2,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_open",
+      "observationSHA256": "9a8fb0f14314aa518ee26949fe9328733d7bd2054c84533bebcd5d891e5df9eb",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 6,
+      "rootId": "C3-pilot-source-001:root-06",
+      "familyId": "first-deal-family:2b5a33ba20cf0d102a4984a99e1743a0edb72ba0a9c262ab66480ea4c08410b6",
+      "candidateCount": 2,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "d41528ae6a2cd2ad32d785958677f6f51f61a365799dd610566a0bf8512e98ad",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 7,
+      "rootId": "C3-pilot-source-001:root-07",
+      "familyId": "first-deal-family:b5ae253608468a6ac390efe29944d90d89758c6f44841add8b08efb8b120e1a6",
+      "candidateCount": 162,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "11fb652b121ed81957a3af0ae726ffed7f5e498e2c7d91d732a6407ca5cb759f",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 9,
+      "rootId": "C3-pilot-source-001:root-09",
+      "familyId": "first-deal-family:7739f813a200932cefb10023c222ac7a61eb1bcaa9154384c66c4db23703b09b",
+      "candidateCount": 4,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "cooperation_open",
+      "observationSHA256": "ef805ecea6bc5d3cd30758ec8eb2ff55faea892636abeb0a641e6cfec173845f",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 10,
+      "rootId": "C3-pilot-source-001:root-10",
+      "familyId": "first-deal-family:e0cce9d1d7b44b2ec393902aa23240c51177784a589b3e9db0f082adf278ce1b",
+      "candidateCount": 5,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "3e03f049e07424418f9f59ef361a07e13105cfe2f4f776124d555c3ab4a0729f",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 11,
+      "rootId": "C3-pilot-source-001:root-11",
+      "familyId": "first-deal-family:bd162b4286c201462e3090ada6ca5bb40d8f181ac4822e155e7191b6374e52ee",
+      "candidateCount": 165,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "247b248d8b3027b4db742b28c09d884e4a56dead65ddc76fbd9530b406deade7",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 12,
+      "rootId": "C3-pilot-source-001:root-12",
+      "familyId": "first-deal-family:6c08c69724c7219e624c5e5f4238c28069a7fdaf363e5097ba57fc0ed1305a17",
+      "candidateCount": 2,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "context_sensitive_candidate",
+      "observationSHA256": "1501a9817a2e657093ab4f3e3f52d57b00dfe84572a360284f247ee5f1501f19",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 14,
+      "rootId": "C3-pilot-source-001:root-14",
+      "familyId": "first-deal-family:b2351f97bca64748fdd6b887906176cb5cf9d4ae583c1a48508912f5a37828d3",
+      "candidateCount": 2,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "dedc5346ad59d2f724c79aa1ef6e9184be81d3ce22ff3d47b006c44534434193",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 15,
+      "rootId": "C3-pilot-source-001:root-15",
+      "familyId": "first-deal-family:8210214777d9230a96fd0de06eadc949bbc345bb71057516e29a64015d30ad64",
+      "candidateCount": 300,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "5070e78d4bc8660853e1fb80aa58ed44f01c20e4be1e1b2987c6be16abae09eb",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 16,
+      "rootId": "C3-pilot-source-001:root-16",
+      "familyId": "first-deal-family:e644e3b56f7eccbacfb95a9bee18b3d0498a241ecfad81f7886d871ba9daaa03",
+      "candidateCount": 2,
+      "gameNo": 4,
+      "levels": [
+        7,
+        5
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "context_sensitive_candidate",
+      "observationSHA256": "fd9096802f4823227e9a26e4f3885516d3b232d24d480ad42933a4a7e90b38d8",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 17,
+      "rootId": "C3-pilot-source-001:root-17",
+      "familyId": "first-deal-family:b5ce0f814ccd548e8fe7de9eff65875ab39c8c5434e79afa9df2bd1f67d63d72",
+      "candidateCount": 8,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_open",
+      "observationSHA256": "202446748584dae2fcc05fa5f653cab7270e0b1db8ce38b1eb283481222dde6b",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 18,
+      "rootId": "C3-pilot-source-001:root-18",
+      "familyId": "first-deal-family:9b2ead81710b25f9e8e1db9ea460e7e5709c997a462132de54fe551559447d1f",
+      "candidateCount": 3,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "33ee82937a9c4b3bad8bcbb81da70e8aef3ab873c86537da724ae91dc5096ced",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 19,
+      "rootId": "C3-pilot-source-001:root-19",
+      "familyId": "first-deal-family:6b12de9f34ca7cae12dfac0c1831ce0d8159c0cce5c05c6e69a126bf323a7790",
+      "candidateCount": 11,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "a36c9ba419c825d62b6831d73a37f5bd348fd62614724ed40526ebe35296df91",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 20,
+      "rootId": "C3-pilot-source-001:root-20",
+      "familyId": "first-deal-family:dc6698b86ae1061acc6c50bd2e06e358b86015b14d752cc468ad9d3d6e121916",
+      "candidateCount": 2,
+      "gameNo": 12,
+      "levels": [
+        10,
+        11
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "context_sensitive_candidate",
+      "observationSHA256": "97f2ca3fe949523374814040d47adcdf3dd44a2876ba027b9741c76c0c3e6bb1",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 21,
+      "rootId": "C3-pilot-source-001:root-21",
+      "familyId": "first-deal-family:3adb1057ccc533170903f8ffd100eff61221ed14181fdd8c9e49c1074b951637",
+      "candidateCount": 3,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_open",
+      "observationSHA256": "89b533c3ddcf8fd99c325b5b8e988278154412325722d2ef04e3330b7462a9ac",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 22,
+      "rootId": "C3-pilot-source-001:root-22",
+      "familyId": "first-deal-family:955d953f60caf83a17a0eeaa172fac170dfda55e0233b13330a361f4f35a66b2",
+      "candidateCount": 2,
+      "gameNo": 2,
+      "levels": [
+        2,
+        3
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "46ab5f25e0e1794fc6adfef6b31a56ae8bb83e8f469b6079634169731480a11e",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 23,
+      "rootId": "C3-pilot-source-001:root-23",
+      "familyId": "first-deal-family:4ea12d04727f8b0a70cbac977827c54033883ff263736766223d90197348992e",
+      "candidateCount": 21,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "c9ef7abf7149bd4c13434cc45ec53270a864bffa58cddec87914995eadf431c9",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 24,
+      "rootId": "C3-pilot-source-001:root-24",
+      "familyId": "first-deal-family:88fdb00594fefcb899ec1aacddfff8bf0732eac19cbd27e3921e3e1084cbe114",
+      "candidateCount": 6,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "context_sensitive_candidate",
+      "observationSHA256": "9e7e7a1fe2cca060ee2df8162dff93c1bb712634f57905429c54807957f1f3da",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 25,
+      "rootId": "C3-pilot-source-001:root-25",
+      "familyId": "first-deal-family:64885d36065c6e3e3e7b843ebd636ce76182706a0d2727955427bab06366e927",
+      "candidateCount": 4,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_open",
+      "observationSHA256": "db5baef3c33289dad90b3bfd7b71f64a54869585c2c7104848b779955da7f53e",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 26,
+      "rootId": "C3-pilot-source-001:root-26",
+      "familyId": "first-deal-family:97184544bcb4c82bc33a5c8dbacba653642d5a948c46008db937a942f00448df",
+      "candidateCount": 3,
+      "gameNo": 4,
+      "levels": [
+        2,
+        10
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "70b1492da22996ca631f0bd41cc37724b38e550be1270d07a84a9022d57b6ccf",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 27,
+      "rootId": "C3-pilot-source-001:root-27",
+      "familyId": "first-deal-family:e6a86b68bb1331263a2eb18cbed240415da6d811776a6ec1a4c91e9a2ec66edd",
+      "candidateCount": 51,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "c55eb57e01309b80e631b0e93d068ce443f985c8bb1f4fb7f628881192a8d2fa",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 28,
+      "rootId": "C3-pilot-source-001:root-28",
+      "familyId": "first-deal-family:d56b04c8c8dfef474b92843d04ee6c5391f4db4b654380728e366feb8dfa0c1c",
+      "candidateCount": 4,
+      "gameNo": 3,
+      "levels": [
+        3,
+        3
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "context_sensitive_candidate",
+      "observationSHA256": "f8978bc2909892e504dbf36617a9fc8b2cec4e7924f900b68e061984924f2460",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 29,
+      "rootId": "C3-pilot-source-001:root-29",
+      "familyId": "first-deal-family:6fdfb947a11ac24d134bcd3045f6a0f25e9f0a8cf0b0a53e45742d5c06b3f1d2",
+      "candidateCount": 2,
+      "gameNo": 3,
+      "levels": [
+        2,
+        5
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "cooperation_open",
+      "observationSHA256": "70c39e664f106b442caae869f6dd112918ed4b8fe567151d9244b86da5bdd61d",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 30,
+      "rootId": "C3-pilot-source-001:root-30",
+      "familyId": "first-deal-family:b3724645b79e8d4229c9df79317c9cef4398be9c5c9ba9e7c8bebeabed9d948e",
+      "candidateCount": 2,
+      "gameNo": 5,
+      "levels": [
+        13,
+        2
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "fb2aa61b0aac94aecb506a049c0687d3608daad7048dfe8424e514ae6b65b8ff",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 31,
+      "rootId": "C3-pilot-source-001:root-31",
+      "familyId": "first-deal-family:b9fd1b4580bc5d35de5d37bce306f991271ef7671c6884169a64508b91effd69",
+      "candidateCount": 148,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "fe6646cd18ad79ff27bb6dd5f7221113fc376368e44ed125fbceecb3f1b7eea4",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 34,
+      "rootId": "C3-pilot-source-001:root-34",
+      "familyId": "first-deal-family:a15495a3147404ba9e1e2af0f6418472c7e01ae0531858fc7d731336b8ea2bce",
+      "candidateCount": 3,
+      "gameNo": 4,
+      "levels": [
+        2,
+        9
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "bb72d929d327fd48beed6b6c4bc38592b41438609d266bb2c3cffc3ca0f25ee6",
+      "samplingAttempts": 4
+    },
+    {
+      "slot": 35,
+      "rootId": "C3-pilot-source-001:root-35",
+      "familyId": "first-deal-family:842f878b1e88a58dc8153d5b30842299cf13196f1fe9e797c5d4f27303d92138",
+      "candidateCount": 213,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "90b0d545a90cd7ddedf250b3a7ce0dc71db8de8fca24a0bf5b90a1cce1f10e6c",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 36,
+      "rootId": "C3-pilot-source-001:root-36",
+      "familyId": "first-deal-family:56b13b11c68b0ad6862b706ec442b375bee94626e883fa23d2bc770766cb9853",
+      "candidateCount": 4,
+      "gameNo": 6,
+      "levels": [
+        11,
+        4
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "context_sensitive_candidate",
+      "observationSHA256": "97764e555f40f7bdcdc25a606c6ef53d3578f58665df390a3ce5419c55ca561f",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 38,
+      "rootId": "C3-pilot-source-001:root-38",
+      "familyId": "first-deal-family:7cbd308a068bfb3953c9ab1a16d190d4d3dfd7df485346ae0ffe362f0b4b2536",
+      "candidateCount": 7,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "0aee20f0f28ea4fe2443cba72b7356e25d35f23b1228a3ee7a4026cde7339d64",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 39,
+      "rootId": "C3-pilot-source-001:root-39",
+      "familyId": "first-deal-family:26860092c960f0098dae2ceff60b3e1d02d12ed6b70cff1926716afeb0301351",
+      "candidateCount": 8,
+      "gameNo": 10,
+      "levels": [
+        14,
+        7
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "ae6063f4edcedd19225f46745327fc773aca4d290b8e5be12f103713b0a12cd9",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 40,
+      "rootId": "C3-pilot-source-001:root-40",
+      "familyId": "first-deal-family:16daa93f790eb189f15e34b1be2700aefb62be33441bedc9e8368c4704e43228",
+      "candidateCount": 2,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "context_sensitive_candidate",
+      "observationSHA256": "eb3af453029351613d4613a066367dab9368655265ff125fb8bf02b6ab8fbc37",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 42,
+      "rootId": "C3-pilot-source-001:root-42",
+      "familyId": "first-deal-family:1e1b79d6213806e324cd25bef9ea7353f84dd4bcc17de964e0202459a9619c5a",
+      "candidateCount": 3,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "4deeca981d3757eefd1b8c1b1fdc0e25225e8160f47a0a8367d244a9ce07b9ca",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 45,
+      "rootId": "C3-pilot-source-001:root-45",
+      "familyId": "first-deal-family:0a40e2d60e3984b79ed1d1e815feef97512a6b6aa7aba5e6915644bbebad277b",
+      "candidateCount": 2,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_open",
+      "observationSHA256": "2812283f174b495c917053d6a4ec206e50d9584996435c5aab935593fa058adb",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 46,
+      "rootId": "C3-pilot-source-001:root-46",
+      "familyId": "first-deal-family:70440d40c59277438e324111f79f436e6a6ff7d04c9a7b68d4a1148a5e6ec8b0",
+      "candidateCount": 3,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "cooperation_urgent",
+      "observationSHA256": "673c9140cfe3167911488e15bb8a181abbe1e69a37884b4af7323753d6230c62",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 47,
+      "rootId": "C3-pilot-source-001:root-47",
+      "familyId": "first-deal-family:cafbb88d182182f62b4146e2c191d6a7ddf0c9920da44d17032a7046d3b2c027",
+      "candidateCount": 13,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "student_trajectory",
+      "category": "resource_structure",
+      "observationSHA256": "aaf9f298f626bab368daf04fffbaab3ff9550d113096cbf7b6fca255df167dd5",
+      "samplingAttempts": 1
+    },
+    {
+      "slot": 48,
+      "rootId": "C3-pilot-source-001:root-48",
+      "familyId": "first-deal-family:506576869a65e0a53c4d536f82eef0d1d420bf9dad512f65a0509f624c0a911c",
+      "candidateCount": 2,
+      "gameNo": 1,
+      "levels": [
+        2,
+        2
+      ],
+      "sourceKind": "constructed_legal_trajectory",
+      "category": "context_sensitive_candidate",
+      "observationSHA256": "9740b7b1b462a7740ba4c76e91ca43ae6eb5784792325165e5a0cf315b14cd6f",
+      "samplingAttempts": 1
+    }
+  ],
+  "teacherLabels": 0,
+  "mainUpdates": 0,
+  "formalOpened": 0
+}

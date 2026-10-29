@@ -1,0 +1,1338 @@
+{
+  "schemaVersion": "targeted-engineering-review-v1",
+  "role": "engineering",
+  "reviewId": "C3-world-engineering-review-001",
+  "requestSHA256": "9a26b36b4b0f634b1990ad375c8c0563fddd80e19a590050b2dd32c1782385cf",
+  "reviewedAt": "2026-10-28T16:27:30.585764+00:00",
+  "overallDecision": "CHANGES_REQUIRED",
+  "findingCounts": {
+    "P1": 2,
+    "P2": 1
+  },
+  "scope": "Read-only pre-pilot visible projection and legal-world sampler review. This is not teacher/C3/main training/formal acceptance.",
+  "reviewedSourceManifest": {
+    "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source-manifest.json",
+    "sha256": "155a47e727b19b64463f4c06365611bd11b9589fd46600444285171e5ab434ea"
+  },
+  "reviewedSourceHashes": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/visible-world.ts",
+      "sha256": "b9c1d48260fa0768166a8ed6545a0a7b68524852a2f0a29e71eca580c078611a",
+      "reviewCopy": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/review6/visible-world.ts"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+      "sha256": "246b3ea3994939ab9a584e24745526128d2877d1f902d98255b307effd6ee619",
+      "reviewCopy": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/review6/match-play.ts"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/action-effect.ts",
+      "sha256": "9e2a8eb4841cedc92f3543a82a79bbc87d36ebca254e86736099c2174629f863",
+      "reviewCopy": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/review6/action-effect.ts"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/tests/review6_visible_world.test.ts",
+      "sha256": "2f3643397fadef93b5d3b546337ddc45e2c0003ec1fadb6db46799e6184dd193",
+      "reviewCopy": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/tests/review6_visible_world.test.ts"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/tests/review6_match_play.test.ts",
+      "sha256": "cc1fcb67f678921fa72337eede9b69e0d15db14fea78926e8ae4612ed3ac9cea",
+      "reviewCopy": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/tests/review6_match_play.test.ts"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/schema.ts",
+      "sha256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8",
+      "reviewCopy": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/packages/ai/src/nn/schema.ts"
+    }
+  ],
+  "reviewedVisibleWorldSHA256": "b9c1d48260fa0768166a8ed6545a0a7b68524852a2f0a29e71eca580c078611a",
+  "binding": "All6 immutable copies and live sources matched at review start. The parent has since begun repairing live visible-world; later bytes are not approved by this immutable001 review.",
+  "findings": [
+    {
+      "id": "C3-WORLD-E01",
+      "severity": "P1",
+      "status": "OPEN_ON_REVIEWED_SNAPSHOT",
+      "title": "Opaque nested clones and shallow DTO validation retain source hidden hands/RNG/private metadata inside supposedly visible roots and sampled states.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6/visible-world.ts",
+        "line": 25
+      },
+      "provenance": "Independent temporary engine fixtures. Actual fixture hidden hands and original RNG are embedded in a synthetic _privateDebug field, together with a synthetic future marker; no actual future outcome or teacher label is computed.",
+      "reproduction": [
+        "Generate the legitimate seed201/move12 root and full public history. Add opts._privateDebug={sourceHiddenHands,originalRNG,futureMarker}. toVisibleRoot accepts and serializes the private object.",
+        "The encoded331 state stays identical, but the observation hash changes because it hashes the private nested object. sampleVisibleWorld accepts that observation and preserves the original private object inside returned state.match.opts.",
+        "Independently inject and rehash an already-created VisibleRoot nested opts field; the direct sampler input is accepted.",
+        "Repeat under a genuine second-round lastResult and tribute object, and under a current/public-history Combo object: those opaque nested private objects also survive projection and sampling."
+      ],
+      "impact": "The advertised own/public-only input/output boundary fails. Original hidden truth remains available in the returned world, and private metadata also changes the observation-derived proposal stream despite unchanged public/model input. Top-level field filtering and a self-hash do not establish nested visibility.",
+      "fixRecommendation": [
+        "Project every admitted nested type explicitly: RuleOptions, prior public GameResult, cards, combos/wild assignments, tribute/return records, trick plays and each public event/history variant. Source-only debug/extra metadata must be dropped without changing the legitimate observation hash.",
+        "Validate sampler VisibleRoot recursively, including exact allowed keys, required fields, numeric/enum/null/array shapes and modelState331 length/finite values. Reject nested unknown fields or wrong types even if their supplied self-hash is valid.",
+        "Add projection-invariance and direct-sampler rejection tests for each nested type and aliases shared across history/events/current target; do not rely on TypeScript Pick or structuredClone to sanitize runtime objects."
+      ],
+      "evidence": "/private/tmp/C3-world-engineering-001/nested-probe-output.json"
+    },
+    {
+      "id": "C3-WORLD-E03",
+      "severity": "P1",
+      "status": "OPEN_ON_REVIEWED_SNAPSHOT",
+      "title": "Randomly shuffling hidden hand arrays changes the frozen v2-compatible policy candidate support for the same physical ownership.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6/visible-world.ts",
+        "line": 49
+      },
+      "provenance": "Pure legal candidate/feature probes on a first-round no-history/no-exchange engine fixture; no NeuralDecider.decide, MLP.forward, value rollout or teacher label.",
+      "reproduction": [
+        "Start the genuine first-round seed201 engine state. Its hand arrays are sorted by the frozen engine deal/sortHand path. Sample one visible world with seed7.",
+        "For each hidden seat, compare the returned shuffled hand to a sortHand copy with exactly the same owned physical IDs. Run only legalCombos → dedupCandidates → dedupCandidatesV2Compat → encodeAction. The v2 folding keeps the first same-rank/same-role resource, so the68-dimensional candidate sets differ, not merely their order.",
+        "In lead views the three hidden seats have20/20/13 candidate vectors unique to each representation; an example chooses H7 under random order versus C7 under native sorted order.",
+        "Execute the same fixed legal single3 opening in both ownership-identical worlds. At the actual next seat3 decision the317-dimensional state input is identical, yet each v2 candidate set has2 vectors missing from the other."
+      ],
+      "impact": "The registered frozenChampion uses candidateCompat=v2. Uniformly permuting its private hand array adds a policy-input randomization absent from the native first-deal engine, changing which physical resource actions it can score. Preserving only the current root actor input does not preserve the frozen continuation profile. Downstream NN action or outcome effects were not measured because inference is prohibited.",
+      "fixRecommendation": [
+        "Shuffle ownership allocations only. Reconstruct a deterministic hand representation compatible with the frozen runtime from sampled ownership and public history/exchange, while retaining the root actor ownCards exactly. Do not read the original hidden hand order.",
+        "For later rounds account for native pre-deal sorting, public tribute/return appends and subsequent removals; legal equal-rank tribute witnesses must not introduce random presentation of the remaining hand.",
+        "Keep the frozen candidate enumerator/v2 compatibility unchanged. Add same-ownership candidate-feature-set checks for registered v2 continuation seats, including the real next-decision case and public-exchange cases."
+      ],
+      "evidence": "/private/tmp/C3-world-engineering-001/hand-order-probe-output.json"
+    },
+    {
+      "id": "C3-WORLD-E02",
+      "severity": "P2",
+      "status": "OPEN_ON_REVIEWED_SNAPSHOT",
+      "title": "Resistance representation flag can exclude a root whose exchange constraints are fully determined by own/public cards.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6/visible-world.ts",
+        "line": 18
+      },
+      "reproduction": "Use the genuine seed713 second round with the single giver actor2. Play the returnedD2, let seat3 pass, play the publicC-A gift from owner0, then let seat1 pass: turn is actor2. Both transferred cards are already public plays; the single giver pre-exchange hand is completely reconstructible from actor own/public data and contains no big joker. Unknown big jokers lie only in other seats. Nevertheless the remaining-pool big-joker condition emits public_resistance_giver_constraint_not_fully_encoded_in_schema_v4.",
+      "independentEvidence": "There are no remaining known transfer cards, no hidden giver hand, and no additional hidden resistance constraint. All16 one-proposal worlds pass the full legal/history/exchange guard. The only emitted gap is the blanket resistance flag.",
+      "impact": "This is conservative rather than a hidden-information leak, but can unnecessarily discard structurally eligible roots. It does not justify any outcome-based eligibility tuning.",
+      "fixRecommendation": "Determine whether resistance can still vary over unresolved giver pre-exchange ownership after own cards, public plays and complete transfer chains are accounted for. At least remove the flag for the fully known single-giver case; keep genuine unresolved giver constraints flagged.",
+      "evidence": "/private/tmp/C3-world-engineering-001/representation-probe-output.json"
+    }
+  ],
+  "independentVerification": {
+    "hashes": {
+      "requestMatched": true,
+      "sourceCopiesAndInitialLiveSourcesMatched": 6,
+      "requestEvidenceReferencesMatched": 6,
+      "mismatches": 0
+    },
+    "frozenTests": {
+      "visibleWorldTestsPassed": 4,
+      "failed": 0,
+      "log": "/private/tmp/C3-world-engineering-001/frozen-tests.log",
+      "neuralForwardAndDecideHardDisabled": true,
+      "originalRedReceipt": "The stored red log is a missing-module import failure with0 collected tests; the stored green log runs4 passing tests. It does not establish4 independent behavioral red assertions. The additional probes here expose the untested boundaries."
+    },
+    "cleanProjectionAndCurrentActorInput": {
+      "worlds": 24,
+      "distinctLayouts": 24,
+      "allModel331And399CandidateInputsEqual": true,
+      "sameVisibleAndSeedIdentical": true,
+      "inputUnchanged": true
+    },
+    "passSemantics": {
+      "actorWhoPassed": 1,
+      "acceptedWorldCanBeatPastTarget": true,
+      "pastTarget": 4,
+      "attempts": 1
+    },
+    "boundedExhaustion": {
+      "rejected": true,
+      "error": "Error: bounded legal-world sampler exhausted without substituting true hidden cards: sampled world changed own/public observation or encoding"
+    },
+    "twoWorldUniformSupport": {
+      "historyActions": 408,
+      "actor": 0,
+      "counts": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "hiddenRemaining": [
+        {
+          "id": 5,
+          "suit": "S",
+          "rank": 7
+        },
+        {
+          "id": 6,
+          "suit": "S",
+          "rank": 8
+        }
+      ],
+      "acceptedAssignments": [
+        [
+          6,
+          5
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "seedCount": 128,
+      "frequency": {
+        "5": 60,
+        "6": 68
+      },
+      "representationGaps": []
+    },
+    "duplicateCardAccounting": {
+      "physicalCopies": [
+        5,
+        59
+      ],
+      "bothAssignmentsSeen": true,
+      "allCountsCorrect": true,
+      "allCurrentIdsUnique": true,
+      "samples": 16
+    },
+    "uniformOwnershipAnalysis": "Removing played/fixed physical IDs, Fisher-Yates shuffling the remaining pool and slicing fixed seat capacities gives each ownership allocation the same permutation multiplicity. Rejection uses full frozen-rule public history/exchange and does not infer inability from pass. The2-card/2-owner constructed408-action legal prefix admits exactly2 allocations;128 prespecified seeds produce60/68. Both equivalent-value copies#5/#59 also remain distinct resources. These are supporting checks, not a statistical proof of global uniformity. E03 separately concerns the extra hand-array permutation and frozen policy presentation.",
+    "nestedLeakProbe": {
+      "cleanAndInjectedModel331Equal": true,
+      "sourcePrivateOptsSerialized": true,
+      "optsSecretRetainedInSample": {
+        "sourceHiddenHands": [
+          [
+            {
+              "id": 26,
+              "suit": "D",
+              "rank": 2
+            },
+            {
+              "id": 80,
+              "suit": "D",
+              "rank": 2
+            },
+            {
+              "id": 27,
+              "suit": "D",
+              "rank": 3
+            },
+            {
+              "id": 68,
+              "suit": "H",
+              "rank": 3
+            },
+            {
+              "id": 14,
+              "suit": "H",
+              "rank": 3
+            },
+            {
+              "id": 41,
+              "suit": "C",
+              "rank": 4
+            },
+            {
+              "id": 95,
+              "suit": "C",
+              "rank": 4
+            },
+            {
+              "id": 56,
+              "suit": "S",
+              "rank": 4
+            },
+            {
+              "id": 29,
+              "suit": "D",
+              "rank": 5
+            },
+            {
+              "id": 17,
+              "suit": "H",
+              "rank": 6
+            },
+            {
+              "id": 31,
+              "suit": "D",
+              "rank": 7
+            },
+            {
+              "id": 18,
+              "suit": "H",
+              "rank": 7
+            },
+            {
+              "id": 32,
+              "suit": "D",
+              "rank": 8
+            },
+            {
+              "id": 7,
+              "suit": "S",
+              "rank": 9
+            },
+            {
+              "id": 61,
+              "suit": "S",
+              "rank": 9
+            },
+            {
+              "id": 101,
+              "suit": "C",
+              "rank": 10
+            },
+            {
+              "id": 88,
+              "suit": "D",
+              "rank": 10
+            },
+            {
+              "id": 21,
+              "suit": "H",
+              "rank": 10
+            },
+            {
+              "id": 62,
+              "suit": "S",
+              "rank": 10
+            },
+            {
+              "id": 35,
+              "suit": "D",
+              "rank": 11
+            },
+            {
+              "id": 64,
+              "suit": "S",
+              "rank": 12
+            },
+            {
+              "id": 37,
+              "suit": "D",
+              "rank": 13
+            },
+            {
+              "id": 91,
+              "suit": "D",
+              "rank": 13
+            },
+            {
+              "id": 92,
+              "suit": "D",
+              "rank": 14
+            },
+            {
+              "id": 38,
+              "suit": "D",
+              "rank": 14
+            }
+          ],
+          [
+            {
+              "id": 39,
+              "suit": "C",
+              "rank": 2
+            },
+            {
+              "id": 13,
+              "suit": "H",
+              "rank": 2
+            },
+            {
+              "id": 54,
+              "suit": "S",
+              "rank": 2
+            },
+            {
+              "id": 94,
+              "suit": "C",
+              "rank": 3
+            },
+            {
+              "id": 55,
+              "suit": "S",
+              "rank": 3
+            },
+            {
+              "id": 69,
+              "suit": "H",
+              "rank": 4
+            },
+            {
+              "id": 83,
+              "suit": "D",
+              "rank": 5
+            },
+            {
+              "id": 57,
+              "suit": "S",
+              "rank": 5
+            },
+            {
+              "id": 30,
+              "suit": "D",
+              "rank": 6
+            },
+            {
+              "id": 58,
+              "suit": "S",
+              "rank": 6
+            },
+            {
+              "id": 102,
+              "suit": "C",
+              "rank": 11
+            },
+            {
+              "id": 89,
+              "suit": "D",
+              "rank": 11
+            },
+            {
+              "id": 49,
+              "suit": "C",
+              "rank": 12
+            },
+            {
+              "id": 36,
+              "suit": "D",
+              "rank": 12
+            },
+            {
+              "id": 23,
+              "suit": "H",
+              "rank": 12
+            },
+            {
+              "id": 10,
+              "suit": "S",
+              "rank": 12
+            },
+            {
+              "id": 78,
+              "suit": "H",
+              "rank": 13
+            },
+            {
+              "id": 11,
+              "suit": "S",
+              "rank": 13
+            },
+            {
+              "id": 51,
+              "suit": "C",
+              "rank": 14
+            },
+            {
+              "id": 105,
+              "suit": "C",
+              "rank": 14
+            },
+            {
+              "id": 79,
+              "suit": "H",
+              "rank": 14
+            },
+            {
+              "id": 106,
+              "suit": "J",
+              "rank": 16
+            }
+          ],
+          [
+            {
+              "id": 82,
+              "suit": "D",
+              "rank": 4
+            },
+            {
+              "id": 28,
+              "suit": "D",
+              "rank": 4
+            },
+            {
+              "id": 2,
+              "suit": "S",
+              "rank": 4
+            },
+            {
+              "id": 70,
+              "suit": "H",
+              "rank": 5
+            },
+            {
+              "id": 71,
+              "suit": "H",
+              "rank": 6
+            },
+            {
+              "id": 4,
+              "suit": "S",
+              "rank": 6
+            },
+            {
+              "id": 99,
+              "suit": "C",
+              "rank": 8
+            },
+            {
+              "id": 6,
+              "suit": "S",
+              "rank": 8
+            },
+            {
+              "id": 100,
+              "suit": "C",
+              "rank": 9
+            },
+            {
+              "id": 33,
+              "suit": "D",
+              "rank": 9
+            },
+            {
+              "id": 74,
+              "suit": "H",
+              "rank": 9
+            },
+            {
+              "id": 47,
+              "suit": "C",
+              "rank": 10
+            },
+            {
+              "id": 48,
+              "suit": "C",
+              "rank": 11
+            },
+            {
+              "id": 76,
+              "suit": "H",
+              "rank": 11
+            },
+            {
+              "id": 9,
+              "suit": "S",
+              "rank": 11
+            },
+            {
+              "id": 50,
+              "suit": "C",
+              "rank": 13
+            },
+            {
+              "id": 65,
+              "suit": "S",
+              "rank": 13
+            },
+            {
+              "id": 12,
+              "suit": "S",
+              "rank": 14
+            },
+            {
+              "id": 107,
+              "suit": "J",
+              "rank": 17
+            }
+          ]
+        ],
+        "originalRNG": 195977542192,
+        "futureMarker": "SYNTHETIC_PRIVATE_FUTURE"
+      },
+      "privateDataChangesObservationHash": true,
+      "directNestedVisibleInputAccepted": true,
+      "previousResultExtraRetained": true,
+      "tributeExtraRetained": true,
+      "previousAndTributeSecretRetainedInSample": true,
+      "comboExtraRetained": true,
+      "comboExtraRetainedInSample": true
+    },
+    "frozenPolicyHandOrderProbe": {
+      "actor": 2,
+      "firstRoundNoHistory": true,
+      "actualEngineStartGameHandsSorted": true,
+      "NNScoringCalls": 0,
+      "nextPublicDecision": {
+        "actor": 3,
+        "forcedOpeningRank": 3,
+        "same317StateInput": true,
+        "rawOnlyCandidateInputs": 2,
+        "canonicalOnlyCandidateInputs": 2
+      },
+      "results": [
+        {
+          "seat": 0,
+          "samePhysicalOwnership": true,
+          "rawCandidateCount": 104,
+          "canonicalCandidateCount": 104,
+          "rawOnlyInputCount": 20,
+          "canonicalOnlyInputCount": 20,
+          "rawExample": {
+            "kind": "single",
+            "main": 7,
+            "cards": [
+              {
+                "id": 18,
+                "suit": "H",
+                "rank": 7
+              }
+            ],
+            "vector": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.17073170840740204,
+              0.10000000149011612,
+              0
+            ]
+          },
+          "canonicalExample": {
+            "kind": "single",
+            "main": 7,
+            "cards": [
+              {
+                "id": 98,
+                "suit": "C",
+                "rank": 7
+              }
+            ],
+            "vector": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.17073170840740204,
+              0.10000000149011612,
+              0
+            ]
+          }
+        },
+        {
+          "seat": 1,
+          "samePhysicalOwnership": true,
+          "rawCandidateCount": 46,
+          "canonicalCandidateCount": 46,
+          "rawOnlyInputCount": 20,
+          "canonicalOnlyInputCount": 20,
+          "rawExample": {
+            "kind": "single",
+            "main": 4,
+            "cards": [
+              {
+                "id": 2,
+                "suit": "S",
+                "rank": 4
+              }
+            ],
+            "vector": [
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.09756097197532654,
+              0.10000000149011612,
+              0
+            ]
+          },
+          "canonicalExample": {
+            "kind": "single",
+            "main": 4,
+            "cards": [
+              {
+                "id": 95,
+                "suit": "C",
+                "rank": 4
+              }
+            ],
+            "vector": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.09756097197532654,
+              0.10000000149011612,
+              0
+            ]
+          }
+        },
+        {
+          "seat": 3,
+          "samePhysicalOwnership": true,
+          "rawCandidateCount": 42,
+          "canonicalCandidateCount": 42,
+          "rawOnlyInputCount": 13,
+          "canonicalOnlyInputCount": 13,
+          "rawExample": {
+            "kind": "single",
+            "main": 13,
+            "cards": [
+              {
+                "id": 11,
+                "suit": "S",
+                "rank": 13
+              }
+            ],
+            "vector": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.31707316637039185,
+              0.10000000149011612,
+              0
+            ]
+          },
+          "canonicalExample": {
+            "kind": "single",
+            "main": 13,
+            "cards": [
+              {
+                "id": 50,
+                "suit": "C",
+                "rank": 13
+              }
+            ],
+            "vector": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0.31707316637039185,
+              0.10000000149011612,
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "representationOverflagProbe": {
+      "actor": 2,
+      "singleGiver": 2,
+      "publicGiftPlayed": true,
+      "publicReturnPlayed": true,
+      "gapFlags": [
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4"
+      ],
+      "actorOwnBigJokers": 0,
+      "allBigJokersUnplayed": true,
+      "knownTransferCardsRemaining": 0,
+      "allSixteenUniformProposalsAccepted": true,
+      "worlds": [
+        {
+          "seed": 0,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "43533a3c94e9ad03bfaa1a00e787364b1be4899e6b7729220ca2399dcb517d9e"
+        },
+        {
+          "seed": 1,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "63dc257bf132b13ccc11ec669caf1cd488d6fe1f6e97aadbfa01d3a893ee55ae"
+        },
+        {
+          "seed": 2,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "1a5aef6e821d0b5bb8b749bf8f0d3821f54270877ee3484945962a6af4c1dd42"
+        },
+        {
+          "seed": 3,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "e21ac9f0032e10e3d25972b9e7ca6c5e92bf1a4855751e5ad113a8acd84e00e6"
+        },
+        {
+          "seed": 4,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "f6d350dc9da472d052a37b96a48a0e40cd5dc6e328196a0e4f2ace3b54bc8002"
+        },
+        {
+          "seed": 5,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "acaa8e08658c99bde74018c44b354b76a4eddfbac7cd6eb364c092756c485583"
+        },
+        {
+          "seed": 6,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "9065ebffde41db3dd75a891f1710e1f052bb6f135fafb21cee5324584bbfcff2"
+        },
+        {
+          "seed": 7,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "1d343add0a6a4fcc9c96219d52ef9de21eaacf2474b603266cc069551e558624"
+        },
+        {
+          "seed": 8,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "9641202ba9549eb3a3632f68b9564484c5e5ee0c0fdc39b23cdf5231c6f22a56"
+        },
+        {
+          "seed": 9,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "b97d065e33b8abb4f2a6739c82b5b49281bebd0f7ecccc1fff35c0cf97316279"
+        },
+        {
+          "seed": 10,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "5ae71be2d770891a7557c5f775f8d3787dae4c68bafb6d50e73627c86085d146"
+        },
+        {
+          "seed": 11,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "9148340b08a91c1aad3f41d8b42b863487e6c4f475fe49277c8ae04c834af558"
+        },
+        {
+          "seed": 12,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "fee9726189b44c998c0215ec38e0e64e4f57d151e3f38decf1f0e8d216b41bbf"
+        },
+        {
+          "seed": 13,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "a3bb188f34a369a7e7867ced213159ec44a87009a840f1d1db8226d6c89216d0"
+        },
+        {
+          "seed": 14,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "bff2555d302e2a72f47e0aa64fd98146fb9eb48603190cbb089510e412bbf1ca"
+        },
+        {
+          "seed": 15,
+          "attempts": 1,
+          "hiddenLayoutSHA256": "a4bb284700074af0622effde37a5f1f1162f9a3181ac33efff6c7224a63e7481"
+        }
+      ]
+    },
+    "priorRootGuardReuse": {
+      "matchPlaySHA256": "246b3ea3994939ab9a584e24745526128d2877d1f902d98255b307effd6ee619",
+      "actionEffectSHA256": "9e2a8eb4841cedc92f3543a82a79bbc87d36ebca254e86736099c2174629f863",
+      "priorEngineeringReport": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C2-match-foundation-engineering-review-003.json",
+      "priorReportSHA256": "9910348d69a5e7160ba7a26c00348c73de02b222b1b16609804cfa426f919a6e",
+      "fullOldSuiteRepeated": false
+    },
+    "representationScope": "The existing flags are not treated as proof of a sufficient statistic for teacher values. No teacher-value or outcome-based filtering was run. This review establishes one concrete overflag and the separate frozen-policy candidate-input defect; a complete sufficiency claim is outside scope."
+  },
+  "hashVerification": {
+    "references": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source-manifest.json",
+        "sha256": "155a47e727b19b64463f4c06365611bd11b9589fd46600444285171e5ab434ea",
+        "match": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-visible-world-red-001.log",
+        "sha256": "265101535c8ddefaf2d3fd2ad256592b3b8ae02a604fb11662ddae07b6a68e58",
+        "match": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-visible-world-green-001.log",
+        "sha256": "ca3e872a0644911d056ab282123d67cc506e165e5ab45084f29c5e18ad2ce63e",
+        "match": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/data/no-H-policy-registry-001.json",
+        "sha256": "d34a08fbc5db833ca5580670ef87e11cda03bd215eb1de2c318e04dd1e236202",
+        "match": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/data/experiment-branch.lock.json",
+        "sha256": "e9d578996e4dd23537a3e89a9320ebe65712a57d0bb6485b0254b66c16ffec1f",
+        "match": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/data/H-evaluation-scope-addendum-001.json",
+        "sha256": "268092f16f23d3247bcc8614cc57ccb4b30f73c88471706bbeae12b41ab25d27",
+        "match": true
+      }
+    ],
+    "sources": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6/visible-world.ts",
+        "copyMatches": true,
+        "actualMatches": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+        "copyMatches": true,
+        "actualMatches": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6/action-effect.ts",
+        "copyMatches": true,
+        "actualMatches": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/tests/review6_visible_world.test.ts",
+        "copyMatches": true,
+        "actualMatches": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/tests/review6_match_play.test.ts",
+        "copyMatches": true,
+        "actualMatches": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/schema.ts",
+        "copyMatches": true,
+        "actualMatches": true
+      }
+    ]
+  },
+  "artifactHashes": {
+    "hash-verification.json": {
+      "path": "/private/tmp/C3-world-engineering-001/hash-verification.json",
+      "sha256": "c2f1130d0826531b2f29123e1fe50f6ff9c8f1536ef91172bcf836f9049bbcbb"
+    },
+    "frozen-tests.log": {
+      "path": "/private/tmp/C3-world-engineering-001/frozen-tests.log",
+      "sha256": "04d5a9372e10e6aa650bedfba81a64bc1989396486138311b1075b7322d3651e"
+    },
+    "nested-probe.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/nested-probe.ts",
+      "sha256": "2687477a69d718b57f46fcc9bd7866e073ecd2674ff062c1934ce4009ddb2cc1"
+    },
+    "nested-probe-output.json": {
+      "path": "/private/tmp/C3-world-engineering-001/nested-probe-output.json",
+      "sha256": "1b35d45e8ccb5088910819103c44ca08f9865e31e532f25ecc2f1d0785831f3b"
+    },
+    "representation-probe.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/representation-probe.ts",
+      "sha256": "afbef739c44b1f8da13b6306f5041341937a12dee854960eb32cf472c774e736"
+    },
+    "representation-probe-output.json": {
+      "path": "/private/tmp/C3-world-engineering-001/representation-probe-output.json",
+      "sha256": "06ae71f87e1ee912e11bdc72cc51907acb4950799444d1c9ee58083c65bba155"
+    },
+    "sampler-probe.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/sampler-probe.ts",
+      "sha256": "7c34756cdb5d83decc9f1c1d09565abc474892983c64ef614f725f364b5fee55"
+    },
+    "sampler-probe-output.json": {
+      "path": "/private/tmp/C3-world-engineering-001/sampler-probe-output.json",
+      "sha256": "15f2ca62a472da5a6ba52d0a0402bf33124ec7e70d4d7fa1015232493bc897b2"
+    },
+    "duplicate-probe.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/duplicate-probe.ts",
+      "sha256": "b62942223fe22c91f15f90993d0976793ded3db4adf5c6106d664a0a69c7ff97"
+    },
+    "duplicate-probe-output.json": {
+      "path": "/private/tmp/C3-world-engineering-001/duplicate-probe-output.json",
+      "sha256": "57cbf3bea1ecb021cca920d2918aa29682914092323eb6b4488b8bdcb6a200e0"
+    },
+    "hand-order-probe.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/hand-order-probe.ts",
+      "sha256": "567642e351cf0a452dc087a7ebdea6836961f37770465c2df798fa903a6a4cca"
+    },
+    "hand-order-probe-output.json": {
+      "path": "/private/tmp/C3-world-engineering-001/hand-order-probe-output.json",
+      "sha256": "7f8f0ee7213c1b41e729b4b6f067e18c8edc559a4be1507f0e6b15de2d5bab76"
+    },
+    "deny-nn-scoring.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/deny-nn-scoring.ts",
+      "sha256": "6f0640d28a65629a3bccdf3c2a1e9e1a27adcad4bf5a65034324afae8f89330b"
+    },
+    "visible-world.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/visible-world.ts",
+      "sha256": "8e8a729a298da0ed63cefd0e0d7f499819a81adcd72758feac6db12ccd1e1475"
+    },
+    "match-play.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/match-play.ts",
+      "sha256": "e0045329f5bc039d5c670513d6fa5c84f55f8827682bbd2beaaa8f0760fb12da"
+    },
+    "action-effect.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/action-effect.ts",
+      "sha256": "bcecd9d5436c6e8d6252eb5274d932e9bc257b911b932d431af132ba5873c2a5"
+    },
+    "schema.ts": {
+      "path": "/private/tmp/C3-world-engineering-001/schema.ts",
+      "sha256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8"
+    },
+    "vitest.config.mjs": {
+      "path": "/private/tmp/C3-world-engineering-001/vitest.config.mjs",
+      "sha256": "d838197085ecea32afb11ccbb15c35fc3ee771ff7ea257d5825bb8815bb3ea44"
+    }
+  },
+  "executionSafety": {
+    "repositoryEvidenceOrLedgerWrites": 0,
+    "HOrFullSourceOrBaselineReruns": 0,
+    "neuralForwardCalls": 0,
+    "neuralDecideCalls": 0,
+    "productionTeacherLabels": 0,
+    "trainingOrFitRuns": 0,
+    "formalOrSealedEvaluations": 0,
+    "externalModelCalls": 0,
+    "temporaryProbeDirectory": "/private/tmp/C3-world-engineering-001",
+    "engineActivities": "Temporary legal-history construction, card allocations and pure encoding/candidate functions only. A fixed one-action opening tests candidate presentation; no value rollout or teacher target is computed.",
+    "cycleBoundary": "The date crossing29 does not reset, enlarge or reopen the original no-H cycle budget or attempts; no such mutation is performed or authorized."
+  },
+  "limitations": [
+    "CHANGES_REQUIRED applies to immutable world001. Parent-authored live repairs after the initial source snapshot need a focused new request and are not marked closed here.",
+    "This is not C3/teacher/main training/formal acceptance, a pilot execution, or authorization to generate labels. It does not reopen previously closed C2 root guards or permit anotherH fit.",
+    "No NN scores, policy actions, teacher values or gameplay outcome effects were measured. The frozen-policy finding is demonstrated through exact candidate-input support changes.",
+    "Clean-shape sampler tests and finite support checks do not establish recursive DTO safety or a complete representation-sufficiency theorem; those limits are explicit.",
+    "No global training/formal ledger audit or unrelated whole-suite work was repeated."
+  ]
+}

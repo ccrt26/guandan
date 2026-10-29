@@ -1,0 +1,95 @@
+{
+  "reviewId": "C2-pre-H-request-002",
+  "at": "2026-10-28T13:38:40.050Z",
+  "scope": "Repair closure and actual H feature-consumer, frozen trainer, baseline normalization, once-only fit and quality-gate pre-fit review. H fit has not begun. Not C2 overall acceptance.",
+  "sourceManifest": {
+    "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C2-pre-H-002/source-manifest.json",
+    "sha256": "93829a1f4dc1e260affa78415948bb7031ac5460df8afe1f35bed667c5d5eaf4"
+  },
+  "evidence": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/C2-plan.lock.json",
+      "sha256": "2c11b7a38fbc7b65bd30a996d3ab1e24b5f5c9a7d113764f30b282bc908c9f55"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/audit-002/source-lock-receipt.json",
+      "sha256": "3745e292e4bd3137f5f49d24b487adad13326a9bc42b6fa683865437e9ac81b7"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/audit-002/split.lock.json",
+      "sha256": "405668363dd72de17a2b128c8a34237333519cd8f60b71d844317db8df40f950"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/replay-005/rule-domain-report.json",
+      "sha256": "b2ab4671bde0a0d3a06dad3411b95787015c2ac9b34a5368b5b5eb0a35f6c7b2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/replay-005/candidate-coverage.json",
+      "sha256": "baf43fb4aff0560a9390f92fe2470a83e2fc42f4d98ad9727efbd58a1da9fc39"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/H-features-001/H-manifest.json",
+      "sha256": "0df3dcc45c4d96a176e77091bbff0c2ee127a8c2fa9157257bf75d89d32a7580"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/H-fit-contract-001.json",
+      "sha256": "f299ff6f9d1bdaac13fb3338a22f9b5425951fa231487b2b9b6cb89953715405"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/H-parent-probe-001.json",
+      "sha256": "f308734c2dd03b0790fb8731021e8bfae9b40c9167f9ebe553bac145498ce95f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/H-preflight-001.json",
+      "sha256": "7072a4d1b2af3f902a1f6a82651f751df20b619bf7d4da7666bcdd868e458585"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-pre-H-targeted-002.log",
+      "sha256": "1e75178d0e0b3ae9aa7374b51a124f945c78faef291d2d61f295334c7589a786"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-route-green-001.log",
+      "sha256": "4627124b901c11d2a2e6e73d70cf687fc33889e3eabf8d6db56afdf131bcaeff"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-batched-loss-red-001.log",
+      "sha256": "254657ab805736b546942090dbc1bba930fb14e1480750a24104ed1d1789757d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-batched-loss-green-001.json",
+      "sha256": "7d4c43e1ce0b93863a9d06a8839031dadb6c360e93d42f9d47fc13512efd064d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-gates-red-001.log",
+      "sha256": "a0eadd501258b2ba82c6774ac7a0c2a4b3f1009352b45b00a547364bb2ca7b73"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-gates-green-001.json",
+      "sha256": "88ee7246d4d88e641e7a7976986bdf2dcd1b7afab57785717f5661bd8956dc20"
+    }
+  ],
+  "repairs": [
+    "Install complete engine tribute/resistance state, leader/turn/lastPlayer; complete returns and verify source first actor. Actual GD_MATCH_0004/GD_MATCH_0043 and wrong leader negative tests pass.",
+    "Same original source/split fully re-audited: replay005 raw1217604, compatible98473, targetLegal98675, usable97020, A0/B1261/C44; all earlier snapshots retained.",
+    "Actual feature consumer replays6000/8000/8000 fresh source-balanced decisions and requires exact observation/candidate/target hashes from locked audit; historical100 excluded.",
+    "Frozen clean399/action64 parent, once-only3epochs/batch32/RMSprop originalrecipe, correct equivalent-set likelihood and normalized train-only frequency baseline; holdout primary, fixed20000 source-match cluster pooled bootstrap97.5%."
+  ],
+  "modelActivity": {
+    "HfitOpened": false,
+    "HtrainingUpdates": 0,
+    "heldoutModelScoresOpened": false,
+    "parentNumericProbe": "8 predeclared train decisions TS + same8 Python;64train decisions backward benchmark, no optimizer step; source and fit contract frozen beforehand",
+    "externalModelCalls": 0,
+    "formalConfirmationsOpened": 0
+  },
+  "reviewFocus": [
+    "Close old P1 tribute/return/resistance with actual engine witness and new full audit, not just summaries.",
+    "Inspect real metadata/binary consumer, source/family/used100 separation, full equivalence and no target-dependent candidate support.",
+    "Inspect frozen executed Python and Net source; old learner_aux only provides class Net, its old BC/evaluation paths must not execute.",
+    "Check loss, frequency probability normalization, bootstrap unit/percentiles, five mandatory slices and collapse/calibration/hardTop1 reporting; no heldout-result tuning.",
+    "Check actual launch guard: two independent review approvals and measured preflight plus canonical once-only H anchor, original budget reserve before spawn and settlement; interrupted incomplete epochs must fail closed.",
+    "Identify any remaining P1/P2 before scientific fit. Do not run a fit, open heldout model predictions, mutate sources/evidence/budget or call external models."
+  ],
+  "requiredDecision": "Return a complete JSON report with overallDecision exactly APPROVE_H_FIT only if no blocking P1/P2 remain for this scope; otherwise BLOCK_H_FIT. Include closed and open findings and raw independent probes. This is not H quality or C2 completion.",
+  "reviewBoundary": "Read only; temporary probes allowed; root is sole business/evidence writer. Immutable request002 copies are the review basis."
+}

@@ -1,0 +1,189 @@
+{
+  "reviewId": "C0-method-review-001",
+  "reviewRequest": {
+    "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C0-request-001.json",
+    "sha256": "5552b327c906cb38a876ea9ea87299318d4b975b900bf2baa1058c031c6d9355",
+    "hashMatched": true
+  },
+  "reviewedFileHashes": {
+    "/Users/ccrt/game/guandan/lab/review6/run.mjs": "1461cc375bdcee81e08cb273fe5095fc1bf7cfd371fe750db69aae8ceaf0e067",
+    "/Users/ccrt/game/guandan/lab/review6/runtime.mjs": "8453b168b58499bac0ee3fa40825c58e48ff537a15529c3e9d160137bddb3e87",
+    "/Users/ccrt/game/guandan/lab/review6/runtime.test.mjs": "a171d6417658fab7016b134af85e55ec5811958c0a1a4d232235cade38d4ef89",
+    "/Users/ccrt/game/guandan/lab/review6/cycle.draft.json": "87836ba27daa9e4139a03ef4f346b2737d31e5cb48dad6bdc12934ea991c74d7",
+    "/Users/ccrt/game/guandan/lab/review6/budget-ledger.jsonl": "2af78cfa787409b72c052199f4926b221fa29a1dc40a927e0612914e292cab32",
+    "/Users/ccrt/game/guandan/lab/review6_1/baseline-identity.json": "5f7b01959eba80084202ffc7ed23526e32118cdebd982dc4d02a407492cfd4ba",
+    "/Users/ccrt/game/guandan/lab/review6_1/path-map.json": "22ffb3cb43e35880ca3c85ad5d2077eeaef00d023d0b39964449a41272009f7a",
+    "/Users/ccrt/game/guandan/lab/review6_1/command-map.json": "ad354b50853cf0c1dd979bc7bc7509f1550ec3b77a2fa9959e546745e06ce591",
+    "/Users/ccrt/game/guandan/lab/review6_1/progress.md": "b3c1de194a30d2d7a0ff6be1e3ff1fa7215a629ae2eaf8d4793896bfa31fd56a",
+    "/Users/ccrt/game/guandan/lab/review6_1/handoff/handoff-001.json": "d2056b080d1ef648d0d35c806839b3e7fc55690b12548ed27fd47812b2161e09",
+    "/Users/ccrt/game/guandan/lab/review6_1/receipts/process-inventory-001.json": "a1b10d3b095b20b062ce90a60945f8f441e360c28655fa2496870b40186bbd9b",
+    "/Users/ccrt/game/guandan/lab/review6_1/receipts/executor-identity-001.json": "ef56a672af9ea043c9e4d4d40aae04a5fc5a13a54a7359a0f14349770b3b7c9a",
+    "/Users/ccrt/game/guandan/lab/review6_1/receipts/recovery-readback-001.json": "046e63ac51ebd2b707b9b31b728512b672a117386b43e0109ccb0f1b3c15ca30",
+    "/Users/ccrt/game/guandan/lab/review6_1/receipts/review5-archive-integrity-001.json": "0df32e4772521764e0af58130e7b13141a759f4238d94dced705bf184861e759",
+    "/Users/ccrt/game/guandan/lab/review6_1/receipts/C0-tools-and-suite-001.json": "1ec0e511925de12f0f6c77530be9510e49f560edf577b47a5b3301fb99dfd89a",
+    "/Users/ccrt/game/guandan/lab/review6_1/receipts/c0-cli-green-002.log": "c4a97340f8414b3c848388ffb736b3a217cc5bc973db2d1c899e15bcd528113e",
+    "/Users/ccrt/REVIEW6-assets-20261028-01/backup-manifest.json": "52cce14a53bb01f5ef9e4c742f65f448a1e1265ea9499f8b25005551f05e470f",
+    "/Users/ccrt/game/guandan/lab/review6_1/input/OUTCOMES_SPEC.txt": "1e2971b5363ffb53e501ca43e480366a42bca17765042b541c7891b2acba7b2c",
+    "/Users/ccrt/game/guandan/lab/review6_1/input/EXECUTION_ADDENDUM.txt": "44eebd51a75dd9551e7f1a5a19f691776e57ab761d45cc2c5fc16a14b7d19815",
+    "/Users/ccrt/game/guandan/lab/review6_1/input/base/DESIGN.txt": "6e90b862056a2a0c8b53f225b99bfd47566362a7056b7e4ef7ebdec8612e75d7",
+    "/Users/ccrt/game/guandan/lab/review6_1/input/base/EXECUTION_PLAN.txt": "17bff8a62c12f3c2e86e38711910b7cccf1a1d627bc3b0e3a32cfe6a498fbd4f",
+    "/Users/ccrt/game/guandan/lab/review6_1/input/base/config/cycle.template.json": "41f9eae2aa159f4c33fc54ecb64d831a9bea986d9c0364d430d2b9109e105b1f",
+    "/Users/ccrt/game/guandan/lab/review6_1/receipts/cycle-absence-001.json": "465e1d7f51aaed452c5940f2eeab40d7db27a9ab9554308f7152158631aaa6ca",
+    "/Users/ccrt/game/guandan/lab/review5_tuning/budget-ledger.jsonl": "732a9c804459f73c66288837cdb4df76593f60b6f189d76f2debcef88800cf90"
+  },
+  "scope": {
+    "included": [
+      "C0 identity, evidence preservation, original-cycle initialization, cumulative budget, attempt and checkpoint continuity, and claim boundaries",
+      "Actual listed files, referenced backup bytes, historical archive integrity, source code and recorded tool outputs",
+      "Temporary-config probes through the actual status CLI"
+    ],
+    "excluded": [
+      "C1-C6 implementation acceptance",
+      "Formal skill, severe-case or match evaluation",
+      "Sealed label contents",
+      "Game-strength or human-compatibility certification"
+    ],
+    "repositoryFilesModified": false,
+    "formalEvaluationsRun": false,
+    "temporaryProbeFilesOnly": true
+  },
+  "findings": [
+    {
+      "id": "C0-METHOD-P1-001",
+      "priority": "P1",
+      "title": "Real handoff path accepts draft counters without authoritative continuity checks",
+      "location": "/Users/ccrt/game/guandan/lab/review6/run.mjs:68",
+      "evidence": [
+        "inspect returns config.handoff.inheritedRunState directly.",
+        "preserveRunState is tested as a helper but is not called by the real handoff/status path.",
+        "Actual status CLI accepted round=2, absoluteUpdate=800, opened=2 with a nonexistent checkpoint and returned exit 0/stageStatus=completed.",
+        "The same CLI then accepted regressed counters 0/0/0 and returned exit 0/stageStatus=completed.",
+        "It also accepted round=-1, absoluteUpdate=-1, opened=4 with exit 0/stageStatus=completed.",
+        "The actual repository budget ledger remained byte-identical throughout these probes."
+      ],
+      "impact": "A changed or stale draft can misreport inherited progress and available confirmation attempts. The required C0 nonzero round/opened continuity probe has not been satisfied through the actual path.",
+      "qualification": "This demonstrates an enforcement defect; it does not establish that any real prior REVIEW6 run or opened attempt was erased.",
+      "requiredChange": "Derive inherited counters from verified persistent cycle/run/checkpoint/opened records, reject draft disagreement and invalid state, and test the real CLI. Until resume is supported, reject unsupported nonzero states explicitly.",
+      "blocks": [
+        "C0 continuity acceptance",
+        "Any research resume or confirmation that relies on these counters"
+      ]
+    }
+  ],
+  "actualRecomputations": {
+    "requestedHashes": {
+      "listedFilesMatched": 16,
+      "listedFilesTotal": 16,
+      "externalBackupManifestMatched": true
+    },
+    "baselineAndBackup": {
+      "baselineFilesVerified": 188,
+      "baselineHashMismatches": 0,
+      "externalBackupFilesVerified": 1601,
+      "externalBackupBytes": 636680702,
+      "externalBackupHashOrSizeMismatches": 0,
+      "recoveredBinaryWeightsVerified": 8,
+      "recoveredWeightsAllFinite": true
+    },
+    "historicalArchive": {
+      "archiveSha256": "d8ec31606aa73224b6994d846d932a5763a722d82003ca4e321d4479f8861ef2",
+      "archiveBytes": 131918021,
+      "zipEntries": 128,
+      "crcFailures": 0,
+      "manifestEntries": 91,
+      "verifiedManifestEntries": 90,
+      "missingEntries": [],
+      "hashMismatches": [
+        "SHA256SUMS.txt"
+      ],
+      "historicalLedgerMatchesPreC0Backup": true,
+      "assessment": "The disclosed historical defect is reproduced. It must remain visible; this is not a fully clean archive-manifest verdict."
+    },
+    "cycleInitialization": {
+      "assessment": "Justified as initialization of the original REVIEW6 research cycle, rather than a replacement-executor budget reset.",
+      "basis": [
+        "Base EXECUTION_PLAN §11 explicitly states that REVIEW5 records establish historical responsibility and are not the new cycle's budget.",
+        "The pre-C0 backup contains no lab/review6 implementation, protocol or ledger.",
+        "Independent repository filename discovery found no earlier REVIEW6 protocol or ledger beyond the newly initialized files.",
+        "The only REVIEW6-named home directory found was the current asset directory.",
+        "Historical REVIEW5 cycle review5_1-20261028 and its ledger remain distinct and unchanged."
+      ],
+      "priorReview6RunState": "No prior state found within the inspected search scope; current initial zero counters are consistent with that evidence."
+    },
+    "budget": {
+      "hashChainValid": true,
+      "events": 6,
+      "initializations": 1,
+      "limitSeconds": 259200,
+      "initialConservativeChargeSeconds": 445.891214,
+      "toolsAndSuiteSettledSeconds": 19.431754416,
+      "archiveRecoverySettledSeconds": 1.112055292,
+      "spentSeconds": 466.435023708,
+      "reservedSeconds": 3600,
+      "availableSeconds": 255133.564976292,
+      "headHash": "e5675430af101124df27d8ed35254fd7227cb55b3b92a2dda57a0373b5720c04",
+      "openReservations": {
+        "C0-C1-engineering-window-001": 3600
+      },
+      "assessment": "Arithmetic and chain verify. The initial full-wall charge is conservatively described and is not represented as measured CPU or training time. The handoff's 445.891214-second value is a valid historical prefix, not the current budget balance."
+    },
+    "executorIdentity": {
+      "referencedTurnContextRecordHashMatched": true,
+      "observedModel": "gpt-6.1-sol",
+      "observedReasoningEffort": "xhigh",
+      "observedCwd": "/Users/ccrt/game/guandan",
+      "evidenceType": "actual_turn_context"
+    },
+    "contractThresholds": {
+      "draftResearchParametersMatchBaseTemplate": true,
+      "differencesLimitedTo": [
+        "Artifact and package paths",
+        "Actual runtime paths",
+        "Added C0 handoff metadata"
+      ],
+      "relaxedResearchThresholdsFound": false,
+      "preservedRequirements": [
+        "72-hour cumulative cycle budget and four-hour maximum windows",
+        "At most three confirmations shared across branches and rounds",
+        "Full paired-block fixed-N confirmation and original M1/M2 protections",
+        "Teacher information-set, independent verification and full g+W requirements",
+        "60 skill families, 75 roots, at least 51 supported families and 12 per category",
+        "Both adaptation roots required; zero illegal candidate actions",
+        "24 severe cases require complete applicable evidence",
+        "Skill and match confirmation share the same opened attempt"
+      ]
+    },
+    "toolEvidenceBoundary": {
+      "recordedCliTestsPassed": 11,
+      "recordedScorecardSelftestsPassed": 69,
+      "scorecardFixtureClassification": "DEMO_NOT_EVIDENCE",
+      "recordedArtifactToolChecksPassed": 46,
+      "recordedBaselineTestsPassed": 366,
+      "assessment": "These are engineering, integrity and arithmetic checks. They establish no new game-strength, skill-benchmark, human-level or deployment result."
+    },
+    "claimConsistency": {
+      "originalReview6FormalGates": "Not run or established by this C0 request",
+      "newCapabilityLabel": "Not measured; not passed",
+      "humanScope": "Not verified",
+      "actualDeployment": "Recorded baseline policy and local bytes identified; live browser-loaded build/policy identity still unverified",
+      "strongerAiClaim": false,
+      "assessment": "The four statuses are appropriately kept separate. No C0 evidence supports promotion, stronger play, human compatibility or a newly deployed capability."
+    }
+  },
+  "blockedReasons": [
+    {
+      "id": "C0-METHOD-P1-001",
+      "scope": "C0 continuity acceptance and dependent resume/confirmation",
+      "reason": "The real CLI trusts mutable draft counters; required authoritative round/checkpoint/opened continuity is absent."
+    }
+  ],
+  "overallDecision": {
+    "decision": "changes_requested",
+    "c0MethodAcceptance": "blocked_by_one_P1",
+    "originalCycleInitialization": "accepted_with_stated_search_scope",
+    "budgetArithmeticAndHistoricalSeparation": "accepted",
+    "independentUnaffectedWork": "May continue within existing authorization and budget",
+    "researchOrDeploymentApproval": false,
+    "nextReview": "Focused verification against a new immutable request after the continuity fix"
+  }
+}

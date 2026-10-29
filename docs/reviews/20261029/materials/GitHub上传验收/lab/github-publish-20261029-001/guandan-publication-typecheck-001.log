@@ -1,0 +1,6 @@
+
+> guandan@0.1.0 typecheck
+> tsc --noEmit -p packages/engine && tsc --noEmit -p packages/ai && tsc --noEmit -p packages/review && tsc --noEmit -p packages/web
+
+packages/web/src/ui/gt/DevTableAudit.tsx(7,20): error TS2307: Cannot find module '../../../../../lab/layout-fix-20261028/fixtures/single-pending.json' or its corresponding type declarations.
+packages/web/src/ui/gt/DevTableAudit.tsx(8,20): error TS2307: Cannot find module '../../../../../lab/layout-fix-20261028/fixtures/double-pending.json' or its corresponding type declarations.

@@ -1,0 +1,73 @@
+{
+  "at": "2026-10-29T01:05:44.614882+00:00",
+  "repository": "https://github.com/ccrt26/guandan",
+  "branch": "main",
+  "commit": "799ff66544bcceefd81fbb7fd8c5ba0b5885f4ef",
+  "tree": "500c44cdf8ea79017018af4d1a2dad4548824d61",
+  "publishedFileCount": 528,
+  "allRemoteFilesReadBackByteVerified": true,
+  "publishedHistoryCommits": 1,
+  "oldLocalHistoryNotUploaded": true,
+  "knownPrivateValuesMatched": 0,
+  "publishedSourceAndCommitSecretScanFindings": 0,
+  "localPrivacyIgnoreRulesVerified": true,
+  "originalSourceFilesUnchanged": true,
+  "originalGitHead": "0436df1d299eeccc95ea8c6eca3c8f458aa55637",
+  "originalBranch": "ui/play-tribute",
+  "verification": {
+    "typecheck": {
+      "exitCode": 0,
+      "log": "guandan-publication-typecheck-002.log"
+    },
+    "applicationTests": {
+      "exitCode": 0,
+      "files": 37,
+      "tests": 365,
+      "scope": "packages only; local research artifacts intentionally not published"
+    },
+    "build": {
+      "exitCode": 0
+    },
+    "packagingFirstTypecheckFailure": "Two existing DevTableAudit JSON fixtures initially omitted; included unchanged, subsequent typecheck passed; first failure log retained"
+  },
+  "deployedOldWeightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+  "originalResearchDataDeleted": false,
+  "publicationWorkingCopy": "/private/tmp/guandan-github-publication-20261029-001",
+  "remoteReadbackClone": "/private/tmp/guandan-github-readback-20261029-001",
+  "excluded": "Actual keys, private/machine configuration, original Git history, installed dependencies, Python venv, large research records/checkpoints/logs and sealed contents",
+  "records": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/github-publish-20261029-001/guandan-publication-source-manifest-001.json",
+      "sha256": "3a0908a288ca98b6ea2504412b6a92041d9246f1c63aeb8e5f3f1e1df50a45bd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/github-publish-20261029-001/guandan-publication-typecheck-001.log",
+      "sha256": "c4f7c5b2310810748b6d4ad97dd0f209f505082801b4b59b3daf7ed233f87467"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/github-publish-20261029-001/guandan-publication-typecheck-002.log",
+      "sha256": "f6e49d0edc7faf9bb4db2ecbd5624d015cc72869320985b6d9a72bc1fcfc6186"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/github-publish-20261029-001/guandan-publication-app-tests-001.log",
+      "sha256": "5f57f4f1e48507c2988db6e62699efa7202b00b4b56800c41f23e8f6312dbd1b"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/github-publish-20261029-001/guandan-publication-build-001.log",
+      "sha256": "21e4784388f8b199f389a102a84148a021c53959bec9f9aace917052e0263fd5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/github-publish-20261029-001/guandan-gitleaks-source-report-001.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/github-publish-20261029-001/guandan-gitleaks-staged-report-001.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/github-publish-20261029-001/guandan-gitleaks-publication-history-report-001.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "nextUploadNote": "Use clean published main history or prepare another reviewed source snapshot; do not push the original old local history with --all."
+}

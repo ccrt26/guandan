@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "r6-rule-domain-report-v1",
+  "at": "2026-10-28T14:46:43.776Z",
+  "stageStatus": "completed",
+  "resultCode": "rule_domain_audit_h_quality_pending",
+  "completedMatches": 1305,
+  "totals": {
+    "rawActions": 1217604,
+    "compatibleActions": 98473,
+    "targetLegalActions": 98675,
+    "coveredCompatibleActions": 97042,
+    "usableBehaviorActions": 97042,
+    "outsidePrefixActions": 1118237,
+    "unexplainedCandidateOmissions": 0
+  },
+  "classes": {
+    "A": 0,
+    "B": 1261,
+    "C": 44
+  },
+  "bySplit": {
+    "historical_diagnostic": {
+      "matches": 100,
+      "rawActions": 94778,
+      "compatibleActions": 6718,
+      "usableBehaviorActions": 6622
+    },
+    "train": {
+      "matches": 723,
+      "rawActions": 664373,
+      "compatibleActions": 54202,
+      "usableBehaviorActions": 53429
+    },
+    "holdout": {
+      "matches": 241,
+      "rawActions": 232233,
+      "compatibleActions": 19526,
+      "usableBehaviorActions": 19254
+    },
+    "dev": {
+      "matches": 241,
+      "rawActions": 226220,
+      "compatibleActions": 18027,
+      "usableBehaviorActions": 17737
+    }
+  },
+  "reasons": {
+    "enumerator_pruned_resource_variants": 1435,
+    "source_rule_difference_level_sequence": 599,
+    "unresolved_target_rule_illegal": 87,
+    "ambiguous_declaration": 202,
+    "source_rule_difference_joker_pair_trio": 6
+  },
+  "overlappingReasonCombinations": {
+    "enumerator_pruned_resource_variants": 1431,
+    "source_rule_difference_level_sequence": 599,
+    "unresolved_target_rule_illegal": 87,
+    "ambiguous_declaration": 198,
+    "ambiguous_declaration+enumerator_pruned_resource_variants": 4,
+    "source_rule_difference_joker_pair_trio": 6
+  },
+  "sourceLockReceiptHash": "3745e292e4bd3137f5f49d24b487adad13326a9bc42b6fa683865437e9ac81b7",
+  "planLockHash": "2c11b7a38fbc7b65bd30a996d3ab1e24b5f5c9a7d113764f30b282bc908c9f55",
+  "files": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/replay-006/replay-ledger.jsonl",
+      "sha256": "e1e6d496cfd7f7bcfb7e4bb9fedcd0c87c5e5c55395383076d860fe799d4d011"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/replay-006/match-results.jsonl",
+      "sha256": "1ff791a7734804717eba7ba7e7e93bf6f08915453cc8668544838a5c8233d5e0"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/data-replay.ts",
+      "sha256": "991e893a1bc256de4e3cb1d05965cf64e431ef9957d98515e25f08c20150227e"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/data-audit.ts",
+      "sha256": "a358ee06a966f0d9fc74daa2f8d126645fc8fd71671969ca41fb904fe775aad2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/action-effect.ts",
+      "sha256": "9e2a8eb4841cedc92f3543a82a79bbc87d36ebca254e86736099c2174629f863"
+    }
+  ],
+  "activeWallSeconds": 21.857,
+  "modelScoresOpened": false,
+  "HQuality": "not_measured_for_this_audit",
+  "priorHQualityReceipt": "/Users/ccrt/game/guandan/lab/review6_1/data/H-evaluation-001.json",
+  "actionEquivalenceVersion": "complete-resources-necessary-wild-effects-v1",
+  "consumptionRule": "Only explicit usableForH rows, joined to locked train/dev/holdout split. B supplies legal behavior prefixes only; no incompatible future outcomes. C never consumed. The prior once-only unqualified H retains its original valid selected subset and is not refitted after this mechanical correction.",
+  "fullSourceDenominatorKept": true
+}

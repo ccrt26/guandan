@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "r6-facts-contract-v1",
+  "schema": "DecisionFactsV3",
+  "implementation": {
+    "path": "/Users/ccrt/game/guandan/packages/review/src/decisionFacts.ts",
+    "sha256": "f783d00594776386fd4481e721cd19db199c5916822033aa1ca4ca2d6eb2dccb"
+  },
+  "lockedPlan": {
+    "path": "/Users/ccrt/game/guandan/lab/review6_1/capability/product-007/plan.lock.json",
+    "sha256": "4a76a5b1978b058af9bdea3c55819bbdd93ee611b7fa99b750840ea710e83909"
+  },
+  "expectedAssertions": {
+    "path": "/Users/ccrt/game/guandan/lab/review6_1/capability/product-007/expected-assertions.lock.json",
+    "sha256": "28f1d68127fb3304a07a671d3953e88556b8e80a3a9d5557a7e2daf629b9d1ff"
+  },
+  "roles": [
+    "target_and_owner",
+    "actor_and_viewer",
+    "actual_identity_and_count",
+    "remaining_counts",
+    "rule_relation",
+    "advice_source"
+  ],
+  "expectedCards": 240,
+  "expectedAssertionsCount": 1440,
+  "actorOwnObservationOnly": true,
+  "posthocOriginalRecordSeparate": true,
+  "strategyLabels": "not_established"
+}

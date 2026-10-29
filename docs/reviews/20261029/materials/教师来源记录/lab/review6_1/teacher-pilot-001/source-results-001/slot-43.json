@@ -1,0 +1,235 @@
+{
+  "slot": 43,
+  "rootId": "C3-pilot-source-001:root-43",
+  "sourceFamilyId": "first-deal-family:13a1c85670b78f1df27125dcd761ff8724283709483c04066c5d15b3a294daf2",
+  "sourceCompletion": {
+    "complete": true,
+    "incompleteReason": null,
+    "games": 13,
+    "decisions": 1245,
+    "traceSHA256": "4efa11b989e8cb697065bb8641b0c29345b81f709f6143ea45ea729e0fc4a952",
+    "policyIds": [
+      "review6-clean-U0-399-action64-candv3",
+      "review6-clean-U0-399-action64-candv3",
+      "review6-clean-U0-399-action64-candv3",
+      "review6-clean-U0-399-action64-candv3"
+    ],
+    "roundFamilies": [
+      {
+        "gameNo": 1,
+        "familyId": "first-deal-family:13a1c85670b78f1df27125dcd761ff8724283709483c04066c5d15b3a294daf2"
+      },
+      {
+        "gameNo": 2,
+        "familyId": "first-deal-family:da2965c9887024faf1eef0400c6274e337284ea4ef1c2aa191bdea2350105566"
+      },
+      {
+        "gameNo": 3,
+        "familyId": "first-deal-family:51aa6440c3f828d39014836a8e2863dacd09883202cc51440153824f726a55fb"
+      },
+      {
+        "gameNo": 4,
+        "familyId": "first-deal-family:4c67f781c65ee361421cd596e0912da7ecb23aae7cf8427502a401b50af386d1"
+      },
+      {
+        "gameNo": 5,
+        "familyId": "first-deal-family:7be1a3698d41d0754e0417e27541df2ac8333b2f1ea88f96643912e5c0a32e88"
+      },
+      {
+        "gameNo": 6,
+        "familyId": "first-deal-family:cf41524dc251a43b7862f7b04f783a7bb685ac592d53d738bfbf733c961ff91e"
+      },
+      {
+        "gameNo": 7,
+        "familyId": "first-deal-family:10c371e53fee4506c26813af0c3ce207dbda9abfde60f5a64540600bd0cb0dae"
+      },
+      {
+        "gameNo": 8,
+        "familyId": "first-deal-family:59ff003bab00bdf21aa2f4b31409f57b26431b2404842a4970c29eacb08d3543"
+      },
+      {
+        "gameNo": 9,
+        "familyId": "first-deal-family:13e963ad6c036e98c886ed830213e37808a2862a79e76725a4601030c2afd946"
+      },
+      {
+        "gameNo": 10,
+        "familyId": "first-deal-family:486e083beafacfeab3f6aded644aa999c04a0660a7372fbb355ecc33869fc41a"
+      },
+      {
+        "gameNo": 11,
+        "familyId": "first-deal-family:4d1f47a5508d086b867c474fa333dd85f11ea9d894efd85a29340ecfab498b01"
+      },
+      {
+        "gameNo": 12,
+        "familyId": "first-deal-family:7c9469877ee4cecd58069673874b23b8f3da34eac40cf9e5fa93bce2b5c04efd"
+      },
+      {
+        "gameNo": 13,
+        "familyId": "first-deal-family:5bed6199ea2fb3101a59abb29860405b01804b83a07b0b2f1013a73262f6f22d"
+      }
+    ]
+  },
+  "eligiblePositionTrials": 18,
+  "rejections": [
+    {
+      "gameNo": 2,
+      "moveNo": 19,
+      "observationSHA256": "438466e8d6ac10c25db27fef6a290950dbfec4244777a6603941dae6a681a48d",
+      "reasons": [
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 4,
+      "moveNo": 1,
+      "observationSHA256": "cfcceb68168d2bf047345eae8c60240b1781a06563d4d7b7a834cb82a127852f",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4",
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4",
+        "public_tribute_maximum_constraint_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 6,
+      "moveNo": 0,
+      "observationSHA256": "3f032cc439159856f2375b0f107e35cf2a60d110121f63a6cc9c766663c0ea3d",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 6,
+      "moveNo": 16,
+      "observationSHA256": "a3594985941ae4013d9bd07a117f0053bbd8629f04b5d0322d0d003a20a7349c",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 6,
+      "moveNo": 24,
+      "observationSHA256": "88598a606cdb29735c8016eb307a0a245e648c32446e14a84348a6b29bf32ff3",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 6,
+      "moveNo": 28,
+      "observationSHA256": "3b6c819419d3effaf9db7804f10571f0aebe20c59cda371679d60c227688f160",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 6,
+      "moveNo": 32,
+      "observationSHA256": "552208193c5b87f01424c2dcc951c15de456d72e80c98c3a7f8d460e622d2cac",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 7,
+      "moveNo": 11,
+      "observationSHA256": "9970a969ebe34e4001630f935339673bea9e16070361b3c63062f882aa0d54f6",
+      "reasons": [
+        "public_tribute_maximum_constraint_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 8,
+      "moveNo": 7,
+      "observationSHA256": "34d623323f299f75aced099d2bbe76a061b8be04e4836bca4c7d7516defe1c03",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4",
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4",
+        "public_tribute_maximum_constraint_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 9,
+      "moveNo": 0,
+      "observationSHA256": "d79b0b8e00d5e064302fc03faded7045cc19f9d4708a089ca5a26f9cab8a064b",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 10,
+      "moveNo": 6,
+      "observationSHA256": "67f69070e19866dc92e91fa5cafd8a37d90eaa9fab64993f6afc20a7a46d903a",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4",
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4",
+        "public_tribute_maximum_constraint_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 10,
+      "moveNo": 14,
+      "observationSHA256": "ec240cd3e4a447edc6d15bf530c2540e706b64db3d85c7db9888b9fd94b5bfab",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4",
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4",
+        "public_tribute_maximum_constraint_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 10,
+      "moveNo": 22,
+      "observationSHA256": "c5c21c5adca6110f3190fa518843f77e6257d343e8ff383f3820b5c80b52a0e5",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4",
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4",
+        "public_tribute_maximum_constraint_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 11,
+      "moveNo": 0,
+      "observationSHA256": "932c490568699848e43107b49b76fe5105579b25d8548a8291c5c3cb987ce9c1",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 12,
+      "moveNo": 1,
+      "observationSHA256": "e7ee3723d01ca432b0d01186f06d448fe6721366e1d7db2d4d149b761fb04e12",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4",
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4",
+        "public_tribute_maximum_constraint_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 12,
+      "moveNo": 9,
+      "observationSHA256": "a65402e34edfdb9d55602809ce2b18f580b15827021f17a002a27ab7c6807e98",
+      "reasons": [
+        "known_transfer_owner_not_encoded_in_schema_v4",
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4",
+        "public_tribute_maximum_constraint_not_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 13,
+      "moveNo": 7,
+      "observationSHA256": "efe2e7492117f1fae2b5b866579b2a0791e794a1baa5df8472e39bed955cfccd",
+      "reasons": [
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4"
+      ]
+    },
+    {
+      "gameNo": 13,
+      "moveNo": 15,
+      "observationSHA256": "1030762c343986616df433caee9c92d41b161712adf777adf0934589d14050bd",
+      "reasons": [
+        "public_resistance_giver_constraint_not_fully_encoded_in_schema_v4"
+      ]
+    }
+  ],
+  "root": null,
+  "resultCode": "no_eligible_root_in_bounded_source"
+}

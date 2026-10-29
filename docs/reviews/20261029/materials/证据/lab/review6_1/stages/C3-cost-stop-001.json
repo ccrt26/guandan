@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "r6-original-C3-negative-cost-stop-v1",
+  "at": "2026-10-29T00:18:17.448591+00:00",
+  "cycleId": "review6-humanlike-20261028",
+  "stage": "C3",
+  "stageStatus": "stopped_at_original_cost_admission_gate",
+  "overallGoalStatus": "partially_achieved_old_policy_retained",
+  "C3OverallPositiveAccepted": false,
+  "mainTrainingAdmitted": false,
+  "originalStopRule": {
+    "path": "/Users/ccrt/game/guandan/lab/review6_1/input/reading/REVIEW6_1_COMPLETE.txt",
+    "line": 138,
+    "meaning": "若原预算容不下完整正式确认，在训练前报告预计缺口并完成仍可交付的产品、数据和较小研究问题；不在训练后删评测。"
+  },
+  "decisions": {
+    "engineering": "APPROVE_NEGATIVE_BUDGET_GATE",
+    "method": "APPROVE_NEGATIVE_BUDGET_GATE",
+    "scope": "当前已测配方的成本预测不满足原余额；不是任何硬件/算法物理不可能的下界。"
+  },
+  "measuredFiniteResults": {
+    "factsCards": 240,
+    "factsAssertions": 1440,
+    "factsMissing": 0,
+    "factsErrors": 0,
+    "teacherFullyAdjudicated": 18,
+    "teacherSupportedDistinctRoots": 4,
+    "teacherSourceFamilies": 4,
+    "teacherBothDirections": true,
+    "teacherMinimumCoverageReady": true,
+    "varianceBaseBlocks": 64,
+    "variancePhysicalCompleteMatches": 1024,
+    "matureUpdatesA": 20,
+    "matureUpdatesB": 20,
+    "maturePhysicalSourceMatches": 181,
+    "matureFirstDealFamilies": 97,
+    "differentTeacherRootsInB": 4,
+    "BExposuresEachRoot": 20,
+    "BTeacherGradientAll20Nonzero": true,
+    "distinctPilotUpdatedWeightFiles": 40
+  },
+  "costAtMeasurement": {
+    "originalCycleHours": 72,
+    "originalActualRemainingHours": 56.11876216415528,
+    "unreservedAfterEngineering037Hours": 55.11876216415528,
+    "minimumKnownProjected100Roots400UpdatesPlus25Hours": 145.67655124229458,
+    "additionalSkillSevereJDevLabelBackupCosts": "unmeasured/null, not assumedfree andnotcountedasactualspent",
+    "favorableOptional128ProjectionPlus25Hours": 68.92084751040673,
+    "favorableOptionalGapAgainstActualRemainingHours": 12.80208534625146,
+    "estimateNotGuaranteeOrUniversalLowerBound": true
+  },
+  "targetsUnchanged": {
+    "qualifiedTrainingRootOptions": [
+      100,
+      500,
+      2000
+    ],
+    "sharedUpdateOptions": [
+      400,
+      1200,
+      3600
+    ],
+    "pairedSeeds": 3,
+    "arms": 2,
+    "skillFamilies": 60,
+    "skillRoots": 75,
+    "skillTotalMinimum": 51,
+    "skillEachCategoryMinimum": 12,
+    "severeFullyJudgedFamilies": 24,
+    "newConfirmedSevereErrorsAllowed": 0,
+    "illegalSkillsAllowed": 0,
+    "formalMainPointMinimum": 0.03,
+    "M1PointMinimum": 0.55,
+    "M1LowerStrictlyAbove": 0.5,
+    "M2LowerStrictlyAbove": 0.45,
+    "groupNIMargin": 0.03,
+    "maximumFormalAttempts": 3,
+    "cycleSeconds": 259200
+  },
+  "notCompletedOrNotRun": [
+    "最终N选择与联合功效模拟未完成，不能作为正向协议通过",
+    "生产75技能/24严重案例标签生成器与语义验证器尚未实现、未生产封存标签",
+    "生产教学100/500/2000根、正式protocol/source freeze、生产断点连续性与真实两更新接线收据未做",
+    "C4三对六run主训练未启动；pilot权重不是正式父模型",
+    "C5后段课程/回流与条件升级未开展；不声称学会多步计划",
+    "C6候选封存、75根技能/24严重例及正式比赛均未开；未部署新政策"
+  ],
+  "mainUpdates": 0,
+  "formalAttemptsOpened": 0,
+  "productionProtocol": null,
+  "candidatePolicy": null,
+  "deployedPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+  "deployedWeightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+  "futureScienceExecutionApproved": false,
+  "references": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/teacher-quality-receipt-001.json",
+      "sha256": "e2782c0971b84e002faa782ca1bbbb2db4776c8959b547b80e00cd96db69d749"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/pilot-label-manifest-001.json",
+      "sha256": "ff880e81b74e61785bf5792cf7bff35d92adf3d32f772bd4d9eafe7a8fccb4a3"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/variance-report.json",
+      "sha256": "302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/mature-report.json",
+      "sha256": "6f6cf5a879b064bb1380ce1026999408691a4cb08f1417393d3e95f111659a61"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-plan-001.json",
+      "sha256": "46773db76e18931019da8bb74dcd3d7b64ec32eb069e86359ee5cee86ce5c4dd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-optional-world-sensitivity-001.json",
+      "sha256": "b1a3432fee8af787879f712ddad0ed258d94ddb79ff7e872de329311ad419098"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-setup-overhead-correction-001.json",
+      "sha256": "d1633332d0cb6c73395501fc45f4b9acc7c66630a5922e0ce4d9108a0cca55a5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-budget-admission-engineering-review-001.json",
+      "sha256": "b54e719aaa70d4a0dfe9e54e65938b0b2e8d075354943d63c43154cb2f4c04ec"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-budget-admission-method-review-001.json",
+      "sha256": "50457dbc52db93f7c73e83976805fd12a763ebdaf12ac2cc5079d1830f7a6b3a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-actual-mature-engineering-review-001.json",
+      "sha256": "d83535fda816d0d5560352e5abc7a2ab8991d5b9af952efc9e0eb42e76b0779d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-actual-mature-method-review-001.json",
+      "sha256": "8c5c2a4788133199e2979189d40d0959971383ec38044d38fe4a0d111245378c"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/final-product-tests-001.log",
+      "sha256": "f1d25e332b66659f667f7d1f63971570849cde4c9cd8a3fc7d48c0c82eb5a9a2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/final-product-typecheck-001.log",
+      "sha256": "f6e49d0edc7faf9bb4db2ecbd5624d015cc72869320985b6d9a72bc1fcfc6186"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/final-runtime-http-readback-001.json",
+      "sha256": "e8704c04dea74ab2e4adbf803ed36c6e35f3a79ee0075685994a15ddb9d6830b"
+    }
+  ]
+}

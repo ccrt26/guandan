@@ -1,0 +1,3596 @@
+{
+  "schemaVersion": 1,
+  "role": "method",
+  "reviewId": "C3-actual-mature-method-review-001",
+  "inputReportSHA256": "6f6cf5a879b064bb1380ce1026999408691a4cb08f1417393d3e95f111659a61",
+  "reviewedContractSHA256": "7d99a996322e06b0e481897418b0318e76454c65e1e5f27e05516d04bbf4ba93",
+  "overallDecision": "MEASURED_MATURE_COST_AND_WIRING_VERIFIED",
+  "futureExecutionApproval": false,
+  "reviewedAt": "2026-10-29T00:09:45.731848+00:00",
+  "scope": {
+    "inputReport": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/mature-report.json",
+    "onlyReadback": "Actual004 Task4 20A/20B mature pilot target/provenance/quota/checkpoint/exposure/cost evidence.",
+    "designReviewsReused": [
+      {
+        "path": "/private/tmp/C3-mature-execution-method-review-001.json",
+        "sha256": "4af266414256b4a42a5f5eff7ed1dc20ad5833f34a8514763fe39c6531cb094c"
+      },
+      {
+        "path": "/private/tmp/C3-mature-execution-method-review-004.json",
+        "sha256": "d1f19fc622642fde7af260d222b672745d769bb131aa31eb7372fcb3fb2bd040"
+      }
+    ],
+    "notTeacherQualityC3OrMainAcceptance": true,
+    "notProductionContinuationOrFormalParent": true
+  },
+  "findings": [],
+  "P1": [],
+  "P2": [],
+  "actualDataAndTargets": {
+    "physicalCompleteSourceMatches": 181,
+    "anchorSourceMatches": 1,
+    "armASourceMatches": 92,
+    "armBSourceMatches": 88,
+    "physicalRoundRecords": 1784,
+    "all181OriginalSourceHashesMatch": true,
+    "currentSeatsOnly": "Independently checked actual physical4/2/1 current seat masks with paired oldO opponents and alternating other-partner policies.",
+    "gradientMetadataRows": 40960,
+    "retainedQueueRows": 5783,
+    "totalIndependentDecisionIDTargetJoins": 46743,
+    "allGAndWAndYSatisfied": true,
+    "targetDefinition": "g=actual own-round upgrade signed for seat parity; W=whole complete-match winner signed for seat parity; y=g+W. Each metadata row was joined by match/game/physical seat and actual current policy/behavior SHA.",
+    "uniqueGradientAndTailDecisionIDs": 46743,
+    "inputFeatures": "40 hashed binary matrices, each1024x399 float32 and finite; no network inference repeated.",
+    "lineages": {
+      "physicalSourceMatches": 181,
+      "distinctFirstSourceFamilies": 97,
+      "physicalRoundReferences": 1784,
+      "distinctPhysicalDealFamilies": 1069,
+      "overlapWithOriginal5855ExcludedFamilySet": [],
+      "scope": "mechanical comparison of already-recorded family IDs and prelocked exclusions, no fresh deck or policy run; A/B shared base families are explicitly correlated"
+    },
+    "actualBehaviorWeightJoins": {
+      "actualSourceBehaviorMatchesOwnArmWeightVersion": 180,
+      "allCurrentPhysicalSeatsShareSameVersion": true,
+      "AandBInitialBehaviorSameParentSHA256": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01",
+      "sourceCountsByBehaviorVersion": {
+        "A": {
+          "0": 12,
+          "1": 4,
+          "3": 8,
+          "4": 4,
+          "5": 4,
+          "6": 4,
+          "7": 4,
+          "8": 8,
+          "10": 4,
+          "11": 4,
+          "12": 8,
+          "14": 8,
+          "15": 4,
+          "16": 4,
+          "17": 4,
+          "18": 4,
+          "19": 4
+        },
+        "B": {
+          "0": 12,
+          "1": 4,
+          "3": 8,
+          "4": 4,
+          "5": 4,
+          "7": 12,
+          "9": 4,
+          "10": 4,
+          "11": 4,
+          "12": 4,
+          "13": 4,
+          "14": 4,
+          "15": 8,
+          "17": 8,
+          "19": 4
+        }
+      },
+      "scope": "No new policy action or neural calculation; raw SHA/version joins only"
+    }
+  },
+  "maturityAndQueues": {
+    "matureConsumed": 81920,
+    "gradientRows": 40960,
+    "subsamplingDiscarded": 40960,
+    "perArmMatureConsumed": 40960,
+    "perArmGradientRows": 20480,
+    "perArmDiscarded": 20480,
+    "perStepGradientQuota": {
+      "self": 512,
+      "frozen_opponent": 256,
+      "other_partner": 256
+    },
+    "perStepFIFOConsumedQuota": {
+      "self": 1024,
+      "frozen_opponent": 512,
+      "other_partner": 512
+    },
+    "sourceMassBalanceAndSeededPositions": "For all40 steps, independently implemented registeredFNV/mulberry32/FisherYates to recover selected FIFO positions, joined40960 positions to the correct prelocked source block, checked120 per-step bucket mass balances and every final tail position. No borrowed quota, duplicate gradient/tail ID or source selection was found.",
+    "arms": {
+      "A": {
+        "sourceMatches": 92,
+        "sourceRowsProducedByBucket": {
+          "self": 21767,
+          "frozen_opponent": 11401,
+          "other_partner": 11208
+        },
+        "sourceCursors": {
+          "self": 20,
+          "frozen_opponent": 24,
+          "other_partner": 48
+        },
+        "matureConsumed": 40960,
+        "gradientRows": 20480,
+        "discarded": 20480,
+        "finalQueueCounts": {
+          "self": 1287,
+          "frozen_opponent": 1161,
+          "other_partner": 968
+        },
+        "timing": {
+          "n": 20,
+          "matureDeviceMedian": 1.205501687500002,
+          "matureDeviceP90": 2.814173750000001,
+          "pythonStepMedian": 0.023879957999999313,
+          "pythonStepP90": 0.024637991600001644
+        },
+        "labelExposures": {
+          "review6-pilot:C3-pilot-source-001:root-03": 0,
+          "review6-pilot:C3-pilot-source-001:root-05": 0,
+          "review6-pilot:C3-pilot-source-001:root-06": 0,
+          "review6-pilot:C3-pilot-source-001:root-20": 0
+        },
+        "minimumRecordedWeightedTeacherGradientNorm": 0,
+        "maximumRecordedWeightedTeacherGradientNorm": 0,
+        "teacherToTeamRatioRange": [
+          0,
+          0
+        ]
+      },
+      "B": {
+        "sourceMatches": 88,
+        "sourceRowsProducedByBucket": {
+          "self": 21892,
+          "frozen_opponent": 10648,
+          "other_partner": 10787
+        },
+        "sourceCursors": {
+          "self": 24,
+          "frozen_opponent": 20,
+          "other_partner": 44
+        },
+        "matureConsumed": 40960,
+        "gradientRows": 20480,
+        "discarded": 20480,
+        "finalQueueCounts": {
+          "self": 1412,
+          "frozen_opponent": 408,
+          "other_partner": 547
+        },
+        "timing": {
+          "n": 20,
+          "matureDeviceMedian": 1.2112163330000003,
+          "matureDeviceP90": 2.9162040955,
+          "pythonStepMedian": 0.026400333499999817,
+          "pythonStepP90": 0.026989958599996557
+        },
+        "labelExposures": {
+          "review6-pilot:C3-pilot-source-001:root-03": 20,
+          "review6-pilot:C3-pilot-source-001:root-05": 20,
+          "review6-pilot:C3-pilot-source-001:root-06": 20,
+          "review6-pilot:C3-pilot-source-001:root-20": 20
+        },
+        "minimumRecordedWeightedTeacherGradientNorm": 0.09082872420549393,
+        "maximumRecordedWeightedTeacherGradientNorm": 0.11316046118736267,
+        "teacherToTeamRatioRange": [
+          0.008649488333777162,
+          0.035828491263212824
+        ]
+      }
+    },
+    "discardEvidenceLimit": "Individual discarded feature vectors/IDs were not separately persisted.40960 discarded is exact quota/seed/source mass balance, not a claim of rereading81920 raw feature vectors."
+  },
+  "optimizerAndWeights": {
+    "actualUpdatesA": 20,
+    "actualUpdatesB": 20,
+    "singleMergedOptimizerStepPerReceipt": true,
+    "checkpointsReadWithoutTorch": 40,
+    "RMSParameterStepCountersChecked": 240,
+    "everyStepCounterEqualsOwnArmAbsoluteUpdate": true,
+    "checkpointModelTensorFlatFilesBitwiseEqual": true,
+    "architecture": [
+      399,
+      256,
+      256,
+      1
+    ],
+    "sixParameterTensorShapes": [
+      [
+        256,
+        399
+      ],
+      [
+        256
+      ],
+      [
+        256,
+        256
+      ],
+      [
+        256
+      ],
+      [
+        1,
+        256
+      ],
+      [
+        1
+      ]
+    ],
+    "all40WeightSHA256Distinct": true,
+    "sameParentSHA256": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01",
+    "actualRMSprop": {
+      "lr": 0.001,
+      "alpha": 0.9,
+      "eps": 1e-05,
+      "momentum": 0,
+      "centered": false,
+      "weightDecay": 0
+    },
+    "RMSAccumulatorEvidence": "All240 square_avg tensors have correct shapes, finite nonnegative values and nonzero entries; their per-parameter raw hashes are retained in rawRecomputation.",
+    "decoder": "Restricted stdlib pickle reader permits only OrderedDict, inert Float/ByteStorage references and a local inert TensorRef constructor; raw ZIP storages read as bytes. No torch import, Tensor operations, forward, backward or optimizer execution."
+  },
+  "lossAndTeacherWiring": {
+    "actualDistinctTeacherRoots": 4,
+    "AExposurePerRoot": 0,
+    "BExposurePerRoot": 20,
+    "totalBExposureEvents": 80,
+    "independentLabelCountRemains4": true,
+    "all20BWeightedPreferenceGradientNormsPositive": true,
+    "minimumBRecordedWeightedPreferenceGradientNorm": 0.09082872420549393,
+    "maximumBRecordedWeightedPreferenceGradientNorm": 0.11316046118736267,
+    "teacherToTeamRatioRange": [
+      0.008649488333777162,
+      0.035828491263212824
+    ],
+    "AWeightedPreferenceGradientNormAlways0": true,
+    "preferenceDefinition": "mean over the four registered roots of softplus(.16-(Qplus-Qminus)); exact prelocked per-step root permutation checked; all roots once/update.",
+    "mergedLossDefinition": "MSEteam +.01*rootMeanAnchor +B*.1*rootMeanPreference; one optimizer step per team update.",
+    "independentlyRecomputedMergedLossMaximumAbsoluteDifference": 0.0,
+    "independentlyRecomputedSoftplusMaximumAbsoluteDifference": 4.1611338374991647e-08,
+    "independentlyRecomputedGradientNormRatioMaximumAbsoluteDifference": 0.0,
+    "anchor": {
+      "roots": 64,
+      "sourceMatches": 1,
+      "sourceLineages": 1,
+      "candidateRows": 960,
+      "physicalGames": [
+        1
+      ],
+      "rootsNotIndependent": true
+    },
+    "numericEvidenceLimit": "MSE/anchor losses and team/teacher gradient norms are real saved runtime measurements, corroborated by the frozen single-step source and consecutive checkpoint states. New neural outputs or backpropagation were forbidden and were not recomputed. Recorded before/after gaps do not require monotonic improvement under the mixed loss."
+  },
+  "actualTiming": {
+    "type7QuantileTimingMatchesExactly": true,
+    "A": {
+      "n": 20,
+      "matureDeviceMedian": 1.205501687500002,
+      "matureDeviceP90": 2.814173750000001,
+      "pythonStepMedian": 0.023879957999999313,
+      "pythonStepP90": 0.024637991600001644
+    },
+    "B": {
+      "n": 20,
+      "matureDeviceMedian": 1.2112163330000003,
+      "matureDeviceP90": 2.9162040955,
+      "pythonStepMedian": 0.026400333499999817,
+      "pythonStepP90": 0.026989958599996557
+    },
+    "authoritativeOriginalSettlement": {
+      "taskId": "C3-mature-pilot-execution-001",
+      "at": "2026-10-28T23:55:05.645Z",
+      "deviceWallSeconds": 63.076,
+      "conservativelyChargedWorkerSeconds": 378.456,
+      "maxWorkersCharged": 6,
+      "chargeBasis": "conservative6*fullwindow:4policythreads plus1learner and1watchdog allowance; CPU2learner step happensonlyafterallpolicyworkers ended; allstartup/parent/IOincluded",
+      "ownedProcessGroupCleanup": {
+        "pgid": 39382,
+        "termSent": false,
+        "killSent": false,
+        "remaining": false,
+        "seconds": 5.525000000000091e-05,
+        "spawned": true
+      },
+      "childPID": 39382,
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "leaseSHA256": "2809f5d2012d281acaed093222e38d113f6152ad33dd613659f7315566a26680",
+      "budgetHead": "c7a62493ac479e1f6eb6f44a83db6d7e6f6999bc4b4e748f99d300cce73afd38"
+    },
+    "workerReportWallSeconds": 62.467566999999995,
+    "workerWindowExcludesParentStartupAndCleanupSeconds": 0.6084330000000051,
+    "resources": {
+      "completePoolWaves": 46,
+      "totalCompleteSourceTasks": 181,
+      "summedPoolDeviceWallSeconds": 56.659549173000016,
+      "summedPolicyWorkerTaskSeconds": 141.731362921,
+      "summedWorkerLifetimeSeconds": 185.89734870700002,
+      "allWavesComplete": true
+    },
+    "scope": "Descriptive pilot timing in this exact runtime/domain. A ran beforeB; no causal teacher overhead or policy strength is inferred. Python step timing is the recorded service step, not an isolated backwards kernel. Parent63.076seconds and378.456 worker-seconds are authoritative; worker62.467567seconds is a narrower window."
+  },
+  "bindings": {
+    "snapshot": {
+      "manifestSHA256": "10ac95c17de75fc3a23df0e94d839cb4d4a0cd391e74f66d0bbe290002cf11a9",
+      "filesChecked": 199,
+      "allHashesMatch": true
+    },
+    "launch": {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-pilot-execution-001.json",
+      "sha256": "d8d9476809cbb2a68e7766258dbd9eb73734eb31882c80a7154d07ac578aca3a",
+      "contractSHA256": "7d99a996322e06b0e481897418b0318e76454c65e1e5f27e05516d04bbf4ba93",
+      "authorizationPath": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-authorization-001.json",
+      "authorizationSHA256": "0205601bce8a1a6582c8a6b435f735bd7af9b8cce43daaa947287fd09ab4b5ae",
+      "parentPID": 39381,
+      "ownedGroup": true
+    },
+    "observedModuleReadback": {
+      "fileURLUniquePaths": 63,
+      "explicitCJSLoadUniquePaths": 5,
+      "unionUniquePaths": 64,
+      "cjsOnly": [
+        "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/client-XItNFmsq.cjs"
+      ],
+      "allObservedFilePathsInFrozen199": true,
+      "watchdogPIDObserved": 39384,
+      "observedESMPIDs": [
+        39382,
+        39384
+      ],
+      "scope": "union of all file: URLs plus explicit MODULE load quoted file paths in actual persisted stderr; excludes Node builtins and is not a claim that every one of199 files loaded",
+      "pathsWithFrozenSHA256": [
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/boot.mjs",
+          "sha256": "6d52068041904d37f279aa0419e2f9896acbe336c77eae5e08cf2707ebda27b4"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/action-effect.ts",
+          "sha256": "9e2a8eb4841cedc92f3543a82a79bbc87d36ebca254e86736099c2174629f863"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/capability-lineage.ts",
+          "sha256": "4fba44b9fba88df15e175c49d479916e651961c92bd6fe7149d8d4467e1b344c"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/compute-pool.mjs",
+          "sha256": "7b85aa9a02e42644cf3e5cacab7d0a897f6f1ce6d3dfdc5ff3af87087bc8c765"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/data-provenance.ts",
+          "sha256": "2bdb2ab61b02ff3a41a9d00495659edd3104a56d872916bced29a554c6a576b9"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/data-replay.ts",
+          "sha256": "991e893a1bc256de4e3cb1d05965cf64e431ef9957d98515e25f08c20150227e"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/exact-inference.ts",
+          "sha256": "17c694d24cbe5d45c7c7e044f7a8ed3437ed336026d03b569138886971b4fd6c"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/executable-snapshot.mjs",
+          "sha256": "512fc290142578981d5e68964214fbcc88022189a08dfb54e8462da5b352eef3"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/frozen-launch-guard.mjs",
+          "sha256": "c54cdd2a34ee8232ca829b3c02db6aa3a4499fdfced580f6fecda291821ca0ce"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/match-play.ts",
+          "sha256": "67c7d83609e872b453ff97d7919c7e1a576001b94bc678a082b6369de6dbb51d"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/mature-match.ts",
+          "sha256": "a56ce7abdfb7d8edb4721586ebb71b30e5ba39d0d7e73a4c6fc7428f63c9bbfa"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/mature-queues.ts",
+          "sha256": "d732de94b1b47f504550a327dbd91438addffa53065cc27a0892b70114524784"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/mature-task.ts",
+          "sha256": "02b18faebbb37c8990833f21a6cfd109765b71347f625e0491a4bb261fb00780"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/mature-worker.ts",
+          "sha256": "69f8cf4732912d7ee4a944152593a6cff8e589562ae7ad2951cc475442b0ea02"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/owned-window-watchdog.mjs",
+          "sha256": "1b48846fe8af771a5cf6b58faf0c8274b54ccdc9f3d2be8933900698b1bca668"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/owned-window.mjs",
+          "sha256": "b75a0f45334fbd6a0015b74b70f4c18464b0a3e96c073b55dec4346bd49ce3a4"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/plan-dsl.ts",
+          "sha256": "8d6b93e96d62b4e737ed945a84fa405d6bd2b96b1ae131088fc8bf0061c0676f"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/policy-registry.ts",
+          "sha256": "3aaf1e9b7a6e0ce4e4eafa73747b983479efb8b61d7dfd95373e67c8c2e59f2d"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/product-artifacts.ts",
+          "sha256": "1c87788643c9277cff858daca1a23f4237fd6b33ee5e0f492f90ddab47c4652b"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/python-rpc.mjs",
+          "sha256": "f4451315677fdeba8fbcf3bd7b3b2e4363fef58dec33a1be06c28d06a7e9a6f3"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/runtime.mjs",
+          "sha256": "44df2c9dae95dfea538ecd71c50ff9ecf01458863a74124b735b86e7057c8f30"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/teacher-roots.ts",
+          "sha256": "755634f4e15097b578ed2a64a9e0e3f1e5bc0bfea7cbb38148bc9cbe63eb1b34"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/training-ancestry.ts",
+          "sha256": "02112f77ff3557cb7bbc493581589af12baa03b5e527e773989fc585845ff78e"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/training-collector.ts",
+          "sha256": "c90dc1e942a0a61401bb4b919f5791532e0c2ee44743241213aeed17a4212c2c"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/training-samples.ts",
+          "sha256": "8799b92d9f5d4f440d3e38513a6d98ad4d02ecbf897cb31cb49c18f603ee8b52"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/visible-schema.ts",
+          "sha256": "bc8757519a53419c7ef84d1559a30744fb29256e2c294d4659af14a40bfaeccd"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/review6/visible-world.ts",
+          "sha256": "3eda3db2aac56d0a33514e18b77405746071cd204799bab3e8b7ec09dfdb7b66"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/lab/src/review5_tuning/kscbReplay.ts",
+          "sha256": "3b7e41ed476ae447858373f602d73fa793cca1490843cf1ac921179a6a0f3440"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/esbuild/lib/main.js",
+          "sha256": "61ec0ba144ff93f4bf0e96ad6fab6f430ede0aa13e27ace8063ed63ba416b3cd"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/cjs/index.cjs",
+          "sha256": "97a9d7b9d959f9528c46660beedcef69adc1ae29c71948b1e695860511a711d5"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/client-XItNFmsq.cjs",
+          "sha256": "cc72bed2d57324f12318efdc804772a2de18a3deb836ab1d63bdc493ad542113"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/esm/index.mjs",
+          "sha256": "a57842a725ba112ab029d3a0748f4ba5dc7b7a38bc9d38e7c4985af36aaa3c84"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/index-Bqjv9TxC.mjs",
+          "sha256": "180e6425aa9ba5716e9141cc049a7ee5367c7127b03b81aea22612ef04d425ba"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/index-DE3OBZuV.mjs",
+          "sha256": "2e0d42c5a8b65e752ce2fc27d95d382f463e419e12a5ad397b481c705c65fbf2"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/lexer-CGfpMDSb.cjs",
+          "sha256": "e35faacc23082bc2ad2e1d47896932d804914edee932642558fa55098124ac12"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/lexer-CanA6ArK.mjs",
+          "sha256": "e12988f68fd477e488d99c23aae1a9f5be78719e8c0b055642340b25a76e621a"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/loader.mjs",
+          "sha256": "17e2a92c5f1f70065b01c65d5ee9ac260839d4fc0ea78fdbb4db7b1155ccd32f"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/register-B1c7OH6V.cjs",
+          "sha256": "dcda008e1b6774abe04d6e7f0c783804e88046691c44615510b628167e5e5179"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/register-nyXW-TH3.mjs",
+          "sha256": "45628eebec60ddb365201377158bbace219ffd8cf5edab1bcde6b8f7f14b0574"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/require-CBjy4Foe.mjs",
+          "sha256": "b1156f2ecff29ef55801df8f4e1d9b34a5eae32e04dfcf3b8c2557fe191264c2"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/node_modules/tsx/dist/temporary-directory-Du7LpLp9.mjs",
+          "sha256": "cb94c0a5d95542df12c0393e2bb5221ab0977bb80df2d031498cda3dbfdfcef7"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/heuristic.ts",
+          "sha256": "7326256937e4f2fbb9cc20ccdf87e5de0c60b3e8addd0a7efd285078b3b79c67"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/index.ts",
+          "sha256": "effde0207522327307d10df8c23d84ebccc38085a4b5c52e09c9b0a49babafdd"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/legal.ts",
+          "sha256": "adfdb04186b188e42b511cdbcafb1196762627318d34de52a84d5ea94406ec33"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/memory.ts",
+          "sha256": "e51dd273d7adc41d553b83c2bb57f3d4590d1fa99da2c95cbcc7f468185006cf"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/nn/mlp.ts",
+          "sha256": "404326a8665e82bf071c1dc655a0e714dab913ff79e8ce9882c580fef7070521"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/nn/neuralSeat.ts",
+          "sha256": "cb9d0aa9dbfbd66a44c444e8531abf7b633d1c293e9ec6292d1192e9b9d2eb50"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/nn/nnplayer.ts",
+          "sha256": "cf5318978857a44baf362f1f2889bc25b236bb73fee8c194ce1ef2d459ee7e49"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/nn/observationAudit.ts",
+          "sha256": "9cecaaaa0b291476629264b2b9e799ae22f086e1b12b7182ac2f4a9336a304c6"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/nn/schema.ts",
+          "sha256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/nn/tiered.ts",
+          "sha256": "20ad2e55d201e0fca54f07b064669094bd41dea6cd2d69d9628893e62bc6cf09"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/nn/wave.ts",
+          "sha256": "3e90ca6520477384d407f6f4b6e82165c0ed8bd0a385d5ad8f8b7676ac85090a"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/planner.ts",
+          "sha256": "066e31111ff77de464ecd97564e5335a31d83c037168c11dc6b9a6726d1730f9"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/player.ts",
+          "sha256": "5a3107e641d680979f13338ac92d732dd969d9d439976c2b1b01da63096e55d1"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/sim.ts",
+          "sha256": "5ebbf481fb7b024ba71d3999b00d6f0f71e3be720d4b96dcf2909486e49d767c"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/ai/src/types.ts",
+          "sha256": "5d006d09beecf4be7070e768806dfbf45fcb7a2e69ac1fc944c5c220e7f7e932"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/engine/src/combo.ts",
+          "sha256": "9619a3912f757fce8a7e4842559789dbafe54aa1f71763057ae44b6a78035bb2"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/engine/src/deck.ts",
+          "sha256": "083c547bdb3203908dbc3a29f8b8e2378fafd9a42b06ac9691a93b1209f26888"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/engine/src/game.ts",
+          "sha256": "dc99988cdf82e3ed73782aa5c0d0050221f50b5291b7e767a3cc79d4db3df763"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/engine/src/index.ts",
+          "sha256": "bdb43175b8826881901b016445b967804bec8620f6f4d156f7243b20ab83e934"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/engine/src/rank.ts",
+          "sha256": "030bd2bf0dec2c2847c7d459874ad16677374f7628ac5c69883bde9ffa1f795f"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/engine/src/record.ts",
+          "sha256": "946dd97ca0dbc1377b61f24d96eda0b518cfeb21cc50af134eef57d0cdf5e983"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/engine/src/rng.ts",
+          "sha256": "787efe5ffbea7a21917b20bb30d48d7073d914a7d3a7ed01916078798da82b10"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/packages/engine/src/types.ts",
+          "sha256": "6ca0b3e1392e7ed055f2bf169f7480f63882017bd8be6adb52fc5f35f3e91609"
+        }
+      ]
+    },
+    "originalBudgetRawFullChain": {
+      "ledger": "/Users/ccrt/game/guandan/lab/review6/budget-ledger.jsonl",
+      "sha256AtReview": "a850258e581e4dcc7ac52d4b47164b1ea02a79db8d6857d7fb2cb47f407a3e48",
+      "entries": 132,
+      "latestHead": "f801f6f673a6e4c16990bb182f35e07d32de8b7245a4e19e9b6468a1770a5238",
+      "latestSpentSeconds": 57172.456209040996,
+      "latestReservations": {
+        "C3-cost-admission-engineering-window-037": 3600
+      },
+      "matureUniqueRows": [
+        {
+          "kind": "reserve",
+          "cycleId": "review6-humanlike-20261028",
+          "taskId": "C3-mature-pilot-execution-001",
+          "seconds": 7200,
+          "at": "2026-10-28T23:54:02.561Z",
+          "previousHash": "a4f4cc5fb9a01aad287877e776fc883118eccc73eb1294f5a74661152109148b",
+          "entryHash": "b0bf2d0819f9608550a5e96875857d48c1ef8c409fd81e4d3b987e5d14ba97da"
+        },
+        {
+          "kind": "settle",
+          "cycleId": "review6-humanlike-20261028",
+          "taskId": "C3-mature-pilot-execution-001",
+          "actualSeconds": 378.456,
+          "at": "2026-10-28T23:55:05.639Z",
+          "previousHash": "b0bf2d0819f9608550a5e96875857d48c1ef8c409fd81e4d3b987e5d14ba97da",
+          "entryHash": "c7a62493ac479e1f6eb6f44a83db6d7e6f6999bc4b4e748f99d300cce73afd38"
+        }
+      ],
+      "atMatureSettlement": {
+        "headHash": "c7a62493ac479e1f6eb6f44a83db6d7e6f6999bc4b4e748f99d300cce73afd38",
+        "spentSeconds": 57172.456209040996,
+        "reservations": {},
+        "remainingUnreservedSeconds": 202027.543790959
+      },
+      "noReset": true
+    },
+    "metadataHashes": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-pilot-execution-001.json",
+        "sha256": "d8d9476809cbb2a68e7766258dbd9eb73734eb31882c80a7154d07ac578aca3a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-authorization-001.json",
+        "sha256": "0205601bce8a1a6582c8a6b435f735bd7af9b8cce43daaa947287fd09ab4b5ae"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-contract-001.json",
+        "sha256": "7d99a996322e06b0e481897418b0318e76454c65e1e5f27e05516d04bbf4ba93"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-snapshot-001/snapshot-manifest.json",
+        "sha256": "10ac95c17de75fc3a23df0e94d839cb4d4a0cd391e74f66d0bbe290002cf11a9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-pilot-execution-001.stderr",
+        "sha256": "b9d9b88f926af263189c01023c89b8d995ee97c217f801877dd4d4b672b34f02"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-pilot-execution-001.stdout",
+        "sha256": "6302ea35301e8c841a71fe81d62c651ea47fc18e96b350726cd93123daad3535"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/opened.json",
+        "sha256": "39d8d340a40153e23fe40f3d874f3addae62ebdb9568207253399551ddaec9bd"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/python-service-opened.json",
+        "sha256": "0ef95af0cd0c4c8a860e02b010cf09fea3395886fca8a0043379c021941afcf7"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-pilot-execution-001-settlement.json",
+        "sha256": "e6f8d82857d9a3efdaacd8d6b1d85c00dc64fcb43036394df4a3f4213ccb4735"
+      }
+    ],
+    "newNNOrTorchOrMatchesOrRealWrites": 0
+  },
+  "rawRecomputation": {
+    "inputReportSHA256": "6f6cf5a879b064bb1380ce1026999408691a4cb08f1417393d3e95f111659a61",
+    "checks": {
+      "source-hash": 181,
+      "complete-source": 181,
+      "source-current-denominator": 181,
+      "source-round-count": 181,
+      "round-ordinal": 181,
+      "round-target-domain": 181,
+      "source-policy-array": 181,
+      "prelocked-source-slot": 181,
+      "source-bucket": 180,
+      "actual-4-2-1-slots": 180,
+      "frozen-exclusion-count": 88,
+      "actual-O-opponents": 136,
+      "actual-other-partner-counter": 92,
+      "181-source-matches": 1,
+      "92A-88B": 1,
+      "one-merged-step-receipt": 40,
+      "team-input-hashes": 40,
+      "binary-399-feature-row-count-and-finite": 40,
+      "exact-gradient-quota": 40,
+      "consume-discard-denominator": 40,
+      "source-count-minus-consumed-equals-queue": 120,
+      "decision-ID-join": 46743,
+      "row-current-policy-only": 46743,
+      "independent-round-g-final-W-y": 46743,
+      "no-gradient-or-tail-ID-reuse": 46743,
+      "independent-seeded-FIFO-source-position": 40960,
+      "FIFO-index-unique": 40960,
+      "exact-prelocked-teacher-permutation": 40,
+      "actual-label-exposures": 40,
+      "anchor-denominators": 40,
+      "softplus-margin-root-mean-recomputed": 40,
+      "merged-loss-arithmetic": 40,
+      "finite-losses": 40,
+      "gradient-norm-ratio-arithmetic": 40,
+      "actual-preference-gradient-scope": 40,
+      "weight-checkpoint-hashes": 40,
+      "checkpoint-arm-step-label-parent-identity": 40,
+      "checkpoint-399-256-256-1": 40,
+      "checkpoint-tensors-bitwise-equal-flat-file": 40,
+      "actual-RMSprop-configuration": 40,
+      "six-parameter-states": 40,
+      "all-240-optimizer-parameter-step-counters": 240,
+      "RMS-square-shape": 240,
+      "actual-RMS-squares-finite-nonzero": 240,
+      "final-queue-hash": 2,
+      "final-queue-discard": 2,
+      "queue-seen-source-set": 2,
+      "source-total-mass-balance": 6,
+      "tail-feature-finite399": 5783,
+      "final-FIFO-tail-source-position": 5783,
+      "tail-position-unique": 5783,
+      "type7-timing-exact": 2,
+      "observed-FIFO-game-chronology": 46743,
+      "observed-FIFO-per-seat-ordinal-chronology": 46743,
+      "40-distinct-new-weights": 1,
+      "64-distinct-anchor-roots-960-candidates": 1,
+      "anchor-one-source-parent": 1,
+      "candidate-within-root-shared331": 1,
+      "actual-original-settlement": 1,
+      "actual-group-and-Python-identity": 1,
+      "actual-watchdog-identity": 1,
+      "actual-successful-exit": 1
+    },
+    "errors": [],
+    "arms": {
+      "A": {
+        "sourceMatches": 92,
+        "sourceRowsProducedByBucket": {
+          "self": 21767,
+          "frozen_opponent": 11401,
+          "other_partner": 11208
+        },
+        "sourceCursors": {
+          "self": 20,
+          "frozen_opponent": 24,
+          "other_partner": 48
+        },
+        "matureConsumed": 40960,
+        "gradientRows": 20480,
+        "discarded": 20480,
+        "finalQueueCounts": {
+          "self": 1287,
+          "frozen_opponent": 1161,
+          "other_partner": 968
+        },
+        "timing": {
+          "n": 20,
+          "matureDeviceMedian": 1.205501687500002,
+          "matureDeviceP90": 2.814173750000001,
+          "pythonStepMedian": 0.023879957999999313,
+          "pythonStepP90": 0.024637991600001644
+        },
+        "labelExposures": {
+          "review6-pilot:C3-pilot-source-001:root-03": 0,
+          "review6-pilot:C3-pilot-source-001:root-05": 0,
+          "review6-pilot:C3-pilot-source-001:root-06": 0,
+          "review6-pilot:C3-pilot-source-001:root-20": 0
+        },
+        "minimumRecordedWeightedTeacherGradientNorm": 0,
+        "maximumRecordedWeightedTeacherGradientNorm": 0,
+        "teacherToTeamRatioRange": [
+          0,
+          0
+        ]
+      },
+      "B": {
+        "sourceMatches": 88,
+        "sourceRowsProducedByBucket": {
+          "self": 21892,
+          "frozen_opponent": 10648,
+          "other_partner": 10787
+        },
+        "sourceCursors": {
+          "self": 24,
+          "frozen_opponent": 20,
+          "other_partner": 44
+        },
+        "matureConsumed": 40960,
+        "gradientRows": 20480,
+        "discarded": 20480,
+        "finalQueueCounts": {
+          "self": 1412,
+          "frozen_opponent": 408,
+          "other_partner": 547
+        },
+        "timing": {
+          "n": 20,
+          "matureDeviceMedian": 1.2112163330000003,
+          "matureDeviceP90": 2.9162040955,
+          "pythonStepMedian": 0.026400333499999817,
+          "pythonStepP90": 0.026989958599996557
+        },
+        "labelExposures": {
+          "review6-pilot:C3-pilot-source-001:root-03": 20,
+          "review6-pilot:C3-pilot-source-001:root-05": 20,
+          "review6-pilot:C3-pilot-source-001:root-06": 20,
+          "review6-pilot:C3-pilot-source-001:root-20": 20
+        },
+        "minimumRecordedWeightedTeacherGradientNorm": 0.09082872420549393,
+        "maximumRecordedWeightedTeacherGradientNorm": 0.11316046118736267,
+        "teacherToTeamRatioRange": [
+          0.008649488333777162,
+          0.035828491263212824
+        ]
+      }
+    },
+    "actualSources": 181,
+    "actualSourceRounds": 1784,
+    "actualCompleteSourceRoleCounts": {
+      "self": 45,
+      "frozen_opponent": 44,
+      "other_partner": 92
+    },
+    "totalMatureConsumed": 81920,
+    "totalGradientRows": 40960,
+    "totalDiscarded": 40960,
+    "totalRetainedQueueRows": 5783,
+    "allGradientAndTailRowsUnique": 46743,
+    "allTargetRoundGFinalWIndependentJoins": 46743,
+    "independentSeededFIFOSourcePositionsChecked": 40960,
+    "optimizerCheckpoints": 40,
+    "optimizerParameterStepCounters": 240,
+    "allCheckpointModelFlatByteEquality": true,
+    "all40WeightsDistinct": true,
+    "lossArithmeticMaximumAbsoluteDifference": 0.0,
+    "preferenceSoftplusRecomputedMaximumAbsoluteDifference": 4.1611338374991647e-08,
+    "gradientRatioArithmeticMaximumAbsoluteDifference": 0.0,
+    "anchor": {
+      "roots": 64,
+      "sourceMatches": 1,
+      "sourceLineages": 1,
+      "candidateRows": 960,
+      "physicalGames": [
+        1
+      ],
+      "rootsNotIndependent": true
+    },
+    "settlement": {
+      "taskId": "C3-mature-pilot-execution-001",
+      "at": "2026-10-28T23:55:05.645Z",
+      "deviceWallSeconds": 63.076,
+      "conservativelyChargedWorkerSeconds": 378.456,
+      "maxWorkersCharged": 6,
+      "chargeBasis": "conservative6*fullwindow:4policythreads plus1learner and1watchdog allowance; CPU2learner step happensonlyafterallpolicyworkers ended; allstartup/parent/IOincluded",
+      "ownedProcessGroupCleanup": {
+        "pgid": 39382,
+        "termSent": false,
+        "killSent": false,
+        "remaining": false,
+        "seconds": 5.525000000000091e-05,
+        "spawned": true
+      },
+      "childPID": 39382,
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "leaseSHA256": "2809f5d2012d281acaed093222e38d113f6152ad33dd613659f7315566a26680",
+      "budgetHead": "c7a62493ac479e1f6eb6f44a83db6d7e6f6999bc4b4e748f99d300cce73afd38"
+    },
+    "workerReportWallSeconds": 62.467566999999995,
+    "workerVsAccountableWindowSecondsDifference": 0.6084330000000051,
+    "stepDetails": [
+      {
+        "arm": "A",
+        "update": 1,
+        "receiptSHA256": "ac13ea14e8e797994dc94e37e37131fa1cde07c17f61b610b5b8622d1e0d1c75",
+        "weightSHA256": "c53aab42ce0ac5a3e07408b367cee939130c8ca2565424aba8fcb5577fa4a36a",
+        "checkpointSHA256": "0dee8d2e4152675d612eb511a7a074704e19b87c5c7fdd7f65a146d8df65d501",
+        "RMSParameterSquareSHA256": [
+          "a1e55af725de37f2cdfa00eea6c2e1e75fff0255e2524e62934a047d36414c98",
+          "dd59c92df6e5084fe3399d10b23151137bd4060101b6d0b4ad892e01f3f42b2c",
+          "1a99e6153a18abc14a272658dc2e195d06ba46a461e3fc9d3647d72aac34b7b1",
+          "e1023458690dca6e7fb53a8e47588e9091c5b7b9068a389c3c5582033087a177",
+          "73458e76547b7f662a618db051ecd4e3fdfd312f7013328a63a2b94e5e2d5e83",
+          "de3f84719687a31290005d23d730d220a258362a01719782761b15ef8cb43585"
+        ],
+        "losses": {
+          "team": 5.1213860511779785,
+          "anchor": 0,
+          "preference": 0,
+          "total": 5.1213860511779785
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 10.785676956176758,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 3.9771298749999997,
+        "pythonStepSeconds": 0.09431370799999961
+      },
+      {
+        "arm": "A",
+        "update": 2,
+        "receiptSHA256": "eab8cd149a24264fe454721ab59aa3aa3eb2d862cb1e854c61e586fd64d290a5",
+        "weightSHA256": "1b45556694f7b6d34f4dfa3b1db215d15ef7cdc24b61af9409dd0669565735a5",
+        "checkpointSHA256": "f069a387a694ae416fb4e14c928d1cd1ead3d04563c1b98966b6ebdd05648c4d",
+        "RMSParameterSquareSHA256": [
+          "146f46fe8b160923e5493a0b47596199e68ebd582a8abde93a255b4abaaac5a6",
+          "a9dbee26853977a21621208b5610ba0165520dae4521882944758dfe5ea1767b",
+          "a45c3f4a1df77c321df2d0968d19a0c7504cecd270c2b370a51462b7928b4f89",
+          "2803806db270e9b1d2d1d62a25cc8139320ac25d3baf52c6cbb967a06bd5ad7d",
+          "53bb26937bb353a8324112531b8a60a02690c03c0a8d826060506d4701fd71a1",
+          "8f8cc7b0d0077cf66b9abdf8286a1987565048020a20504da936749d2d01e3d8"
+        ],
+        "losses": {
+          "team": 6.660601615905762,
+          "anchor": 2.0686347484588623,
+          "preference": 0,
+          "total": 6.68128776550293
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 7.728137969970703,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.1636417079999992,
+        "pythonStepSeconds": 0.0243043329999999
+      },
+      {
+        "arm": "A",
+        "update": 3,
+        "receiptSHA256": "25830c8fe3fced7a5d7e8a179009f2c2fe897de6ec09ccc8ca3c18227b440909",
+        "weightSHA256": "7a7c6ab83709f56c3d58dc0d951bde029c14ac36ba8b4114dbf2e6c946ad752b",
+        "checkpointSHA256": "1ec4a96b90a99f7fd3d4652888f99772038d2283a18365dec042408064de2c96",
+        "RMSParameterSquareSHA256": [
+          "a337c145ba1e76ca58b6d05ee87490e7fe96138627644b2f64a28aadf71a7870",
+          "88bec1fbaa11ea0c1bfc5cf2b322a50493f34db3444636058362d55d5076012a",
+          "22edcc17ba7928f40a5ba52e068421b17cdd1ce6f471a7031752041f3a298c43",
+          "aac5100782c964b5b56066f09341ae50674876be259ed072902c78ae232e91df",
+          "18ea45d5c5bf63e4c11fb10f1446f4071a803ff531b6f0d35e0ef3e0892eb902",
+          "a57195f15a108270cd6d947bf0e8f31ab657f45fc09b3aefa9e2ae1dec4d8cbe"
+        ],
+        "losses": {
+          "team": 3.7831838130950928,
+          "anchor": 0.2763359546661377,
+          "preference": 0,
+          "total": 3.78594708442688
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 5.092455863952637,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 0.03014929200000006,
+        "pythonStepSeconds": 0.023578749999999538
+      },
+      {
+        "arm": "A",
+        "update": 4,
+        "receiptSHA256": "92989a64b059cac624feee435b7410252cf4933cec3fb89c0658b83bea9a866f",
+        "weightSHA256": "77507fa03ca77bbeb65ba6cf3fef66a5200ce652c8bd181b4f509fb67cba41d9",
+        "checkpointSHA256": "f0f6e0ffda416349d7f06037a60153d0d5b4d08a5b40b141015ebd329ea4f30c",
+        "RMSParameterSquareSHA256": [
+          "110cf23dc51a8805e83b887de5b729ad875b021d89dd42ddae1d4e7ee7594640",
+          "401645f5cd3b23717262f2c578c66564f564c6d9682ed214246754657a66f90c",
+          "997efdb35f51addabf79b57620f1ba0ebf379b5893a2183393bca7eb425ad5a0",
+          "dbbc88d9ad0e83ac1e71331f81ca23be0ed2bfc2a912a1799e1010de73a6f98b",
+          "561500e2b38234e98a4a9400b0af3efd77e472dddd1d867d86a4f50717a56a63",
+          "07699553c17507c3e14e62eb6f721a5cde47da0bbc79482fb96d6dd816adb7a2"
+        ],
+        "losses": {
+          "team": 6.06947135925293,
+          "anchor": 1.1493831872940063,
+          "preference": 0,
+          "total": 6.080965042114258
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 16.399517059326172,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 2.7949858750000005,
+        "pythonStepSeconds": 0.02389125000000014
+      },
+      {
+        "arm": "A",
+        "update": 5,
+        "receiptSHA256": "8a6ff607a95f92a868bb7b83b4f4068e93c9d98d1fcfefc3855329b9b8bc5519",
+        "weightSHA256": "c44f3ed257686d35c0111dd948a5b7653d76069f95fe9409990c312f5464afa0",
+        "checkpointSHA256": "4ab2f15ca1b0f4499c6809867e71be12eb9d9f87ab96a38be51df09b41561efe",
+        "RMSParameterSquareSHA256": [
+          "46cd6a45ef0b02f223b3b6e4f6584e67903e9a996294837a00d9a8ea09933775",
+          "09e310ea3eeb390cb76256b0054be4e7bee6052873bc2b17779f0ec30a6db69e",
+          "3c467b687c79e2d7f7e16d0d97706b48e0258e58d974abab6f09f59aa6aa13bf",
+          "501ecfe6a5ccb4e8f8ec3c87485d3bd0e816a282775122c6cb8d2b87bb668b04",
+          "13909ade8044a82715e74af8dfd3bd8c8f5c9f073da63e06f40ab558f9d431c5",
+          "4cdccc80af3834b04b3ccd54d51617a60d57e08028f9687ff2bc02ff23b10649"
+        ],
+        "losses": {
+          "team": 5.1281914710998535,
+          "anchor": 0.076896533370018,
+          "preference": 0,
+          "total": 5.128960609436035
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 8.966019630432129,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.3894082080000008,
+        "pythonStepSeconds": 0.023665499999999895
+      },
+      {
+        "arm": "A",
+        "update": 6,
+        "receiptSHA256": "bb111c33f75f0da791f340f90894bc7d0f7348fd43db3db59aba0efde44667ff",
+        "weightSHA256": "71836958e22d3c3c9897f345275455debf05d49b78ac2f6a6fdf78a5f09ee3ca",
+        "checkpointSHA256": "d620eca107b040b2379a0738942c6d222d59de92d21188c4e5c062d9e9095ac1",
+        "RMSParameterSquareSHA256": [
+          "c1f922f90f704181c365cd328a4c613bc6b0502ff02936fd7d84fd5284604997",
+          "81fe4ae9d102676bc85ea59777dc08d6e9abcf017d488a3525490bef4bfa532e",
+          "fec2819c205317d29204b79567cb144b092c759483a1882e95695a3640c3e4f6",
+          "8acf7477dcb0afe1fafa9ddd06f727ebb1ce5130eed4319fb0167454be3a88c7",
+          "084c067106612f6fb76840bdf31826d9e2157ff3ec374590fd7d0db1293202ea",
+          "b8fc36746e0c8f0bae61f0f58be3dc042f5dd77dc2c56995a302636449d3f56f"
+        ],
+        "losses": {
+          "team": 4.062382221221924,
+          "anchor": 0.2306477576494217,
+          "preference": 0,
+          "total": 4.064688682556152
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 3.5954949855804443,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.0137101669999993,
+        "pythonStepSeconds": 0.024237499999999912
+      },
+      {
+        "arm": "A",
+        "update": 7,
+        "receiptSHA256": "2178baeeaf387d67f5ea30f9e6e920f70b64d208bc0d53e8c19f1f0fb5af9180",
+        "weightSHA256": "80504690824349a7ffd73ffb6a5b65241fda1ac4dab85a035daa125fcc852d95",
+        "checkpointSHA256": "0beb97f2aa225ce5ed9fe6b087687c720e41eec4d2b3be3bdb410e1f478fcdd9",
+        "RMSParameterSquareSHA256": [
+          "8ebcc395c2848ce3fa3ae8d14d864e11d853f5ea61f97c6d4c6758aa266bdc2f",
+          "5c3dc5615a024fa8fa8a65facdadb032d0d41d86beddf57203f370fd19e5e931",
+          "bae92434f861e99dc12f0c11d0529a01543ef297b2ebab546a8b825beb950264",
+          "7b232da8e364586d4a524ea2c70b86513e0a1062b6d15c62cbcd5e0680f512f9",
+          "ebab372904e8c472b66c123a6561322cd574ccc5593f011582d9c9c2f2939c4a",
+          "5e973e7f62353656a7021620bf6408f192f257c188a2e20048f45b3e71d19160"
+        ],
+        "losses": {
+          "team": 5.187994956970215,
+          "anchor": 0.4625947177410126,
+          "preference": 0,
+          "total": 5.192620754241943
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 4.912153244018555,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.048158958,
+        "pythonStepSeconds": 0.023847583000000228
+      },
+      {
+        "arm": "A",
+        "update": 8,
+        "receiptSHA256": "af98ed8f1076bbcd8ed8f3ee7483d9bca661f19804209a36de532d8145539a69",
+        "weightSHA256": "67b21ca80f166a5ccc776a8006de8d1ce3e723d7156502650c4f115af187e271",
+        "checkpointSHA256": "6eecb06db0e883d6f20337a21e81f91534aeb4030ce60452773d850ba81282a4",
+        "RMSParameterSquareSHA256": [
+          "0ef0b67177df4028935de6947cc1bfb94db84c3fd0f7f46fada196ee6811955c",
+          "44abf114bd2790f837f7ae148fd395368b133eac49f6b0cd4666444c5b8b84bd",
+          "47272ef80b0fd751c244b3b1e5060f9a82d81b8cec1feb55b794eaf080477268",
+          "1b1cdd0afbcef9c548a8325d77830d592ee428327e5a115e5d5681b93f3b22e1",
+          "2b1aaae657ba434e094126c400e11ef25ad2a863ffa6c46410a2594b8bfdc221",
+          "a69f106de6c7130e8f7a4bc88754139da40d236568e6a0f7bf31b2bd224efd3e"
+        ],
+        "losses": {
+          "team": 4.778489589691162,
+          "anchor": 0.2959413528442383,
+          "preference": 0,
+          "total": 4.781448841094971
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 2.637852668762207,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.9831956249999985,
+        "pythonStepSeconds": 0.02427424999999772
+      },
+      {
+        "arm": "A",
+        "update": 9,
+        "receiptSHA256": "32647644a40b33fe710628f9d573ab28c39d99d8b8b29328d993cebdaddbf4bc",
+        "weightSHA256": "349f670d2358d6ff37d8fb3d9c50f3c19319773cbbc8a4f4b4f211e842a67e72",
+        "checkpointSHA256": "f1ad253cd015e82a3f31c7b267734656709311e530429be942bfd8653eb3c804",
+        "RMSParameterSquareSHA256": [
+          "896c630255a28a6c177057823bb568936d44d4c876869fae7b85b4d9cc538647",
+          "84d02bb4c21f029f0321fe6413cfa2b1de3c6d280e703a6f8454ed302a11fcfc",
+          "ae4ff50e09b75a177a35678ae8ed8f8aa1964bf868f76abeda885860d85c3fa0",
+          "97edb1f74452bca0bf8caafff431643c69daf05eadb5377eff867e10924a3d73",
+          "a1caea09080af509018b94539fed846ba36d3577d94837efd67fcf3a70896875",
+          "0e0041ce9a4500ee4c5240526c64a0a719abf979d5c54d936725aebd5f49efb5"
+        ],
+        "losses": {
+          "team": 4.524371147155762,
+          "anchor": 0.379680335521698,
+          "preference": 0,
+          "total": 4.528167724609375
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 3.2125954627990723,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 2.1386936669999996,
+        "pythonStepSeconds": 0.023868665999998484
+      },
+      {
+        "arm": "A",
+        "update": 10,
+        "receiptSHA256": "55ff7c263cbd419e3cc0c90847a5486d942affba9bef4e25dc3dbcf3b9a7814f",
+        "weightSHA256": "53423574aaf91b79c24b4b704988ae7db63bc0e87d346ad9cd18cdc19c7ca603",
+        "checkpointSHA256": "6fcf22fbcf30d20c0cf6355240280794187aaa26bb9b5d18d7f32503b682d8b9",
+        "RMSParameterSquareSHA256": [
+          "5745b29059174b9bcddb4e1d19885f7baa38b3ed123c72ed4b759fe5b99dd91f",
+          "6a977aa24e27935430e02aba77b721705bb992962ba6bd2aba11b9d54c6c66dd",
+          "d084629b77f1487051b1613d977d194eb7b30c8da5030706d82e86b04695d4a1",
+          "b10e5b93647a0ade75a7616dd4f06cc866c18a3ad56f3c0950a0585513e681c6",
+          "5259e28fdf222d107257b481b76b7f50c0326db62a1ec94a3dabf39ac6e0eb20",
+          "13b30b74128f13368444de23f0a1a077efa163e071127ff45e9d95aa4ef4fb05"
+        ],
+        "losses": {
+          "team": 4.474746227264404,
+          "anchor": 0.22333721816539764,
+          "preference": 0,
+          "total": 4.476979732513428
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 8.96534538269043,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 0.029662124999998922,
+        "pythonStepSeconds": 0.023205499999999546
+      },
+      {
+        "arm": "A",
+        "update": 11,
+        "receiptSHA256": "4223eeb916b548b4f6f471457e3e78c70298e1f9957b8f0cffca7e4bdb8ade59",
+        "weightSHA256": "ef07baffcdf2841168a7e8afa45a4176523c662c2184343fcee351f96da3b401",
+        "checkpointSHA256": "882f317f599f31f7c52a44f43a5fca0de197fac4e31745dc0f906e32c93e2c3c",
+        "RMSParameterSquareSHA256": [
+          "0355679df3bc664e039945f392d93f9d006f7b8867fdedd1e2b380cdcf6f6844",
+          "b984542d1de3c33e2b712787c35cc2a3785ce9bb65f5fc41e3819e071c528dc4",
+          "1fff3d43d8c00e573ffc77bd782343c08c217e24d0eb250f48690432e0a6f688",
+          "15c8b083121cfcdcb7ac78fd52647e3c8f1c7185428894b74ea5036459d02378",
+          "c0b573c1a658d362adafbdb2b47b9f88f234d3a921d6c102ecb6905eb058e88b",
+          "0f23bab53fe65d76b2b8df524f6fd993caaa741c4bbc29fb3244580fc4c30bfe"
+        ],
+        "losses": {
+          "team": 2.880122184753418,
+          "anchor": 1.1844325065612793,
+          "preference": 0,
+          "total": 2.8919665813446045
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 2.4630391597747803,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.0645925000000025,
+        "pythonStepSeconds": 0.023518416999998237
+      },
+      {
+        "arm": "A",
+        "update": 12,
+        "receiptSHA256": "9abeeb43f4ccf214f0291b2d578ce4e493ce90c91e008ecd6eb90abeebf6e3c7",
+        "weightSHA256": "78f72f92128b73ac40dfc68f92246bafd97c78700a6cf4fe030081cc8fd23591",
+        "checkpointSHA256": "62c4fa9135b8e125b3e5d232965907bf7e0e241628c229229240329448abec57",
+        "RMSParameterSquareSHA256": [
+          "f9fc4e61cda00746da04cd69e43f8c49a237683171551e4044a4bb53795cb4ae",
+          "2b7880850a7a09adcf244af4980b77e74d90079d03b09d3c1edcdde8ac112cba",
+          "235a3e07daa97a00eb47268d991b9037213521c56c6a298fdd5b66bc68269c05",
+          "69fbbbb0eff39c5233b962f6ac5256ec2116a5c7cc1be1e28953dbd962bcc900",
+          "fd5999a818567b736daf3880f2fda6f46ba9f2495dbb7319e390ee66913bed61",
+          "88c3d67763533bf4cc1aa8df29193852c64de28a1618396341f2a93a50e067a9"
+        ],
+        "losses": {
+          "team": 4.907994747161865,
+          "anchor": 1.0194759368896484,
+          "preference": 0,
+          "total": 4.918189525604248
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 3.359649419784546,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.073901332999998,
+        "pythonStepSeconds": 0.02424770900000084
+      },
+      {
+        "arm": "A",
+        "update": 13,
+        "receiptSHA256": "53cec89dafdd5cb03dc054062f2d929326913b8ecb683cdd9944006cefedd056",
+        "weightSHA256": "3c9896ff13157933c7a83bca30eb04702ddd2843971cf2979e411ac3eaece40d",
+        "checkpointSHA256": "4aaeb0060d3e24b039b56eb3757dc605950c9a915536c1ef50b06c003f9e2c42",
+        "RMSParameterSquareSHA256": [
+          "ffcf7477c6f776a5336fc08519f87a4b6be38a6507482315023c8f945c1ea4ed",
+          "24f195a10eb226f515acc89adf507ee8bcc372939d7ba150a2fa7ec0e1a1fd4d",
+          "c0465a9c428353e61c75ec4dc21e17652af2f8a37e6764fa3ee48facdcb1dc64",
+          "240cc46f66b1435610362f33d2ea412ba346dc87cc103e651b9274be3ef8c8d5",
+          "724e224c58378fd91e5acf9ac04b7cc3fc975a96bc23572dae35573e32884e74",
+          "ea1c465839533fac2a2f57f21499e7facfd12dbaff0ad84249f8addd93b12ed8"
+        ],
+        "losses": {
+          "team": 3.698333740234375,
+          "anchor": 1.2903695106506348,
+          "preference": 0,
+          "total": 3.7112374305725098
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 4.738463401794434,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 2.986864625000002,
+        "pythonStepSeconds": 0.0245243749999986
+      },
+      {
+        "arm": "A",
+        "update": 14,
+        "receiptSHA256": "059356f1380e0bef5f99f3a6d2ae6bc7d25bd02528df8d01efc640b83f11cc1e",
+        "weightSHA256": "88278ef5126ef92a65b0d5d519e1a3213211fe4e29e5817d7c4d598c884c58f5",
+        "checkpointSHA256": "0553f360330fef1891bfd5b15cf26f40ba92b5a569644796dea98614404a99b0",
+        "RMSParameterSquareSHA256": [
+          "0438aad1dafbcae1e79fc987841ef1736d7ef571b17bec216ca05a8303ba3c1f",
+          "c328c40b7b52190370eb5513702fc2f726b7cb78bf888ac1f6235ce054ad305d",
+          "f7eff1a6bf56dfd7e5c9485bdc27302e903d425d757e31a7915e05c5c9eea5e9",
+          "3a4e8adb8ec10acfd98dfcd67834e82f8b175fcb8b531220327d38dad573c960",
+          "9a3bcd4d3d8ed076e99376de02bbbe7cbf33db1ec192577f1df9e1f22546db93",
+          "a4b3a5bc86819718fe5bd3c97db06d2b8c843c491e3bb4b5cdb787db38287be9"
+        ],
+        "losses": {
+          "team": 3.494968891143799,
+          "anchor": 0.475311815738678,
+          "preference": 0,
+          "total": 3.4997220039367676
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 2.5009512901306152,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 0.03001995800000077,
+        "pythonStepSeconds": 0.022883874999998
+      },
+      {
+        "arm": "A",
+        "update": 15,
+        "receiptSHA256": "ffabc450444d1ba6ab11fe3165342b343f60e87a77d7d046782ca9ec9980f9f5",
+        "weightSHA256": "f160a181667df0a0042d0910bb54cef01b7a304c93e9de52893d26ead3656376",
+        "checkpointSHA256": "990864c407905e37fc7c8c27fab7543c15cfbace88abc362d4f09ece8aa4335a",
+        "RMSParameterSquareSHA256": [
+          "742eb04dac9c2e1b064279db6e044a43b79680453ddd98ac6e6e08c333a34c5f",
+          "59b7629f8daebf0565ae679b8038721dbd2ce7e82fc5b21c97da7a4411b20596",
+          "621b80e4c18ca6c1daf9c20caf0afaae7960fc4e2aca103f252667bc86a9cc84",
+          "1471f92c72ea92c9128580c90ea54da1e0b53fce68f437372f91e10f02044462",
+          "cc8cf9219216b1d3e71c1eae0e13d7e8c91449cbf2277e275833b7ebf35d2dc6",
+          "1f286169cbf890ce583a81a6ee39c510659c42f598706f20a4f8e0469b7622e4"
+        ],
+        "losses": {
+          "team": 5.164517402648926,
+          "anchor": 0.5272799134254456,
+          "preference": 0,
+          "total": 5.169790267944336
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 3.2138898372650146,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 2.227729041999999,
+        "pythonStepSeconds": 0.02352412499999801
+      },
+      {
+        "arm": "A",
+        "update": 16,
+        "receiptSHA256": "75e227a2c016872c51da5e8c4a5875d651d1e77dd431ca2ada2d1e3e11a35fb6",
+        "weightSHA256": "e23f24f1e145b57356ae9a01635ccab2ddb1929e4443344dfc467da64c4d1e0d",
+        "checkpointSHA256": "9d10c939df7ea65646bee620cca0bae6b434eda27a8bbcfc04c6efd7ea4c7d5c",
+        "RMSParameterSquareSHA256": [
+          "700f0c354d040765d9c08c4f5d094188cb4e59ff05dbb06295df9db2e6025a59",
+          "075d60f3c8fb636806c2586c49a79ad3c0fd19fecfc6a7ae9f144b62a84fe153",
+          "165a304460441d4a18b06ca5fd1eb07ba4d435a5eddf1a2c136dc66d7350ad27",
+          "b8ae8446ab0e756e6a0700599832b0c251cde8aa37a62551551759c64c15e5ac",
+          "5769fa35e58524585b4daa46d03c5a0c0a31119fa8123b9a213d3d6a195fd8af",
+          "e6fe5f241b221c08084e6fdf2885e4316aaa4e4cb648651246c4d037a63599c0"
+        ],
+        "losses": {
+          "team": 3.9814565181732178,
+          "anchor": 0.3215165138244629,
+          "preference": 0,
+          "total": 3.9846715927124023
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 2.2088942527770996,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.1112446249999994,
+        "pythonStepSeconds": 0.023547040999996938
+      },
+      {
+        "arm": "A",
+        "update": 17,
+        "receiptSHA256": "26c9a031ccf222a42bf83d2675c3b3ee0cb707c8d1e166b73825f283a987e1e3",
+        "weightSHA256": "267389ada5f359980f3546a7553c30a5ee473787e121af7e79f33e2ab543d3f2",
+        "checkpointSHA256": "7a068deade23fb91d15cbdcf4808088595ac1b530ea7507291bc229024c6dcfe",
+        "RMSParameterSquareSHA256": [
+          "39ead689105d16bf408955ccc8a2658b1a24836623a2377b3a292d002ed892f8",
+          "786c393a636564aeddf3716e503f02394d7569170b9ee6bfdb0683e322d6f594",
+          "192342151bcd2d0c6862d541b79f14d05ca7c7cba81dd032836a2ac996babe55",
+          "5212f2a49527aac385381b690f93f3dc8192a80731c135d2b9c0b75d3a87573c",
+          "2cfadf83634f21f9ab3dfeeb325a48be5f850b42866f3fcdecbda18503899b05",
+          "a86be9857cfd2fcc37f5ea75c489a96a45c95f371cc6611c0763ab8c6861c755"
+        ],
+        "losses": {
+          "team": 3.849792718887329,
+          "anchor": 0.36263400316238403,
+          "preference": 0,
+          "total": 3.853419065475464
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 3.287205696105957,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.7225835409999999,
+        "pythonStepSeconds": 0.02454987500000172
+      },
+      {
+        "arm": "A",
+        "update": 18,
+        "receiptSHA256": "75c5b758e3d8c8d2ee68d50706422fba43b637e09c8081caac92164431a665e6",
+        "weightSHA256": "4d68f54f90031b80c07d2ef05ffb76662cd7123c34a88004a8e0522125328603",
+        "checkpointSHA256": "ab0c19d6beb837a7a158e89724af2fdd2db313b1b0e616407aee065f31f33190",
+        "RMSParameterSquareSHA256": [
+          "53bc62883896945bfd9a2953a5ed28bb35590e29229ee358e2bbfffdf476842b",
+          "8cfd84d6cec3095772b2a5c4958944c01e560305fc1e121cc9a3d50c1f541ec6",
+          "c29cdbc1011dc60f19f6667d9ef941486107a99454dd7fdfbfa246567a8ba652",
+          "f3cb2f94d62d72eb1e5892ddd3caf7b1503409f5955054acad6c3fb2dbc4aad0",
+          "e7395469971a59b2704716efc3c5e64714246a5beb37c0aff089a798c4e8f0ef",
+          "1096822c3c9ad13a87d1e83fe2ffb480d31942d9af8dd83d78052fa4ce2bfbf7"
+        ],
+        "losses": {
+          "team": 3.8613343238830566,
+          "anchor": 0.1548239141702652,
+          "preference": 0,
+          "total": 3.862882614135742
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 5.724514007568359,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.0966183329999986,
+        "pythonStepSeconds": 0.023939125000001837
+      },
+      {
+        "arm": "A",
+        "update": 19,
+        "receiptSHA256": "576b0d4d1dfd2ca4465831bbc2aecd2ffa60042cea2fdcf110e2633fb352c8c9",
+        "weightSHA256": "c1dc39112e7165bf7bcb69630d048f5d6a33ed8721ed51cf91b74b7ad08013fb",
+        "checkpointSHA256": "820afc0d3fd36d96d726fb087154339d31ed262d60d67c40941bb819edd2ee89",
+        "RMSParameterSquareSHA256": [
+          "4b4c922b55b76195932b4cc8cab43b405b59987614ca5270bb9a9c75310dcb41",
+          "4d10e13822e81c53d2e828e5c79e879b4b7d8937c1625336968cfd1f980ccf1a",
+          "0a0dfbfa4696eacbae01cd7757cf496b89ce3a6340afba5ce291050ac21f2677",
+          "e10efe512fc25ab01bdf917b0f3d243529d1d16ce02ad90150c064a355c09d02",
+          "4a47dff369d8e26363a6fff3670bc912c6791867e218f67b5722bcf3df71f8df",
+          "f3e72ea733f76d4e3878a8548c80110862dc7b80fd843658f05c13c1c68ee155"
+        ],
+        "losses": {
+          "team": 4.857831001281738,
+          "anchor": 0.742417573928833,
+          "preference": 0,
+          "total": 4.865255355834961
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 3.497152328491211,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.456659958000004,
+        "pythonStepSeconds": 0.02543104100000093
+      },
+      {
+        "arm": "A",
+        "update": 20,
+        "receiptSHA256": "b0d91bf9609b214bebb67f1a42da91b0762de2fb5fca7eaeac73d6165d68b946",
+        "weightSHA256": "9026ffc1d13a4329ddf1a517bbc917d580370a92d2dd4b227c71c342257f7bfa",
+        "checkpointSHA256": "3dc3cba821b125b2893247d5663835cdec504ffb5f478e53272de2011996472a",
+        "RMSParameterSquareSHA256": [
+          "b7f0181186cd952aa9beb7c138f6d4fa0abf275e7ece0a9284148c6b33fde184",
+          "0eae38647722f2867d15dc602e00ccdba039bcae8939e7fd04795bde211cb2b8",
+          "54c65205bf019528c547d39df7467baf71e2b725ffc8fdb3910f146f97da4d94",
+          "409dc9842b4dfc1da911063169dfb343e87c2fba7b79d8673f5d75b0bc702d2c",
+          "a8a32f4a79321c3255a8b062af2614bcb2bc9c03b8a671cba9552833f660ba3f",
+          "8ec264aecc09edabdfeb7d352cb48c945b334d937f1f95db712987d1a9340a5f"
+        ],
+        "losses": {
+          "team": 4.3696980476379395,
+          "anchor": 0.35639938712120056,
+          "preference": 0,
+          "total": 4.37326192855835
+        },
+        "weightedTeacherGradientNorm": 0,
+        "teamGradientNorm": 2.942765712738037,
+        "ratio": 0.0,
+        "matureUpdateDeviceSeconds": 1.2473616670000047,
+        "pythonStepSeconds": 0.022486916000005408
+      },
+      {
+        "arm": "B",
+        "update": 1,
+        "receiptSHA256": "e4410487011bf25965074d2010f92c00d839f5bc67fc7761d74384582fc364e4",
+        "weightSHA256": "86cfb1dc72f487f0d8538c23b7217762ac7eed3e41110a9af8845e8badb14397",
+        "checkpointSHA256": "dd75048f196a41f0c9d6097bbf66fcdafc29f9d75c7e79b306b6299d9fdc239a",
+        "RMSParameterSquareSHA256": [
+          "7dc47c638d7808e579482e60b62506e0b371fa4337652e42e4077649a1a2525a",
+          "887bc0ec8473026d3c23a53b940324ce0434297a6278daaea21c989b10d6e204",
+          "4acd17c52311a54d15a6ae794371bad979dbd9d20af700bfa822ced486626b1f",
+          "7eddc1b580a2f3a734da80c02156ebccb228ee15f2e939c87ce75b9b7b0436c1",
+          "9555258cd89dde10850b6388c2591f2870765ab481b38fb2c3e3a5416136c210",
+          "0b329903fe5f03548ae65ee73c45964154236f87d192d3bad0f2364e0bbe2215"
+        ],
+        "losses": {
+          "team": 4.979895114898682,
+          "anchor": 0,
+          "preference": 0.522311270236969,
+          "total": 5.032126426696777
+        },
+        "weightedTeacherGradientNorm": 0.10869282484054565,
+        "teamGradientNorm": 9.44654655456543,
+        "ratio": 0.011506091058008433,
+        "matureUpdateDeviceSeconds": 3.9771782079999976,
+        "pythonStepSeconds": 0.027478000000002112
+      },
+      {
+        "arm": "B",
+        "update": 2,
+        "receiptSHA256": "8ba163dff4dcd94e5970f85d1184cec9216362a3d3f3025233389fc571e15ea1",
+        "weightSHA256": "35d1dddb3e91f2339ec800d9e30c776cb6df24d2fa4062b439a95b09c5fb7d52",
+        "checkpointSHA256": "c1f6c25da88944462011b3c427c7f727abbda396bf8364cde5442a9813cf03ee",
+        "RMSParameterSquareSHA256": [
+          "781c37ea6bf9137b7a1502982d72121430b13d1a1ab7ea549aa7812f5919697a",
+          "fa9f1c3ced59f7cec2a9c567d137f2d2b5b44cb174ae347ff946def81cbbd1d8",
+          "17f786791a5fceb0483917f766661b4e4c0c48ce0b1eff9d61f0245522a76461",
+          "1fbcfb7c3bac64448e062995b332d8ed8bd68ff5efd04fe73c2ce45eeb362472",
+          "b8e5cb461c164e4189a358eb8473c96900732ced3d10cfdf86459722da5f122a",
+          "fdb524b1d808288d7cdc3b49434b459a49b4687bae51024f599c7c236ad00942"
+        ],
+        "losses": {
+          "team": 4.0720696449279785,
+          "anchor": 1.5335739850997925,
+          "preference": 0.4938979148864746,
+          "total": 4.1367950439453125
+        },
+        "weightedTeacherGradientNorm": 0.11316046118736267,
+        "teamGradientNorm": 3.158393144607544,
+        "ratio": 0.035828491263212824,
+        "matureUpdateDeviceSeconds": 1.2443020410000027,
+        "pythonStepSeconds": 0.02631033400000149
+      },
+      {
+        "arm": "B",
+        "update": 3,
+        "receiptSHA256": "e3ce70cd2b09c5a52b163a43e89010df278bd7c4069357c491869b9740e3368e",
+        "weightSHA256": "37b28c7c4712d235f140c74d6a750539bb7420809b6e1192b2089c9928d79996",
+        "checkpointSHA256": "3591c0bec074daa466f4ddd48ba89eab47674ac964d293a2d0bfc9a3d854ae08",
+        "RMSParameterSquareSHA256": [
+          "75d6b7c847d720d38c24a3a8e52031ee47f84a2d5a8e83857ade0cd95d203a6d",
+          "79cb23f0aa0493c18c19fffcc20e4983aa645068b6a186e8b88515c687a18722",
+          "890ea9b2151f82919390bce83b48e5c0b8cd9b764cab6e1a4d4ee2ab1211bf15",
+          "94319c461af768702b191a202a6b2dc6c231f726e55a5c5507cf664eafc26172",
+          "f16f92a0160622b3c77f6141a5814e7341cbb5b9a49080eaf752f1ee63eab1c4",
+          "8c4b5f862070210a693c82d16a822f93fc0be8e1a523002b53e17b119ffbd2b7"
+        ],
+        "losses": {
+          "team": 5.011220455169678,
+          "anchor": 0.5088400840759277,
+          "preference": 0.47053247690200806,
+          "total": 5.063362121582031
+        },
+        "weightedTeacherGradientNorm": 0.10695283859968185,
+        "teamGradientNorm": 3.922142744064331,
+        "ratio": 0.027268981671190195,
+        "matureUpdateDeviceSeconds": 0.03247362499999872,
+        "pythonStepSeconds": 0.024835166999999103
+      },
+      {
+        "arm": "B",
+        "update": 4,
+        "receiptSHA256": "712e031fa985883109a4a7c95932720cd9e78502a07656eaaac6ce986fcb5a5a",
+        "weightSHA256": "fbf0cfb88b8e537b998b7f81d743aa4ad75f65bf0e268d4f6e408aeb61a2be29",
+        "checkpointSHA256": "b85a915dcfb9f4271950376e4c0ebd0a60abcceb4dc4ece79f9f19a9d163a070",
+        "RMSParameterSquareSHA256": [
+          "b7dc58e33a61c8f9226f6d80093d2b6d78645c015ece650f842d0af62a15fe6e",
+          "5943a2815d3f8af728ecfe220ac1b0c616a0a45186830920c600ac6f6fe7c95f",
+          "494679f7a6ce7614e4648a12dd7e38abd1f886805e39fa76a45f72ee9c03865f",
+          "dde509456abf5ea2c51da2d529d8f2a658595bdc3b6c15fe730b045ca2ebd866",
+          "79a10517e30877e10e10d4cdadc949381afed1651e6468a9c307e5d9a25b13d5",
+          "e2a6bce3f0ce26af3f1c22673efa043feced9f37df0a55c9e30805b953794d33"
+        ],
+        "losses": {
+          "team": 3.869826078414917,
+          "anchor": 0.2628869414329529,
+          "preference": 0.48277711868286133,
+          "total": 3.9207324981689453
+        },
+        "weightedTeacherGradientNorm": 0.09719742834568024,
+        "teamGradientNorm": 5.337711334228516,
+        "ratio": 0.018209570030959465,
+        "matureUpdateDeviceSeconds": 2.106027957999999,
+        "pythonStepSeconds": 0.026304082999999423
+      },
+      {
+        "arm": "B",
+        "update": 5,
+        "receiptSHA256": "feda1738eff2c90d02e426726cfc5eb3a911ca3564280ca819d360e0f83fa46b",
+        "weightSHA256": "3368612e8467226698ab334bc4fa20a2c578b04399132ccac0ab119bd4877ca4",
+        "checkpointSHA256": "bfa1f3c6b86a5e95bacf3fc8e11a49bc2a9c1d70bc4b1cdda45aee41b42a8042",
+        "RMSParameterSquareSHA256": [
+          "32639a0a2ab34fe50ba9e58cca0534f3e15e54563dccda7d08f4457ec92220de",
+          "995008768494f6b7eb673ad17271401048b086d038a683b849ddf0efccc7c080",
+          "57cbab831bb7ee7be460630d4c303d37abb3cea083f8dae6b89575334fe88496",
+          "97626deae11ffe9da5ffdcd7269e17ed29dd9319878a2b7a76f970091809763b",
+          "d30d1809376317a8937c76bb640be178c74ede0f558c38804de070ef11bc9b23",
+          "9ed769c7adf22ad482af4af2c7145508b6cea31a424021869fef4a35e8f2c1e2"
+        ],
+        "losses": {
+          "team": 4.333607196807861,
+          "anchor": 1.2368717193603516,
+          "preference": 0.49749743938446045,
+          "total": 4.395725727081299
+        },
+        "weightedTeacherGradientNorm": 0.11003711819648743,
+        "teamGradientNorm": 3.678771495819092,
+        "ratio": 0.029911376208482682,
+        "matureUpdateDeviceSeconds": 1.3671255420000017,
+        "pythonStepSeconds": 0.02611670900000007
+      },
+      {
+        "arm": "B",
+        "update": 6,
+        "receiptSHA256": "05ef4fa11cfef99ca2d442323f2883c40982bf141d1a4beffe672ac0e1a01e95",
+        "weightSHA256": "174da8b542ac1b39217a09396cc98f17005db7f596efffddb131ae5fba9f7b60",
+        "checkpointSHA256": "46231ffac325ff7686c60b61a9030387dffed598b35767853de928aa14d4d282",
+        "RMSParameterSquareSHA256": [
+          "9e9b3c2df9ec2df734f517d178c20481a2b95f424ec0002b34e30368e7ea62e5",
+          "2b4cdef5168eb7a10175d12a7c6c5642c3f7305aaca9261b415254edd5ca5a6e",
+          "691adaaac0a5985015ec97d200d83cd4d634d1c6907af6c8dfb92f46dc4f3f45",
+          "dd94cb041a723e1fb749b93bf02fe2186df1db29be84fdb65188d288b122e9a9",
+          "3a29f0b5252e9b0137e0cde378bbc929b27cf2d57444b53357da5958b21ffcd2",
+          "2bb5f7cd706b6a5c3b8b3caacdc351103c9718bf83d323323f357b86e4242ecc"
+        ],
+        "losses": {
+          "team": 5.160894870758057,
+          "anchor": 0.6949358582496643,
+          "preference": 0.4479757249355316,
+          "total": 5.212641716003418
+        },
+        "weightedTeacherGradientNorm": 0.10982759296894073,
+        "teamGradientNorm": 9.970111846923828,
+        "ratio": 0.011015683139284627,
+        "matureUpdateDeviceSeconds": 1.1030938749999986,
+        "pythonStepSeconds": 0.02641908399999693
+      },
+      {
+        "arm": "B",
+        "update": 7,
+        "receiptSHA256": "86d002e1d747bdff25b4bd0757525b530d978c057a855daba8ea7f930340071b",
+        "weightSHA256": "37fecce38c441d9b39d907c3cfed44fb67e21841b08fb1277412a325a501f52d",
+        "checkpointSHA256": "52e2b12013ad3dd01dfc61042a6d3d0f89f045a95f8c878679b6f5a2d5f40100",
+        "RMSParameterSquareSHA256": [
+          "4552485b5b9d0ca2deca9cda78223f28b17299a1a077dda06df5be53845efe7a",
+          "41b7f782deef69f2f61ef6eba4881a4a8e54f6ba321e0d09135b21fcf948946c",
+          "af8debf7f4e1c52868976209835013ff54635a95864f3c28dcebf0868f0651d7",
+          "ef9e2386b81608697b972acfbb7d36770d3cad555b267cd407ace20de5fa9b14",
+          "2b24e662eebbc4b9f4c428bdc083134ce1523ef2ae5288817b11c55d5377aa88",
+          "2f7b803c4511f9d5351d2901610239a655072cfa1e4b8fd3c72d024a9d1284fc"
+        ],
+        "losses": {
+          "team": 5.603562355041504,
+          "anchor": 0.15915650129318237,
+          "preference": 0.4474169611930847,
+          "total": 5.649895668029785
+        },
+        "weightedTeacherGradientNorm": 0.09648982435464859,
+        "teamGradientNorm": 11.155552864074707,
+        "ratio": 0.008649488333777162,
+        "matureUpdateDeviceSeconds": 0.03299600000000646,
+        "pythonStepSeconds": 0.02547599999999761
+      },
+      {
+        "arm": "B",
+        "update": 8,
+        "receiptSHA256": "7993f86d2098a81cfd1b6b45333ff5d690d91ac55c49a5d42735cdb4e3a2d624",
+        "weightSHA256": "c761ef9ae92b18fc88fe9c6d5d211466e06a5ccc9e0b508d0a6afe748a08e622",
+        "checkpointSHA256": "d4ed6cb9a8e9d9796ff748548b024fea55ef5f4424dbb3b44a055c2b01d65ac3",
+        "RMSParameterSquareSHA256": [
+          "fed9ba07619fe8e929fcf530c5cd0092d230605685132b79f420a0ba13478ff1",
+          "901361e1a6bbdaee76928c7882142444a9e0055e04d546cf41ad0ab75692a814",
+          "a8b84588b2c0b17088cb810eb5dcee36ec5d1faf879f09848c63bfa0c5190228",
+          "491e968a4135f354e259cf5d6c3f0c28ed7a3cc95d21effe08bc43949aa203ce",
+          "47b689b87df2ff72f7e1ded8ec13645f2dd8d447044ff29f90029573c82bedba",
+          "667afa42d68fefb4ca2a83c6c1f135188dea57aba8ad6b9d72d4bb6738188a9f"
+        ],
+        "losses": {
+          "team": 4.0616888999938965,
+          "anchor": 0.5620806217193604,
+          "preference": 0.4170827269554138,
+          "total": 4.109018325805664
+        },
+        "weightedTeacherGradientNorm": 0.09738171845674515,
+        "teamGradientNorm": 4.404360771179199,
+        "ratio": 0.022110295572057032,
+        "matureUpdateDeviceSeconds": 4.115498333999996,
+        "pythonStepSeconds": 0.02684291599999966
+      },
+      {
+        "arm": "B",
+        "update": 9,
+        "receiptSHA256": "be82b845355232c722ed1af9a56da68f4f4660894a021de57e55438e70541bcc",
+        "weightSHA256": "9049612127cb345f179c92fd4be9d67b6709dad0812b7e1ce4c69a2544f2aa84",
+        "checkpointSHA256": "c28e8d454809fa6d6daa50db5f2691980222a7b1166d481bf6c194933784df06",
+        "RMSParameterSquareSHA256": [
+          "797ef242e92b56b77cd5d6df80afdf41f323538952c8aba2ab1a42fd8c0cab84",
+          "847e9e5912beac2a6cafdc3bb9e72ec9dcb47d3d053453750d43748d50244354",
+          "3a9103f040280fda162c724aa6c6e0cef8dd3ebab3032949186dc55e3c7c3822",
+          "f13d806591649d56c176c03058c036fdc5485f8712245e46c122f3c2a89df038",
+          "9650ef6daa26889eafc95f7e19b58ca240faf51918a2f1cc90ce3ad3eda675c1",
+          "593357542f46d19c4686d803f137a41c64f7aea2feedd005463f8d522040351a"
+        ],
+        "losses": {
+          "team": 3.6482882499694824,
+          "anchor": 0.10066837072372437,
+          "preference": 0.4149904251098633,
+          "total": 3.690793991088867
+        },
+        "weightedTeacherGradientNorm": 0.10020867735147476,
+        "teamGradientNorm": 3.82857346534729,
+        "ratio": 0.026173894339098135,
+        "matureUpdateDeviceSeconds": 0.03394924999999785,
+        "pythonStepSeconds": 0.026468708999999535
+      },
+      {
+        "arm": "B",
+        "update": 10,
+        "receiptSHA256": "6edca623004b6f9c196ded5c59c07e4644c045b1570ec88e6aaccbf61bbf8f7f",
+        "weightSHA256": "11cc0e21a0dc678d4cb371101830199eef3f1608aa58fbbf6d8f448c305be328",
+        "checkpointSHA256": "dc7aec1158f3bea407eba43cf7f0b7027bc8e7279afbaf60881967036dd4b6a9",
+        "RMSParameterSquareSHA256": [
+          "8701f6696c9b1da9eb62de80aa0babcd80e71edc72ef7d9debdb771fe7a5ef61",
+          "6b1d8e862a3cd5e842d6a816e4c575a63f543316ed2fbc1e9689840fea474e72",
+          "fba5232fd1ac76a74c70161648e571e948d0756e92ceccb3e00396aa737cf523",
+          "15a098b88c8179e2e13ef74ae8fd7b3c8606f8153bc4a1ecd60118df2aeb9c24",
+          "e62b4c5ba54f7c5d65df6fa1c0df0e0e405f2cc24ad3896b050b68929be11cdc",
+          "5e6714f448044cbb3d493be8be1ea848b894183c8a0d90fbe34550ecf9dc9e81"
+        ],
+        "losses": {
+          "team": 3.8076658248901367,
+          "anchor": 0.3999025821685791,
+          "preference": 0.40019428730010986,
+          "total": 3.851684331893921
+        },
+        "weightedTeacherGradientNorm": 0.09860438853502274,
+        "teamGradientNorm": 6.180481433868408,
+        "ratio": 0.01595415981588113,
+        "matureUpdateDeviceSeconds": 1.1781306249999979,
+        "pythonStepSeconds": 0.027300832999998192
+      },
+      {
+        "arm": "B",
+        "update": 11,
+        "receiptSHA256": "ee014eb0ea64ed19af07d33df4e0971bd830051ceb75082024ded6bc55e8e40c",
+        "weightSHA256": "80db7c3a98d20e148cfd8ad1896ea9c23ae54dd7108b6d0b6c8892559e474e02",
+        "checkpointSHA256": "28ff297ac0d056398072b6f25b1016e1e27c299b514f64793d90e9ac3058ee95",
+        "RMSParameterSquareSHA256": [
+          "cfaca9e77467cfd5535aa7ed48c2f4942209b602d675b9389d3a1aec5eb2f6f4",
+          "6d9f969672daeaf04847e5673ed95f53b09ad95c5e0f1a1f7057f33ec4d007ad",
+          "806c2dbdb5c18322cd68d34e5ec382c6aaafba9874659cb44f650e144d7ff0ed",
+          "ae6d221c4dec39a8fbb9073000682f18706bf002fbfc5bb0454f4982c520f7ea",
+          "71ee50e2af42d142c5ad6190bc28971d0ed5a6a726a49a7bb312b8bc4a61a1e3",
+          "0c9014872da2b4e701212773a077434e24d1af711696d6fcacb625dea9f11dc2"
+        ],
+        "losses": {
+          "team": 4.6411590576171875,
+          "anchor": 1.5134013891220093,
+          "preference": 0.37732750177383423,
+          "total": 4.69402551651001
+        },
+        "weightedTeacherGradientNorm": 0.09334295243024826,
+        "teamGradientNorm": 6.540125846862793,
+        "ratio": 0.014272348058107103,
+        "matureUpdateDeviceSeconds": 1.3877168749999982,
+        "pythonStepSeconds": 0.026653082999999356
+      },
+      {
+        "arm": "B",
+        "update": 12,
+        "receiptSHA256": "ac9ff183176cf508aa8e65700393076a6b2e1420d1c44baec6d4f294850f8d2e",
+        "weightSHA256": "fe5d41e04423e0a0f2dbc138fab3ddd2d1231b35de398f69e49de3202286d37c",
+        "checkpointSHA256": "1bcb5fec2abfdc1237af023fba73394641fa2e4f5fb110384d89d6303167c2ad",
+        "RMSParameterSquareSHA256": [
+          "704affc42630bee20d32113e5a437ff8ae0cbfed8464e9ba0a7135135172a3ba",
+          "7388c4f86b974d0f1f52a14c2f74c62d92641d411071f7a6e2921f1b4470d4c0",
+          "f10d2da9dc7a77fb3ed998ffcfc57e83053fb72b4911d7cead8d4b3a439223b4",
+          "08be2477e3e8f81ba8ad398b654d3866ca1f38c5f2e07652570e74bd5768bce3",
+          "42b87d1cc120d82d53cac6f67c8ae08c8d7e84946c7cf0d68dcd73820001b875",
+          "dcfd01516c27b9f783ff90a6e289c3fc09231bbb4176ca77619db4b322f71675"
+        ],
+        "losses": {
+          "team": 4.9103498458862305,
+          "anchor": 0.2449391484260559,
+          "preference": 0.3833746016025543,
+          "total": 4.951136589050293
+        },
+        "weightedTeacherGradientNorm": 0.09776732325553894,
+        "teamGradientNorm": 5.013550758361816,
+        "ratio": 0.019500615026681115,
+        "matureUpdateDeviceSeconds": 1.1617412079999994,
+        "pythonStepSeconds": 0.0265862089999942
+      },
+      {
+        "arm": "B",
+        "update": 13,
+        "receiptSHA256": "8f62024c115797473ce34ef03b1898e8e45e462ee98b5d7021bce29927b59665",
+        "weightSHA256": "5fddc023b4e6022e54748b7149e9c813fc73579df491869dcc33c0c4216b21ca",
+        "checkpointSHA256": "2db3e9c10fa518a63bb31957639ed6e9d34ad479f93b9b501f6b89ac34a7d1db",
+        "RMSParameterSquareSHA256": [
+          "9b848aaccc7da7db81e42b2dacf824dcacc2d60be18aa71b3dbdc5b312170ab6",
+          "3b122549c5a040b35f9aedc6fe634244044143c86cbeb0f5a56ed454e6cc32c0",
+          "97fc403c8439a4140dbb0a32bb40a302322f80afbc3d6e8fd7bb0ffd36debeb4",
+          "007bb2a130a3e78d3bb9b8543c7feecfe3965521533a532daf0c6695fed659e1",
+          "d989680b23e066804ac5b13f8b9ed1ead3e2f5144d308dc62b5fc6858754369a",
+          "324140aa188a97b94c9bf83884d26edf6c0c35117674769581c07586aaa74ff1"
+        ],
+        "losses": {
+          "team": 4.635744094848633,
+          "anchor": 0.6607643365859985,
+          "preference": 0.3736805319786072,
+          "total": 4.6797194480896
+        },
+        "weightedTeacherGradientNorm": 0.0980508103966713,
+        "teamGradientNorm": 3.2822940349578857,
+        "ratio": 0.029872646798972523,
+        "matureUpdateDeviceSeconds": 1.2719860410000037,
+        "pythonStepSeconds": 0.02691858400000058
+      },
+      {
+        "arm": "B",
+        "update": 14,
+        "receiptSHA256": "9d92a6738c74ff873a77cc1bfba4860fe77f16770ceddaadf6435fe926c39366",
+        "weightSHA256": "4738aaa14da6de5212e74921270cb4ff82b023f3547f1bd3efebfcab6d394895",
+        "checkpointSHA256": "d37a84c1d16acd0bebd3e968f34bf4e51f4f47a36906fabbc74d3ba25f957f92",
+        "RMSParameterSquareSHA256": [
+          "a8959ffe7bb61f5ca130da719ec18adb392b03bbf2e2a161e9dacd3f2c644cc3",
+          "cb1d0c2aa4b89dc15c1790a951f416d099414ae5230421ab53c78b6bc83c8a3b",
+          "f76fd0e9b1083ad157305ad215f9df3045232d0f73c8e35baa98fa423ec71bdc",
+          "b9c39da5932660e884def6a4d3c646c86858eca62482a8db8b4bb0680b20b555",
+          "5236c513b26f9239b53858375711091d691c7e646cef23a9fd6c67cd31c25cb8",
+          "224ac17c271275c582c26adfe0780d3dce57dbdae247e7b979f0538e14a855ad"
+        ],
+        "losses": {
+          "team": 4.449360370635986,
+          "anchor": 0.5832778811454773,
+          "preference": 0.3630155622959137,
+          "total": 4.491494655609131
+        },
+        "weightedTeacherGradientNorm": 0.09551412612199783,
+        "teamGradientNorm": 4.096172332763672,
+        "ratio": 0.023317897383861978,
+        "matureUpdateDeviceSeconds": 1.1687564579999963,
+        "pythonStepSeconds": 0.026240874999999164
+      },
+      {
+        "arm": "B",
+        "update": 15,
+        "receiptSHA256": "4d90d2a23b3fc09478391419c25071fbac996d2c93bd28aeab58ed47b5806c81",
+        "weightSHA256": "80aaddfa4a00008000b401446c12c9d0f3bcb1595bea099c7af7c266826c27f4",
+        "checkpointSHA256": "7f3cf53a5b8509e88369f0413a6c37c826e0047fa8e671c294bb1d427f189a6a",
+        "RMSParameterSquareSHA256": [
+          "86f6f4fd0dcb5e83cb863c7f6ef408543e596b1d6d355f57939d23a2ac2dc2e9",
+          "30bf8c1ba752031fc73309c5dc0bb957c0c66ce0e04974fdeaae8d6f7cf11889",
+          "13e91b1d26edeeab7ed57646831422bc9f663a06b222dfd0347b9c7f0839011f",
+          "eeb26b0e052ebf08de6592292f8be80fb4b49c70cc7b0adae64cceff3f03c1a5",
+          "2f1ed401bac0ea7b2697bc9b9768c73a2b6851a575b943f187294c769e7046a5",
+          "14a780d91a1adec909fe3062dbf02b42eb59a0bc9ec3103de13b38242760b470"
+        ],
+        "losses": {
+          "team": 4.812276840209961,
+          "anchor": 1.1714435815811157,
+          "preference": 0.3491861820220947,
+          "total": 4.858910083770752
+        },
+        "weightedTeacherGradientNorm": 0.09082872420549393,
+        "teamGradientNorm": 5.742150783538818,
+        "ratio": 0.01581789256838659,
+        "matureUpdateDeviceSeconds": 1.8398170420000024,
+        "pythonStepSeconds": 0.02569658399999497
+      },
+      {
+        "arm": "B",
+        "update": 16,
+        "receiptSHA256": "291ade1cf6371db3ac8902117097061f4c7c0b2886018d8729ce2796c08445dc",
+        "weightSHA256": "ca3016c2a611073b7e69d1cb8cf84b2cd1b67af16647d15e0417c20d3fc128cd",
+        "checkpointSHA256": "62ac339b610872db5a6af32c4994b71d45870f486ae0e2fbe256ecfc101c990e",
+        "RMSParameterSquareSHA256": [
+          "5b2900f89dc7c9114eb119e6144c0f78c7ca1e5929f5b536044138bc008a6ac6",
+          "86ed707d0cd0e0707113f0a0c7d304521c16d2869533fa8a714b32fc0228b6be",
+          "b572a298f48b690cb29544f39cb56d425458ce9fa5abad4f5d2505870c057d2a",
+          "81ff56bf25a8efc6506c4b6cab2c65ff8745a8359537c31ab427bb9591c03990",
+          "f858fe692d502525c9a8be29d9552fddce59362581290ca8318011d1f8c8ed22",
+          "788cfaf860eda0b397247efccbf9320a56337fa45aca6507d1ab133255ed8385"
+        ],
+        "losses": {
+          "team": 4.255959987640381,
+          "anchor": 0.2685213088989258,
+          "preference": 0.346713125705719,
+          "total": 4.29331636428833
+        },
+        "weightedTeacherGradientNorm": 0.09355849772691727,
+        "teamGradientNorm": 7.496199131011963,
+        "ratio": 0.01248079141065816,
+        "matureUpdateDeviceSeconds": 2.7983180829999985,
+        "pythonStepSeconds": 0.025483000000001255
+      },
+      {
+        "arm": "B",
+        "update": 17,
+        "receiptSHA256": "179c887400b7d66dd212773ebfda0e3e1eed4ba4dd5be4950e16cc73696cd22a",
+        "weightSHA256": "8e3a8b89e713fb35f50ca6de8bbc303722530a2e388ffc1fa73c3d2d9f7ae283",
+        "checkpointSHA256": "874f281e5a6e11f434ff92e7466c50535cc84e2f1bd4a353206e399b744cc784",
+        "RMSParameterSquareSHA256": [
+          "b2357f485d59504c379baf6489b263e69ece13405159bfc9095c827ea6f3703f",
+          "016f57feaef71a0a4cbc02a8bcf61cd816a78b2238d615f899cf9d24a536f2d0",
+          "3d1155572dd17ae4f589ac9a0e31b95a8620e63893902172ffad324be9bd687b",
+          "86a0730af82540d0f99c69ce5a52997b4e0110a0cce0a5f8914ce6302f8d57b0",
+          "115612b87f170c40b0da0514ed3aaa8c64171584e152397b3e3a2687515228cf",
+          "a56f9df43be2df1eab61ce53831f14ca09bb563da1000b4213597b993b7c5fdf"
+        ],
+        "losses": {
+          "team": 4.6101837158203125,
+          "anchor": 1.4147067070007324,
+          "preference": 0.34888291358947754,
+          "total": 4.659219264984131
+        },
+        "weightedTeacherGradientNorm": 0.10220730304718018,
+        "teamGradientNorm": 8.159319877624512,
+        "ratio": 0.012526448843789737,
+        "matureUpdateDeviceSeconds": 0.03305520800000522,
+        "pythonStepSeconds": 0.025508500000000822
+      },
+      {
+        "arm": "B",
+        "update": 18,
+        "receiptSHA256": "476b95dd4dd02a17665a5cb053e33baceb84e17dc35670622c56badf3ca5ca76",
+        "weightSHA256": "e3bb486533838c41a3167f60ab946865b99b189c94943e6033aba521bcbadfcf",
+        "checkpointSHA256": "3a026375331c31ff3e3230426d6b0eed7a119ddead9fe93cd8b6cde673311efa",
+        "RMSParameterSquareSHA256": [
+          "1676b045171fcbe46fe8fa848d90836d710a6c39b295b3eaee34b851269918fe",
+          "320d0b5f7d15c11f6d2b202f20ac1ff13315b64536138f764cdd58262ede5b5b",
+          "01cac229ce114704fcf3942cb5a06f39cbb82cfcd0e6a7d65c3677811c5345da",
+          "b84d05811c0f1600f4adb1784f928f2773e0fe010811cc28ed0a71aa3baa863f",
+          "397839410ca1216a4e6fffa90e7d083e91d5f680fc07d2cbee30de9cfbe4d3aa",
+          "d52f15e2e215917d2c7042cc9e0e6086b1de60111a56f49cb4353ec3f24bb68c"
+        ],
+        "losses": {
+          "team": 3.507891893386841,
+          "anchor": 0.1980155110359192,
+          "preference": 0.35245075821876526,
+          "total": 3.545117139816284
+        },
+        "weightedTeacherGradientNorm": 0.09724248200654984,
+        "teamGradientNorm": 3.426076650619507,
+        "ratio": 0.028383043324196014,
+        "matureUpdateDeviceSeconds": 2.611594250000002,
+        "pythonStepSeconds": 0.026381583000002706
+      },
+      {
+        "arm": "B",
+        "update": 19,
+        "receiptSHA256": "3a3cf007dfb1def01a46e092d4a4468d36b820c0d68c1d2dbadacc743173a547",
+        "weightSHA256": "e9a801dc141412ffa90320512245700f0e4ac9d433de6f7b5b08f6e9fe22c58c",
+        "checkpointSHA256": "69b4fd779e188bcc5946da6f6171e432e84573c115466a384ce937fd73ce7af0",
+        "RMSParameterSquareSHA256": [
+          "e775c7aa1c791fba90a76bcf97e3a6f72a6c4206e21040540803d16469c255b7",
+          "72a837482048bf21efd505a25fe370de99c49005c7b44d0b34ec7cbc39d9f273",
+          "23749ed8cf06ab1e236cfb07425e078ae52a6910652e3792451eaf7188a39987",
+          "5111aaa9d17b2a3c59e50bc806c4356652809a8b1d569ca651d29baf70cb43c7",
+          "fabc444fe4b6355ddae3b5d2fbde9e82f61992e268cedc33548383ac17c79066",
+          "ae7a8409918e791457b25d273ef6fb1951c8dcd4418c0d1b38c8c3cdabc9ba0b"
+        ],
+        "losses": {
+          "team": 3.696845293045044,
+          "anchor": 0.28411275148391724,
+          "preference": 0.33329272270202637,
+          "total": 3.733015775680542
+        },
+        "weightedTeacherGradientNorm": 0.09371955692768097,
+        "teamGradientNorm": 3.079232931137085,
+        "ratio": 0.030436007610854125,
+        "matureUpdateDeviceSeconds": 0.03298662499999773,
+        "pythonStepSeconds": 0.02645887500000299
+      },
+      {
+        "arm": "B",
+        "update": 20,
+        "receiptSHA256": "c77b7f524bbef44bdf4c194f5f85f525f52312d01bdc72a4195a5f7a0f2d1a4e",
+        "weightSHA256": "e079b5906b4a30c5275401a2aa1c4b211bfb613eeb9bd8e010ff59e9fa35c3fd",
+        "checkpointSHA256": "7eaed738dc11fccf7fa0bbda4e0063cf99378d1539f697a1315c8a7b27053679",
+        "RMSParameterSquareSHA256": [
+          "bde70a570455bc5bf1d58694c65117c97e0c250273face97d9df4a285c28b89d",
+          "4e15bcd056196a0b11343ba0381fd560308884e5ce2416a2e5db1b9dacb5a5bf",
+          "2f70b72c08e44512f0e60778875ad45dcb5f0924d4a68403ad758a11c4dd26aa",
+          "6a5ad0fdb5ace06b8e0273bf32b15a664e5607c1574adb44a7cbe788126013ed",
+          "ba9027fa423cfc721660f179e4526e5ed52c7ee79a98691f4307f6751cf7b092",
+          "b24c0c006ee3d474dbda23e9e3106ab50aca649674822150752e0a3c85407d59"
+        ],
+        "losses": {
+          "team": 4.544477462768555,
+          "anchor": 0.1979421228170395,
+          "preference": 0.3357638716697693,
+          "total": 4.580033302307129
+        },
+        "weightedTeacherGradientNorm": 0.09354852139949799,
+        "teamGradientNorm": 4.7690958976745605,
+        "ratio": 0.019615567270331636,
+        "matureUpdateDeviceSeconds": 0.9461468750000058,
+        "pythonStepSeconds": 0.026955416999996373
+      }
+    ],
+    "artifactHashes": {
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-anchor-source-match.json": {
+        "sha256": "8927699c416f3d324696c4668354b5bd60564ad8de7eaf47e03cd309ec760baa",
+        "bytes": 5468
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-1-match.json": {
+        "sha256": "97be750923b9dee5196fc1000b90431f451f2087a1acef956471d29b8e8db8d2",
+        "bytes": 7575
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-2-match.json": {
+        "sha256": "2080e7c120fe6b6dfd67e3435b86f817cff07b8656159169dab1ef5d1a041f65",
+        "bytes": 4142
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-3-match.json": {
+        "sha256": "a8c8ffcaf7b4f7852c7d2260c8b66c00edb603b7f18256129677edce05a1ca32",
+        "bytes": 6718
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-4-match.json": {
+        "sha256": "22dbe117a56859309aa13824443cc722ed74e91796998db2909d4d320da3cb3c",
+        "bytes": 4995
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-1-match.json": {
+        "sha256": "689e6fea566a5defa3e19617a0282ce6853f25e43632e32f2dc6b7237da998e5",
+        "bytes": 5046
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-2-match.json": {
+        "sha256": "6b0f8ef772bc3ba97c1b2a27ca8a7937ec730b0fdf4697ec7a08d9d7aa40ed00",
+        "bytes": 5469
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-3-match.json": {
+        "sha256": "763243676ef80a988e078268c37af6d36e0a1ecd92db08a2676fcd7081f4ac0f",
+        "bytes": 6764
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-4-match.json": {
+        "sha256": "c153d84a736c657ec207b18f7faff8bd5522c71b3c233d6d0039b4dfafd6d3a3",
+        "bytes": 7192
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-1-match.json": {
+        "sha256": "74079425685561cf9a0195a5a74d43c4bbb1ec2683fdb9a9e9f451f2df5df5a0",
+        "bytes": 4637
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-2-match.json": {
+        "sha256": "7c331100c56060e34068d601f8f565e1752ec63fa6890d6cade79c01811fe93c",
+        "bytes": 4219
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-3-match.json": {
+        "sha256": "283363a59f2dbe6b74c055523cc3ae621dbb491cd93df6dc6c8ef1e672a1353e",
+        "bytes": 4642
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-4-match.json": {
+        "sha256": "47f47caba9fb81607ea2198e7cba475b399df0ec971f6669be5af0c2318a1fff",
+        "bytes": 6350
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-5-match.json": {
+        "sha256": "2900e0428522f83a37ea21c1d982a3565a3b1767573da9e56117c3c20c10fcf1",
+        "bytes": 8072
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-6-match.json": {
+        "sha256": "73bb4bc351a706c49fc90113ba747f7fbf62e129e9d72f0870aefe22ff0b56f5",
+        "bytes": 5495
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-7-match.json": {
+        "sha256": "4a2e5b365e04ef05e552cb01ceb031c592fb39f5c18504b44b86adc29298f662",
+        "bytes": 5068
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-8-match.json": {
+        "sha256": "00ad424ae67bf3bc834577c34b30fed11b9a0ea34f87dcfd7cf46ddfeaab6942",
+        "bytes": 7209
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-5-match.json": {
+        "sha256": "8e540183719de67cdcf238a960c213f27eb6b2889697320581924d6f8048b2ab",
+        "bytes": 6710
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-6-match.json": {
+        "sha256": "6cd8cd1c78f3d9afd12fb42b6467b9699ced1155e1f8af8aec717c5673218805",
+        "bytes": 8003
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-7-match.json": {
+        "sha256": "04d31a44922339036a5b60b204f97decbd42f4ea65c74e5352ac81d3c0e11851",
+        "bytes": 3722
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-8-match.json": {
+        "sha256": "f7df67022fb2c1f59f5a16ac3d7f613c01e3d497e2b3ee63c61d64a0befdccbe",
+        "bytes": 6709
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-9-match.json": {
+        "sha256": "0faa3d7c0b61bdb4db6c978fefaf7bbd25eca9a52cbccef7eeec9531c5e4fbc2",
+        "bytes": 4217
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-10-match.json": {
+        "sha256": "82b9be40467eff40f7018a97839814da974479f783bf540d37101e271509bd81",
+        "bytes": 5069
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-11-match.json": {
+        "sha256": "a09e554d259cd23453c318205fe39206ecc717329bf8de019d49ff4679c2f35e",
+        "bytes": 4645
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-12-match.json": {
+        "sha256": "f65c0c6fecb7525b56fc2d349eeae3e8de1fd8327a6727ecf490fb6a54c66bec",
+        "bytes": 6354
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-5-match.json": {
+        "sha256": "424d2e7757a984d2fb8f02bc9b69545408ef6f9f941a23c685a54ec939babbee",
+        "bytes": 7187
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-6-match.json": {
+        "sha256": "104aa8fa948b628c2d05a720a3a6de652a53f0738f4f70c7045033a7f271f7e7",
+        "bytes": 6321
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-7-match.json": {
+        "sha256": "3e034875a01db2424c3c29c0e22fefc00a60932338a17e6288bcae5e03534b0b",
+        "bytes": 7189
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-8-match.json": {
+        "sha256": "7a18087ba14618bb33c96384d73613bc21aa4917e2c785dd0a3788e9d395a668",
+        "bytes": 4618
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-13-match.json": {
+        "sha256": "83daa92dc277ece98651ce6f48c8a3ca5b0cb31e3f1fa5c78e9714fa2d811455",
+        "bytes": 5069
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-14-match.json": {
+        "sha256": "b098d678fb91eb1ed9ba163926b668c9d514e638e9acdc4e81179e24a9531928",
+        "bytes": 5925
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-15-match.json": {
+        "sha256": "ca98c14a1d13be98ccad2059b9a2748b70c18a34b2010d6148fdd6a13e955cfe",
+        "bytes": 5068
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-16-match.json": {
+        "sha256": "26115534032271f87f2f0b0337add1e6cdf11b78798de2a8e6b199d0cb49bdf2",
+        "bytes": 5924
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-17-match.json": {
+        "sha256": "e45d28277f4313f9f098557013be1e03a53bb369a2cdd03ce9568f987d3c73e3",
+        "bytes": 5925
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-18-match.json": {
+        "sha256": "967bcd94dc173d4f2704c4a1482c76048c55b8e0ab4f24eba63d315a18aa7db8",
+        "bytes": 5498
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-19-match.json": {
+        "sha256": "bf3302e8ed2d21b514357c916fbfda9f9ac09d1822af115171d7c0640ef0d3ac",
+        "bytes": 5928
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-20-match.json": {
+        "sha256": "34dbf1ef7b920060caeb5511d49c21d23fa9b53f02f6c496f942cc61c000cc0f",
+        "bytes": 6356
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-9-match.json": {
+        "sha256": "040d86b0711dcaaeffbea02f770eba530425d035117ddee67d4e803b5879d4fe",
+        "bytes": 7146
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-10-match.json": {
+        "sha256": "9cf5bff1dec823efcf90a5138c39233a50bc51b031b54bd9b9d664c78ff5126d",
+        "bytes": 6287
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-11-match.json": {
+        "sha256": "2f3d72a43dbd587047474605215762ecc6bd2d26a8dd57f11775d775425bb852",
+        "bytes": 8002
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-12-match.json": {
+        "sha256": "b59e16a6486f60ed8f4a050d6b7d9c8f0159679ba868bae4457333a962a39760",
+        "bytes": 4563
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-9-match.json": {
+        "sha256": "75c0c71dd2e2af322448d049e168e1eba2185839759f480f98d1c68bb83028a9",
+        "bytes": 5474
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-10-match.json": {
+        "sha256": "daf3da74e22aefad0e1db46b9dcebf845cb97e7c91650bc98604fda4c9358562",
+        "bytes": 4621
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-11-match.json": {
+        "sha256": "e771418ee7e241e6b00b098eb47a208207aa830331e8080cb9850ba24c008373",
+        "bytes": 4198
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-12-match.json": {
+        "sha256": "7279c6ef0f485f593b8e979639fd31c63c7f4660dcfeb9005106d0b193080443",
+        "bytes": 4622
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-21-match.json": {
+        "sha256": "a03220d7e6df48e2759e0b1790988b17d98046d969b70eb55a020f2abbdc307a",
+        "bytes": 7638
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-22-match.json": {
+        "sha256": "5ed283c5ccc1f64833765dff1560004342ecb583ff56294fb7f2ee4865fe1f96",
+        "bytes": 5497
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-23-match.json": {
+        "sha256": "cb2de3a8f4f03a1fc866358db93e04ab45c3652fc114d89026c9d72be1a17e2a",
+        "bytes": 4221
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-24-match.json": {
+        "sha256": "6b0dce4db15933efe02ea45fd887750a5f80520c9245f2a8f43cb1bd88def282",
+        "bytes": 5496
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-25-match.json": {
+        "sha256": "49495f96604462104099bf427d7dadee6f775345eb490c2f639e44203c117cec",
+        "bytes": 6789
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-26-match.json": {
+        "sha256": "fd4f7a855a6d0fef20dd2afa3a862cddf92ce544e28540e675205d6261ae45fb",
+        "bytes": 6781
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-27-match.json": {
+        "sha256": "1a9b2086cd218e120e0fc355a135127eaec0a132d5f3758ccb98d406bda31657",
+        "bytes": 4652
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-28-match.json": {
+        "sha256": "5f597ee3849c9e8e3ce97a5e24301cf97909824cf84457b630aaf151a8c35c53",
+        "bytes": 5064
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-13-match.json": {
+        "sha256": "619c38e076a6d8f5ebd2f122d8d27595342339585557f5e78abe85e99df397dc",
+        "bytes": 4202
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-14-match.json": {
+        "sha256": "38194870702da5edc33fc6ed05debd50b2b1de5c442b5e963be6ab1e54d26598",
+        "bytes": 5476
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-15-match.json": {
+        "sha256": "1742b930b172a62136aac55da41ca5d7436d1cba2cdda9f4e3be03f945dddce8",
+        "bytes": 5054
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-16-match.json": {
+        "sha256": "93b86f9bc9bfdbcaa78a55acd132b795df6a304fe14d8d93f74808f72dfb347b",
+        "bytes": 5904
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-13-match.json": {
+        "sha256": "ec5bcb140da60f92192831c1da4295da3df3d94b4bc2753bc27199f596a9c54f",
+        "bytes": 4577
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-14-match.json": {
+        "sha256": "0f0f2bca001c9b63db230f1ec7e9589ec37f399a223fa8989fb4c9e95b06475e",
+        "bytes": 7575
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-15-match.json": {
+        "sha256": "ae71a5e8d4c108ba0a04241c1166483f908039bd66ab59168f73283547a5d757",
+        "bytes": 5432
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-16-match.json": {
+        "sha256": "974cbec7ea9fcd22069b6e04eea2e38c6fb59b5af98dcdc2b5baa815f185a66b",
+        "bytes": 6727
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-29-match.json": {
+        "sha256": "e39b6df9236b6ac638d17a9b9e1dfada9188e73b3cff976da5db685f0349818d",
+        "bytes": 4223
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-30-match.json": {
+        "sha256": "07ca4b17d4faafabc668a4223eb996cff3baa5fc1d93d0e263e6cd8b4284180e",
+        "bytes": 8068
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-31-match.json": {
+        "sha256": "1ebda56dbe9eefbb16722569e6395f0446a81ad36dbea3bc4cf3422a2852543f",
+        "bytes": 4647
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-32-match.json": {
+        "sha256": "b583e72ba4ab0ffb00dd3eaea82e0f4067c2e7f04c90308862858d1e195ab623",
+        "bytes": 5927
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-17-match.json": {
+        "sha256": "dc53934b4f86ee44cadf5e5046ec760eb5c49e0a0bcc77b2e72ec3b71fff3833",
+        "bytes": 5474
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-18-match.json": {
+        "sha256": "83a40e97773ac6137898180fe234e686db1271180f1011f7f6e20422eb39da6f",
+        "bytes": 5476
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-19-match.json": {
+        "sha256": "568f3be3c796c7fc62e658f675160656c6d64a1ffef55e7989dc6f34c30a5678",
+        "bytes": 7194
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-20-match.json": {
+        "sha256": "74870009e7b21e0458a1ecb0da1248ec1a14b9424d1c894c6ccac4dd8099639b",
+        "bytes": 6335
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-33-match.json": {
+        "sha256": "5a9fe9a69f78dc517257881e1db04e6f4c54209f363fc59b7b24bcba9a7e4afe",
+        "bytes": 4221
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-34-match.json": {
+        "sha256": "eb56229006e6d30c0b9e8beb854c99fbe7266c9b223638e93298c8ee51191d20",
+        "bytes": 5063
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-35-match.json": {
+        "sha256": "d7238422829ff3aa5efa99a475748362798bbf331f01f86b2e582ba6184fbed3",
+        "bytes": 5074
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-36-match.json": {
+        "sha256": "8f87b31aa14176dcfb91677b1ccfb7cc74a991a8b34708f845ac7906b46dc019",
+        "bytes": 4646
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-37-match.json": {
+        "sha256": "71bb614c9c2a4e4f0bcd4e2efe69c6ae5e8c4ccfe409343d125da6c13e36c55a",
+        "bytes": 4647
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-38-match.json": {
+        "sha256": "c70c3b40e711cda3aa8cd95d2efc3cfae36c771f5d388bc5174220ce041e2413",
+        "bytes": 6783
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-39-match.json": {
+        "sha256": "bcbb99449f721c050ef5ee4ea8a776b7a4b21ebe97ea172c96fd678afed394d2",
+        "bytes": 5073
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-40-match.json": {
+        "sha256": "34442e385517ae2400f09a775303ec856900c98c532f9b1ee478b4e655e531b4",
+        "bytes": 7649
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-17-match.json": {
+        "sha256": "edfcad05578bdc715dab28dad94acedc906d51631be66665485b8b158cdfa3d9",
+        "bytes": 7573
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-18-match.json": {
+        "sha256": "7763818e64c0e447d359520e5b642ab060404aff895c444018af3ae7798dc54c",
+        "bytes": 6288
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-19-match.json": {
+        "sha256": "548991d9b2e76719217e863ee719c462b187746656328dd8ae641bdf0929bc3a",
+        "bytes": 7580
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-self-20-match.json": {
+        "sha256": "3d251adb1a5b6be2976a92d8cd3e800da7aacc6e31a0c6967a66ddb2edbc89b2",
+        "bytes": 6295
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-41-match.json": {
+        "sha256": "96c219ba4c1a090c5db9410f224d1fb87367042b56bbc33c86832e7781a7a388",
+        "bytes": 5494
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-42-match.json": {
+        "sha256": "05899831086ee67ac9313514460e805d599df8b159f7100ca550bda3f3e2009e",
+        "bytes": 7212
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-43-match.json": {
+        "sha256": "eb917945ead3c17bafd351c49b3c003cdb7cfa0c5eae49eeb8b613b4077da6bd",
+        "bytes": 4649
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-44-match.json": {
+        "sha256": "79d9af2bbf5fb2c5335a36f883f7a211fcdf9adcbf60e90c7c33f95ae32d633e",
+        "bytes": 6783
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-21-match.json": {
+        "sha256": "87a410d3f40fb0acabb8fea3066f8e2f883535d26382a464be174b32338d75d1",
+        "bytes": 7199
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-22-match.json": {
+        "sha256": "c84bfbb0ffffa632a84e642b1f2cef25d7d6e00e584c26c651c4279c792e78cd",
+        "bytes": 3778
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-23-match.json": {
+        "sha256": "079c4192d452ebac71fe45c981e5d5eec0036783a597aa8b38b1b70b5d4d6c71",
+        "bytes": 6334
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-frozen_opponent-24-match.json": {
+        "sha256": "204c6a5a2578b46aa5d8251a8cfa4b0e893ec692255b1babc2a327aa68577519",
+        "bytes": 5052
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-45-match.json": {
+        "sha256": "7861d67c285726b869f323d167a50931708d0be69ae4576a7022b0f9759ecba0",
+        "bytes": 5071
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-46-match.json": {
+        "sha256": "26ff3fe4f05f8f3a984609fbfff779687eebf61ed28bf45d8b9174576348687a",
+        "bytes": 4651
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-47-match.json": {
+        "sha256": "8b063c00ddba3cf6f1474eb96c0be075487b32f1fb2e7fb32c2d66181e186d93",
+        "bytes": 6784
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-A-other_partner-48-match.json": {
+        "sha256": "105ed1b80887e9a3942a0955e3e62d2f2f5730969462e60d5c52d3c08b076a11",
+        "bytes": 7643
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-1-match.json": {
+        "sha256": "2975b36a2a9f1b90688bbc1b139f71a119ec93016e55f5fe9b121e902bdd0621",
+        "bytes": 4998
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-2-match.json": {
+        "sha256": "f46082f5141ca14f22c2519869c3cccfb23309dbd44476abaf921f67eeffa6c5",
+        "bytes": 6286
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-3-match.json": {
+        "sha256": "24f3ff4b45e2e144e2503d67c9ac36f1a637bc1801a696e1b7e5616c7d7bc82f",
+        "bytes": 8429
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-4-match.json": {
+        "sha256": "49eec0903c4673f4c29bfd90d25814b67dd99c5ea5a06eb5f0742fd2bd4b80e9",
+        "bytes": 6283
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-1-match.json": {
+        "sha256": "c010b2a4c31b1e93aa5fd40d12db0806b4ae93f9fc707a103ecd29255e5820e6",
+        "bytes": 5907
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-2-match.json": {
+        "sha256": "888d81cadda5859cf93f4c865b4682f0d0ee40070b77728aa204dd634a2b569d",
+        "bytes": 7188
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-3-match.json": {
+        "sha256": "371a71a5abe0195d32ff9b54989582ef378f7c9a1ffeb2cbe4e753c38e8c0de6",
+        "bytes": 5903
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-4-match.json": {
+        "sha256": "b21d1df2038cbae193e4338b39f168b79b43b794b11bb7c6a642ae722cb2808b",
+        "bytes": 5049
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-1-match.json": {
+        "sha256": "5148285806d03ae204cc088cc2d660dd98ab7c03a3f6f0071af5668f62d2c765",
+        "bytes": 5497
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-2-match.json": {
+        "sha256": "a278ed853c60ed88b172974006a54f21b239d1232c1f9782b8b060c629c1fa48",
+        "bytes": 5494
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-3-match.json": {
+        "sha256": "50cf499d22ee6e06233d9a7efdf9a9cadd5822878a427e17854da9f70092f71b",
+        "bytes": 5493
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-4-match.json": {
+        "sha256": "6e7a6cfa08bb545c4310fd1396f4e999e385accb56c9ad0f8da57f207667a93b",
+        "bytes": 5920
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-5-match.json": {
+        "sha256": "abb08ab2427c3d17b7f503516e58104401db71e298e92da9e1887a0195110792",
+        "bytes": 4645
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-6-match.json": {
+        "sha256": "aeacf9af9206b10c836907ac28f66d24b4d1fb37324538e17faf9217163aacaa",
+        "bytes": 7644
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-7-match.json": {
+        "sha256": "7337d9604a25f307f0a81ea4d717fcbbc58e1327f4896c454375bcbd24b2482f",
+        "bytes": 4645
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-8-match.json": {
+        "sha256": "bfb6aec3bfc1f4353b0367a156f69e88e0dbfada2986f2d8bb39bbe9a74cdff8",
+        "bytes": 8498
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-5-match.json": {
+        "sha256": "763ce69d2ce0ed3f4524255fa73e1a6ed2d488f8b1cec38f3c31bacabc38cb82",
+        "bytes": 6766
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-6-match.json": {
+        "sha256": "83e08296cb4c2c1d7eb2ad688fc61c393b41a51975c464c18ae81f8fc940c5b1",
+        "bytes": 5471
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-7-match.json": {
+        "sha256": "3cff457482746352667fe206d9f43a0512eb68a3831091972fd64b37a69daa6c",
+        "bytes": 5899
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-8-match.json": {
+        "sha256": "07f356a714c692482c58d8d784471687c561b4697ad9ae483f0f14961f5450f7",
+        "bytes": 5470
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-9-match.json": {
+        "sha256": "a7d31a7dab708cb155804b690bf6695cc6f4be6f6c11937183fc71a649750c1b",
+        "bytes": 5068
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-10-match.json": {
+        "sha256": "0f097e67d91cbd51ef0b1edf126d8e98676720ac925225fd5cc5715e78d82012",
+        "bytes": 5492
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-11-match.json": {
+        "sha256": "d3c09291082d98531a25cb5a7fbc44e26c0e75191f4fd650e8ce113731ed203f",
+        "bytes": 5924
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-12-match.json": {
+        "sha256": "8f9eef9f8a5e1d6cb5c35d259edda1e081423cd0bf6d4ece511e8f62bd0d37d0",
+        "bytes": 5924
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-5-match.json": {
+        "sha256": "2e294e47a276d0e602e8f42b566c759c622bb80c37f4ba792e48f3bf6e99187b",
+        "bytes": 5852
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-6-match.json": {
+        "sha256": "5c45dd07663d3b5414ab8b4acdc39bb21bbde7e613bdbef34407f2b0ddc15932",
+        "bytes": 5850
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-7-match.json": {
+        "sha256": "6954c4a17875db79e68456a8e3bbce92c1a6d782aebb945a819000c6d0e0aa8d",
+        "bytes": 3723
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-8-match.json": {
+        "sha256": "63cbfaf75d1b6c4115cea5647ded085c0246ab2e952d24354eee674ddc3e9c07",
+        "bytes": 4996
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-13-match.json": {
+        "sha256": "b387cd2d1f58e673eb4d0afff86e18290830db994103a185708556ccf56815d9",
+        "bytes": 4644
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-14-match.json": {
+        "sha256": "8e433a7a7039dcba1e951c57a35d5770fb548f4f0b92aeab2044eee74b03cc5f",
+        "bytes": 4221
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-15-match.json": {
+        "sha256": "2cccd22e9c85dcfbb02112f41cade732e156f7d5ae2eb8d23ef07156917b0b0f",
+        "bytes": 4643
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-16-match.json": {
+        "sha256": "76c6bb8cb3e02ea5b4a69b464fd2322a1ab8676b74f28c7d8743d0b884ae3567",
+        "bytes": 6787
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-9-match.json": {
+        "sha256": "bd99d454b8ecab2aa7084263c56b65adff7a827ec4101af948ed09bfa4af529d",
+        "bytes": 4997
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-10-match.json": {
+        "sha256": "2aeb311cde1f6c328dff74cf75459b9a6f87dab902fd42f79440596e5ed83d6a",
+        "bytes": 6283
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-11-match.json": {
+        "sha256": "0737d98b66675366eefb5c2cceb59682e0eab8e35eaefa8c4e3f17f4d630ae0b",
+        "bytes": 4146
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-12-match.json": {
+        "sha256": "f09a8b5874c9390d70bdadd358aaad998ed89a02c203fff4e42e1181fa6905dc",
+        "bytes": 4573
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-9-match.json": {
+        "sha256": "f649f8d36b4844d6e0f2ce08b02909ce1cdea2760123bbd3ec1c7d60ec5dbfd0",
+        "bytes": 9338
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-10-match.json": {
+        "sha256": "b5bbe9985dbec0c199ce16677ddf608a6c8915efb9138cc6bfcafb518b8fbac9",
+        "bytes": 5468
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-11-match.json": {
+        "sha256": "5e6287291c40e8e8babcf250d1cdd81419fb4fea69907637f1cc7cae0e1979ef",
+        "bytes": 3774
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-12-match.json": {
+        "sha256": "b3b5cd47ea0b86cacfebbf68b2d6b074a7adc388dfe2310c4f555d78c04a3a06",
+        "bytes": 7622
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-17-match.json": {
+        "sha256": "3c2e0efba8f3f2a63b3a681a8de16f3b4dfc036142b5eaec46ee4b61b42b9214",
+        "bytes": 5066
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-18-match.json": {
+        "sha256": "cdc599eda875516285f6e3b77a358d544e35e3038dd6da0a75acbdd888814162",
+        "bytes": 6788
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-19-match.json": {
+        "sha256": "d6c3e5c8257b0e8b702d7393f05d4450b1550fd5d0499ad7593845bee58a6608",
+        "bytes": 5498
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-20-match.json": {
+        "sha256": "25f8ff8565bb184397cf753d19c4192fbf7dde8743da92176ad74e45d1ab1004",
+        "bytes": 7643
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-21-match.json": {
+        "sha256": "65c5506b789aab2e09fb5434fab6745812d62b060b8f5e25d0556e2fe4f6af1c",
+        "bytes": 6785
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-22-match.json": {
+        "sha256": "df98f07e443e588b49cbd0ebf7b745eb8834196d77e254a2f7d5e7aa67670075",
+        "bytes": 6360
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-23-match.json": {
+        "sha256": "54162515c71e78dcd70b89b8cbe0fe2d2a830434bbcc5666338c0058c4a0b229",
+        "bytes": 5498
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-24-match.json": {
+        "sha256": "142eea037c590d333dff6b213a6da58321187d308a9d536bec62b1e26204309f",
+        "bytes": 7212
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-13-match.json": {
+        "sha256": "867a4be7283b93b1f91d78da4a90ba896d3fe81bda0b128ea6cc4981cc15c664",
+        "bytes": 5003
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-14-match.json": {
+        "sha256": "f0524a645c95c1a199e82f1c8ce1678111a4287cab4e66c72474dbc68eef81f2",
+        "bytes": 5859
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-15-match.json": {
+        "sha256": "90b153eb1d0d1f96a858b2d97559f26b8f0688ff41e8282d2ca795911bccf6a7",
+        "bytes": 4581
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-16-match.json": {
+        "sha256": "f7d088f2302a2705a9e4160411f09563a2a7f6ce8ed709110a6989fc711a9e43",
+        "bytes": 5006
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-25-match.json": {
+        "sha256": "1d6172e92e60bf77734f599f1b2f98080f3d3db94749b24ca6cfc525a456ff37",
+        "bytes": 6348
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-26-match.json": {
+        "sha256": "10b20d155be37f00a223fe9260c5f9e408fbf7f4733dd949c868b02c4a0e5074",
+        "bytes": 7638
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-27-match.json": {
+        "sha256": "9dec3d20ae84939a9ceb2a4d807ef1044345f2de022770aa5f9c72260beb2e44",
+        "bytes": 4224
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-28-match.json": {
+        "sha256": "ef81dbbce4a198a53d25e9f351ce54f3b9647559b15573b4e06120d5dc4b9112",
+        "bytes": 5923
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-13-match.json": {
+        "sha256": "f01567b1f03bbd10bb86b8eab15a0cc9fd204d33ae2ec773f06d288f4d803267",
+        "bytes": 4628
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-14-match.json": {
+        "sha256": "e168ae4522ff11278fd054e61e625e7aa697d090d16d85cb6253b41bcbebebb2",
+        "bytes": 5473
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-15-match.json": {
+        "sha256": "e3c1eda517003ac77c4605fd9d3db6f0a992805d43725d4872e61753791c6ef8",
+        "bytes": 6773
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-16-match.json": {
+        "sha256": "62fc701dcc7134708621f9905e19ef19068bbc7740170b68ff3a263d211852cd",
+        "bytes": 6333
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-29-match.json": {
+        "sha256": "a619045f25c83790c0cdf74ecde80e050c5bbb338a07c34aa470f08d9c0a2d53",
+        "bytes": 5496
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-30-match.json": {
+        "sha256": "a4b3b46dbcb1edcb00f3abd206559072b355becc6a3551ffe9ee87ce7628de7c",
+        "bytes": 6784
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-31-match.json": {
+        "sha256": "17ecccfe79accbf8b51cc8dc57c883ee96e54b298a17b5ec6806d7c672c22548",
+        "bytes": 6785
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-32-match.json": {
+        "sha256": "edb471f7ff3ec9d47ef7112d60b90a5d75808bc591354d77ba41736645ee7440",
+        "bytes": 6356
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-17-match.json": {
+        "sha256": "d0ee209e89444ad2dac6c34413fe33c32751d4a1afab0750ef1463a0717787a9",
+        "bytes": 3727
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-18-match.json": {
+        "sha256": "c0c8de1db484eecd148898f096b16c07960f2bae07ffab29ec6b1e7951c366d2",
+        "bytes": 5004
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-19-match.json": {
+        "sha256": "3585b30431856b763982777dc43a4d7b168e6c70880d3bcb169a54a0f77f4b93",
+        "bytes": 8007
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-20-match.json": {
+        "sha256": "b791038fd91a7e8d6a0d6123ddf740103ad2c31d7187dc6db14990d1c682b351",
+        "bytes": 5436
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-17-match.json": {
+        "sha256": "b66aa8d7052fdde371d5e80d5467c04eae5b0b9e1fabff969ce7c2d57c8dce46",
+        "bytes": 6766
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-18-match.json": {
+        "sha256": "b159142de64f5ff85f17de9ec10fd2638ff1dfe2aa643d81f69aa789d3e96ce1",
+        "bytes": 6766
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-19-match.json": {
+        "sha256": "8015faff167b68a2b975f22b4546010ceeae3067a046d74f523baea88fad1a09",
+        "bytes": 8049
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-frozen_opponent-20-match.json": {
+        "sha256": "a416fba1830060326ed02f03f7a40d7eb58a0b0c234af470370db83d717b1420",
+        "bytes": 6334
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-33-match.json": {
+        "sha256": "99c36b636dd0860bc69312466750b1fcfebbff80c0b00a2c038804456edb34c5",
+        "bytes": 5492
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-34-match.json": {
+        "sha256": "a719268c021795e35a48dcc328528b9dd00c7dccaabcdf5b10b046b91812f167",
+        "bytes": 5924
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-35-match.json": {
+        "sha256": "f9e3350e594821bacdaba733074fedc438b6a174b6a45944de422338855ace13",
+        "bytes": 5073
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-36-match.json": {
+        "sha256": "8522a23220361918a66ea83ec0582b73187725fb4bd74b67e3fdbd8784f9015a",
+        "bytes": 8076
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-21-match.json": {
+        "sha256": "890debba052d28c3c7adc78ab1cb79bf8dcb6dac87f355ed98d30ff647cb0840",
+        "bytes": 5864
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-22-match.json": {
+        "sha256": "279ab29f9d954a8d98ff9618b690045d142c5cf49818acf5f6fd3518f0990be6",
+        "bytes": 6719
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-23-match.json": {
+        "sha256": "dca35ef65822b7e7deae15cdc7811c5787aade83c1c0bd4d4dc97db681e6f1d7",
+        "bytes": 6289
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-self-24-match.json": {
+        "sha256": "45bb5f23201f7fff8861b127be5c8d5cdb0df78fafa1cfb6539ee1e2d2a3736d",
+        "bytes": 4157
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-37-match.json": {
+        "sha256": "cecaad4c5642a9c451f870bc6f93538748db771799ff937441ea5703632025c8",
+        "bytes": 4645
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-38-match.json": {
+        "sha256": "c46947996782ded35a3c746033f146f1d482e08a6f2329f88b2b1d6ccd06ab7c",
+        "bytes": 7649
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-39-match.json": {
+        "sha256": "612908ccb791a81411439b5bd6910a0c85b4d2f1bcdc95d85cb54e194761dcf8",
+        "bytes": 5498
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-40-match.json": {
+        "sha256": "72daeb622b1f815dd92885752c9a8f9e4fcbdd92ee1ce71273458d7919406500",
+        "bytes": 7643
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-41-match.json": {
+        "sha256": "2a5a4b290476f99608532658fb60bb62fada9764c40021a241b9a3d0092da7c8",
+        "bytes": 4648
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-42-match.json": {
+        "sha256": "adb072397e8dea7430cfb638460a5a88ed71ff04129d0155d32db7fbe562fe89",
+        "bytes": 4645
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-43-match.json": {
+        "sha256": "4f3d54ca68dcbd5c7cdbb937f860d19cc538b846d6500192dd4b632cb5395019",
+        "bytes": 4649
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/pilot-B-other_partner-44-match.json": {
+        "sha256": "85213bdeb03ae910068f0d50f170263ed26f33425287cc3b4b87e3b64c107dc6",
+        "bytes": 5497
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-001-receipt.json": {
+        "sha256": "ac13ea14e8e797994dc94e37e37131fa1cde07c17f61b610b5b8622d1e0d1c75",
+        "bytes": 2075
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-001-team-metadata.json": {
+        "sha256": "e6842f9d811d591c548c3553a015f399afe6c529b047cfec8e5cbeac3226ae83",
+        "bytes": 353054
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-001-team.f32": {
+        "sha256": "c68cb7b96c93feb3db4accfcc5388e8a49e8232abbfba99dbcf3086af854d9cc",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-001-weights.f32": {
+        "sha256": "c53aab42ce0ac5a3e07408b367cee939130c8ca2565424aba8fcb5577fa4a36a",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-001-optimizer.pt": {
+        "sha256": "0dee8d2e4152675d612eb511a7a074704e19b87c5c7fdd7f65a146d8df65d501",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-002-receipt.json": {
+        "sha256": "eab8cd149a24264fe454721ab59aa3aa3eb2d862cb1e854c61e586fd64d290a5",
+        "bytes": 2087
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-002-team-metadata.json": {
+        "sha256": "9d7db530161fcf9300efccdbc3f8fda683ab13812009a3566f41fcda174e9e58",
+        "bytes": 353176
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-002-team.f32": {
+        "sha256": "200604e9c6f38d3cee45daaf95130f7c38441836bc7182f82cda0d4ff9f2e036",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-002-weights.f32": {
+        "sha256": "1b45556694f7b6d34f4dfa3b1db215d15ef7cdc24b61af9409dd0669565735a5",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-002-optimizer.pt": {
+        "sha256": "f069a387a694ae416fb4e14c928d1cd1ead3d04563c1b98966b6ebdd05648c4d",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-003-receipt.json": {
+        "sha256": "25830c8fe3fced7a5d7e8a179009f2c2fe897de6ec09ccc8ca3c18227b440909",
+        "bytes": 2089
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-003-team-metadata.json": {
+        "sha256": "c992b20c6ccc2d3753a0e1bb2c2b23b98579c6e9c6f77ad8712165afa3c71c25",
+        "bytes": 353399
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-003-team.f32": {
+        "sha256": "6c2c8cb7f62849faee9e54dba73d9e4e651d59728211f7c7383a8c321dd8c397",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-003-weights.f32": {
+        "sha256": "7a7c6ab83709f56c3d58dc0d951bde029c14ac36ba8b4114dbf2e6c946ad752b",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-003-optimizer.pt": {
+        "sha256": "1ec4a96b90a99f7fd3d4652888f99772038d2283a18365dec042408064de2c96",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-004-receipt.json": {
+        "sha256": "92989a64b059cac624feee435b7410252cf4933cec3fb89c0658b83bea9a866f",
+        "bytes": 2088
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-004-team-metadata.json": {
+        "sha256": "29674418ef7a033517adb6f1abbb621ea8eeeba79dffdd3f7df4d641605dc6d5",
+        "bytes": 352386
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-004-team.f32": {
+        "sha256": "068aaac5b246c9721f1a4490c31669262883aac582c21a5407607b28f8e85982",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-004-weights.f32": {
+        "sha256": "77507fa03ca77bbeb65ba6cf3fef66a5200ce652c8bd181b4f509fb67cba41d9",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-004-optimizer.pt": {
+        "sha256": "f0f6e0ffda416349d7f06037a60153d0d5b4d08a5b40b141015ebd329ea4f30c",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-005-receipt.json": {
+        "sha256": "8a6ff607a95f92a868bb7b83b4f4068e93c9d98d1fcfefc3855329b9b8bc5519",
+        "bytes": 2090
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-005-team-metadata.json": {
+        "sha256": "4029a589f22f92c15e5e99b0332f304cd6a989b1cc0254f21b0d1fc2b2b94557",
+        "bytes": 353684
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-005-team.f32": {
+        "sha256": "6a34f1f0849fa4b61517951d5add783623520fd68fa639a65dd86bf512da5db1",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-005-weights.f32": {
+        "sha256": "c44f3ed257686d35c0111dd948a5b7653d76069f95fe9409990c312f5464afa0",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-005-optimizer.pt": {
+        "sha256": "4ab2f15ca1b0f4499c6809867e71be12eb9d9f87ab96a38be51df09b41561efe",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-006-receipt.json": {
+        "sha256": "bb111c33f75f0da791f340f90894bc7d0f7348fd43db3db59aba0efde44667ff",
+        "bytes": 2092
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-006-team-metadata.json": {
+        "sha256": "2bc69ff08e70c662c2508129eefb41968be83e9bd1031394bf34bddac8c2744e",
+        "bytes": 353680
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-006-team.f32": {
+        "sha256": "65634280c4c5562e8b76460f3086377b036035a5f8ce29f573874cfaebd33481",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-006-weights.f32": {
+        "sha256": "71836958e22d3c3c9897f345275455debf05d49b78ac2f6a6fdf78a5f09ee3ca",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-006-optimizer.pt": {
+        "sha256": "d620eca107b040b2379a0738942c6d222d59de92d21188c4e5c062d9e9095ac1",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-007-receipt.json": {
+        "sha256": "2178baeeaf387d67f5ea30f9e6e920f70b64d208bc0d53e8c19f1f0fb5af9180",
+        "bytes": 2084
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-007-team-metadata.json": {
+        "sha256": "c4188ebbec36a7e9c72df324da3a7b3831d179ff487037af65ca5e87e7173796",
+        "bytes": 353746
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-007-team.f32": {
+        "sha256": "91d39296d0c8f4008c4d8605956acb0c23cd8a0e3621bbe7d2ef951934ea15df",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-007-weights.f32": {
+        "sha256": "80504690824349a7ffd73ffb6a5b65241fda1ac4dab85a035daa125fcc852d95",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-007-optimizer.pt": {
+        "sha256": "0beb97f2aa225ce5ed9fe6b087687c720e41eec4d2b3be3bdb410e1f478fcdd9",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-008-receipt.json": {
+        "sha256": "af98ed8f1076bbcd8ed8f3ee7483d9bca661f19804209a36de532d8145539a69",
+        "bytes": 2091
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-008-team-metadata.json": {
+        "sha256": "ac6d5b1c9fb5d0bccc12808464cfa14d21b57c7f6d2fb665460ba55dd6981a37",
+        "bytes": 353732
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-008-team.f32": {
+        "sha256": "f21c2615965b98499adfe5f72302bc43a0c449402de1829d5345ec0d33ab9078",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-008-weights.f32": {
+        "sha256": "67b21ca80f166a5ccc776a8006de8d1ce3e723d7156502650c4f115af187e271",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-008-optimizer.pt": {
+        "sha256": "6eecb06db0e883d6f20337a21e81f91534aeb4030ce60452773d850ba81282a4",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-009-receipt.json": {
+        "sha256": "32647644a40b33fe710628f9d573ab28c39d99d8b8b29328d993cebdaddbf4bc",
+        "bytes": 2094
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-009-team-metadata.json": {
+        "sha256": "999eccdd61219f1f49e849f2f5f8403a092f21490968573b02f0ce334a2666da",
+        "bytes": 353243
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-009-team.f32": {
+        "sha256": "e6b64a854d08ca9c50c53b7bb4e348d7ee8fb72f7cc0130ce32c0627070b96f2",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-009-weights.f32": {
+        "sha256": "349f670d2358d6ff37d8fb3d9c50f3c19319773cbbc8a4f4b4f211e842a67e72",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-009-optimizer.pt": {
+        "sha256": "f1ad253cd015e82a3f31c7b267734656709311e530429be942bfd8653eb3c804",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-010-receipt.json": {
+        "sha256": "55ff7c263cbd419e3cc0c90847a5486d942affba9bef4e25dc3dbcf3b9a7814f",
+        "bytes": 2096
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-010-team-metadata.json": {
+        "sha256": "ecbd7fae9f7aeea7e2b593b813243bed009cb500631f861c0d33cff717412c6d",
+        "bytes": 355150
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-010-team.f32": {
+        "sha256": "feac4159494b8507f874df3de8081710a43446b058c4f7c005f9360da60465ac",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-010-weights.f32": {
+        "sha256": "53423574aaf91b79c24b4b704988ae7db63bc0e87d346ad9cd18cdc19c7ca603",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-010-optimizer.pt": {
+        "sha256": "6fcf22fbcf30d20c0cf6355240280794187aaa26bb9b5d18d7f32503b682d8b9",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-011-receipt.json": {
+        "sha256": "4223eeb916b548b4f6f471457e3e78c70298e1f9957b8f0cffca7e4bdb8ade59",
+        "bytes": 2096
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-011-team-metadata.json": {
+        "sha256": "1a923ab54ad288a5c8983d7b70f2b620d2291d63b9980c08b0183747c7ffaf68",
+        "bytes": 355288
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-011-team.f32": {
+        "sha256": "8bd50735053ed8f56891c98c966111599c01fc18011193680da6d0b615335e17",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-011-weights.f32": {
+        "sha256": "ef07baffcdf2841168a7e8afa45a4176523c662c2184343fcee351f96da3b401",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-011-optimizer.pt": {
+        "sha256": "882f317f599f31f7c52a44f43a5fca0de197fac4e31745dc0f906e32c93e2c3c",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-012-receipt.json": {
+        "sha256": "9abeeb43f4ccf214f0291b2d578ce4e493ce90c91e008ecd6eb90abeebf6e3c7",
+        "bytes": 2092
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-012-team-metadata.json": {
+        "sha256": "536c8eb3c01466423631fb021ece292f43e84f7b6732321a3c35db059067bfb4",
+        "bytes": 356374
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-012-team.f32": {
+        "sha256": "74d2c4d624be22742e7ab678e26cac84e017c48754a5beb5d96abd2a4624dff1",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-012-weights.f32": {
+        "sha256": "78f72f92128b73ac40dfc68f92246bafd97c78700a6cf4fe030081cc8fd23591",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-012-optimizer.pt": {
+        "sha256": "62c4fa9135b8e125b3e5d232965907bf7e0e241628c229229240329448abec57",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-013-receipt.json": {
+        "sha256": "53cec89dafdd5cb03dc054062f2d929326913b8ecb683cdd9944006cefedd056",
+        "bytes": 2092
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-013-team-metadata.json": {
+        "sha256": "31ef106d3d5885d0aaeb17eea2de4978be44930b8d4bf1ac7a423ce30d31b2e2",
+        "bytes": 355776
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-013-team.f32": {
+        "sha256": "af3887ad9644e240881e6869b1847ec51bc0bdd985ffafbe5aaec7562281d8a9",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-013-weights.f32": {
+        "sha256": "3c9896ff13157933c7a83bca30eb04702ddd2843971cf2979e411ac3eaece40d",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-013-optimizer.pt": {
+        "sha256": "4aaeb0060d3e24b039b56eb3757dc605950c9a915536c1ef50b06c003f9e2c42",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-014-receipt.json": {
+        "sha256": "059356f1380e0bef5f99f3a6d2ae6bc7d25bd02528df8d01efc640b83f11cc1e",
+        "bytes": 2093
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-014-team-metadata.json": {
+        "sha256": "802428911866333b6146e3fb4e8877ccdf9b0a9b443b3187a368fc8051419849",
+        "bytes": 356080
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-014-team.f32": {
+        "sha256": "26d8844759eed93ce3bf296c6269d2b60030e9e5d60f8d2bd1412297be655701",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-014-weights.f32": {
+        "sha256": "88278ef5126ef92a65b0d5d519e1a3213211fe4e29e5817d7c4d598c884c58f5",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-014-optimizer.pt": {
+        "sha256": "0553f360330fef1891bfd5b15cf26f40ba92b5a569644796dea98614404a99b0",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-015-receipt.json": {
+        "sha256": "ffabc450444d1ba6ab11fe3165342b343f60e87a77d7d046782ca9ec9980f9f5",
+        "bytes": 2094
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-015-team-metadata.json": {
+        "sha256": "4b60d56255f35aa4f505413742f73296b3e680db89e0c04d7322a53e0d904652",
+        "bytes": 356422
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-015-team.f32": {
+        "sha256": "f4bc90cc48c1a1ea96dc3f096f11261e26a1aa34af9a04793d2fc55aa86dd1f3",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-015-weights.f32": {
+        "sha256": "f160a181667df0a0042d0910bb54cef01b7a304c93e9de52893d26ead3656376",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-015-optimizer.pt": {
+        "sha256": "990864c407905e37fc7c8c27fab7543c15cfbace88abc362d4f09ece8aa4335a",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-016-receipt.json": {
+        "sha256": "75e227a2c016872c51da5e8c4a5875d651d1e77dd431ca2ada2d1e3e11a35fb6",
+        "bytes": 2097
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-016-team-metadata.json": {
+        "sha256": "476bf67c9721c0c322e550c82f0de9ad1a714e6c069286a98fa3abcd2e338d05",
+        "bytes": 355842
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-016-team.f32": {
+        "sha256": "c9f057418b3fef44937c5f316c866731b1b13d5c013d9f70ce8185ab027f28b6",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-016-weights.f32": {
+        "sha256": "e23f24f1e145b57356ae9a01635ccab2ddb1929e4443344dfc467da64c4d1e0d",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-016-optimizer.pt": {
+        "sha256": "9d10c939df7ea65646bee620cca0bae6b434eda27a8bbcfc04c6efd7ea4c7d5c",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-017-receipt.json": {
+        "sha256": "26c9a031ccf222a42bf83d2675c3b3ee0cb707c8d1e166b73825f283a987e1e3",
+        "bytes": 2094
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-017-team-metadata.json": {
+        "sha256": "0ccd9099d0faf8d1285be6d18e4c0d8096a285afcee6682fa7b1b6a165a5bd6e",
+        "bytes": 355979
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-017-team.f32": {
+        "sha256": "88df2720b32992eac12d09d5427c506f570aef617468a0efc82d50c5608d1458",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-017-weights.f32": {
+        "sha256": "267389ada5f359980f3546a7553c30a5ee473787e121af7e79f33e2ab543d3f2",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-017-optimizer.pt": {
+        "sha256": "7a068deade23fb91d15cbdcf4808088595ac1b530ea7507291bc229024c6dcfe",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-018-receipt.json": {
+        "sha256": "75c5b758e3d8c8d2ee68d50706422fba43b637e09c8081caac92164431a665e6",
+        "bytes": 2095
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-018-team-metadata.json": {
+        "sha256": "7a943a17f060ef072ea950413214349a9807c18ba79ce64d1c481fd960d1b719",
+        "bytes": 356828
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-018-team.f32": {
+        "sha256": "fc29aa40bfd6e59f7666684b70c4960d7b21cb661a540e64dfeaa36d5feaed4c",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-018-weights.f32": {
+        "sha256": "4d68f54f90031b80c07d2ef05ffb76662cd7123c34a88004a8e0522125328603",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-018-optimizer.pt": {
+        "sha256": "ab0c19d6beb837a7a158e89724af2fdd2db313b1b0e616407aee065f31f33190",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-019-receipt.json": {
+        "sha256": "576b0d4d1dfd2ca4465831bbc2aecd2ffa60042cea2fdcf110e2633fb352c8c9",
+        "bytes": 2092
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-019-team-metadata.json": {
+        "sha256": "36acccaf3e92844aa2a69db844846be090ec3477a6b341988251dca828370212",
+        "bytes": 356178
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-019-team.f32": {
+        "sha256": "3151376d4a44f866bdaf84d519804201a533cabf1ebc2a80484980ba4ec10789",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-019-weights.f32": {
+        "sha256": "c1dc39112e7165bf7bcb69630d048f5d6a33ed8721ed51cf91b74b7ad08013fb",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-019-optimizer.pt": {
+        "sha256": "820afc0d3fd36d96d726fb087154339d31ed262d60d67c40941bb819edd2ee89",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-020-receipt.json": {
+        "sha256": "b0d91bf9609b214bebb67f1a42da91b0762de2fb5fca7eaeac73d6165d68b946",
+        "bytes": 2096
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-020-team-metadata.json": {
+        "sha256": "04304f3c864948390dd9b447d4e125622e5a7e26e1351ae1731fa5aedb300cd8",
+        "bytes": 356541
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-020-team.f32": {
+        "sha256": "fe7098691795b9c045c2f8fdd45d434bdbedcaebc9ea5346162a4bd487581fc4",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-020-weights.f32": {
+        "sha256": "9026ffc1d13a4329ddf1a517bbc917d580370a92d2dd4b227c71c342257f7bfa",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-020-optimizer.pt": {
+        "sha256": "3dc3cba821b125b2893247d5663835cdec504ffb5f478e53272de2011996472a",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-final-queues.json": {
+        "sha256": "c7fdaa5414f10c5e463c76f86cc1613a1913185ddeedb840c1b9e1f055d36cd8",
+        "bytes": 20026582
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-001-receipt.json": {
+        "sha256": "e4410487011bf25965074d2010f92c00d839f5bc67fc7761d74384582fc364e4",
+        "bytes": 2522
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-001-team-metadata.json": {
+        "sha256": "36fb3db4779e6bce2580a3c20f16569980a36eaa0b245816dd103ff801dfb1d8",
+        "bytes": 352884
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-001-team.f32": {
+        "sha256": "2421d23abc2a115debc57549299025062c8c235c002a47609dea99d23ed0f7ce",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-001-weights.f32": {
+        "sha256": "86cfb1dc72f487f0d8538c23b7217762ac7eed3e41110a9af8845e8badb14397",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-001-optimizer.pt": {
+        "sha256": "dd75048f196a41f0c9d6097bbf66fcdafc29f9d75c7e79b306b6299d9fdc239a",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-002-receipt.json": {
+        "sha256": "8ba163dff4dcd94e5970f85d1184cec9216362a3d3f3025233389fc571e15ea1",
+        "bytes": 2542
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-002-team-metadata.json": {
+        "sha256": "b7157a175a52f5be983d9ad1a62725964fdab079534a574f2e32d60b511e1f3b",
+        "bytes": 353202
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-002-team.f32": {
+        "sha256": "c015e8957b40c5baa724be90a4194aaf9f2926ad69b23b350ba9c7334533a98b",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-002-weights.f32": {
+        "sha256": "35d1dddb3e91f2339ec800d9e30c776cb6df24d2fa4062b439a95b09c5fb7d52",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-002-optimizer.pt": {
+        "sha256": "c1f6c25da88944462011b3c427c7f727abbda396bf8364cde5442a9813cf03ee",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-003-receipt.json": {
+        "sha256": "e3ce70cd2b09c5a52b163a43e89010df278bd7c4069357c491869b9740e3368e",
+        "bytes": 2543
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-003-team-metadata.json": {
+        "sha256": "0ddf26f4da374b3311d0fe40b30c2ecf8945bf467aec81cfb268124d03d1453d",
+        "bytes": 353047
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-003-team.f32": {
+        "sha256": "1a203537a6801470548765618a8375d66b6e97bbbe73fc94362995bdddb7f6c9",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-003-weights.f32": {
+        "sha256": "37b28c7c4712d235f140c74d6a750539bb7420809b6e1192b2089c9928d79996",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-003-optimizer.pt": {
+        "sha256": "3591c0bec074daa466f4ddd48ba89eab47674ac964d293a2d0bfc9a3d854ae08",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-004-receipt.json": {
+        "sha256": "712e031fa985883109a4a7c95932720cd9e78502a07656eaaac6ce986fcb5a5a",
+        "bytes": 2542
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-004-team-metadata.json": {
+        "sha256": "5987a545c7ef9601472bfd22bbea5674a942afff482acaefe3a91b7f91c981fa",
+        "bytes": 353387
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-004-team.f32": {
+        "sha256": "78bd2f9a190288a4731adfa385dab44c713a51ad1249dda78d5c36a254e7471b",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-004-weights.f32": {
+        "sha256": "fbf0cfb88b8e537b998b7f81d743aa4ad75f65bf0e268d4f6e408aeb61a2be29",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-004-optimizer.pt": {
+        "sha256": "b85a915dcfb9f4271950376e4c0ebd0a60abcceb4dc4ece79f9f19a9d163a070",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-005-receipt.json": {
+        "sha256": "feda1738eff2c90d02e426726cfc5eb3a911ca3564280ca819d360e0f83fa46b",
+        "bytes": 2540
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-005-team-metadata.json": {
+        "sha256": "fb2e732b0f5797101e2c206de745b98603c96099cf68f4ebe960f1ee1b09af6d",
+        "bytes": 353594
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-005-team.f32": {
+        "sha256": "53e51bb487d113b13217716cbaf3951d88e05b2936abc715240e92f5f63bdc4a",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-005-weights.f32": {
+        "sha256": "3368612e8467226698ab334bc4fa20a2c578b04399132ccac0ab119bd4877ca4",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-005-optimizer.pt": {
+        "sha256": "bfa1f3c6b86a5e95bacf3fc8e11a49bc2a9c1d70bc4b1cdda45aee41b42a8042",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-006-receipt.json": {
+        "sha256": "05ef4fa11cfef99ca2d442323f2883c40982bf141d1a4beffe672ac0e1a01e95",
+        "bytes": 2538
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-006-team-metadata.json": {
+        "sha256": "fc1c04d13dad1ab61fa199d6ff3ebcd685666e4be4dd3f58f6216da56da3b99a",
+        "bytes": 352965
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-006-team.f32": {
+        "sha256": "a80a39d4e72f956927ba940edee00986c73205d96ef483ec9c5b2b43f1bfdca8",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-006-weights.f32": {
+        "sha256": "174da8b542ac1b39217a09396cc98f17005db7f596efffddb131ae5fba9f7b60",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-006-optimizer.pt": {
+        "sha256": "46231ffac325ff7686c60b61a9030387dffed598b35767853de928aa14d4d282",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-007-receipt.json": {
+        "sha256": "86d002e1d747bdff25b4bd0757525b530d978c057a855daba8ea7f930340071b",
+        "bytes": 2537
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-007-team-metadata.json": {
+        "sha256": "c427f652c2fabd40bbbabeccd814fda8e005522ec634bb024df9099a4cdb233e",
+        "bytes": 353588
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-007-team.f32": {
+        "sha256": "b65b13da620174d5ed4864a36023e59eb7fd23e75b29a2d98447706d499952fa",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-007-weights.f32": {
+        "sha256": "37fecce38c441d9b39d907c3cfed44fb67e21841b08fb1277412a325a501f52d",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-007-optimizer.pt": {
+        "sha256": "52e2b12013ad3dd01dfc61042a6d3d0f89f045a95f8c878679b6f5a2d5f40100",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-008-receipt.json": {
+        "sha256": "7993f86d2098a81cfd1b6b45333ff5d690d91ac55c49a5d42735cdb4e3a2d624",
+        "bytes": 2540
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-008-team-metadata.json": {
+        "sha256": "469615563960e234bb6455a5d2030433d7973ea0c128a66fc4418d9d6b997c2c",
+        "bytes": 353147
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-008-team.f32": {
+        "sha256": "364b9ae9e39469ed60099ee7dbfa7f2cda6c5545fda459661b3bbbea38d8ad9e",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-008-weights.f32": {
+        "sha256": "c761ef9ae92b18fc88fe9c6d5d211466e06a5ccc9e0b508d0a6afe748a08e622",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-008-optimizer.pt": {
+        "sha256": "d4ed6cb9a8e9d9796ff748548b024fea55ef5f4424dbb3b44a055c2b01d65ac3",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-009-receipt.json": {
+        "sha256": "be82b845355232c722ed1af9a56da68f4f4660894a021de57e55438e70541bcc",
+        "bytes": 2544
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-009-team-metadata.json": {
+        "sha256": "f803047b968c1b14a81d047ceb0e699a5240d7ae635fc26765596ca39dde456c",
+        "bytes": 354076
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-009-team.f32": {
+        "sha256": "83d6a9213365411bc7d13e47e959dbe699e990dfebd229543ebc12317f8b06d2",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-009-weights.f32": {
+        "sha256": "9049612127cb345f179c92fd4be9d67b6709dad0812b7e1ce4c69a2544f2aa84",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-009-optimizer.pt": {
+        "sha256": "c28e8d454809fa6d6daa50db5f2691980222a7b1166d481bf6c194933784df06",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-010-receipt.json": {
+        "sha256": "6edca623004b6f9c196ded5c59c07e4644c045b1570ec88e6aaccbf61bbf8f7f",
+        "bytes": 2546
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-010-team-metadata.json": {
+        "sha256": "f1782cfe14d10270895782280412f6277b74255a67db0d51843bd4c2331d9aae",
+        "bytes": 355418
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-010-team.f32": {
+        "sha256": "d5aac7645337a9b036764e92a3b8133f762b2ded0f0a4c163975b6d2072e426a",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-010-weights.f32": {
+        "sha256": "11cc0e21a0dc678d4cb371101830199eef3f1608aa58fbbf6d8f448c305be328",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-010-optimizer.pt": {
+        "sha256": "dc7aec1158f3bea407eba43cf7f0b7027bc8e7279afbaf60881967036dd4b6a9",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-011-receipt.json": {
+        "sha256": "ee014eb0ea64ed19af07d33df4e0971bd830051ceb75082024ded6bc55e8e40c",
+        "bytes": 2547
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-011-team-metadata.json": {
+        "sha256": "6062e8c34168080585cadab5b01063f503e3ed00ffb4879554cb156d85ecc655",
+        "bytes": 355040
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-011-team.f32": {
+        "sha256": "61c8c3d857f79d27e74f60c9368d5df760f98701d8820320fc0574ba2de54475",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-011-weights.f32": {
+        "sha256": "80db7c3a98d20e148cfd8ad1896ea9c23ae54dd7108b6d0b6c8892559e474e02",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-011-optimizer.pt": {
+        "sha256": "28ff297ac0d056398072b6f25b1016e1e27c299b514f64793d90e9ac3058ee95",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-012-receipt.json": {
+        "sha256": "ac9ff183176cf508aa8e65700393076a6b2e1420d1c44baec6d4f294850f8d2e",
+        "bytes": 2544
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-012-team-metadata.json": {
+        "sha256": "b98aaf19dbcbc0a1b2f9901649387573d64ef2fc3718a99ff51e8c155ee48ba0",
+        "bytes": 355904
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-012-team.f32": {
+        "sha256": "7cc8d7f00185b69c4b082507561523d9630dfb3b9a16f3f7edd6bdcef4cfcb0e",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-012-weights.f32": {
+        "sha256": "fe5d41e04423e0a0f2dbc138fab3ddd2d1231b35de398f69e49de3202286d37c",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-012-optimizer.pt": {
+        "sha256": "1bcb5fec2abfdc1237af023fba73394641fa2e4f5fb110384d89d6303167c2ad",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-013-receipt.json": {
+        "sha256": "8f62024c115797473ce34ef03b1898e8e45e462ee98b5d7021bce29927b59665",
+        "bytes": 2543
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-013-team-metadata.json": {
+        "sha256": "93511dbed5e09a361750bcf1bd4ec740b334199f7a3db3f1e6ade4c59c65cc3b",
+        "bytes": 356033
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-013-team.f32": {
+        "sha256": "8a06058d87ba4a77ab5f62770b2bdeaf245ee0b2a27b08e6d4da0060362dce57",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-013-weights.f32": {
+        "sha256": "5fddc023b4e6022e54748b7149e9c813fc73579df491869dcc33c0c4216b21ca",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-013-optimizer.pt": {
+        "sha256": "2db3e9c10fa518a63bb31957639ed6e9d34ad479f93b9b501f6b89ac34a7d1db",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-014-receipt.json": {
+        "sha256": "9d92a6738c74ff873a77cc1bfba4860fe77f16770ceddaadf6435fe926c39366",
+        "bytes": 2541
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-014-team-metadata.json": {
+        "sha256": "06e52fb3affda3be2bd080422e334a16964ec18a20246b696c9f15759c45ad0e",
+        "bytes": 356056
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-014-team.f32": {
+        "sha256": "6cad373a32b6b20f5f08b173e8efcc6b74010c95e7d15bdac934098bf066136d",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-014-weights.f32": {
+        "sha256": "4738aaa14da6de5212e74921270cb4ff82b023f3547f1bd3efebfcab6d394895",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-014-optimizer.pt": {
+        "sha256": "d37a84c1d16acd0bebd3e968f34bf4e51f4f47a36906fabbc74d3ba25f957f92",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-015-receipt.json": {
+        "sha256": "4d90d2a23b3fc09478391419c25071fbac996d2c93bd28aeab58ed47b5806c81",
+        "bytes": 2542
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-015-team-metadata.json": {
+        "sha256": "b6e8fb38bcc2ea4785fc454aaccdbfc68a6a3de604a9caab9c1cc6342b17371e",
+        "bytes": 356158
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-015-team.f32": {
+        "sha256": "28e341d6aef255aaf987ee08e42ba6b02227b3d3161357a457566dadc826d36f",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-015-weights.f32": {
+        "sha256": "80aaddfa4a00008000b401446c12c9d0f3bcb1595bea099c7af7c266826c27f4",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-015-optimizer.pt": {
+        "sha256": "7f3cf53a5b8509e88369f0413a6c37c826e0047fa8e671c294bb1d427f189a6a",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-016-receipt.json": {
+        "sha256": "291ade1cf6371db3ac8902117097061f4c7c0b2886018d8729ce2796c08445dc",
+        "bytes": 2541
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-016-team-metadata.json": {
+        "sha256": "383663ad7971a928a4e6aa603fce9880c55daadb515a5fc587dafbb8a167e699",
+        "bytes": 356280
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-016-team.f32": {
+        "sha256": "ccc948bbb49467f8854aec9e02a3c386621a04798a9d611cdd8a4c736d0751e6",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-016-weights.f32": {
+        "sha256": "ca3016c2a611073b7e69d1cb8cf84b2cd1b67af16647d15e0417c20d3fc128cd",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-016-optimizer.pt": {
+        "sha256": "62ac339b610872db5a6af32c4994b71d45870f486ae0e2fbe256ecfc101c990e",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-017-receipt.json": {
+        "sha256": "179c887400b7d66dd212773ebfda0e3e1eed4ba4dd5be4950e16cc73696cd22a",
+        "bytes": 2545
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-017-team-metadata.json": {
+        "sha256": "f3652890883859abff72090c5c8b85653f4b1457b5e77db607e2770a35ff83f8",
+        "bytes": 356463
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-017-team.f32": {
+        "sha256": "751925b032a426ef65059a3879ce94644742f2b081765b0d0f671d6bff1d4b26",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-017-weights.f32": {
+        "sha256": "8e3a8b89e713fb35f50ca6de8bbc303722530a2e388ffc1fa73c3d2d9f7ae283",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-017-optimizer.pt": {
+        "sha256": "874f281e5a6e11f434ff92e7466c50535cc84e2f1bd4a353206e399b744cc784",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-018-receipt.json": {
+        "sha256": "476b95dd4dd02a17665a5cb053e33baceb84e17dc35670622c56badf3ca5ca76",
+        "bytes": 2545
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-018-team-metadata.json": {
+        "sha256": "a0acea5698e04af950478c3cdc10d64cb908ed48722ded31d9fdb94ef0f432a6",
+        "bytes": 355970
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-018-team.f32": {
+        "sha256": "c254866bf624b218f6185b8baa72929d53cbf3d9bc8752c86693e209bfb10777",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-018-weights.f32": {
+        "sha256": "e3bb486533838c41a3167f60ab946865b99b189c94943e6033aba521bcbadfcf",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-018-optimizer.pt": {
+        "sha256": "3a026375331c31ff3e3230426d6b0eed7a119ddead9fe93cd8b6cde673311efa",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-019-receipt.json": {
+        "sha256": "3a3cf007dfb1def01a46e092d4a4468d36b820c0d68c1d2dbadacc743173a547",
+        "bytes": 2547
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-019-team-metadata.json": {
+        "sha256": "11b450cf3f05204b6f4a9d0792155f156066d8ad163bd2ec5bda6ebf932ab93d",
+        "bytes": 356023
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-019-team.f32": {
+        "sha256": "b0a9cde46de0c001e7e06e37f4dcf15fd1fed4139284dab1a719e055d273a028",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-019-weights.f32": {
+        "sha256": "e9a801dc141412ffa90320512245700f0e4ac9d433de6f7b5b08f6e9fe22c58c",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-019-optimizer.pt": {
+        "sha256": "69b4fd779e188bcc5946da6f6171e432e84573c115466a384ce937fd73ce7af0",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-020-receipt.json": {
+        "sha256": "c77b7f524bbef44bdf4c194f5f85f525f52312d01bdc72a4195a5f7a0f2d1a4e",
+        "bytes": 2547
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-020-team-metadata.json": {
+        "sha256": "15d19e6ae01e2b70d004f7c65bf383d2a2664219c502ae19b7bf7d0d6ab96310",
+        "bytes": 356121
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-020-team.f32": {
+        "sha256": "a4388865cd26a8132fb0d3ef6093766b5b0b741cb8b071efd8f9941bbfda34a1",
+        "bytes": 1634304
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-020-weights.f32": {
+        "sha256": "e079b5906b4a30c5275401a2aa1c4b211bfb613eeb9bd8e010ff59e9fa35c3fd",
+        "bytes": 673796
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-020-optimizer.pt": {
+        "sha256": "7eaed738dc11fccf7fa0bbda4e0063cf99378d1539f697a1315c8a7b27053679",
+        "bytes": 1360261
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-final-queues.json": {
+        "sha256": "e92976053455aa855bbce9fb508d27566c1d08e28919a87e27ce4308cdf27b50",
+        "bytes": 13866636
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/fixed-training-anchor64.json": {
+        "sha256": "2d8e567d011991ea1efce768cec3e293e3ba39656d23d5f423dcc9660840b027",
+        "bytes": 4528970
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/opened.json": {
+        "sha256": "39d8d340a40153e23fe40f3d874f3addae62ebdb9568207253399551ddaec9bd",
+        "bytes": 1061
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/python-service-opened.json": {
+        "sha256": "0ef95af0cd0c4c8a860e02b010cf09fea3395886fca8a0043379c021941afcf7",
+        "bytes": 297
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/mature-report.json": {
+        "sha256": "6f6cf5a879b064bb1380ce1026999408691a4cb08f1417393d3e95f111659a61",
+        "bytes": 121611
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-pilot-execution-001.json": {
+        "sha256": "d8d9476809cbb2a68e7766258dbd9eb73734eb31882c80a7154d07ac578aca3a",
+        "bytes": 2695
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-pilot-execution-001-settlement.json": {
+        "sha256": "e6f8d82857d9a3efdaacd8d6b1d85c00dc64fcb43036394df4a3f4213ccb4735",
+        "bytes": 800
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/execution-contract-001.json": {
+        "sha256": "7d99a996322e06b0e481897418b0318e76454c65e1e5f27e05516d04bbf4ba93",
+        "bytes": 5503
+      },
+      "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-004/spec.lock.json": {
+        "sha256": "97d5823d64b7c532b01d72a36088a76ac3b2580a9ed1a78ce1013e491ad6b3cc",
+        "bytes": 988739
+      }
+    },
+    "newModelForward": 0,
+    "newBackwardOrOptimizer": 0,
+    "newTorchImport": 0,
+    "newMatches": 0,
+    "realLedgerOrLeaseWrites": 0,
+    "numericLimitations": [
+      "MSE/anchor and gradient norms are actual runtime measurements, not independently recomputed neural outputs or backpropagation. The softplus preference, combined loss arithmetic and norm ratios are independently recomputed from raw receipts.",
+      "Discarded feature rows/decision IDs are not separately persisted; exact81920/40960/40960 is independently mass-balanced by source counts, quotas, deterministic selection positions and final tails, not a claim to reread81920 raw feature vectors."
+    ]
+  },
+  "probeArtifacts": [
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/bindings.json",
+      "sha256": "5e5488274e0560b7a8e691c631398dd7990374780d69a54cf9d71e5ec5bc790c",
+      "bytes": 19593
+    },
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/bindings.log",
+      "sha256": "5ff5ddad5ebff94ebd3c5832d157dd4ca4f8b7a35433739330b9fed4ab45b64c",
+      "bytes": 2306
+    },
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/bindings.py",
+      "sha256": "e40953124149bea5964816d00af20129ba09ad0c59939a6e947c4599c0669342",
+      "bytes": 4960
+    },
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/checkpoint.py",
+      "sha256": "4c6be77c597174ec009b794ebdda1b49525ce3d2c1b2baab7196b64ad59f44e3",
+      "bytes": 1715
+    },
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/lineages.json",
+      "sha256": "5fa34a08c490c28548fc9243ecff0524355940ae6146269867b091fb9f7af82f",
+      "bytes": 370
+    },
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/raw-recomputation.json",
+      "sha256": "91a7081c47e1624ffcd74293d8483b6aae600b07bd5c47289680cc4b42c06e1e",
+      "bytes": 145633
+    },
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/recompute.log",
+      "sha256": "dcb9407d4f55fef4cdd6a19be404365ebe74b11cbcc1703e421214dc2e9b40d3",
+      "bytes": 5123
+    },
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/recompute.py",
+      "sha256": "aa9a391cf9cecd73e97a43c90c124e02559dfc658e598720bd1140cd5010452a",
+      "bytes": 16787
+    },
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/resources.json",
+      "sha256": "1b2111954a830c12d9bb1f5a63f8d0355c2d4b494fd19e90ec9144af86db11e0",
+      "bytes": 249
+    },
+    {
+      "path": "/private/tmp/c3-actual-mature-method-001/versions.json",
+      "sha256": "729209cc35ed58aeff76ac78c34885b269f26932bebe9f19b3968d27f0e3026e",
+      "bytes": 849
+    }
+  ],
+  "limits": {
+    "newNNForward": 0,
+    "newBackward": 0,
+    "newOptimizerUpdates": 0,
+    "newTorchImports": 0,
+    "newPolicyDecide": 0,
+    "newMatchesOrRollouts": 0,
+    "realBudgetOrLeaseWrites": 0,
+    "repositorySourceOrEvidenceWrites": 0,
+    "writesOnlyPrivateTmp": true,
+    "futureFormalOrSealedResultsOpened": false,
+    "mainUpdates": 0,
+    "formalOpened": 0,
+    "noBudgetReset": true,
+    "notAnAcceptanceOf": [
+      "teacher accuracy",
+      "learning a plan",
+      "stronger policy",
+      "production checkpoint continuity",
+      "final statistical N",
+      "main training",
+      "C3 overall",
+      "formal evaluation",
+      "any further execution package"
+    ]
+  },
+  "conclusion": "The actual finite20A/20B pilot completed with correctly joined targets, exact quotas, consecutive real optimizer checkpoints, four B-only preference roots and reproducible measured timing/settlement. These observations verify local cost and wiring only. No further execution is approved; the separate negative budget admission is reviewed next."
+}

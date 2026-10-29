@@ -1,0 +1,226 @@
+{
+  "program": {
+    "schemaVersion": "r6-plan-dsl-v1",
+    "planId": "C3-pilot-source-001:root-05:plan-action-0001",
+    "rootId": "C3-pilot-source-001:root-05",
+    "goal": "yield_resource",
+    "condition": {
+      "op": "and",
+      "args": [
+        {
+          "op": "eq",
+          "field": "myTurn",
+          "value": true
+        },
+        {
+          "op": "eq",
+          "field": "myCount",
+          "value": 10
+        },
+        {
+          "op": "eq",
+          "field": "targetKind",
+          "value": "single"
+        }
+      ]
+    },
+    "trigger": {
+      "op": "eq",
+      "field": "myTurn",
+      "value": true
+    },
+    "invalidateWhen": {
+      "op": "eq",
+      "field": "myTurn",
+      "value": false
+    },
+    "fallback": "frozen_continuation",
+    "maxOwnActions": 4,
+    "steps": [
+      {
+        "trigger": {
+          "op": "eq",
+          "field": "myTurn",
+          "value": true
+        },
+        "invalidateWhen": {
+          "op": "eq",
+          "field": "myTurn",
+          "value": false
+        },
+        "select": {
+          "kind": "exact_action",
+          "actionKey": "pass"
+        }
+      },
+      {
+        "trigger": {
+          "op": "and",
+          "args": [
+            {
+              "op": "eq",
+              "field": "mateControls",
+              "value": true
+            },
+            {
+              "op": "not",
+              "arg": {
+                "op": "lt",
+                "field": "opponentMinCount",
+                "value": 4
+              }
+            },
+            {
+              "op": "eq",
+              "field": "opponentFinishedCount",
+              "value": 0
+            }
+          ]
+        },
+        "invalidateWhen": {
+          "op": "not",
+          "arg": {
+            "op": "and",
+            "args": [
+              {
+                "op": "eq",
+                "field": "mateControls",
+                "value": true
+              },
+              {
+                "op": "not",
+                "arg": {
+                  "op": "lt",
+                  "field": "opponentMinCount",
+                  "value": 4
+                }
+              },
+              {
+                "op": "eq",
+                "field": "opponentFinishedCount",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "select": {
+          "kind": "pass"
+        }
+      },
+      {
+        "trigger": {
+          "op": "and",
+          "args": [
+            {
+              "op": "eq",
+              "field": "mateControls",
+              "value": true
+            },
+            {
+              "op": "not",
+              "arg": {
+                "op": "lt",
+                "field": "opponentMinCount",
+                "value": 4
+              }
+            },
+            {
+              "op": "eq",
+              "field": "opponentFinishedCount",
+              "value": 0
+            }
+          ]
+        },
+        "invalidateWhen": {
+          "op": "not",
+          "arg": {
+            "op": "and",
+            "args": [
+              {
+                "op": "eq",
+                "field": "mateControls",
+                "value": true
+              },
+              {
+                "op": "not",
+                "arg": {
+                  "op": "lt",
+                  "field": "opponentMinCount",
+                  "value": 4
+                }
+              },
+              {
+                "op": "eq",
+                "field": "opponentFinishedCount",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "select": {
+          "kind": "pass"
+        }
+      },
+      {
+        "trigger": {
+          "op": "and",
+          "args": [
+            {
+              "op": "eq",
+              "field": "mateControls",
+              "value": true
+            },
+            {
+              "op": "not",
+              "arg": {
+                "op": "lt",
+                "field": "opponentMinCount",
+                "value": 4
+              }
+            },
+            {
+              "op": "eq",
+              "field": "opponentFinishedCount",
+              "value": 0
+            }
+          ]
+        },
+        "invalidateWhen": {
+          "op": "not",
+          "arg": {
+            "op": "and",
+            "args": [
+              {
+                "op": "eq",
+                "field": "mateControls",
+                "value": true
+              },
+              {
+                "op": "not",
+                "arg": {
+                  "op": "lt",
+                  "field": "opponentMinCount",
+                  "value": 4
+                }
+              },
+              {
+                "op": "eq",
+                "field": "opponentFinishedCount",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "select": {
+          "kind": "pass"
+        }
+      }
+    ]
+  },
+  "caseBasis": {
+    "urgentOpponentMaximum": 3,
+    "passSafetyMinimum": 4,
+    "rootOpponentFinishedCount": 0,
+    "meaning": "case-specific public thresholds; support to be measured, no universal yield rule"
+  }
+}

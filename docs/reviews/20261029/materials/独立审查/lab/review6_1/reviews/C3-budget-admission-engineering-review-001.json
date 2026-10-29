@@ -1,0 +1,2012 @@
+{
+  "schemaVersion": "r6-independent-negative-budget-admission-engineering-review-v1",
+  "role": "engineering",
+  "reviewId": "C3-budget-admission-engineering-review-001",
+  "at": "2026-10-29T00:16:39.082946+00:00",
+  "requestArtifactPath": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-plan-001.json",
+  "requestSHA256": "46773db76e18931019da8bb74dcd3d7b64ec32eb069e86359ee5cee86ce5c4dd",
+  "reviewedContractSHA256": null,
+  "reviewedContractNote": "No production protocol or new execution contract is selected or approved. The budget plan, optional sensitivity and immutable setup addendum are the reviewed artifacts.",
+  "overallDecision": "APPROVE_NEGATIVE_BUDGET_GATE",
+  "scope": "Read-only original72-hour pre-main arithmetic admission decision only. No positive C3/scientific/quality/main/confirmation/deployment acceptance and no new computation authorization.",
+  "newScienceExecutionAuthorized": false,
+  "mainAuthorized": false,
+  "confirmationAuthorized": false,
+  "deploymentAuthorized": false,
+  "decisionSummary": "Approve reporting the measured-current-recipe deficit before training under original reading paragraph138, while keeping all original sample sizes,world/CI/label gates and the same budget cycle. Verified original132-event ledger at the pinned plan head:15.8812378358h spent,56.1187621642h actual remaining,55.1187621642h unreserved after engineering037. Independently recomputed176 raw/summary references, teacher18attempt/4qualified yield and P90,48source/40materialized yield,40actual update timings,64variance blocks and all9cost scenarios. The immutable startup correction closes the sole identified arithmetic omission. Corrected minimum100root/6run/400updates known cost+25% is145.6765512423h, gap89.5577890781h against actual remaining or90.5577890781h against unreserved. Even the combined unvalidated most-favorable128world/reuse4/allteacher1.401x/dev16/unknown0 sensitivity is68.9208475104h, gap12.8020853463h. These are conditional projections, not deterministic runtime lower bounds or universal hardware impossibility.",
+  "findings": [
+    {
+      "id": "C3-BUDGET-ENG-E01",
+      "severity": "P2",
+      "status": "closed_by_immutable_addendum",
+      "title": "Future six-run setup projection omitted the observed parent window outside the child report",
+      "observedIn": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-plan-001.json",
+      "reproduction": "Read official mature settlement63.076s and mature-report62.467566999999995s. Original script derives setup from only the child report; the missing observed.6084330000000051s becomes.608433*6futureRuns*6charge=21.903588000000184worker seconds, or27.37948500000023s after25%.",
+      "impact": "Small downward error in projected future setup only. Actual mature billing378.456 was already correct. The error strengthens, rather than rescues, the negative admission; original history and accounting do not require rewriting.",
+      "resolution": {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-setup-overhead-correction-001.json",
+        "sha256": "d1633332d0cb6c73395501fc45f4b9acc7c66630a5922e0ce4d9108a0cca55a5",
+        "bytes": 2713
+      },
+      "independentVerification": "Recomputed every corrected scenario, corrected optional128 subtotal and both actual/unreserved gap comparisons. All agree within floating-point tolerance; the base artifact is unchanged."
+    }
+  ],
+  "openP1Count": 0,
+  "openP2Count": 0,
+  "independentChecks": [
+    {
+      "area": "Original cumulative accounting and hours",
+      "status": "pass",
+      "details": [
+        "Independently implemented the original JSON hashchain and event transition checks in a personal Node script, without using repository readBudget. All132events chain to the pinned headf801f6f673a6e4c16990bb182f35e07d32de8b7245a4e19e9b6468a1770a5238. Exactly one initialize event matches canonical genesis66d45addaf0531a072e76b807e19a7e8bb7a681aa7dd3e809cf25fef8b72b337, including259200seconds and445.891214initial charge.",
+        "Every reservation/settlement is unique, nonnegative and within its reserved amount; every intermediate spent+reserved total is within the same259200limit. No reset/newcycle is present. The full reconstructed state exactly matches budgetAtPlan, including all settled IDs and engineering037reserve3600.",
+        "Spent57172.456209040996s=15.881237835844722h. Actual remaining202027.543790959s=56.11876216415528h. Unreserved198427.543790959s=55.11876216415528h. The one-hour difference is the active engineering037 reservation; it must not be mislabeled as already spent.",
+        "Past pilots/engineering including failed variance bootstrap.363005s and actual mature378.456s remain in spent. Future projections do not re-add old charges as new actual expenditure. Executor-provider session billing remains separate/unknown."
+      ]
+    },
+    {
+      "area": "Actual teacher yield and slow-quantile projection",
+      "status": "pass as descriptive conditional projection",
+      "details": [
+        "Verified18root report/stats/settlement SHA triples and their actual2*device accounting. Complete branch counts sum20800 and charged costs sum11067.121187747998worker seconds. All18roots are fully adjudicated.",
+        "Without rerunning bootstrap, read the already-open raw stats outputs: exactly4roots satisfy primary lower>.02 and secondary lower>0, matching quality receipt and the four-label manifest. The four root/family identities are distinct and retain both pass/takeover directions.",
+        "Independent type7 quantiles of the18official charges reproduce median628.447436166 andP90740.8336423828worker seconds per attempted root. Qualified support yield is4/18, not4/20800.",
+        "Per-qualified P90 proxy740.8336423828/(4/18)=3333.7513907226003s. For100newqualified roots this is333375.13907226s=92.60420529785h. The independent mean-yield projection11067.121187747998/4*100=276678.02969369997s=76.85500824824999h also exceeds the entire original72hours before other work.",
+        "The18-attempt sequence was a bounded optional-stopped engineering pilot.4/18 is not an unbiased general success probability, a CI guarantee or a conservative lower confidence bound. This may reject the measured current recipe, but cannot admit a positive recipe or prove universal impossibility."
+      ]
+    },
+    {
+      "area": "Source materialization cost and deduplication",
+      "status": "pass as conditional cost proxy",
+      "details": [
+        "Verified the source report, official settlement and all48raw source file hashes. All48are complete sources,40materializeeligible roots/families. The43.29719425worker seconds includes the rejected8sources.",
+        "Source-cost projection is43.29719425/48/((40/48)*(4/18))=4.870934353125s perqualified root.100newroots implies450materialized attempts,540raw source matches and487.0934353125source worker seconds. Failed source materialization is not hidden.",
+        "Teacher-root execution costs and source generation have distinct official task/settlement identities, so the additive future source term does not duplicate teacher-root cost. A single shared teacher library is budgeted once across the six runs.",
+        "The default cost case does not assume engineering pilot labels are approved main-training labels. Only the clearly hypothetical reuse4 sensitivity replaces100new by96new; the existing manifest explicitly says pilot_training_only_not_main_or_sealed."
+      ]
+    },
+    {
+      "area": "Actual mature update cost and64-label extrapolation",
+      "status": "pass as conditional cost proxy",
+      "details": [
+        "Reused the immediately completed limited actual-mature audit for181sources/40update data/checkpoint/optimizer wiring. Independently reread all40step receipts for timing, arm/update and4B-versus0A labels. Type7 P90s reproduce A2.81417375s andB2.9162040955s mature-device windows.",
+        "Each mature update window includes source fillwaves, collection, actual learner step andIO. It is not just a fast isolated learner microbenchmark. Six future runs are3pairs*A/B and400/1200/3600updates perrun, rather than six pairs or one arm.",
+        "ActualB uses only the four genuine pilot roots,20exposures each. No fake64-label runtime was measured. The hypothetical64-root adjustment adds15*entireBPyP90(.026989958599996557)=.4048493789999484device seconds toBgroupP90, for3.3210534744999483. It is an engineering allowance, not a validated upper bound or causal timing effect.",
+        "Training projection is3*updates*6charge*(A_P90+adjustedB_P90)+six-run setup. The400case before the setup addendum is44322.69765088763worker seconds=12.3118604585799h; no divide-by-worker wall-clock shortcut is used.",
+        "Original child-report setup is4.140600957999993s perrun,149.06163448799975worker seconds over6run*6. The immutable correction additionally includes the actually measured parent-minus-child.608433s perrun,21.903588worker seconds. Corrected actual-pilot billing remains unchanged378.456.",
+        "Scaling future queue maturity/model behavior and64-label learner cost from20updates is not a long-run performance guarantee. This cannot approve production continuation or substitute for the unimplemented required production continuity proof."
+      ]
+    },
+    {
+      "area": "Formal cost proxy and sample arithmetic",
+      "status": "pass for negative-cost arithmetic only",
+      "details": [
+        "Verified hashes for all64actual variance blocks and1024complete match rows. Per-match cost quantiles intentionally use384U0cooperation matches plus128M1 and128M2, rather than conflating both probe variants. Recomputed P901.0986461921000013cooperation,1.0539742624000137M1,.7213973372999979M2seconds.",
+        "Recomputed empirical SDs from the64paired block vectors; every declared.5design floor remains. Independently used stdlib NormalDist inverseCDF and two-stage ceilings to derive primary971,eachNI2695,M1262,M21047 forSD.5; and primary3881,eachNI10779 forSD1.",
+        "Cooperation costs2695sharedbases*3groups*2sides*2policies=32340physical matches; M1/M2cost2*(262+1047)=2618; total34958. They are not treated as34958independent paired blocks.",
+        "The SD.5 sizing case costs37593.106390317844worker seconds=10.4425295528661h for one formal attempt. The SD1 sensitivity uses131966physical matches and144170.57619355476s. Original gate margins and point thresholds are unchanged.",
+        "This is only normal-approximation sizing and a measured-policy time proxy. Joint bounded/paired power simulation is absent and acknowledged; all-gate joint80% is not claimed, no finalNis locked, and no confirmation is opened. The cost case is not a mathematical universal minimum."
+      ]
+    },
+    {
+      "area": "Development, unmeasured terms and no double counting",
+      "status": "pass for incomplete known subtotal",
+      "details": [
+        "Original execution plan157allows32development blocks, with16onlylocked before any main-development score. One version costs384cooperation+64M1+64M2matches. U0at0is shared once; six runs add6versions per400/1200/3600checkpoint, so development version counts are7/13/19. Independently recomputed all corresponding costs.",
+        "J,unseen development teacher labels, sealed75rootlabelproduction, separate severe24familyproduction/evaluation, backup/integrity and extra formal attempts are explicitly null/additional. They are absent from the known subtotal, not claimed already spent or free.",
+        "The99-label transfer illustration is a separate unmeasured cross-domain proxy, excluded from the known subtotal. No blanket assumption that directed skill proof must cost the same as these teacher roots is needed.",
+        "Existing pilot costs are already sunk in the ledger. Future scenarios contain only projected future components; future teacher labels and one future formal attempt are counted once. Training source-fill cost is contained in actual mature-group P90 and is not separately added a second time as the teacher source term.",
+        "The original plan contains additional missing production/scientific implementation. The reason for negative admission is measured-current-recipe cost, not a claim that missing implementation itself consumes the projected hours."
+      ]
+    },
+    {
+      "area": "Nine scenario totals and startup correction",
+      "status": "pass",
+      "details": [
+        "Independently recomputed all100/500/2000qualified-root by400/1200/3600update cells, all six runs, source eligibility, P90training, shared development, one formal attempt and25%margin. Every original arithmetic value matches; every immutable corrected value also matches.",
+        "The corrected minimum is524435.5844722606worker seconds=145.6765512422946h. Against actual remaining56.11876216415528h its gap is89.55778907813934h. Against unreserved55.11876216415528h the gap is90.55778907813934h. All other cells cost more.",
+        "The original gap90.5501836656h was against unreserved availability, not the larger actual remaining amount; the report preserves both units and meanings explicitly. No old plan/actual record is rewritten by the small setup correction."
+      ]
+    },
+    {
+      "area": "Favorable speed/reuse and optional128 sensitivity",
+      "status": "pass as hypothetical sensitivity only",
+      "details": [
+        "Recomputed whole-match P90speedup from the previously accepted actual proof:original.7428049001999992/exact-prefix.5301683502000021=1.4010736399481063. It is a specific16-family whole-match measure, not a proven productionteacher speedup.",
+        "Reusing all4pilot labels and applying that speedup to every teacher cost leaves96newqualified roots. Original favorable scenario before setup correction is109.2211322030685h with25%; the correction adds.0076054125h. This does not permit pilot-to-main label reuse or change the frozen originalteacher snapshot.",
+        "Original EXECUTION_PLAN101allows a preproduction128/256/512 primary-world choice. The optional sensitivity halves every teacher cost although only primary256→128would actually halve while32explore/128secondary remain fixed; it also assumes unchanged4/18yield, allteacher1.401x, reuse4,dev16andallunknown0. These deliberately favorable assumptions are not measured or authorized production changes.",
+        "The combined sensitivity before correction sums198470.1372419714worker seconds,248087.67155246425with25%=68.91324209790673h. Corrected it is68.92084751040673h, still12.802085346251454h over actual remaining. This is a transparent conditional projection and cannot establish a physical lower bound for all possible future optimizations."
+      ]
+    },
+    {
+      "area": "Original stop/authorization scope",
+      "status": "pass",
+      "details": [
+        "Read original DESIGN251-303 and EXECUTION_PLAN101/125-135/153-165/177-195 alongside the reviewed reading110/132-140. Original72hour cumulative budget, training/root grid, gates,world choice, development condition and25%margin match the artifacts.",
+        "Reading138requires reporting a projected deficit before training if the original budget cannot hold full confirmation. Refusing main admission on this failed current projection follows that instruction; it is not permission to delete evaluation or lower samples/gates.",
+        "No production protocol, rootsize, formalN, newworldchoice or training endpoint is selected. No new attempt or cycle is created. C4/C5/C6remainnotstarted/notpassed; unknown scientific components remain openly unimplemented/unmeasured.",
+        "This engineering decision is only APPROVE_NEGATIVE_BUDGET_GATE. It does not approve new science, costs beyond existing authorizations, stronger-model claims, deployment or arbitrary later training. Already authorized product/data delivery can continue within its existing scope."
+      ]
+    }
+  ],
+  "keyNumbers": {
+    "originalHours": 72,
+    "spentHoursAtPlan": 15.881237835844722,
+    "actualRemainingHoursAtPlan": 56.11876216415528,
+    "unreservedHoursAtPlan": 55.11876216415528,
+    "teacher100P90ProjectionHours": 92.60420529785,
+    "teacher100MeanYieldProjectionHours": 76.85500824824999,
+    "correctedMinimumKnownPlus25Hours": 145.6765512422946,
+    "correctedMinimumGapActualHours": 89.55778907813934,
+    "correctedMinimumGapUnreservedHours": 90.55778907813934,
+    "correctedOptional128FavorableHours25": 68.92084751040673,
+    "correctedOptional128GapActualHours": 12.802085346251454
+  },
+  "correctedAllNineScenarios": [
+    {
+      "roots": 100,
+      "updates": 400,
+      "knownPlus25Seconds": 524435.5844722606,
+      "knownPlus25Hours": 145.6765512422946
+    },
+    {
+      "roots": 100,
+      "updates": 1200,
+      "knownPlus25Seconds": 638885.9539143635,
+      "knownPlus25Hours": 177.46832053176763
+    },
+    {
+      "roots": 100,
+      "updates": 3600,
+      "knownPlus25Seconds": 974204.5034384648,
+      "knownPlus25Hours": 270.6123620662402
+    },
+    {
+      "roots": 500,
+      "updates": 400,
+      "knownPlus25Seconds": 2193746.747010123,
+      "knownPlus25Hours": 609.3740963917008
+    },
+    {
+      "roots": 500,
+      "updates": 1200,
+      "knownPlus25Seconds": 2308197.1164522264,
+      "knownPlus25Hours": 641.165865681174
+    },
+    {
+      "roots": 500,
+      "updates": 3600,
+      "knownPlus25Seconds": 2643515.665976328,
+      "knownPlus25Hours": 734.3099072156466
+    },
+    {
+      "roots": 2000,
+      "updates": 400,
+      "knownPlus25Seconds": 8453663.606527109,
+      "knownPlus25Hours": 2348.2398907019747
+    },
+    {
+      "roots": 2000,
+      "updates": 1200,
+      "knownPlus25Seconds": 8568113.97596921,
+      "knownPlus25Hours": 2380.031659991447
+    },
+    {
+      "roots": 2000,
+      "updates": 3600,
+      "knownPlus25Seconds": 8903432.525493313,
+      "knownPlus25Hours": 2473.17570152592
+    }
+  ],
+  "independentArithmetic": {
+    "status": "passed",
+    "verifiedReferences": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/teacher-pilot-interim-018.json",
+        "sha256": "00e8b6133141330fe5ae20deb5b05c486332b9b085ecad32ccaaced48abe99c5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/teacher-quality-receipt-001.json",
+        "sha256": "e2782c0971b84e002faa782ca1bbbb2db4776c8959b547b80e00cd96db69d749"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-pilot-source-execution-001-settlement.json",
+        "sha256": "715a768e797100ed5a392c8d6e8c37b83557bc1bcaadb4620ce06ad3001c5954"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/source-report.json",
+        "sha256": "f6fa19d9264bac7f3603426b62c8e047bb6f9c4277159d3f0781dd309a568854"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/mature-report.json",
+        "sha256": "6f6cf5a879b064bb1380ce1026999408691a4cb08f1417393d3e95f111659a61"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-pilot-execution-001-settlement.json",
+        "sha256": "e6f8d82857d9a3efdaacd8d6b1d85c00dc64fcb43036394df4a3f4213ccb4735"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/variance-report.json",
+        "sha256": "302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/data/stats-plan-pre-cost-001.json",
+        "sha256": "19c1fba835a17f2b90ffa26479a61bedd05784e742ce024759778afb5a9e0b42"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/proof-report.json",
+        "sha256": "3d9e87b37aba80f54f69488a8736cc63cf83f1d9a975caa9fc86a15d7145bc19"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-01/root-report.json",
+        "sha256": "aa2ecfc96d8a0f99ba3d92da34e11547223acdb9af5d4e523e1622145ca7bd33"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-01/stats-result.json",
+        "sha256": "9c55a60e9d10d101fc5151b5e8803f51d8c4d39ac4cfcefce623297860928374"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-01-execution-001-settlement.json",
+        "sha256": "a05b8418853f5c9b19e00a7d8fd79f4e37310cb84a2ae5e71abfa51a8fe22387"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-02/root-report.json",
+        "sha256": "63a688d1fceff9c53d742d6ab30657e88aa1715f2e154807fb4975344ffeb7cb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-02/stats-result.json",
+        "sha256": "6b01931be20bf2d2eeca968a68cb7bb259bc4bf13d1f19ba1ad176b3ac51f6e0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-02-execution-001-settlement.json",
+        "sha256": "90b319faf82d1f113b6baee3baa551057267629f162d867b2c6d9b8046553b4a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-03/root-report.json",
+        "sha256": "5676717908a46a3ced16c389447171b67d9ef2dd647c548f0db40a96e8885f1e"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-03/stats-result.json",
+        "sha256": "d8bff2af386de6987647769a2d7608c89e18bdd3ba8849fa8ef94a4f88a5cf8e"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-03-execution-001-settlement.json",
+        "sha256": "65e54f1bc1574cdba854c0ed409620bb72c706d73fb3d0ca06d76c55b14a1510"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-04/root-report.json",
+        "sha256": "6bcb5a6c291718dcb75c23b8bf4e96c92c2833a6c8814603b9f0691e0f232b53"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-04/stats-result.json",
+        "sha256": "7eac00e7447396ef410bce98fe368cdad07166844869ca4c85727e8ac258b756"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-04-execution-001-settlement.json",
+        "sha256": "5dbf8c7deff105baac0e53e53fa30082f5ab545fdb274fac3e9cc8bcdfa18829"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-05/root-report.json",
+        "sha256": "418ec0eafeb00e4d94561cb021ed8191c9b1dda2edae45aabd76c4dc3cc0e725"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-05/stats-result.json",
+        "sha256": "926173b0238e562d4db5e50a6065ccfa34b6f133ae6a32d313f8975b2d653b79"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-05-execution-001-settlement.json",
+        "sha256": "0cc4a680b9e78c65f0b981c3bc0d98ed46128164f6bf76c0edc192c01bebd464"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-06/root-report.json",
+        "sha256": "e28d640d81f4e8c3171e7cdcf18da2613c79e20a4949cb5cda662773bbe85c9b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-06/stats-result.json",
+        "sha256": "d63fe45e6fb2eadd97c746a195bd658c10efbfbc720740676ef512446003cd34"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-06-execution-001-settlement.json",
+        "sha256": "029c26044edd43778af1cadd87c4d3c7eff5bc5406883cb4c691d639f3b1e2b5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-07/root-report.json",
+        "sha256": "ed543d6fa129a45b7d75c5ea23b57d91ec2841955327624b7022ea39f7d51868"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-07/stats-result.json",
+        "sha256": "494a7430d93e634db85023ce1f442af0f123ed584034c00cceb1664da1c1ff30"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-07-execution-001-settlement.json",
+        "sha256": "847bac8fdc3e6aab680be57002a1842492794899b712818ac2bb9253af23cae8"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-09/root-report.json",
+        "sha256": "faaa1d4acdd190333c77c0cdbc423f8982791a4b74cb9eeb7c6a5068af831898"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-09/stats-result.json",
+        "sha256": "9db837b0fd4820beee4048cb5633286fb0e46d5902fd0143e056cbed6d0e7150"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-09-execution-001-settlement.json",
+        "sha256": "4846361b8540d622a06138fa331edc980317a9cccaef68638aa2f7428964830a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-10/root-report.json",
+        "sha256": "287e88f64943a797538d56397f6dc869810a3bbddacaf2f8bb8724ecc916d9e3"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-10/stats-result.json",
+        "sha256": "5a50e480fc6c49f00e1a3e49f48f6b444e79dcebb94b60a30374ad42c7951d49"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-10-execution-001-settlement.json",
+        "sha256": "cce22e432534f6f3f3380de65ecff14bd94466eef1763eaa24782a14972d3427"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-11/root-report.json",
+        "sha256": "58819b6ec15c8f097ec45dc189a12d30f337d82ffefe7323833411eb41616ea7"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-11/stats-result.json",
+        "sha256": "561431d111c341396ce97f6795bfe212f1a8a27e538d11fae4f333b39f105249"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-11-execution-001-settlement.json",
+        "sha256": "6a91fcaa2f6fc84f2dc0078ca9833df4141a94197367cc5662e1fe401c463105"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-12/root-report.json",
+        "sha256": "3f5ff78ec24132504cb8e0544e97ddfbf59cc3a5e9579a3f820d1a2f3d7f38b5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-12/stats-result.json",
+        "sha256": "8aa7cd1ce136a98bf8a4e83829e8fdd4e0f77f9faa0566bda3a1c1f3260a38d5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-12-execution-001-settlement.json",
+        "sha256": "5374f7080efc2c0728ede4791feb1400850d027f4f7814e96ff7adcc3851c644"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-14/root-report.json",
+        "sha256": "a5d1f79aad8c64c4e36c1097221289b0ba1ffdd54b162e008528981e66044905"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-14/stats-result.json",
+        "sha256": "bcc18f470159be91f07f7a87af5bef3806e095c209177b4e3dd11a7b296d88e8"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-14-execution-001-settlement.json",
+        "sha256": "e0d1d35d6c4ae2bcaa25342aa14ada2d0e43fcc3ee5a3973bfb4181ef9381138"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-15/root-report.json",
+        "sha256": "825d615c43c5ae525912a65e327f5371c4644d98c1e7d7afbbbf8baeb93c07c0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-15/stats-result.json",
+        "sha256": "5e5435816645c2edc66eea0f00c989ce7a4657efac36eab44193674738a1ee28"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-15-execution-001-settlement.json",
+        "sha256": "30064afb99537133b958b6229c5b53ef0e1d28052fb76c1ced4d68e1aaef3360"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-16/root-report.json",
+        "sha256": "e59fdfa918161f57d07b46da364eadd811d526719b364b14998ad12d35111874"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-16/stats-result.json",
+        "sha256": "ad70807caa091091245409e3c47dbd43bd2fab3aafe4a28b415717ac4c402499"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-16-execution-001-settlement.json",
+        "sha256": "dd63c64cc047ea80b8d6301d4d7fde46028b84ef08149bca3f58e5b26ee7901a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-17/root-report.json",
+        "sha256": "acd9ba75815d4fee3956f47dae6ccf28f674e72611de6caae11bf5c2c02392df"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-17/stats-result.json",
+        "sha256": "77314dfd38bbb5d31a39b2daee89451d0f049ed1050109e82ed9b445d918286a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-17-execution-001-settlement.json",
+        "sha256": "e5f4f8fff86c20c3189caac8b09dd0b7bd5d19039f1ed1ffc7e649b62d93edcf"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-18/root-report.json",
+        "sha256": "e53989d476d4be758eb480e3f790181993daf7b56d9ef83f96149dbad9ae3ee9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-18/stats-result.json",
+        "sha256": "9d53b612ddebd04dd6b6b2a93656da78f79db4619ff40404d88d97dac536d5c3"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-18-execution-001-settlement.json",
+        "sha256": "a21ca6aa0816b50bd78d786a70a35cf151b2c3e576db447bf31e8b9e450a82c7"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-19/root-report.json",
+        "sha256": "40e3edd7f05010530f424159d9490670b8f955e52ce9b825b15f9060a99c1e5e"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-19/stats-result.json",
+        "sha256": "38757a3ed4c1ab8bc3987881b4e0faa1ed9cce3b74c8f058dba6e60ea84c6773"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-19-execution-001-settlement.json",
+        "sha256": "296f810e0f8af03f82fdfa167c964ee447c4b131b8ae0f7b58aff8cb565f70d9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-20/root-report.json",
+        "sha256": "9c4e05a16f027550c2bb1819343d9d6f8921d27717907fd59d809fc6bf8988eb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-20/stats-result.json",
+        "sha256": "540fad5213bf1d70ad7e532d2db16e752932058fdf085427324f22d23b926f33"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-teacher-pilot-root-20-execution-001-settlement.json",
+        "sha256": "a4294f2441b9eb838e5f150a2d650253fc91f7e15cf46f884aeccbf6cc84a72d"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/pilot-label-manifest-001.json",
+        "sha256": "ff880e81b74e61785bf5792cf7bff35d92adf3d32f772bd4d9eafe7a8fccb4a3"
+      },
+      {
+        "slot": 1,
+        "rootId": "C3-pilot-source-001:root-01",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:32d1da77cabcc6695599902630ef8137cd72938b6911a581f0654f6e094a64c0",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-01.json",
+        "sha256": "8613c17e290472ef6456d80d05deb18b4734c524e15defe155f331569d574614",
+        "activeSeconds": 1.3473794170000002,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 2,
+        "rootId": "C3-pilot-source-001:root-02",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:9fd97f2ea8d975d26c62ec77a7ed4193bcf90905a203116da328737fedc5eec4",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-02.json",
+        "sha256": "d95507fe25d1262fadee84b51ce91978758a8d38432bd26095736a52167111f4",
+        "activeSeconds": 0.9997269169999999,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 3,
+        "rootId": "C3-pilot-source-001:root-03",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:176f7f6cbc4d3cd46cb1d8c12ea553d6f4cffe19e13fb6bf07b4a65f9818b3f3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-03.json",
+        "sha256": "95faa074e36b4429f8b5037528aa22cea6e5cbc5ca1de93633691ce54cee050e",
+        "activeSeconds": 0.8735696250000001,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 4,
+        "rootId": "C3-pilot-source-001:root-04",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:93766cf4d2bdd722a49850d9f3a289030a45167964e9a624712f950f17e38d24",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-04.json",
+        "sha256": "0e4027da511f7a1b3e5248f5895483a304d1f77247e173d0e30772f4b63a9e88",
+        "activeSeconds": 1.0924457090000002,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 5,
+        "rootId": "C3-pilot-source-001:root-05",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:2635c29064ba467728c374095f4db4430fd8e79abb802bdab8e92fa5afefb979",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-05.json",
+        "sha256": "39b0fb67e62ff532e61c6a69c34c91750f71662c2535d6d86d1fcf1867029eec",
+        "activeSeconds": 1.085671875,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 6,
+        "rootId": "C3-pilot-source-001:root-06",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:2b5a33ba20cf0d102a4984a99e1743a0edb72ba0a9c262ab66480ea4c08410b6",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-06.json",
+        "sha256": "b31bbe3bfa3be755cf75197ab77e5b3049663b82da3a85816d43c0823f9eac7c",
+        "activeSeconds": 1.607993458,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 7,
+        "rootId": "C3-pilot-source-001:root-07",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:b5ae253608468a6ac390efe29944d90d89758c6f44841add8b08efb8b120e1a6",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-07.json",
+        "sha256": "4c934ff53b8ecdab51853c0dfe28e0f5fbedb712e30cd8680156efdd43b5bdc6",
+        "activeSeconds": 1.4991855410000008,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 8,
+        "rootId": "C3-pilot-source-001:root-08",
+        "resultCode": "no_eligible_root_in_bounded_source",
+        "sourceFamilyId": "first-deal-family:c8c5cba156c7107e39b6d89fc1ce128f0b01db79bf1b4d234a2be8160cd2c7c3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-08.json",
+        "sha256": "d113bf445384611d5346fc4378eacb05822d3cc84c735a67d235c3f9ba90ee20",
+        "activeSeconds": 0.060466292000000976,
+        "rootMaterialized": false,
+        "completeSource": true
+      },
+      {
+        "slot": 9,
+        "rootId": "C3-pilot-source-001:root-09",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:7739f813a200932cefb10023c222ac7a61eb1bcaa9154384c66c4db23703b09b",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-09.json",
+        "sha256": "7d3cd18eda9929d49d192fb971c1591313ae44c6f336c14e50487e27a67c0f84",
+        "activeSeconds": 0.07314366599999994,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 10,
+        "rootId": "C3-pilot-source-001:root-10",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:e0cce9d1d7b44b2ec393902aa23240c51177784a589b3e9db0f082adf278ce1b",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-10.json",
+        "sha256": "2b8ec433f5884ff8d40bf5b51ed275afb665c3193af1dd4a636c8d32733ef57a",
+        "activeSeconds": 0.05397758299999987,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 11,
+        "rootId": "C3-pilot-source-001:root-11",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:bd162b4286c201462e3090ada6ca5bb40d8f181ac4822e155e7191b6374e52ee",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-11.json",
+        "sha256": "1f6946a6e6bffe8ffa5c1faed1c2fbf9cbb66068889c8b8d3f30e1ee60e5d787",
+        "activeSeconds": 1.0570017079999998,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 12,
+        "rootId": "C3-pilot-source-001:root-12",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:6c08c69724c7219e624c5e5f4238c28069a7fdaf363e5097ba57fc0ed1305a17",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-12.json",
+        "sha256": "8efe62286fd8a5b477be98147543dee8d4af32d258f559129a26edc0070c7ea5",
+        "activeSeconds": 0.9144031250000008,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 13,
+        "rootId": "C3-pilot-source-001:root-13",
+        "resultCode": "no_eligible_root_in_bounded_source",
+        "sourceFamilyId": "first-deal-family:f1fd53af7356cad8f37a0d62f163289a83b3f9172e63de163249b6b1874230fd",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-13.json",
+        "sha256": "7754a169025827fc9710f4425228c52ebaa11566913fc8f404a8f55679bb29fc",
+        "activeSeconds": 1.2970239170000004,
+        "rootMaterialized": false,
+        "completeSource": true
+      },
+      {
+        "slot": 14,
+        "rootId": "C3-pilot-source-001:root-14",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:b2351f97bca64748fdd6b887906176cb5cf9d4ae583c1a48508912f5a37828d3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-14.json",
+        "sha256": "28aa90c2add1f2770e2fba7d7d3f67ec0bde6865e9242aa455e80e77907ee6f0",
+        "activeSeconds": 1.496887666999999,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 15,
+        "rootId": "C3-pilot-source-001:root-15",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:8210214777d9230a96fd0de06eadc949bbc345bb71057516e29a64015d30ad64",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-15.json",
+        "sha256": "04d1cd159377c64289a010721b2695ea4f1485872431c5fe14e17ec68a0a1d53",
+        "activeSeconds": 0.9721079169999993,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 16,
+        "rootId": "C3-pilot-source-001:root-16",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:e644e3b56f7eccbacfb95a9bee18b3d0498a241ecfad81f7886d871ba9daaa03",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-16.json",
+        "sha256": "3f4ac654c37930b445871829ba163781f9da4775f5857810074955810b7102d5",
+        "activeSeconds": 0.8107332500000012,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 17,
+        "rootId": "C3-pilot-source-001:root-17",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:b5ce0f814ccd548e8fe7de9eff65875ab39c8c5434e79afa9df2bd1f67d63d72",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-17.json",
+        "sha256": "24f1d233513d9b5d0fa2460a40198b6808507ecdee560739879556fbee7753d8",
+        "activeSeconds": 1.0299279170000009,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 18,
+        "rootId": "C3-pilot-source-001:root-18",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:9b2ead81710b25f9e8e1db9ea460e7e5709c997a462132de54fe551559447d1f",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-18.json",
+        "sha256": "cfef546b6c9ac6bf02ed58a07814b765f35d4e3f3a010e8908ec978fda0f4fd7",
+        "activeSeconds": 0.05280983399999968,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 19,
+        "rootId": "C3-pilot-source-001:root-19",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:6b12de9f34ca7cae12dfac0c1831ce0d8159c0cce5c05c6e69a126bf323a7790",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-19.json",
+        "sha256": "ec07f062edb37f32e8f44532898b89ac48421bf5cd0a78ca42a19569644bb8f1",
+        "activeSeconds": 0.06606145800000013,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 20,
+        "rootId": "C3-pilot-source-001:root-20",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:dc6698b86ae1061acc6c50bd2e06e358b86015b14d752cc468ad9d3d6e121916",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-20.json",
+        "sha256": "833f5d90aca732ef488112c2fddff60503185025f46d02be00d764c8a68847e5",
+        "activeSeconds": 0.11139208299999882,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 21,
+        "rootId": "C3-pilot-source-001:root-21",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:3adb1057ccc533170903f8ffd100eff61221ed14181fdd8c9e49c1074b951637",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-21.json",
+        "sha256": "e76e236b43a57c56064f9f801c2d1adca6c498e0bc39f6b87ef36b015681a18c",
+        "activeSeconds": 1.9896404169999986,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 22,
+        "rootId": "C3-pilot-source-001:root-22",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:955d953f60caf83a17a0eeaa172fac170dfda55e0233b13330a361f4f35a66b2",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-22.json",
+        "sha256": "474988f28cbddb1f8056987ae5fd85407fcff026fe3a8f8c0fb4053c398ab4ea",
+        "activeSeconds": 1.2891821659999987,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 23,
+        "rootId": "C3-pilot-source-001:root-23",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:4ea12d04727f8b0a70cbac977827c54033883ff263736766223d90197348992e",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-23.json",
+        "sha256": "d762be6811423ac85958993dfbcd55f7764e79ce9b0b1c94c5790826fcb4e4d3",
+        "activeSeconds": 0.8085109999999986,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 24,
+        "rootId": "C3-pilot-source-001:root-24",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:88fdb00594fefcb899ec1aacddfff8bf0732eac19cbd27e3921e3e1084cbe114",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-24.json",
+        "sha256": "3b5c05be2c59512adba95319e3c21334e54d5feb58ad64ab106901837f0ea477",
+        "activeSeconds": 1.5658453750000008,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 25,
+        "rootId": "C3-pilot-source-001:root-25",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:64885d36065c6e3e3e7b843ebd636ce76182706a0d2727955427bab06366e927",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-25.json",
+        "sha256": "2dcce720e338679740c31f68e0f9a8ff785ba82faa127824267bf10c75d54821",
+        "activeSeconds": 1.4141563750000024,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 26,
+        "rootId": "C3-pilot-source-001:root-26",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:97184544bcb4c82bc33a5c8dbacba653642d5a948c46008db937a942f00448df",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-26.json",
+        "sha256": "42d57f84d99e93775271bc980f21b72f3c57d205545c7b79053f36501cad2174",
+        "activeSeconds": 1.3849198749999996,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 27,
+        "rootId": "C3-pilot-source-001:root-27",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:e6a86b68bb1331263a2eb18cbed240415da6d811776a6ec1a4c91e9a2ec66edd",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-27.json",
+        "sha256": "c8003c3daabb183513e0b8560b56e3418eb401ffd2f294bc96dc164e5bf5a2e1",
+        "activeSeconds": 1.0983482089999999,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 28,
+        "rootId": "C3-pilot-source-001:root-28",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:d56b04c8c8dfef474b92843d04ee6c5391f4db4b654380728e366feb8dfa0c1c",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-28.json",
+        "sha256": "bba0c67160b7236389e51d766f15a82de64faa24921bec8be51446f2ed0e7554",
+        "activeSeconds": 0.08190262500000245,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 29,
+        "rootId": "C3-pilot-source-001:root-29",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:6fdfb947a11ac24d134bcd3045f6a0f25e9f0a8cf0b0a53e45742d5c06b3f1d2",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-29.json",
+        "sha256": "977934491da3a40c8be5d5de5f209d2f9151087cce0c118beb94f99a219f3070",
+        "activeSeconds": 0.06923441699999967,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 30,
+        "rootId": "C3-pilot-source-001:root-30",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:b3724645b79e8d4229c9df79317c9cef4398be9c5c9ba9e7c8bebeabed9d948e",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-30.json",
+        "sha256": "f19f8bc0e386531785680740eff9488fcd4cb7845ad503c5855ff9d8a18811d4",
+        "activeSeconds": 0.06706720900000072,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 31,
+        "rootId": "C3-pilot-source-001:root-31",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:b9fd1b4580bc5d35de5d37bce306f991271ef7671c6884169a64508b91effd69",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-31.json",
+        "sha256": "93cae301cf8866edc324002715073ec9b1109c695e36c835815fed11e5c2e4e8",
+        "activeSeconds": 1.1262058340000003,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 32,
+        "rootId": "C3-pilot-source-001:root-32",
+        "resultCode": "no_eligible_root_in_bounded_source",
+        "sourceFamilyId": "first-deal-family:febc515444892a07a4de4d1811d2e3561255cfa6c04f23240013fba81ed4e21d",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-32.json",
+        "sha256": "480341ae9153a6da66c54273bd75e40280409a8dc7d384c2561288c01986e0d9",
+        "activeSeconds": 1.1707681660000016,
+        "rootMaterialized": false,
+        "completeSource": true
+      },
+      {
+        "slot": 33,
+        "rootId": "C3-pilot-source-001:root-33",
+        "resultCode": "no_eligible_root_in_bounded_source",
+        "sourceFamilyId": "first-deal-family:4e3f7beaa6db39cb11995fde0a69adbc6e063c3815befe996474867e760d1960",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-33.json",
+        "sha256": "46bfa6c77b20d85c4a2c046f8f77feb355e77f6a79eb7537fcf2cb57251c92ca",
+        "activeSeconds": 1.1535780410000007,
+        "rootMaterialized": false,
+        "completeSource": true
+      },
+      {
+        "slot": 34,
+        "rootId": "C3-pilot-source-001:root-34",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:a15495a3147404ba9e1e2af0f6418472c7e01ae0531858fc7d731336b8ea2bce",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-34.json",
+        "sha256": "88898603bb8db30db3a69fb389d42b92f8cb0ab32659d42027ceb5a6da167cf6",
+        "activeSeconds": 0.9525935830000016,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 35,
+        "rootId": "C3-pilot-source-001:root-35",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:842f878b1e88a58dc8153d5b30842299cf13196f1fe9e797c5d4f27303d92138",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-35.json",
+        "sha256": "0c377a7312f226cd10937261cfa88b114900551990833637ad2eaa5f324d5dca",
+        "activeSeconds": 1.028083166999997,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 36,
+        "rootId": "C3-pilot-source-001:root-36",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:56b13b11c68b0ad6862b706ec442b375bee94626e883fa23d2bc770766cb9853",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-36.json",
+        "sha256": "6c3b0007ff02def7d5ad2f6952d7dd4d3e5b2e0fe331444e19a5101f9f085285",
+        "activeSeconds": 1.0511178750000036,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 37,
+        "rootId": "C3-pilot-source-001:root-37",
+        "resultCode": "no_eligible_root_in_bounded_source",
+        "sourceFamilyId": "first-deal-family:3308a49105b9739861a4202fcb57ec425604db4f0a43d40f3682a59b46a6500c",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-37.json",
+        "sha256": "4ad51d633f90b81dc7f961e1f8384e35a84bd0f797d198c09bc2e21d7006a4ac",
+        "activeSeconds": 1.042088125000002,
+        "rootMaterialized": false,
+        "completeSource": true
+      },
+      {
+        "slot": 38,
+        "rootId": "C3-pilot-source-001:root-38",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:7cbd308a068bfb3953c9ab1a16d190d4d3dfd7df485346ae0ffe362f0b4b2536",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-38.json",
+        "sha256": "633e9aa3af68afb32bb7a6ce4170dba3108b9376e4ba2ca76e14834b06fb2f7d",
+        "activeSeconds": 0.05703775000000314,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 39,
+        "rootId": "C3-pilot-source-001:root-39",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:26860092c960f0098dae2ceff60b3e1d02d12ed6b70cff1926716afeb0301351",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-39.json",
+        "sha256": "4cb32fc2e852a596e0c68e85ffea7042e3f3019e7d38526e511fd63da4ac65c6",
+        "activeSeconds": 0.08983533300000272,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 40,
+        "rootId": "C3-pilot-source-001:root-40",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:16daa93f790eb189f15e34b1be2700aefb62be33441bedc9e8368c4704e43228",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-40.json",
+        "sha256": "981a574e72c1c1b79f933a8e67668cc6d4125eabe9c51772cbfc2cdbbc24e716",
+        "activeSeconds": 0.04679312499999651,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 41,
+        "rootId": "C3-pilot-source-001:root-41",
+        "resultCode": "no_eligible_root_in_bounded_source",
+        "sourceFamilyId": "first-deal-family:ea0e93224ddaf99118c9fc1bf7e9e798e33f03b8b17416c3d7891387aa259a38",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-41.json",
+        "sha256": "713f1fdd21e9903e23af3b6ab587b213cb3e4db68a70b7b4df331b2fc056da0d",
+        "activeSeconds": 0.6036631670000061,
+        "rootMaterialized": false,
+        "completeSource": true
+      },
+      {
+        "slot": 42,
+        "rootId": "C3-pilot-source-001:root-42",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:1e1b79d6213806e324cd25bef9ea7353f84dd4bcc17de964e0202459a9619c5a",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-42.json",
+        "sha256": "a994564d58df04f9c8f3beb4a0c02be1500ca3d7b66d24e8960a937ed6292168",
+        "activeSeconds": 1.4083317909999968,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 43,
+        "rootId": "C3-pilot-source-001:root-43",
+        "resultCode": "no_eligible_root_in_bounded_source",
+        "sourceFamilyId": "first-deal-family:13a1c85670b78f1df27125dcd761ff8724283709483c04066c5d15b3a294daf2",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-43.json",
+        "sha256": "9f4ddad05a6d6efe5f6e8d5e2335198d99b5a88e8676e4cce5dcd86b4062a2cc",
+        "activeSeconds": 1.5644374580000002,
+        "rootMaterialized": false,
+        "completeSource": true
+      },
+      {
+        "slot": 44,
+        "rootId": "C3-pilot-source-001:root-44",
+        "resultCode": "no_eligible_root_in_bounded_source",
+        "sourceFamilyId": "first-deal-family:2e954faa7f14d8e15aa0e262f2f2217b7e4533c207e7d446577345714a28d970",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-44.json",
+        "sha256": "aa4d3702cc83fe70e3c4ce0646b7d05e501637e02ddd70faf3388a125b5c5e50",
+        "activeSeconds": 1.1872086249999994,
+        "rootMaterialized": false,
+        "completeSource": true
+      },
+      {
+        "slot": 45,
+        "rootId": "C3-pilot-source-001:root-45",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:0a40e2d60e3984b79ed1d1e815feef97512a6b6aa7aba5e6915644bbebad277b",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-45.json",
+        "sha256": "019907e49486a1fa1eba1f14daa93b8e7ba837e06efea3983d87a8e4bead54cf",
+        "activeSeconds": 1.135726834000001,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 46,
+        "rootId": "C3-pilot-source-001:root-46",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:70440d40c59277438e324111f79f436e6a6ff7d04c9a7b68d4a1148a5e6ec8b0",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-46.json",
+        "sha256": "138798d7c706e14406711e59db707606d6217e24f14cd4523eb9aaf41698ce62",
+        "activeSeconds": 1.256012625000003,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 47,
+        "rootId": "C3-pilot-source-001:root-47",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:cafbb88d182182f62b4146e2c191d6a7ddf0c9920da44d17032a7046d3b2c027",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-47.json",
+        "sha256": "f90955eb460903f4820d40e04ef9a79b3e2f18eee8f15e4198961282078c010f",
+        "activeSeconds": 1.4725613749999975,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "slot": 48,
+        "rootId": "C3-pilot-source-001:root-48",
+        "resultCode": "root_materialized",
+        "sourceFamilyId": "first-deal-family:506576869a65e0a53c4d536f82eef0d1d420bf9dad512f65a0509f624c0a911c",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-results-001/slot-48.json",
+        "sha256": "d5bd2ca0d3acd428f28e9b36a28bc6cc7e262549b4c0c812d2a0b8e0ac28ca5e",
+        "activeSeconds": 0.07405512499999896,
+        "rootMaterialized": true,
+        "completeSource": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-001.json",
+        "sha256": "034bff0ed132aa3ba3bdd4b2eaba3ce41a2399bcaa26b3ee0a0f2cebe8f7f33d"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-002.json",
+        "sha256": "925945d121af415c6be37174f8d88b3e7bc7cda70f4696bbe76d1cb3593dfba1"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-003.json",
+        "sha256": "60a2584844fd9f3908a4cca5d03b3581d8d2f2f9649b96f8d9daccafe9e84a6f"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-004.json",
+        "sha256": "22d1a5b9e5bb660356959012f4e8ea6783833d36bd01bbb40513a17701849cf3"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-005.json",
+        "sha256": "4ec7b153e0930d8dd0c1ffd602dbe2bf71d9d234feaeea2f2e0575fe52f04110"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-006.json",
+        "sha256": "638be29506be89dfde0d59861e2a4cb0802a94364831dfaa91035469bbf15c54"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-007.json",
+        "sha256": "9b221544bf508fd9ad1ba2abbd2649683e1ed86e3647482dc566da48f3907e88"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-008.json",
+        "sha256": "7b976ed7f62b68715d5b444a8105fc87b930bab936b21549e6ecd8457fcc99e2"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-009.json",
+        "sha256": "777522c4491b8d29816e5b7348a6da65bb3f57b2330911f99754476de8a21fbf"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-010.json",
+        "sha256": "0e0b1e73339d36d2eeed8eeb02614dc787efea3f852602dd198f681bfefe454e"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-011.json",
+        "sha256": "ebce857d22b8a79558b1539f4cf3b8f522fdb6b770b5f754dfaca64f86664f14"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-012.json",
+        "sha256": "55ff0c02ae56a1dbf3b0ccaefa6c453e89b44b86bdd76e182125029a50781c02"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-013.json",
+        "sha256": "69ed9bd3b30f0f42c7dce45ddd75686e36ec30755c8ff76674e64abffc1f5315"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-014.json",
+        "sha256": "7b0ce1ad9d1fe5469548762685f92660513d4d1a3c3028c44d2e651874b50d4d"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-015.json",
+        "sha256": "c89921cffd754fd59e3681af6d917b3cec7683f7c845465ca68e1749af5684e6"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-016.json",
+        "sha256": "183b3f27ca96e3f81df5c56b43c111a53266213b905fc550f19313d296f868b6"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-017.json",
+        "sha256": "c1ad97683f3e6fec9b0353585b0580e2706869549ae1faa10cfe8ceec22c3c00"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-018.json",
+        "sha256": "cddee269c0957a3b508ea16cf52360eb3f70355593b5538e21594135714c7cf2"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-019.json",
+        "sha256": "3b24f633e7f2ac29e5774ede6299d8a19c05b0390558512edc4504361d934483"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-020.json",
+        "sha256": "fa1f4ecee4e1982f97d1a23a9a62911113d971451923a5ba1b1d9c30b57200dc"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-021.json",
+        "sha256": "022fd14c4312e4134cacb8323d11483055e53605efbe462df1d4877ea820cdd5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-022.json",
+        "sha256": "911fdafbd3cfb71ccc1bba86c8a24231d47773d93e9e57cf031520ca34734fbf"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-023.json",
+        "sha256": "d2de52036ab6f7a16a51fc95e65cc6388e131c38029d8ac115008d21daadfb31"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-024.json",
+        "sha256": "f67ff56069465995ea306296dc6cdd035540df5b0be22958e60445a77f377d6b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-025.json",
+        "sha256": "f5d8c51e71a81454c8b5e7c84aba1d1112920ff4c231652cfb9e9f80e025e9bb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-026.json",
+        "sha256": "83cac00bc84193598822df27538232431692dcaf6414e3881da243ce79a96d89"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-027.json",
+        "sha256": "fa0fe21cbd56ce6e22cc1b24850a6861ea92be62fda2e8fa7613dfa7e7688838"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-028.json",
+        "sha256": "4bb731246586fe20f303a2e96c971d0894d202728c04a696fbc431da27d5c2f9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-029.json",
+        "sha256": "e95423ba0659e8dbeba5d1cb3604b68c5e86108cc7f228528b02bb54c7f7eb4b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-030.json",
+        "sha256": "78aff2af06f74e564f0f9980b6fe919921aa65a79de18c7bd811375a42456b49"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-031.json",
+        "sha256": "f79048d5039db53477bb6566fd7a27ab4b80122fd3db304033e779780aa48978"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-032.json",
+        "sha256": "4527a30c73e4066fff739ecd5a69ac9416564618f4196549d7601e702a7ec1f0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-033.json",
+        "sha256": "d693a963b8699300a601d8a62db3a44fe6d3b8b32bc82f9ebee4af5fa3080685"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-034.json",
+        "sha256": "e326027ad6d4410854be90f539cb1c241716dd17afc2928607e28ca80a4ce7c0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-035.json",
+        "sha256": "e2e9bdc1c23e27af58a8508e0223903a2a7cfdb4b82b3247d6dbac0a950f9ccb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-036.json",
+        "sha256": "09151c1de1d7d57a75eb680de29856416ba5105d979cc9b1c48e0abe9cd8fc89"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-037.json",
+        "sha256": "58e367772a423f3812bb3dd225fd9c4e9cc7e8f64673e983b9dc46b6bc3c464b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-038.json",
+        "sha256": "a8cc3ce407d4a6987da697b1ac84a686ef7bf020f820d0da3b35632240cab997"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-039.json",
+        "sha256": "23471fd2ee12efcab40975843cae8b02798be3003a413eacbada8f3c29cceea5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-040.json",
+        "sha256": "6397f081c2b02ac58f64a6874b048f81d03f4d23d127087af7f70e4e79d58a6d"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-041.json",
+        "sha256": "403fd2d6203c8f749333b1752552246f437c1d6b8da7a36d557ef06e0ea07035"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-042.json",
+        "sha256": "9598c1bd0370ac0c04f001e506bd01f8994b5f7d9f67571c25225b6bbf821569"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-043.json",
+        "sha256": "1f772d798864abdd031a66a47b7e4b1cb87dfb3f62daf5736ce43c87f0efc3cf"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-044.json",
+        "sha256": "9a8a3d057f83212a755de047ccb124ab109fae1f1b6e0ca5de17fb5ad74ae634"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-045.json",
+        "sha256": "9e2fe83048e492f467b9aa70c8921d19105be4fea8f9f4397c932d6bade5e8fa"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-046.json",
+        "sha256": "807f2f1abb175f565ede040ba938c3dbaac3749793fb5f54a1c82d9534bd50fd"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-047.json",
+        "sha256": "5c5fa52194dc0c6429cbb93105b3e8fce20d8bc272cbe2f05dd5e4f1ff14e7e9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-048.json",
+        "sha256": "8606aa9fd316a5d2e0e348c9666abfe776d8ba945a717ccd44e04ca785517590"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-049.json",
+        "sha256": "36014cc739ef01b6d99b3833ac34f85136a6b1755e526e102d5afc74ff14c341"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-050.json",
+        "sha256": "492976d174c0789fd74823d422815727b4c5f91c8925a1a2328c245c710035e1"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-051.json",
+        "sha256": "277593fa3ef236afb3edc187d22539a9174999e0327caf014b524648059663e4"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-052.json",
+        "sha256": "56c333a628f50e531615ece59afd03ba7a041b38160b425cf37085202d29cf2c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-053.json",
+        "sha256": "2c84ebc77745cb510d3e59ca32b7d847906776dfbb3f9c93aca0b2cbf874d0bc"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-054.json",
+        "sha256": "8c4b081c7efbb58a2bafc1ea7c7964108bbfd17af2ec4a8a61ee91fb3f12441e"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-055.json",
+        "sha256": "a46c87a28eea284504600f34eb27b9203890484d0876496058abc5b147bc6123"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-056.json",
+        "sha256": "33c5a1f313c1402a0a9e2d95315ac68f09f35929edeff578d5595e91abe59dd5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-057.json",
+        "sha256": "ef83a6ae2dbfa356ddb49198e8dbc3b945f1dbf6c08fd4921ffa46b7de4ecb88"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-058.json",
+        "sha256": "0050b50911fd29afb876e05862405dfd385bcce178724cc0fa4900a0e7c3c879"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-059.json",
+        "sha256": "86e7f2f9bab0662648a7a20092f361a30548f359ec72df9db6c1ae53849c2755"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-060.json",
+        "sha256": "d6c6d1e7b6eb8029dc6eed5e7727272bc38653dfb59f8c7e85772981c13d93c5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-061.json",
+        "sha256": "569dde09dd7e7af37837483d31dbc740428b7c0cd162af0b088225552dafd22d"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-062.json",
+        "sha256": "392b1ad4a0c0ddd7f556e5ae1e4ec5dc792340a81fdcc71bcfdeb953033a98d4"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-063.json",
+        "sha256": "c438cbb89aaa57b3be78c86ce0a698beb65e6b682d878104714a23eeb5e99575"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-064.json",
+        "sha256": "e0551af09057440169a6fa569d58d30a76b52224c10229e9f495a2c5fbdbc3f3"
+      }
+    ],
+    "teacher": {
+      "attempts": 18,
+      "supported": 4,
+      "completeBranchMatches": 20800,
+      "workerSum": 11067.121187747998,
+      "rootCosts": [
+        639.7191455,
+        550.1622312500001,
+        756.043451918,
+        321.694375166,
+        623.9869170000001,
+        631.10485725,
+        734.315152582,
+        640.4016739159999,
+        625.790015082,
+        723.8002855,
+        596.724248334,
+        572.379515584,
+        695.568019666,
+        485.51073441600005,
+        693.257880166,
+        584.325535834,
+        913.9493923340001,
+        278.38775625
+      ],
+      "median": 628.447436166,
+      "p90": 740.8336423828,
+      "p90PerQualified": 3333.7513907226003,
+      "sourcePerQualified": 4.8709343531250004,
+      "sourceComplete48": 48,
+      "sourceMaterialized40": 40,
+      "teacher100P90Hours": 92.60420529785,
+      "teacher100MeanYieldHours": 76.85500824824999,
+      "supportedRoots": [
+        "C3-pilot-source-001:root-03",
+        "C3-pilot-source-001:root-05",
+        "C3-pilot-source-001:root-06",
+        "C3-pilot-source-001:root-20"
+      ]
+    },
+    "mature": {
+      "timings": {
+        "A": {
+          "matureP90": 2.814173750000001,
+          "pythonP90": 0.024637991600001644,
+          "matureValues": [
+            3.9771298749999997,
+            1.1636417079999992,
+            0.03014929200000006,
+            2.7949858750000005,
+            1.3894082080000008,
+            1.0137101669999993,
+            1.048158958,
+            1.9831956249999985,
+            2.1386936669999996,
+            0.029662124999998922,
+            1.0645925000000025,
+            1.073901332999998,
+            2.986864625000002,
+            0.03001995800000077,
+            2.227729041999999,
+            1.1112446249999994,
+            1.7225835409999999,
+            1.0966183329999986,
+            1.456659958000004,
+            1.2473616670000047
+          ],
+          "pythonValues": [
+            0.09431370799999961,
+            0.0243043329999999,
+            0.023578749999999538,
+            0.02389125000000014,
+            0.023665499999999895,
+            0.024237499999999912,
+            0.023847583000000228,
+            0.02427424999999772,
+            0.023868665999998484,
+            0.023205499999999546,
+            0.023518416999998237,
+            0.02424770900000084,
+            0.0245243749999986,
+            0.022883874999998,
+            0.02352412499999801,
+            0.023547040999996938,
+            0.02454987500000172,
+            0.023939125000001837,
+            0.02543104100000093,
+            0.022486916000005408
+          ]
+        },
+        "B": {
+          "matureP90": 2.9162040955,
+          "pythonP90": 0.026989958599996557,
+          "matureValues": [
+            3.9771782079999976,
+            1.2443020410000027,
+            0.03247362499999872,
+            2.106027957999999,
+            1.3671255420000017,
+            1.1030938749999986,
+            0.03299600000000646,
+            4.115498333999996,
+            0.03394924999999785,
+            1.1781306249999979,
+            1.3877168749999982,
+            1.1617412079999994,
+            1.2719860410000037,
+            1.1687564579999963,
+            1.8398170420000024,
+            2.7983180829999985,
+            0.03305520800000522,
+            2.611594250000002,
+            0.03298662499999773,
+            0.9461468750000058
+          ],
+          "pythonValues": [
+            0.027478000000002112,
+            0.02631033400000149,
+            0.024835166999999103,
+            0.026304082999999423,
+            0.02611670900000007,
+            0.02641908399999693,
+            0.02547599999999761,
+            0.02684291599999966,
+            0.026468708999999535,
+            0.027300832999998192,
+            0.026653082999999356,
+            0.0265862089999942,
+            0.02691858400000058,
+            0.026240874999999164,
+            0.02569658399999497,
+            0.025483000000001255,
+            0.025508500000000822,
+            0.026381583000002706,
+            0.02645887500000299,
+            0.026955416999996373
+          ]
+        }
+      },
+      "adjustedBGroupP90": 3.3210534744999483,
+      "setupDevicePerRun": 4.140600957999993,
+      "setupSixRunWorkerSeconds": 149.06163448799975,
+      "parentOutsideReportWindowSeconds": 0.6084330000000051,
+      "sixRunOutsideParentWorkerSecondsNotInBasePlan": 21.903588000000184,
+      "setupOmissionEffectHoursBefore25": 0.006084330000000051
+    },
+    "varianceTiming": {
+      "costSamples": {
+        "cooperation": 384,
+        "M1": 128,
+        "M2": 128
+      },
+      "physicalMetricCounts": {
+        "cooperation": 768,
+        "M1": 128,
+        "M2": 128
+      },
+      "p90": {
+        "cooperation": 1.0986461921000013,
+        "M1": 1.0539742624000137,
+        "M2": 0.7213973372999979
+      },
+      "sampleSD": {
+        "primary": 0.18867211534189088,
+        "groups": [
+          0.3049687727964166,
+          0.33987261269061214,
+          0.34178279095132363
+        ],
+        "M1": 0.29198537009447295,
+        "M2": 0.3347255153628427
+      }
+    },
+    "formalSizingApproximationOnly": [
+      {
+        "designSD": 0.5,
+        "primary": 971,
+        "NI": 2695,
+        "M1": 262,
+        "M2": 1047,
+        "physicalMatches": 34958
+      },
+      {
+        "designSD": 1.0,
+        "primary": 3881,
+        "NI": 10779,
+        "M1": 262,
+        "M2": 1047,
+        "physicalMatches": 131966
+      }
+    ],
+    "formalCostSeconds": {
+      "floorSD05": 37593.106390317844,
+      "boundedSD1": 144170.57619355476
+    },
+    "allNineScenarios": [
+      {
+        "roots": 100,
+        "updates": 400,
+        "runs": 6,
+        "devVersions": 7,
+        "costs": {
+          "teacher": 333375.13907226,
+          "source": 487.09343531250005,
+          "training": 44322.69765088763,
+          "developmentKnownM1M2Cooperation32": 3748.5274410304087,
+          "formalKnownOneAttempt": 37593.106390317844,
+          "knownSubtotal": 419526.56398980843,
+          "knownSubtotalPlus25Percent": 524408.2049872605
+        },
+        "hours25": 145.66894582979458,
+        "gapActualHours": 89.55018366563931,
+        "gapUnreservedHours": 90.55018366563931
+      },
+      {
+        "roots": 100,
+        "updates": 1200,
+        "runs": 6,
+        "devVersions": 13,
+        "costs": {
+          "teacher": 333375.13907226,
+          "source": 487.09343531250005,
+          "training": 132669.9696836869,
+          "developmentKnownM1M2Cooperation32": 6961.550961913616,
+          "formalKnownOneAttempt": 37593.106390317844,
+          "knownSubtotal": 511086.85954349086,
+          "knownSubtotalPlus25Percent": 638858.5744293636
+        },
+        "hours25": 177.46071511926766,
+        "gapActualHours": 121.34195295511239,
+        "gapUnreservedHours": 122.34195295511239
+      },
+      {
+        "roots": 100,
+        "updates": 3600,
+        "runs": 6,
+        "devVersions": 19,
+        "costs": {
+          "teacher": 333375.13907226,
+          "source": 487.09343531250005,
+          "training": 397711.78578208474,
+          "developmentKnownM1M2Cooperation32": 10174.574482796825,
+          "formalKnownOneAttempt": 37593.106390317844,
+          "knownSubtotal": 779341.6991627719,
+          "knownSubtotalPlus25Percent": 974177.1239534649
+        },
+        "hours25": 270.60475665374025,
+        "gapActualHours": 214.48599448958495,
+        "gapUnreservedHours": 215.48599448958495
+      },
+      {
+        "roots": 500,
+        "updates": 400,
+        "runs": 6,
+        "devVersions": 7,
+        "costs": {
+          "teacher": 1666875.6953613001,
+          "source": 2435.4671765625003,
+          "training": 44322.69765088763,
+          "developmentKnownM1M2Cooperation32": 3748.5274410304087,
+          "formalKnownOneAttempt": 37593.106390317844,
+          "knownSubtotal": 1754975.4940200984,
+          "knownSubtotalPlus25Percent": 2193719.367525123
+        },
+        "hours25": 609.3664909792009,
+        "gapActualHours": 553.2477288150455,
+        "gapUnreservedHours": 554.2477288150455
+      },
+      {
+        "roots": 500,
+        "updates": 1200,
+        "runs": 6,
+        "devVersions": 13,
+        "costs": {
+          "teacher": 1666875.6953613001,
+          "source": 2435.4671765625003,
+          "training": 132669.9696836869,
+          "developmentKnownM1M2Cooperation32": 6961.550961913616,
+          "formalKnownOneAttempt": 37593.106390317844,
+          "knownSubtotal": 1846535.789573781,
+          "knownSubtotalPlus25Percent": 2308169.736967226
+        },
+        "hours25": 641.1582602686739,
+        "gapActualHours": 585.0394981045187,
+        "gapUnreservedHours": 586.0394981045187
+      },
+      {
+        "roots": 500,
+        "updates": 3600,
+        "runs": 6,
+        "devVersions": 19,
+        "costs": {
+          "teacher": 1666875.6953613001,
+          "source": 2435.4671765625003,
+          "training": 397711.78578208474,
+          "developmentKnownM1M2Cooperation32": 10174.574482796825,
+          "formalKnownOneAttempt": 37593.106390317844,
+          "knownSubtotal": 2114790.629193062,
+          "knownSubtotalPlus25Percent": 2643488.2864913275
+        },
+        "hours25": 734.3023018031465,
+        "gapActualHours": 678.1835396389913,
+        "gapUnreservedHours": 679.1835396389913
+      },
+      {
+        "roots": 2000,
+        "updates": 400,
+        "runs": 6,
+        "devVersions": 7,
+        "costs": {
+          "teacher": 6667502.781445201,
+          "source": 9741.868706250001,
+          "training": 44322.69765088763,
+          "developmentKnownM1M2Cooperation32": 3748.5274410304087,
+          "formalKnownOneAttempt": 37593.106390317844,
+          "knownSubtotal": 6762908.981633686,
+          "knownSubtotalPlus25Percent": 8453636.227042109
+        },
+        "hours25": 2348.2322852894745,
+        "gapActualHours": 2292.1135231253193,
+        "gapUnreservedHours": 2293.1135231253193
+      },
+      {
+        "roots": 2000,
+        "updates": 1200,
+        "runs": 6,
+        "devVersions": 13,
+        "costs": {
+          "teacher": 6667502.781445201,
+          "source": 9741.868706250001,
+          "training": 132669.9696836869,
+          "developmentKnownM1M2Cooperation32": 6961.550961913616,
+          "formalKnownOneAttempt": 37593.106390317844,
+          "knownSubtotal": 6854469.277187369,
+          "knownSubtotalPlus25Percent": 8568086.59648421
+        },
+        "hours25": 2380.0240545789475,
+        "gapActualHours": 2323.9052924147923,
+        "gapUnreservedHours": 2324.9052924147923
+      },
+      {
+        "roots": 2000,
+        "updates": 3600,
+        "runs": 6,
+        "devVersions": 19,
+        "costs": {
+          "teacher": 6667502.781445201,
+          "source": 9741.868706250001,
+          "training": 397711.78578208474,
+          "developmentKnownM1M2Cooperation32": 10174.574482796825,
+          "formalKnownOneAttempt": 37593.106390317844,
+          "knownSubtotal": 7122724.11680665,
+          "knownSubtotalPlus25Percent": 8903405.146008313
+        },
+        "hours25": 2473.1680961134202,
+        "gapActualHours": 2417.049333949265,
+        "gapUnreservedHours": 2418.049333949265
+      }
+    ],
+    "developmentPerVersion32": 535.5039201472013,
+    "budgetAtPlan": {
+      "remainingSeconds": 202027.543790959,
+      "unreservedSeconds": 198427.543790959,
+      "remainingHours": 56.11876216415528,
+      "unreservedHours": 55.11876216415528
+    },
+    "optimisticReuse4AndAllTeacherSpeedup": {
+      "speedup": 1.4010736399481063,
+      "teacherSeconds": 228424.9195647014,
+      "knownPlus25Seconds": 393196.0759310466,
+      "knownPlus25Hours": 109.2211322030685,
+      "gapActualHours": 53.10237003891323
+    },
+    "optional128CombinedFavorableSensitivity": {
+      "costTerms": {
+        "teacher": 114212.4597823507,
+        "source": 467.6096979,
+        "training": 44322.69765088763,
+        "formalKnown": 37593.106390317844,
+        "devKnown16": 1874.2637205152043
+      },
+      "knownPlus25Seconds": 248087.67155246425,
+      "knownPlus25Hours": 68.91324209790673,
+      "gapActualHours": 12.79447993375146
+    },
+    "startupOverheadCorrection": {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-setup-overhead-correction-001.json",
+      "sha256": "d1633332d0cb6c73395501fc45f4b9acc7c66630a5922e0ce4d9108a0cca55a5",
+      "allNineCorrected": [
+        {
+          "roots": 100,
+          "updates": 400,
+          "knownPlus25Seconds": 524435.5844722606,
+          "knownPlus25Hours": 145.6765512422946
+        },
+        {
+          "roots": 100,
+          "updates": 1200,
+          "knownPlus25Seconds": 638885.9539143635,
+          "knownPlus25Hours": 177.46832053176763
+        },
+        {
+          "roots": 100,
+          "updates": 3600,
+          "knownPlus25Seconds": 974204.5034384648,
+          "knownPlus25Hours": 270.6123620662402
+        },
+        {
+          "roots": 500,
+          "updates": 400,
+          "knownPlus25Seconds": 2193746.747010123,
+          "knownPlus25Hours": 609.3740963917008
+        },
+        {
+          "roots": 500,
+          "updates": 1200,
+          "knownPlus25Seconds": 2308197.1164522264,
+          "knownPlus25Hours": 641.165865681174
+        },
+        {
+          "roots": 500,
+          "updates": 3600,
+          "knownPlus25Seconds": 2643515.665976328,
+          "knownPlus25Hours": 734.3099072156466
+        },
+        {
+          "roots": 2000,
+          "updates": 400,
+          "knownPlus25Seconds": 8453663.606527109,
+          "knownPlus25Hours": 2348.2398907019747
+        },
+        {
+          "roots": 2000,
+          "updates": 1200,
+          "knownPlus25Seconds": 8568113.97596921,
+          "knownPlus25Hours": 2380.031659991447
+        },
+        {
+          "roots": 2000,
+          "updates": 3600,
+          "knownPlus25Seconds": 8903432.525493313,
+          "knownPlus25Hours": 2473.17570152592
+        }
+      ],
+      "minimumCorrectedHours25": 145.6765512422946,
+      "minimumCorrectedGapActualHours": 89.55778907813934,
+      "minimumCorrectedGapUnreservedHours": 90.55778907813934,
+      "optional128CorrectedHours25": 68.92084751040673,
+      "optional128CorrectedGapActualHours": 12.802085346251454
+    },
+    "reviewerActivity": {
+      "NNForward": 0,
+      "NNBackward": 0,
+      "TorchImports": 0,
+      "optimizerSteps": 0,
+      "matches": 0,
+      "rollouts": 0,
+      "MonteCarlo": 0,
+      "ledgerWrites": 0
+    }
+  },
+  "independentOriginalLedger": {
+    "status": "passed",
+    "ledgerPath": "/Users/ccrt/game/guandan/lab/review6/budget-ledger.jsonl",
+    "ledgerSHA256": "a850258e581e4dcc7ac52d4b47164b1ea02a79db8d6857d7fb2cb47f407a3e48",
+    "ledgerEvents": 132,
+    "genesis": {
+      "kind": "initialize",
+      "cycleId": "review6-humanlike-20261028",
+      "limitSeconds": 259200,
+      "actualSeconds": 445.891214,
+      "at": "2026-10-28T09:53:34.977Z",
+      "previousHash": null,
+      "entryHash": "66d45addaf0531a072e76b807e19a7e8bb7a681aa7dd3e809cf25fef8b72b337"
+    },
+    "atPlan": {
+      "cycleId": "review6-humanlike-20261028",
+      "limitSeconds": 259200,
+      "spentSeconds": 57172.456209040996,
+      "reservedSeconds": 3600,
+      "availableSeconds": 198427.543790959,
+      "reservations": {
+        "C3-cost-admission-engineering-window-037": 3600
+      },
+      "settledTaskIds": [
+        "C0-tools-and-baseline-suite-001",
+        "C0-archive-recovery-001",
+        "C0-C1-engineering-window-001",
+        "C1-review-C2-engineering-window-002",
+        "C1-close-C2-data-window-003",
+        "C2-rule-audit-H-engineering-window-004",
+        "C2-H-contract-review-engineering-window-005",
+        "review6-humanlike-20261028:H-once-001:launch-1",
+        "C2-baseline-C3-teacher-engineering-window-006",
+        "C2-old-complete-policy-development-baseline-001",
+        "C2-baseline-declaration-debug-engineering-window-007",
+        "C2-baseline-approval-C3-foundation-engineering-window-008",
+        "C2-old-complete-policy-development-baseline-002",
+        "C2-evidence-close-C3-world-teacher-engineering-window-009",
+        "C3-world-DSL-teacher-engineering-window-010",
+        "C3-pilot-source-generation-001",
+        "C3-pilot-source-audit-teacher-engineering-window-011",
+        "C3-pilot-execution-closure-engineering-window-012",
+        "C3-pilot-execution-closure-engineering-window-013",
+        "C3-teacher-pilot-root-01-execution-001",
+        "C3-actual-pilot-readback-engineering-window-014",
+        "C3-teacher-pilot-root-02-execution-001",
+        "C3-actual-pilot-readback-engineering-window-015",
+        "C3-teacher-pilot-root-03-execution-001",
+        "C3-actual-pilot-readback-engineering-window-016",
+        "C3-teacher-pilot-root-04-execution-001",
+        "C3-actual-pilot-readback-engineering-window-017",
+        "C3-teacher-pilot-root-05-execution-001",
+        "C3-actual-pilot-readback-engineering-window-018",
+        "C3-teacher-pilot-root-06-execution-001",
+        "C3-actual-pilot-readback-engineering-window-019",
+        "C3-teacher-pilot-root-07-execution-001",
+        "C3-actual-pilot-readback-engineering-window-020",
+        "C3-teacher-pilot-root-09-execution-001",
+        "C3-actual-pilot-readback-engineering-window-021",
+        "C3-teacher-pilot-root-10-execution-001",
+        "C3-actual-pilot-readback-engineering-window-022",
+        "C3-teacher-pilot-root-11-execution-001",
+        "C3-actual-pilot-readback-engineering-window-023",
+        "C3-teacher-pilot-root-12-execution-001",
+        "C3-actual-pilot-readback-engineering-window-024",
+        "C3-teacher-pilot-root-14-execution-001",
+        "C3-actual-pilot-readback-engineering-window-025",
+        "C3-teacher-pilot-root-15-execution-001",
+        "C3-actual-pilot-readback-engineering-window-026",
+        "C3-teacher-pilot-root-16-execution-001",
+        "C3-actual-pilot-readback-engineering-window-027",
+        "C3-teacher-pilot-root-17-execution-001",
+        "C3-actual-pilot-readback-engineering-window-028",
+        "C3-teacher-pilot-root-18-execution-001",
+        "C3-actual-pilot-readback-engineering-window-029",
+        "C3-teacher-pilot-root-19-execution-001",
+        "C3-actual-pilot-readback-engineering-window-030",
+        "C3-teacher-pilot-root-20-execution-001",
+        "C3-actual-pilot-readback-engineering-window-031",
+        "C3-pilot-speed-execution-001",
+        "C3-mature-variance-cost-engineering-window-032",
+        "C3-exact-inference-proof-execution-001",
+        "C3-mature-variance-cost-engineering-window-033",
+        "C3-variance-pilot-execution-001",
+        "C3-variance-bootstrap-repair-engineering-window-034",
+        "C3-variance-pilot-execution-002",
+        "C3-mature-cost-engineering-window-035",
+        "C3-mature-cost-engineering-window-036",
+        "C3-mature-pilot-execution-001"
+      ],
+      "headHash": "f801f6f673a6e4c16990bb182f35e07d32de8b7245a4e19e9b6468a1770a5238"
+    },
+    "atPlanHours": {
+      "spent": 15.881237835844722,
+      "actualRemaining": 56.11876216415528,
+      "reserved": 1,
+      "unreserved": 55.11876216415528
+    },
+    "currentHead": "f801f6f673a6e4c16990bb182f35e07d32de8b7245a4e19e9b6468a1770a5238",
+    "currentSpent": 57172.456209040996,
+    "currentReservations": {
+      "C3-cost-admission-engineering-window-037": 3600
+    },
+    "allSettledChargesByTask": {
+      "C0-tools-and-baseline-suite-001": 19.431754416,
+      "C0-archive-recovery-001": 1.112055292,
+      "C0-C1-engineering-window-001": 3533.285,
+      "C1-review-C2-engineering-window-002": 2589.653,
+      "C1-close-C2-data-window-003": 3369.405,
+      "C2-rule-audit-H-engineering-window-004": 3286.537,
+      "C2-H-contract-review-engineering-window-005": 1653.262,
+      "review6-humanlike-20261028:H-once-001:launch-1": 4.184,
+      "C2-baseline-C3-teacher-engineering-window-006": 1383.894,
+      "C2-old-complete-policy-development-baseline-001": 210.456,
+      "C2-baseline-declaration-debug-engineering-window-007": 2942.222,
+      "C2-baseline-approval-C3-foundation-engineering-window-008": 803.488,
+      "C2-old-complete-policy-development-baseline-002": 80.31818116699999,
+      "C2-evidence-close-C3-world-teacher-engineering-window-009": 3382.861,
+      "C3-world-DSL-teacher-engineering-window-010": 3259.151,
+      "C3-pilot-source-generation-001": 43.297194250000004,
+      "C3-pilot-source-audit-teacher-engineering-window-011": 3242.244,
+      "C3-pilot-execution-closure-engineering-window-012": 3234.39,
+      "C3-pilot-execution-closure-engineering-window-013": 1403.48,
+      "C3-teacher-pilot-root-01-execution-001": 639.7191455,
+      "C3-actual-pilot-readback-engineering-window-014": 270.877,
+      "C3-teacher-pilot-root-02-execution-001": 550.1622312500001,
+      "C3-actual-pilot-readback-engineering-window-015": 98.035,
+      "C3-teacher-pilot-root-03-execution-001": 756.043451918,
+      "C3-actual-pilot-readback-engineering-window-016": 27.601,
+      "C3-teacher-pilot-root-04-execution-001": 321.694375166,
+      "C3-actual-pilot-readback-engineering-window-017": 84.29,
+      "C3-teacher-pilot-root-05-execution-001": 623.9869170000001,
+      "C3-actual-pilot-readback-engineering-window-018": 13.406,
+      "C3-teacher-pilot-root-06-execution-001": 631.10485725,
+      "C3-actual-pilot-readback-engineering-window-019": 12.279,
+      "C3-teacher-pilot-root-07-execution-001": 734.315152582,
+      "C3-actual-pilot-readback-engineering-window-020": 76.49,
+      "C3-teacher-pilot-root-09-execution-001": 640.4016739159999,
+      "C3-actual-pilot-readback-engineering-window-021": 40.014,
+      "C3-teacher-pilot-root-10-execution-001": 625.790015082,
+      "C3-actual-pilot-readback-engineering-window-022": 48.626,
+      "C3-teacher-pilot-root-11-execution-001": 723.8002855,
+      "C3-actual-pilot-readback-engineering-window-023": 4.485,
+      "C3-teacher-pilot-root-12-execution-001": 596.724248334,
+      "C3-actual-pilot-readback-engineering-window-024": 29.238,
+      "C3-teacher-pilot-root-14-execution-001": 572.379515584,
+      "C3-actual-pilot-readback-engineering-window-025": 27.087,
+      "C3-teacher-pilot-root-15-execution-001": 695.568019666,
+      "C3-actual-pilot-readback-engineering-window-026": 58.72,
+      "C3-teacher-pilot-root-16-execution-001": 485.51073441600005,
+      "C3-actual-pilot-readback-engineering-window-027": 64.618,
+      "C3-teacher-pilot-root-17-execution-001": 693.257880166,
+      "C3-actual-pilot-readback-engineering-window-028": 10.179,
+      "C3-teacher-pilot-root-18-execution-001": 584.325535834,
+      "C3-actual-pilot-readback-engineering-window-029": 24.185,
+      "C3-teacher-pilot-root-19-execution-001": 913.9493923340001,
+      "C3-actual-pilot-readback-engineering-window-030": 17.841,
+      "C3-teacher-pilot-root-20-execution-001": 278.38775625,
+      "C3-actual-pilot-readback-engineering-window-031": 163.825,
+      "C3-pilot-speed-execution-001": 36.918305668,
+      "C3-mature-variance-cost-engineering-window-032": 2559.919,
+      "C3-exact-inference-proof-execution-001": 64.36816350000001,
+      "C3-mature-variance-cost-engineering-window-033": 2024.665,
+      "C3-variance-pilot-execution-001": 0.363005,
+      "C3-variance-bootstrap-repair-engineering-window-034": 827.663,
+      "C3-variance-pilot-execution-002": 702.852148,
+      "C3-mature-cost-engineering-window-035": 3493.49,
+      "C3-mature-cost-engineering-window-036": 56.282,
+      "C3-mature-pilot-execution-001": 378.456
+    },
+    "ledgerMutations": 0
+  },
+  "reviewedArtifacts": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-plan-001.json",
+      "sha256": "46773db76e18931019da8bb74dcd3d7b64ec32eb069e86359ee5cee86ce5c4dd",
+      "bytes": 21998
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-optional-world-sensitivity-001.json",
+      "sha256": "b1a3432fee8af787879f712ddad0ed258d94ddb79ff7e872de329311ad419098",
+      "bytes": 1887
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/budget-setup-overhead-correction-001.json",
+      "sha256": "d1633332d0cb6c73395501fc45f4b9acc7c66630a5922e0ce4d9108a0cca55a5",
+      "bytes": 2713
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/cost-calculation-source-001.mjs",
+      "sha256": "4f203f8ca9b609c2738ac1c99911116b8dbbf2f4194cdd776bba917de273f81e",
+      "bytes": 10767
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/input/base/DESIGN.txt",
+      "sha256": "6e90b862056a2a0c8b53f225b99bfd47566362a7056b7e4ef7ebdec8612e75d7",
+      "bytes": 38187
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/input/base/EXECUTION_PLAN.txt",
+      "sha256": "17bff8a62c12f3c2e86e38711910b7cccf1a1d627bc3b0e3a32cfe6a498fbd4f",
+      "bytes": 50912
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/input/reading/REVIEW6_1_COMPLETE.txt",
+      "sha256": "8bc03e81abd1d76d5cfaeb66a3a7e432b5505c000ca1302d189aedde4baac351",
+      "bytes": 52682
+    }
+  ],
+  "probes": [
+    {
+      "name": "Independent original ledger hashchain and budget state",
+      "path": "/private/tmp/C3-budget-admission-engineering-001/ledger-audit.mjs",
+      "result": "/private/tmp/C3-budget-admission-engineering-001/ledger-audit-output.json",
+      "status": "passed",
+      "writes": "personal/tmp output only"
+    },
+    {
+      "name": "Independent Python stdlib arithmetic/raw timing join",
+      "path": "/private/tmp/C3-budget-admission-engineering-001/arithmetic-audit.py",
+      "result": "/private/tmp/C3-budget-admission-engineering-001/arithmetic-audit-output.json",
+      "status": "passed",
+      "writes": "personal/tmp output only",
+      "initialProbeCorrection": "Initial local script assumed stats.lower instead of the actual columns.d.quantiles[0] schema. Preserved initial KeyError stderr, corrected the probe only, then reran successfully. It did not invoke or modify any application code or science."
+    }
+  ],
+  "probeArtifacts": [
+    {
+      "path": "/private/tmp/C3-budget-admission-engineering-001/ledger-audit.mjs",
+      "sha256": "dc5ca83d4f20afc4bab309bb013dd05ca9a3ab8afe3c2728ac677d5ce707a25b",
+      "bytes": 2921
+    },
+    {
+      "path": "/private/tmp/C3-budget-admission-engineering-001/ledger-audit-output.json",
+      "sha256": "8b3e1bb256f58caea2980acb21e9fec9c847b5fc1ff99f91c83222c11eb6b7f4",
+      "bytes": 8653
+    },
+    {
+      "path": "/private/tmp/C3-budget-admission-engineering-001/ledger-audit.stdout",
+      "sha256": "b0209d0a57c0d28286656c25f69a9a8d98a02c406e74cf7355ff15d0027a2036",
+      "bytes": 237
+    },
+    {
+      "path": "/private/tmp/C3-budget-admission-engineering-001/ledger-audit.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/private/tmp/C3-budget-admission-engineering-001/arithmetic-audit.py",
+      "sha256": "d8f7c268aa29b14ad4df275359049f65dd4b49e2815b4bf07187dfff4bd42459",
+      "bytes": 12986
+    },
+    {
+      "path": "/private/tmp/C3-budget-admission-engineering-001/arithmetic-audit-output.json",
+      "sha256": "8441f99523526ced3dfe2c531d70195d0248bc04ba77524d6b63d704c862e991",
+      "bytes": 65440
+    },
+    {
+      "path": "/private/tmp/C3-budget-admission-engineering-001/arithmetic-audit.stdout",
+      "sha256": "467f0df7b153b15e2631cfbd6407d1ee43842b789dc418e81a4a17498f985a42",
+      "bytes": 649
+    },
+    {
+      "path": "/private/tmp/C3-budget-admission-engineering-001/arithmetic-audit.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/private/tmp/C3-budget-admission-engineering-001/arithmetic-audit-initial-schema-error.stderr",
+      "sha256": "fe5957e7ebc81377a621fbf8139d5e1d63429b8a6ab363869e029a57dd6007cc",
+      "bytes": 956
+    }
+  ],
+  "reusedActualMatureAudit": {
+    "path": "/private/tmp/C3-actual-mature-engineering-review-001.json",
+    "sha256": "d83535fda816d0d5560352e5abc7a2ab8991d5b9af952efc9e0eb42e76b0779d",
+    "bytes": 36015
+  },
+  "limits": [
+    "The teacher yield is descriptive/optional-stopped and uses only18attempts. Projected P90/yield costs are neither confidence-bounded future costs nor an impossibility theorem. The negative gate only rejects the current measured recipe on the stated original budget.",
+    "The formal sizing case is an arithmetic cost proxy; joint-power simulation and production generator/verifier are not implemented. No positive statistics, teacher accuracy, completeC3 or main acceptance is implied.",
+    "The 128world, allteacher1.401x, reuse4 and dev16 scenario is hypothetical. No new teacher-world count, label purpose, policy, seed or gate was actually changed. Unknown costs are set zero only in that favorable sensitivity.",
+    "No real model execution, optimizer step, match, rollout, MonteCarlo, productionTorch import, training launch, externalAPI call or ledger/lease write occurred during this review. The package calculator was read, not executed, because its top level copies/writes repository artifacts; arithmetic was independently reimplemented under/tmp.",
+    "Only personal/tmp reports/scripts were written. The original plan, additive corrections, raw results, source copies, scientific attempts and real accounting remain unchanged.",
+    "Budget state is pinned to the verified plan head/time. Later engineering charges can reduce the actual remaining amount; this report does not silently subtract reservations twice or treat an unsettled reserve as already spent."
+  ],
+  "reviewerActivity": {
+    "rawNNForwardCalls": 0,
+    "rawNNBackwardCalls": 0,
+    "optimizerStepsExecuted": 0,
+    "TorchImports": 0,
+    "policyMatchesPlayed": 0,
+    "rollouts": 0,
+    "MonteCarlo": 0,
+    "teacherLabelsGenerated": 0,
+    "newScienceExecutions": 0,
+    "externalModelCalls": 0,
+    "realLedgerWrites": 0,
+    "realLeaseWrites": 0,
+    "independentRawReferenceHashes": 176,
+    "budgetEventsVerified": 132,
+    "sourceFileHashesVerified": 48,
+    "teacherRootReportStatsSettlementTriples": 18,
+    "existingStepReceiptsRead": 40,
+    "existingVarianceBlocksRead": 64
+  }
+}

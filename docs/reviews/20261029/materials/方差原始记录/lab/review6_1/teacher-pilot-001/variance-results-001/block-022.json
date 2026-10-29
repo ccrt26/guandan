@@ -1,0 +1,2923 @@
+{
+  "ordinal": 22,
+  "sources": {
+    "cooperation": {
+      "seed": 1555111097,
+      "initialDealSeed": 512963174,
+      "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e",
+      "dealNamespace": "review6-statistics-variance64-cooperation-deals-v1"
+    },
+    "M1": {
+      "seed": 3446375536,
+      "initialDealSeed": 2535792420,
+      "familyId": "first-deal-family:8a17492429b8068a7589ddb4fed18da46060ab90813361ba6980f18eded11891",
+      "dealNamespace": "review6-statistics-variance64-M1-deals-v1"
+    },
+    "M2": {
+      "seed": 3496708393,
+      "initialDealSeed": 324253687,
+      "familyId": "first-deal-family:f9472d198a83db5d83478c42251cb9e4ae6a04cafd71af0484d53cc2178b176a",
+      "dealNamespace": "review6-statistics-variance64-M2-deals-v1"
+    }
+  },
+  "matches": [
+    {
+      "id": "cooperation-g0-U0-s0",
+      "metric": "cooperation",
+      "group": 0,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 0,
+      "actor": 0,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p1-ck400-encv4-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2"
+      ],
+      "complete": true,
+      "winner": 1,
+      "activeSeconds": 0.6486424159999952,
+      "result": {
+        "complete": true,
+        "winner": 1,
+        "games": 9,
+        "decisions": 870,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "winnerTeam": 0,
+          "doubleUp": false,
+          "levelsAfter": [
+            4,
+            2
+          ],
+          "upgrade": 2,
+          "passedA": false
+        },
+        "rootTeamTarget": 1,
+        "rootG": 2,
+        "finalW": -1,
+        "policyIds": [
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p1-ck400-encv4-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2"
+        ],
+        "traceSHA256": "b6ec96196ef955a211d69aff9bc8da6b375a5648f1fd96a7919a5183ee57377e",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "85bd7656ca0c14821542b40ad51b9a6cedd8e13e8ac6e00576f63ac96eecafe2",
+            "levels": [
+              4,
+              2
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "2e5e0d15898b88d88e5e37e97f522ef9f4031acc77d52d5e5ae6252f0c379f00",
+            "levels": [
+              6,
+              2
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "08b51487a9db10fdde2936ee9765319ffb071b66c33a6904b1ff44762cc6e55c",
+            "levels": [
+              9,
+              2
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "07085138cf8c98a5dc890ddd7c4ceafbf6729eb3576fa3ad192d3b1167226f02",
+            "levels": [
+              9,
+              3
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "1228ba98e3308b17bb86964375984a3fc85d7983a4bd548cb979354dee4c057c",
+            "levels": [
+              9,
+              6
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "f2bb0e4eea205afdbff5037cdc06b7c8464bb62c314a15dbcb34b0ad2a8c2a91",
+            "levels": [
+              9,
+              9
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2185970535,
+            "fingerprint": "254dda4cdb1d9c258ba2e4986959b06afd23af7bf6b673752ba0aa0b58613180",
+            "levels": [
+              9,
+              12
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 3834744350,
+            "fingerprint": "6787e83e886a0b6bec27f98e4fe27ed56b7f023a8f85ee5337c2eae0956c7d0b",
+            "levels": [
+              9,
+              14
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:b09656b71a7ef300fc97725fefdade3e9cd3aa04d6fd8756d15420b50234029e"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:214b92a156fa50197376e0ac0cf72356620d640b558ac4cd0538ab74ada7b8cc"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g0-U0-s1",
+      "metric": "cooperation",
+      "group": 0,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 1,
+      "actor": 1,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p1-ck400-encv4-candv3"
+      ],
+      "complete": true,
+      "winner": 1,
+      "activeSeconds": 0.4134483749999999,
+      "result": {
+        "complete": true,
+        "winner": 1,
+        "games": 6,
+        "decisions": 577,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            1,
+            0,
+            3,
+            2
+          ],
+          "winnerTeam": 1,
+          "doubleUp": false,
+          "levelsAfter": [
+            2,
+            4
+          ],
+          "upgrade": 2,
+          "passedA": false
+        },
+        "rootTeamTarget": 3,
+        "rootG": 2,
+        "finalW": 1,
+        "policyIds": [
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p1-ck400-encv4-candv3"
+        ],
+        "traceSHA256": "4a05117550c9e3ff1d7ce6a0560dac71e436598573db9cb130fafd55129f0303",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "72af26ece818187834010cb8c29f5925809ba619b3a1ffc0e28b9749a07f8074",
+            "levels": [
+              2,
+              4
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "55dbc255d94e7eec0e0407d9785a0c4409192558baf0055c85f1bbf4ba2aaf0d",
+            "levels": [
+              2,
+              6
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "dd03c512feebbaf2608cb3a09af0e45298341ecf247d6f0e2647e3a6ead329f9",
+            "levels": [
+              2,
+              9
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "fd22a93f26d5c9ccc08d73c322bacfa66c9ab443a7401055ae24584c0971d359",
+            "levels": [
+              2,
+              12
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "7491aa4169b92f65522d7c875407adbf02febae33f2b1a18dc8df07c094f5750",
+            "levels": [
+              2,
+              14
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g0-probe-s0",
+      "metric": "cooperation",
+      "group": 0,
+      "variant": "probe",
+      "probePolicyId": "review6-train-heuristic0-counter-v1",
+      "side": 0,
+      "actor": 0,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "review6-train-heuristic0-counter-v1",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p1-ck400-encv4-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2"
+      ],
+      "complete": true,
+      "winner": 1,
+      "activeSeconds": 0.6575770419999971,
+      "result": {
+        "complete": true,
+        "winner": 1,
+        "games": 12,
+        "decisions": 1258,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            1,
+            2,
+            3,
+            0
+          ],
+          "winnerTeam": 1,
+          "doubleUp": false,
+          "levelsAfter": [
+            2,
+            4
+          ],
+          "upgrade": 2,
+          "passedA": false
+        },
+        "rootTeamTarget": -3,
+        "rootG": -2,
+        "finalW": -1,
+        "policyIds": [
+          "review6-train-heuristic0-counter-v1",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p1-ck400-encv4-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2"
+        ],
+        "traceSHA256": "6abd2ea93182d54847780f37096802b75157c1b279c5993caa0fdf309658ede9",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "72262578a35f65cf4f6ac9f54d5dd96c8a63148c38ecef92a31df1f1e2893ffd",
+            "levels": [
+              2,
+              4
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "bd4c53ba35f3eb7f2bbf0734db78506892817593cee8881ff6222ea2b434bcf7",
+            "levels": [
+              2,
+              7
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "9c556c55ca1df74583c5f8e524871a02a1c70dadec2608fa3c9f4325ad160fed",
+            "levels": [
+              3,
+              7
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "e50eed8f3124ada84a3934f50c9af1c56fe5e16c7fac3c7010f182a3e87eac6f",
+            "levels": [
+              4,
+              7
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "bf26b60ca051fa32e258295af06612a19c303a019d225afff24e7bb0c9d65467",
+            "levels": [
+              4,
+              10
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "f9f4b36152e90eb26e3a6c1f1981f80f3a4a2ffc1e1f866aff0e2c7d10aa48bc",
+            "levels": [
+              7,
+              10
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2185970535,
+            "fingerprint": "cdbd5b29b51b6e7e002a11f2267cde44f5eded993172baef4dd87b6dcd4a14d3",
+            "levels": [
+              8,
+              10
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 3834744350,
+            "fingerprint": "4ea29ceb1292cf2943d5dc4bcbae896abe3e8ddb6646d13169bc86282a500936",
+            "levels": [
+              8,
+              12
+            ]
+          },
+          {
+            "gameNo": 10,
+            "dealSeed": 4071137285,
+            "fingerprint": "7988135120bc1b3c7d0a78a384f1fc8ca4c06f7d17e8ca6acb482757a56336d5",
+            "levels": [
+              8,
+              13
+            ]
+          },
+          {
+            "gameNo": 11,
+            "dealSeed": 588456969,
+            "fingerprint": "71f239d59d9061d01ce725a7374ecaeae00494abdcd25c6285a5b0c19bf2dd3c",
+            "levels": [
+              9,
+              13
+            ]
+          },
+          {
+            "gameNo": 12,
+            "dealSeed": 2364534386,
+            "fingerprint": "1d95ff9c35b0b89529687b6464a798b2349cb69e1365487b10dbbbd222680639",
+            "levels": [
+              9,
+              14
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:b09656b71a7ef300fc97725fefdade3e9cd3aa04d6fd8756d15420b50234029e"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:214b92a156fa50197376e0ac0cf72356620d640b558ac4cd0538ab74ada7b8cc"
+        },
+        {
+          "gameNo": 10,
+          "familyId": "first-deal-family:ab4bf51dcf6afa7a6a6e194940da373e8719da96accd9f932d0bd8d9b41aa617"
+        },
+        {
+          "gameNo": 11,
+          "familyId": "first-deal-family:74ddec29144bb328c40fe232e89bc43e0772f644b9d9b763c1d850556067effa"
+        },
+        {
+          "gameNo": 12,
+          "familyId": "first-deal-family:ceb854814b56b90c1a964bade0bb92dc368a979690cd4bf36281dca531e1b8f2"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g0-probe-s1",
+      "metric": "cooperation",
+      "group": 0,
+      "variant": "probe",
+      "probePolicyId": "review6-train-heuristic0-counter-v1",
+      "side": 1,
+      "actor": 1,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "review6-train-heuristic0-counter-v1",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p1-ck400-encv4-candv3"
+      ],
+      "complete": true,
+      "winner": 0,
+      "activeSeconds": 0.6077267910000009,
+      "result": {
+        "complete": true,
+        "winner": 0,
+        "games": 12,
+        "decisions": 1232,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            3,
+            0,
+            1,
+            2
+          ],
+          "winnerTeam": 1,
+          "doubleUp": false,
+          "levelsAfter": [
+            2,
+            4
+          ],
+          "upgrade": 2,
+          "passedA": false
+        },
+        "rootTeamTarget": 1,
+        "rootG": 2,
+        "finalW": -1,
+        "policyIds": [
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "review6-train-heuristic0-counter-v1",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p1-ck400-encv4-candv3"
+        ],
+        "traceSHA256": "378d98f2e1f7e725a9163583b4afafe8b05f3488d2733697ee481ddf04ad2b3f",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "267416468163d4fe56095095a8067e9c7e08b9e66f0b28a82cee28426b11d824",
+            "levels": [
+              2,
+              4
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "f456326bd27623018ceb6d68a277aea0aa679dbca7982457b57d0f49085c58bb",
+            "levels": [
+              2,
+              5
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "7245d752465fe4a23fabd865ac44423092f95dd56b6b8e90985d5242ad20dda7",
+            "levels": [
+              5,
+              5
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "e855a231c796eecab39910ec06f8c800e6fe0edd74dcd2f963eeb098dc863b0b",
+            "levels": [
+              8,
+              5
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "b5a81b63b811499c6faf0a64329a9fd08742a26e66b7653a7a0d47661f75bb31",
+            "levels": [
+              8,
+              6
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "fd467ab16ad68171e891c3497533f8d0b26b238c6adccfd704d048243a6ccd31",
+            "levels": [
+              8,
+              7
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2185970535,
+            "fingerprint": "4a67bd8add16aac2b961d0df38dd09c040e70f8764b4cd35e39af4eb7820b2af",
+            "levels": [
+              11,
+              7
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 3834744350,
+            "fingerprint": "992353972385334f0a48b7e00865d5f1e6e508bff0525bd0eabe1bab1463c35f",
+            "levels": [
+              11,
+              9
+            ]
+          },
+          {
+            "gameNo": 10,
+            "dealSeed": 4071137285,
+            "fingerprint": "a043ac6b2289bc914255775d86e0b3fa9b9911684a5573fe321d128cde221b3f",
+            "levels": [
+              11,
+              10
+            ]
+          },
+          {
+            "gameNo": 11,
+            "dealSeed": 588456969,
+            "fingerprint": "6761201bd19c13aec77dc86b9517e911f290c1ae3128fbb0a43aec790261f29f",
+            "levels": [
+              14,
+              10
+            ]
+          },
+          {
+            "gameNo": 12,
+            "dealSeed": 2364534386,
+            "fingerprint": "2c95f600fbbcd2de112d4f0ac7e5541b32a3dc21f5f75cb2340fd37bdbfdddc0",
+            "levels": [
+              14,
+              11
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:b09656b71a7ef300fc97725fefdade3e9cd3aa04d6fd8756d15420b50234029e"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:214b92a156fa50197376e0ac0cf72356620d640b558ac4cd0538ab74ada7b8cc"
+        },
+        {
+          "gameNo": 10,
+          "familyId": "first-deal-family:ab4bf51dcf6afa7a6a6e194940da373e8719da96accd9f932d0bd8d9b41aa617"
+        },
+        {
+          "gameNo": 11,
+          "familyId": "first-deal-family:74ddec29144bb328c40fe232e89bc43e0772f644b9d9b763c1d850556067effa"
+        },
+        {
+          "gameNo": 12,
+          "familyId": "first-deal-family:ceb854814b56b90c1a964bade0bb92dc368a979690cd4bf36281dca531e1b8f2"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g1-U0-s0",
+      "metric": "cooperation",
+      "group": 1,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 0,
+      "actor": 0,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p2-ck400-encv4-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2"
+      ],
+      "complete": true,
+      "winner": 0,
+      "activeSeconds": 0.49706070799999724,
+      "result": {
+        "complete": true,
+        "winner": 0,
+        "games": 7,
+        "decisions": 680,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            0,
+            2,
+            3,
+            1
+          ],
+          "winnerTeam": 0,
+          "doubleUp": true,
+          "levelsAfter": [
+            5,
+            2
+          ],
+          "upgrade": 3,
+          "passedA": false
+        },
+        "rootTeamTarget": 4,
+        "rootG": 3,
+        "finalW": 1,
+        "policyIds": [
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p2-ck400-encv4-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2"
+        ],
+        "traceSHA256": "291a86d74b52a0d349ca8d873aaa9444b2527c887dedc6acf407c75ba4cd22f5",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "589b0b8c5a4d3436cc20d0df615a1ecb5e69f7b9276a81bc747dd775416232fb",
+            "levels": [
+              5,
+              2
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "83b413604a329e60cc7896e2a92fedc08ca885c9f2f21ff81f3ec13e2659c515",
+            "levels": [
+              8,
+              2
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "748bb975206c0d8665fd446d904b5fcc54093fdbf360a1397ac864740449eabe",
+            "levels": [
+              9,
+              2
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "cb6ae3d1297fd70709692a7f25c2050388caa55ae3fdec890f5a5b5ca6f7d701",
+            "levels": [
+              12,
+              2
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "06e645750689f77a7092f5fd83ba4b77195b6b295226a035653830dde5920363",
+            "levels": [
+              14,
+              2
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "f2bb0e4eea205afdbff5037cdc06b7c8464bb62c314a15dbcb34b0ad2a8c2a91",
+            "levels": [
+              14,
+              5
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g1-U0-s1",
+      "metric": "cooperation",
+      "group": 1,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 1,
+      "actor": 1,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p2-ck400-encv4-candv3"
+      ],
+      "complete": true,
+      "winner": 1,
+      "activeSeconds": 0.6822127080000064,
+      "result": {
+        "complete": true,
+        "winner": 1,
+        "games": 9,
+        "decisions": 885,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            1,
+            2,
+            0,
+            3
+          ],
+          "winnerTeam": 1,
+          "doubleUp": false,
+          "levelsAfter": [
+            2,
+            3
+          ],
+          "upgrade": 1,
+          "passedA": false
+        },
+        "rootTeamTarget": 2,
+        "rootG": 1,
+        "finalW": 1,
+        "policyIds": [
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p2-ck400-encv4-candv3"
+        ],
+        "traceSHA256": "44ceeb387991924b29db56621c1a6bdcbfe03457e7406ccffc63f0aad2e4082e",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "630ca4d98a66daa148a863a87672e917f351c52ace009f567737114cd0eed6fa",
+            "levels": [
+              2,
+              3
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "9e30e4bb1d8c63110db5925b25936f98d11864c64f0c0f3e686f8d79622499ef",
+            "levels": [
+              2,
+              4
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "dd03c512feebbaf2608cb3a09af0e45298341ecf247d6f0e2647e3a6ead329f9",
+            "levels": [
+              2,
+              7
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "74825982878d23ab1c91042c53fcc65760dfa73ae7ddb16427c09b20ac5bbe8e",
+            "levels": [
+              2,
+              10
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "0130f2c2db3f1141fc48ae9c97e5edb7169a1fa635402e3b8984e04ee199546a",
+            "levels": [
+              2,
+              13
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "0a9b7f0a380f238724547d896ebba527cb5edda91e8c0e22ed0eab4d70ad0fde",
+            "levels": [
+              3,
+              13
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2185970535,
+            "fingerprint": "254dda4cdb1d9c258ba2e4986959b06afd23af7bf6b673752ba0aa0b58613180",
+            "levels": [
+              3,
+              14
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 3834744350,
+            "fingerprint": "20394e622ebb025a96d00c644d3ce8c5405c75ea83bd629f071432c115af864f",
+            "levels": [
+              4,
+              14
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:b09656b71a7ef300fc97725fefdade3e9cd3aa04d6fd8756d15420b50234029e"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:214b92a156fa50197376e0ac0cf72356620d640b558ac4cd0538ab74ada7b8cc"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g1-probe-s0",
+      "metric": "cooperation",
+      "group": 1,
+      "variant": "probe",
+      "probePolicyId": "review6-train-heuristic0-counter-v1",
+      "side": 0,
+      "actor": 0,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "review6-train-heuristic0-counter-v1",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p2-ck400-encv4-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2"
+      ],
+      "complete": true,
+      "winner": 1,
+      "activeSeconds": 0.4872732920000053,
+      "result": {
+        "complete": true,
+        "winner": 1,
+        "games": 9,
+        "decisions": 880,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            3,
+            0,
+            1,
+            2
+          ],
+          "winnerTeam": 1,
+          "doubleUp": false,
+          "levelsAfter": [
+            2,
+            4
+          ],
+          "upgrade": 2,
+          "passedA": false
+        },
+        "rootTeamTarget": -3,
+        "rootG": -2,
+        "finalW": -1,
+        "policyIds": [
+          "review6-train-heuristic0-counter-v1",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p2-ck400-encv4-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2"
+        ],
+        "traceSHA256": "dea3b9613d94d087146ee8788cef4b8308c3dc02b826db4833bbf8081d0f1cbc",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "267416468163d4fe56095095a8067e9c7e08b9e66f0b28a82cee28426b11d824",
+            "levels": [
+              2,
+              4
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "1b6e1b9cc67d3967a74566a0cda19984bb5d5d51be0cd37b6c428828690eb8fe",
+            "levels": [
+              2,
+              6
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "9c556c55ca1df74583c5f8e524871a02a1c70dadec2608fa3c9f4325ad160fed",
+            "levels": [
+              3,
+              6
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "e50eed8f3124ada84a3934f50c9af1c56fe5e16c7fac3c7010f182a3e87eac6f",
+            "levels": [
+              4,
+              6
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "7491aa4169b92f65522d7c875407adbf02febae33f2b1a18dc8df07c094f5750",
+            "levels": [
+              4,
+              9
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "e79e591a1d964283a05adc571478663f929e4180dfb0d21b98a1a9ba59b126e6",
+            "levels": [
+              4,
+              11
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2185970535,
+            "fingerprint": "0be7e1b14ea1c66202d5872aa6d8fcc76e081c3c43d67e62d04a5d09cb4a4385",
+            "levels": [
+              4,
+              12
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 3834744350,
+            "fingerprint": "6787e83e886a0b6bec27f98e4fe27ed56b7f023a8f85ee5337c2eae0956c7d0b",
+            "levels": [
+              4,
+              14
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:b09656b71a7ef300fc97725fefdade3e9cd3aa04d6fd8756d15420b50234029e"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:214b92a156fa50197376e0ac0cf72356620d640b558ac4cd0538ab74ada7b8cc"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g1-probe-s1",
+      "metric": "cooperation",
+      "group": 1,
+      "variant": "probe",
+      "probePolicyId": "review6-train-heuristic0-counter-v1",
+      "side": 1,
+      "actor": 1,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "review6-train-heuristic0-counter-v1",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p2-ck400-encv4-candv3"
+      ],
+      "complete": true,
+      "winner": 0,
+      "activeSeconds": 0.3861621250000026,
+      "result": {
+        "complete": true,
+        "winner": 0,
+        "games": 8,
+        "decisions": 800,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            2,
+            3,
+            1,
+            0
+          ],
+          "winnerTeam": 0,
+          "doubleUp": false,
+          "levelsAfter": [
+            3,
+            2
+          ],
+          "upgrade": 1,
+          "passedA": false
+        },
+        "rootTeamTarget": -2,
+        "rootG": -1,
+        "finalW": -1,
+        "policyIds": [
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "review6-train-heuristic0-counter-v1",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p2-ck400-encv4-candv3"
+        ],
+        "traceSHA256": "367f943e6dd6b46ffa47b5120291fcc08dba5e48241908eed30067a1a09bd464",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "8b12eee5b477347ac452ebf37b7818e3cad0f5d3b721a34f8e63d5ead37a372b",
+            "levels": [
+              3,
+              2
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "f456326bd27623018ceb6d68a277aea0aa679dbca7982457b57d0f49085c58bb",
+            "levels": [
+              3,
+              3
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "0efb0eec0cc94112d9f16cbee8e803652088508e5a37c90f1869236444341547",
+            "levels": [
+              6,
+              3
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "70db98ab98640d4e89f67ffc96d658130ba406eec2e2a0878f0ff12fa485f7e0",
+            "levels": [
+              9,
+              3
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "c214d0c3a8c5c5eb1555452bf9ef7294d066ff853914564c0274aac769d940dd",
+            "levels": [
+              11,
+              3
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "951588052e27110e5de1d98caf60e9075c278025872d80aa1e165ed0a4eec2d2",
+            "levels": [
+              13,
+              3
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2185970535,
+            "fingerprint": "5e1dc0b703b6f81428f106446b6a5abd24755a109fff13d34c091c366009919c",
+            "levels": [
+              14,
+              3
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:b09656b71a7ef300fc97725fefdade3e9cd3aa04d6fd8756d15420b50234029e"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g2-U0-s0",
+      "metric": "cooperation",
+      "group": 2,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 0,
+      "actor": 0,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p3-ck400-encv4-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2"
+      ],
+      "complete": true,
+      "winner": 0,
+      "activeSeconds": 0.5059319160000013,
+      "result": {
+        "complete": true,
+        "winner": 0,
+        "games": 7,
+        "decisions": 660,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "winnerTeam": 0,
+          "doubleUp": false,
+          "levelsAfter": [
+            4,
+            2
+          ],
+          "upgrade": 2,
+          "passedA": false
+        },
+        "rootTeamTarget": 3,
+        "rootG": 2,
+        "finalW": 1,
+        "policyIds": [
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p3-ck400-encv4-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2"
+        ],
+        "traceSHA256": "4c58365a9722bfa26065b09d32c897c9814fb79576c81e1fde5ce67938c31d67",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "85bd7656ca0c14821542b40ad51b9a6cedd8e13e8ac6e00576f63ac96eecafe2",
+            "levels": [
+              4,
+              2
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "f456326bd27623018ceb6d68a277aea0aa679dbca7982457b57d0f49085c58bb",
+            "levels": [
+              4,
+              3
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "08b51487a9db10fdde2936ee9765319ffb071b66c33a6904b1ff44762cc6e55c",
+            "levels": [
+              7,
+              3
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "f79d38168a890c0936dfa360c0b5c51c85c289014abfdf2512e3fcd1da9d874b",
+            "levels": [
+              10,
+              3
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "c214d0c3a8c5c5eb1555452bf9ef7294d066ff853914564c0274aac769d940dd",
+            "levels": [
+              12,
+              3
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "951588052e27110e5de1d98caf60e9075c278025872d80aa1e165ed0a4eec2d2",
+            "levels": [
+              14,
+              3
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g2-U0-s1",
+      "metric": "cooperation",
+      "group": 2,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 1,
+      "actor": 1,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p3-ck400-encv4-candv3"
+      ],
+      "complete": true,
+      "winner": 0,
+      "activeSeconds": 0.7795391660000023,
+      "result": {
+        "complete": true,
+        "winner": 0,
+        "games": 11,
+        "decisions": 1063,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            1,
+            3,
+            0,
+            2
+          ],
+          "winnerTeam": 1,
+          "doubleUp": true,
+          "levelsAfter": [
+            2,
+            5
+          ],
+          "upgrade": 3,
+          "passedA": false
+        },
+        "rootTeamTarget": 2,
+        "rootG": 3,
+        "finalW": -1,
+        "policyIds": [
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p3-ck400-encv4-candv3"
+        ],
+        "traceSHA256": "20ed0586a0ae4af134cc8c6c996a681cd1c266df46f8b643d2b91cd9ae18cd85",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "1fa4e6174bb98f0e3f3eea7e0cd5841fd1d60fdb67c3d6f8bfebe30fc64a6c9a",
+            "levels": [
+              2,
+              5
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "884eec5503dc614bea8a5809585e788560b4a745fe4ffeae92d186ad72d842b7",
+            "levels": [
+              5,
+              5
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "11c7fc9ca6b32808bf9e2891a9cbde315be329cc095a7f6de9c5606c459b7da6",
+            "levels": [
+              8,
+              5
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "476a48ea0204d57789aea286b814a26279fab47157ed19019d3a0e5877e7385d",
+            "levels": [
+              8,
+              6
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "7491aa4169b92f65522d7c875407adbf02febae33f2b1a18dc8df07c094f5750",
+            "levels": [
+              8,
+              9
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "f2bb0e4eea205afdbff5037cdc06b7c8464bb62c314a15dbcb34b0ad2a8c2a91",
+            "levels": [
+              8,
+              12
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2185970535,
+            "fingerprint": "9a558c60ab2a48050fc962b5a7a754d4eaa4c0575a6f86b330fe64fccf1bd08c",
+            "levels": [
+              8,
+              14
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 3834744350,
+            "fingerprint": "0a4824b6bf2f0042b397a0e6a156db048cf9b7c34460a66b719fdb143178100c",
+            "levels": [
+              10,
+              14
+            ]
+          },
+          {
+            "gameNo": 10,
+            "dealSeed": 4071137285,
+            "fingerprint": "44fd47022b05e02a82131b92473df70698eb91195d494e8eb6a86688ccbbd672",
+            "levels": [
+              11,
+              14
+            ]
+          },
+          {
+            "gameNo": 11,
+            "dealSeed": 588456969,
+            "fingerprint": "1eeec649143c9f71e55359e19cd84bcc84ce772505f435ab02f84f21e83ac2cf",
+            "levels": [
+              14,
+              14
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:b09656b71a7ef300fc97725fefdade3e9cd3aa04d6fd8756d15420b50234029e"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:214b92a156fa50197376e0ac0cf72356620d640b558ac4cd0538ab74ada7b8cc"
+        },
+        {
+          "gameNo": 10,
+          "familyId": "first-deal-family:ab4bf51dcf6afa7a6a6e194940da373e8719da96accd9f932d0bd8d9b41aa617"
+        },
+        {
+          "gameNo": 11,
+          "familyId": "first-deal-family:74ddec29144bb328c40fe232e89bc43e0772f644b9d9b763c1d850556067effa"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g2-probe-s0",
+      "metric": "cooperation",
+      "group": 2,
+      "variant": "probe",
+      "probePolicyId": "review6-train-heuristic0-counter-v1",
+      "side": 0,
+      "actor": 0,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "review6-train-heuristic0-counter-v1",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p3-ck400-encv4-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2"
+      ],
+      "complete": true,
+      "winner": 1,
+      "activeSeconds": 0.5863995419999992,
+      "result": {
+        "complete": true,
+        "winner": 1,
+        "games": 12,
+        "decisions": 1229,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            2,
+            1,
+            3,
+            0
+          ],
+          "winnerTeam": 0,
+          "doubleUp": false,
+          "levelsAfter": [
+            3,
+            2
+          ],
+          "upgrade": 1,
+          "passedA": false
+        },
+        "rootTeamTarget": 0,
+        "rootG": 1,
+        "finalW": -1,
+        "policyIds": [
+          "review6-train-heuristic0-counter-v1",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p3-ck400-encv4-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2"
+        ],
+        "traceSHA256": "ee4fb9e9836e2a7940d01e631b0276a5e76b9b7138d9896e34c45f1c263e43dc",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "8b12eee5b477347ac452ebf37b7818e3cad0f5d3b721a34f8e63d5ead37a372b",
+            "levels": [
+              3,
+              2
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "9e30e4bb1d8c63110db5925b25936f98d11864c64f0c0f3e686f8d79622499ef",
+            "levels": [
+              3,
+              3
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "748bb975206c0d8665fd446d904b5fcc54093fdbf360a1397ac864740449eabe",
+            "levels": [
+              4,
+              3
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "7655acd9a7be9b7c9ad6225e9f52de826443ff10d7f1f094409e38d92b7b4731",
+            "levels": [
+              4,
+              5
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "d14e9c7768a9dfe49df1d21ccbb93997026a9c2ecde65c78472ea94fcd6f313c",
+            "levels": [
+              4,
+              7
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 1331827160,
+            "fingerprint": "5e908d1c42d6ddf9609d0963a5f8f31564f5f116934958c4be74243bdf9e856b",
+            "levels": [
+              5,
+              7
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2185970535,
+            "fingerprint": "cdbd5b29b51b6e7e002a11f2267cde44f5eded993172baef4dd87b6dcd4a14d3",
+            "levels": [
+              6,
+              7
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 3834744350,
+            "fingerprint": "eb3ce5e2e71d2d2fe084109cb04f275870ad7479c818fb92d8f13987aff2ee0a",
+            "levels": [
+              6,
+              9
+            ]
+          },
+          {
+            "gameNo": 10,
+            "dealSeed": 4071137285,
+            "fingerprint": "5b5f5b8ca9dca9aa2d432d1ec77b0c958a594edb780d33fd5f70f8dc622b4f21",
+            "levels": [
+              6,
+              11
+            ]
+          },
+          {
+            "gameNo": 11,
+            "dealSeed": 588456969,
+            "fingerprint": "b2302c598c7d7e147661d985c74b3963abfebcb65595d8ce9fef62ee50615f41",
+            "levels": [
+              6,
+              13
+            ]
+          },
+          {
+            "gameNo": 12,
+            "dealSeed": 2364534386,
+            "fingerprint": "1d95ff9c35b0b89529687b6464a798b2349cb69e1365487b10dbbbd222680639",
+            "levels": [
+              6,
+              14
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:94a8e924381b86236abd83517556a8ddee3949f8d9fcdf158b534145a66f9f48"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:b09656b71a7ef300fc97725fefdade3e9cd3aa04d6fd8756d15420b50234029e"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:214b92a156fa50197376e0ac0cf72356620d640b558ac4cd0538ab74ada7b8cc"
+        },
+        {
+          "gameNo": 10,
+          "familyId": "first-deal-family:ab4bf51dcf6afa7a6a6e194940da373e8719da96accd9f932d0bd8d9b41aa617"
+        },
+        {
+          "gameNo": 11,
+          "familyId": "first-deal-family:74ddec29144bb328c40fe232e89bc43e0772f644b9d9b763c1d850556067effa"
+        },
+        {
+          "gameNo": 12,
+          "familyId": "first-deal-family:ceb854814b56b90c1a964bade0bb92dc368a979690cd4bf36281dca531e1b8f2"
+        }
+      ]
+    },
+    {
+      "id": "cooperation-g2-probe-s1",
+      "metric": "cooperation",
+      "group": 2,
+      "variant": "probe",
+      "probePolicyId": "review6-train-heuristic0-counter-v1",
+      "side": 1,
+      "actor": 1,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "review6-train-heuristic0-counter-v1",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-review5-control-p3-ck400-encv4-candv3"
+      ],
+      "complete": true,
+      "winner": 0,
+      "activeSeconds": 0.30579283299999954,
+      "result": {
+        "complete": true,
+        "winner": 0,
+        "games": 6,
+        "decisions": 605,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            0,
+            3,
+            1,
+            2
+          ],
+          "winnerTeam": 0,
+          "doubleUp": false,
+          "levelsAfter": [
+            3,
+            2
+          ],
+          "upgrade": 1,
+          "passedA": false
+        },
+        "rootTeamTarget": -2,
+        "rootG": -1,
+        "finalW": -1,
+        "policyIds": [
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "review6-train-heuristic0-counter-v1",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-review5-control-p3-ck400-encv4-candv3"
+        ],
+        "traceSHA256": "d3a3daad2b98b155edf5afdde3158802b7bc26e75a82b1acdea4c3043779406a",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 512963174,
+            "fingerprint": "40bd0fa2f729503dba7df3f2c47e8cc3b320d9ef2c4d4c9e8db08fbe3f3ba7eb",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 3883278029,
+            "fingerprint": "8622ccf0a2fd454b69ebca5db0c28875db731bc66847834083ba4c45452febe3",
+            "levels": [
+              3,
+              2
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3102866732,
+            "fingerprint": "83b413604a329e60cc7896e2a92fedc08ca885c9f2f21ff81f3ec13e2659c515",
+            "levels": [
+              6,
+              2
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 162887995,
+            "fingerprint": "08b51487a9db10fdde2936ee9765319ffb071b66c33a6904b1ff44762cc6e55c",
+            "levels": [
+              9,
+              2
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 4107038882,
+            "fingerprint": "f79d38168a890c0936dfa360c0b5c51c85c289014abfdf2512e3fcd1da9d874b",
+            "levels": [
+              12,
+              2
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 3485862521,
+            "fingerprint": "0c56bcdfb194b960466ae213ddbd24252d3b16482b0ba04f003d0d0959d0f7c8",
+            "levels": [
+              14,
+              2
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:913fdc10c6e09a6bfb4c6f4a3d14e0c7ac592e29cc84a3e3129d093ce1ddaa9e"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b92ff888f6a1e3fa3189f5363f606bbe7e766341bf111f8de4e17cdebf2bd71a"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:6248587d953ec21bda957d023d705b71b0aef37acb7caca1ad0fa1ae9e2cef22"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:befb42e79c5d9d9708e7109d8bc97ee2cb937bd6e0da6717c9f03c6b03715c3f"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:deeb0bb061e36b7b166eb37da2b5da2e2e8868bb78773df01f82586f8461adfa"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:45a74ca4f149d249efb6962f1bab155fcc1be9023c7e6ef15d45c55d03e77258"
+        }
+      ]
+    },
+    {
+      "id": "M1-s0",
+      "metric": "M1",
+      "group": null,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 0,
+      "actor": 0,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2"
+      ],
+      "complete": true,
+      "winner": 1,
+      "activeSeconds": 0.7811157080000048,
+      "result": {
+        "complete": true,
+        "winner": 1,
+        "games": 8,
+        "decisions": 777,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            3,
+            2,
+            1,
+            0
+          ],
+          "winnerTeam": 1,
+          "doubleUp": false,
+          "levelsAfter": [
+            2,
+            4
+          ],
+          "upgrade": 2,
+          "passedA": false
+        },
+        "rootTeamTarget": -3,
+        "rootG": -2,
+        "finalW": -1,
+        "policyIds": [
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2"
+        ],
+        "traceSHA256": "d798447ee8429fe778884fda07f0a6b25cac17009cf0d5a37572543ad942f284",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 2535792420,
+            "fingerprint": "7592a28b9ca44d30181c624201ae0017301ac5ed071444dab1ba97d423b1d152",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 1288480595,
+            "fingerprint": "419bbeae190b8c200a02a6c4a9a53694d9e00c3e22767b67ab81325ecc5aed03",
+            "levels": [
+              2,
+              4
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 2536500510,
+            "fingerprint": "edaab6ad085172eda5ea5a03f4032d7d17945c823baf78e52ffb4c63afc3d751",
+            "levels": [
+              2,
+              7
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 2772893445,
+            "fingerprint": "748e1651a2b81462a326811103f8572a4e6538a46ea8b4bd490b48a619fe1b58",
+            "levels": [
+              2,
+              10
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 3382011728,
+            "fingerprint": "7b6300059484e26f1e1cde37cef7496cfdd3f00475c24fb15778b2d1c2b39b49",
+            "levels": [
+              2,
+              13
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 2861734047,
+            "fingerprint": "66c77d2ad65234840fc2a05c5dc6a287530fa264067bc167593de21d491e4b2c",
+            "levels": [
+              2,
+              14
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 890175322,
+            "fingerprint": "c3bfb1ef1502a7650cf261ca451c4ba055d4136bf5bf8d0629d919eaa6b6acb6",
+            "levels": [
+              2,
+              14
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2079655153,
+            "fingerprint": "2a0487a152ecb2accab11349e0073d776df66e987c732fac7c2a2f633f045bd1",
+            "levels": [
+              3,
+              14
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:8a17492429b8068a7589ddb4fed18da46060ab90813361ba6980f18eded11891"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b79ca3211d703cee21d07fea15a6afe11cd161929002cd6464791455a6d6db44"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:e31d3c38083ce852cd1d05f85441cbfb6cb424acdd831d3a0ade466a8acdf64c"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:6e041ea02a78f20c07ac62524a69924fc9185ada1923940e6fea477062d80d3a"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:2ec703754db9f1ca032b564ddde2ed69e6ae917b6adaf1a14574b70fff6580e7"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:39abce59dbebd383eeb4b9bf2cdf3761d5b2257f01a8541e8c47a4cfc6658b23"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:c653aaa2c19a59ec8c479c49352f32da55ffb619400d3787fb076cf3c787d4e2"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:c6746ff95920e901296e22bac3ceff158677f2eccb5a66e05781be60e1ef4cfc"
+        }
+      ]
+    },
+    {
+      "id": "M1-s1",
+      "metric": "M1",
+      "group": null,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 1,
+      "actor": 1,
+      "rngMode": "counter-per-decision",
+      "policyIds": [
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "review6-clean-U0-399-action64-candv3"
+      ],
+      "complete": true,
+      "winner": 0,
+      "activeSeconds": 0.8960859589999963,
+      "result": {
+        "complete": true,
+        "winner": 0,
+        "games": 12,
+        "decisions": 1208,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            1,
+            2,
+            0,
+            3
+          ],
+          "winnerTeam": 1,
+          "doubleUp": false,
+          "levelsAfter": [
+            2,
+            3
+          ],
+          "upgrade": 1,
+          "passedA": false
+        },
+        "rootTeamTarget": 0,
+        "rootG": 1,
+        "finalW": -1,
+        "policyIds": [
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "review6-clean-U0-399-action64-candv3"
+        ],
+        "traceSHA256": "c5f436d6b4798d510c93b3e7077d05cee60b0e2f53a44842b7df4c525d2e0ab0",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 2535792420,
+            "fingerprint": "7592a28b9ca44d30181c624201ae0017301ac5ed071444dab1ba97d423b1d152",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 1288480595,
+            "fingerprint": "2f20464fa732fe093cda88c999eb68c0df192691f618b64faf42f6a92b974784",
+            "levels": [
+              2,
+              3
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 2536500510,
+            "fingerprint": "9e34d6e7acd3ea0b5107c22cafe7b5dad22de280bd939b0b78f1f37b0b96b475",
+            "levels": [
+              3,
+              3
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 2772893445,
+            "fingerprint": "c4f894caccce30410097761f4bf29f7ba5aa9804a1405bb5f59cc0d6a47b04e8",
+            "levels": [
+              3,
+              5
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 3382011728,
+            "fingerprint": "8e911529b48652b80b689a62ee899bb72e4d5803cfc2557ce1fc049f08bbaee7",
+            "levels": [
+              5,
+              5
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 2861734047,
+            "fingerprint": "16ffe11235b84720de0fe3b7d2a2c58a512dadc1115576ce9f441c1a6007dad3",
+            "levels": [
+              6,
+              5
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 890175322,
+            "fingerprint": "ab745919d82f1ab1de13eb445617fc76cedef7fef2c6439f3acad88478ebf2a1",
+            "levels": [
+              9,
+              5
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 2079655153,
+            "fingerprint": "02f43f1dacfc16f6c41489e1a61ac0e7420789ffd6b2964ae913fbd6b882446c",
+            "levels": [
+              9,
+              8
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 1804622892,
+            "fingerprint": "09caf85ad8bfed1a7cb673217c5a58e1844be3396cae507a1dc79b5698b67119",
+            "levels": [
+              10,
+              8
+            ]
+          },
+          {
+            "gameNo": 10,
+            "dealSeed": 3159611451,
+            "fingerprint": "1941fad6eceb1966b5b05df033e926e6c88165c216b99927a57def978ca7047a",
+            "levels": [
+              11,
+              8
+            ]
+          },
+          {
+            "gameNo": 11,
+            "dealSeed": 1307769459,
+            "fingerprint": "bb00d864675f147a79c62de58ad10bd5607b1a616de747d747285d95d3bc5172",
+            "levels": [
+              13,
+              8
+            ]
+          },
+          {
+            "gameNo": 12,
+            "dealSeed": 3686768068,
+            "fingerprint": "cadec99c70ecffcbaada0ab495293bcd4d93ee4ffee2014c550f8b228ca8d029",
+            "levels": [
+              14,
+              8
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:8a17492429b8068a7589ddb4fed18da46060ab90813361ba6980f18eded11891"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:b79ca3211d703cee21d07fea15a6afe11cd161929002cd6464791455a6d6db44"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:e31d3c38083ce852cd1d05f85441cbfb6cb424acdd831d3a0ade466a8acdf64c"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:6e041ea02a78f20c07ac62524a69924fc9185ada1923940e6fea477062d80d3a"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:2ec703754db9f1ca032b564ddde2ed69e6ae917b6adaf1a14574b70fff6580e7"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:39abce59dbebd383eeb4b9bf2cdf3761d5b2257f01a8541e8c47a4cfc6658b23"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:c653aaa2c19a59ec8c479c49352f32da55ffb619400d3787fb076cf3c787d4e2"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:c6746ff95920e901296e22bac3ceff158677f2eccb5a66e05781be60e1ef4cfc"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:42f351c530a84e6875fd8360966358f8f1ee48a72212ff9dec7d1a8255cba0fe"
+        },
+        {
+          "gameNo": 10,
+          "familyId": "first-deal-family:88c16a187f9b78bea436b677d8cf905efb3b3cedbcdb37b377bcbdfd99ceb857"
+        },
+        {
+          "gameNo": 11,
+          "familyId": "first-deal-family:845838b52c21fa5ff954d55ce76ddfa5e6e8b86fdfd1314ec8621a8dd8a706d1"
+        },
+        {
+          "gameNo": 12,
+          "familyId": "first-deal-family:5ae7cd4c969da0215c82ab99ac4ccecdf0b99a854f5c5dee383314b27b684445"
+        }
+      ]
+    },
+    {
+      "id": "M2-s0",
+      "metric": "M2",
+      "group": null,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 0,
+      "actor": 0,
+      "rngMode": "legacy-per-game",
+      "policyIds": [
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-M2-partner-heuristic-level1",
+        "legacy-M2-partner-heuristic-level1"
+      ],
+      "complete": true,
+      "winner": 0,
+      "activeSeconds": 0.4610164169999989,
+      "result": {
+        "complete": true,
+        "winner": 0,
+        "games": 9,
+        "decisions": 940,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            0,
+            2,
+            1,
+            3
+          ],
+          "winnerTeam": 0,
+          "doubleUp": true,
+          "levelsAfter": [
+            5,
+            2
+          ],
+          "upgrade": 3,
+          "passedA": false
+        },
+        "rootTeamTarget": 4,
+        "rootG": 3,
+        "finalW": 1,
+        "policyIds": [
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-M2-partner-heuristic-level1",
+          "legacy-M2-partner-heuristic-level1"
+        ],
+        "traceSHA256": "aff249a65a710a3a3017f93ec5c6d3e9460781a54234ff3e131ee48e7db7f75c",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 324253687,
+            "fingerprint": "988685acce72a31c833666025a8b85e89a44e08b94580453d2116c0b4720933c",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 4199982824,
+            "fingerprint": "d6199f2e199530d099b8a646b3ea79950a75ddcb675c0e0528530fe98d33719d",
+            "levels": [
+              5,
+              2
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3866957513,
+            "fingerprint": "c23ea5a131461ad896aa9424a32a006b31641ad43b4c44445783049daef6879a",
+            "levels": [
+              6,
+              2
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 2243391538,
+            "fingerprint": "c2ff97779f836afc591614a7409a362d4410c42727fd9642e0ae41ca40c0c4d2",
+            "levels": [
+              7,
+              2
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 697288331,
+            "fingerprint": "f341017da0b47a4f7e8dba7bb79435c413ceb5d612eb3e8ae31bf3948a28dc90",
+            "levels": [
+              10,
+              2
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 2383975420,
+            "fingerprint": "a5046ef7f2a2b84f1f6f807f53bd57d44ee9a16eba15925b553dc55b778e4762",
+            "levels": [
+              10,
+              5
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 401153757,
+            "fingerprint": "15d7cd4bb1d85a1cf09a2a851c4e341423688962cfc87130d8184316d21365ee",
+            "levels": [
+              10,
+              6
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 928170358,
+            "fingerprint": "196ba06b23f288d6174822847d87247bd626c88e1658247bd71b9dc55987c7a8",
+            "levels": [
+              13,
+              6
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 4259144943,
+            "fingerprint": "4bb6f696763660ac018adf3dd8350109e674fc617842129ec14daa78819fbefc",
+            "levels": [
+              14,
+              6
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:f9472d198a83db5d83478c42251cb9e4ae6a04cafd71af0484d53cc2178b176a"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:41c907dcd23d8d6e22a22cb146d8ad48895e739f407672a3c483a67f2a690956"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:5d7493e78ddee09b01eb1dcd895d728259d8021883861f1836a8ea400d675e44"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:74c64ea2826b63480f7bc8f9e8d969446235f923b14423c438fa387134ff7b30"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:7974b2193bede5f80b9dc39b1b2f2a62f0638c2a088a0f094ba13d5cc4493b7a"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:190f7e34b0bce34d52fa915bacd8144bcc54e7a852c9596ddc2f741a3ec74dc0"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:c9d24cf8cb64f3c503933957fe8a55b9773811273055c2f730ad84112bfd0aaf"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:0e26425447c42e0ab69c63f466ffde0b10089c7698b12aa822156da5f146408d"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:8ce0171cd9798ec06f401c2c7022d438bf34654cf4b650ca2c4910e06feb2124"
+        }
+      ]
+    },
+    {
+      "id": "M2-s1",
+      "metric": "M2",
+      "group": null,
+      "variant": "U0",
+      "probePolicyId": "review6-clean-U0-399-action64-candv3",
+      "side": 1,
+      "actor": 1,
+      "rngMode": "legacy-per-game",
+      "policyIds": [
+        "legacy-M2-partner-heuristic-level1",
+        "review6-clean-U0-399-action64-candv3",
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "legacy-M2-partner-heuristic-level1"
+      ],
+      "complete": true,
+      "winner": 1,
+      "activeSeconds": 0.6121597919999986,
+      "result": {
+        "complete": true,
+        "winner": 1,
+        "games": 15,
+        "decisions": 1534,
+        "incompleteReason": null,
+        "rootRoundResult": {
+          "finishOrder": [
+            1,
+            2,
+            3,
+            0
+          ],
+          "winnerTeam": 1,
+          "doubleUp": false,
+          "levelsAfter": [
+            2,
+            4
+          ],
+          "upgrade": 2,
+          "passedA": false
+        },
+        "rootTeamTarget": 3,
+        "rootG": 2,
+        "finalW": 1,
+        "policyIds": [
+          "legacy-M2-partner-heuristic-level1",
+          "review6-clean-U0-399-action64-candv3",
+          "frozenChampion-clean2-ck7051-encv1-candv2",
+          "legacy-M2-partner-heuristic-level1"
+        ],
+        "traceSHA256": "22d89c8faac7b3087a049e5e5b2f902e04ab513027390f6f06a0e795415e6e47",
+        "deals": [
+          {
+            "gameNo": 1,
+            "dealSeed": 324253687,
+            "fingerprint": "988685acce72a31c833666025a8b85e89a44e08b94580453d2116c0b4720933c",
+            "levels": [
+              2,
+              2
+            ]
+          },
+          {
+            "gameNo": 2,
+            "dealSeed": 4199982824,
+            "fingerprint": "8886fe603e5733825c28ecee755db9d75b5d14d96a058a28c5d377a5ee3cec75",
+            "levels": [
+              2,
+              4
+            ]
+          },
+          {
+            "gameNo": 3,
+            "dealSeed": 3866957513,
+            "fingerprint": "8dbfa0044213eb91a34ebae41e28cc6435748e15c3401f46d09d4cc023192881",
+            "levels": [
+              3,
+              4
+            ]
+          },
+          {
+            "gameNo": 4,
+            "dealSeed": 2243391538,
+            "fingerprint": "7a566cf98851d983f4e485467d0cf140087d3f8a8bcf59b68044656d5422505c",
+            "levels": [
+              6,
+              4
+            ]
+          },
+          {
+            "gameNo": 5,
+            "dealSeed": 697288331,
+            "fingerprint": "f341017da0b47a4f7e8dba7bb79435c413ceb5d612eb3e8ae31bf3948a28dc90",
+            "levels": [
+              9,
+              4
+            ]
+          },
+          {
+            "gameNo": 6,
+            "dealSeed": 2383975420,
+            "fingerprint": "ed4f1b2f6934ad9a4138aadd72180143d965f06902d09462150b065048baddf8",
+            "levels": [
+              9,
+              5
+            ]
+          },
+          {
+            "gameNo": 7,
+            "dealSeed": 401153757,
+            "fingerprint": "91d9c98c606f4896caaa46c7a850da111abe756146fe617835c2eb7eb4774a36",
+            "levels": [
+              9,
+              8
+            ]
+          },
+          {
+            "gameNo": 8,
+            "dealSeed": 928170358,
+            "fingerprint": "7499b31146becddca2d96bb593cee52dad12358dbf3369bd04bc9ac24afa6113",
+            "levels": [
+              9,
+              11
+            ]
+          },
+          {
+            "gameNo": 9,
+            "dealSeed": 4259144943,
+            "fingerprint": "0884a2dd9b4621314be52eb5e7bf6fd34cf0f0ef3cc30faaaf8ae96783332f3b",
+            "levels": [
+              9,
+              12
+            ]
+          },
+          {
+            "gameNo": 10,
+            "dealSeed": 1655722592,
+            "fingerprint": "734a4a01675b4ec07b572f719c6ea64272fc94338225f4f481697523711256f9",
+            "levels": [
+              11,
+              12
+            ]
+          },
+          {
+            "gameNo": 11,
+            "dealSeed": 4202711050,
+            "fingerprint": "80a73d4f199d1b22028b54bda338a8b6ecd90b40676b11e9f57ad3e2c319f8b3",
+            "levels": [
+              12,
+              12
+            ]
+          },
+          {
+            "gameNo": 12,
+            "dealSeed": 4110915681,
+            "fingerprint": "ff2cedcac77da237ef7cc2a0891c242f6ef103d3b57f70010cca7e2fa4ba0d18",
+            "levels": [
+              12,
+              13
+            ]
+          },
+          {
+            "gameNo": 13,
+            "dealSeed": 2905467776,
+            "fingerprint": "93b1b06688d99b43f24c079925d3684c67c6af0db67a16205dd5e1a3908916ce",
+            "levels": [
+              14,
+              13
+            ]
+          },
+          {
+            "gameNo": 14,
+            "dealSeed": 642924175,
+            "fingerprint": "dd3288b445ea3ec91398ccfbe672dfcf46ffb0c610227b50e641c77c8e1abb3a",
+            "levels": [
+              14,
+              13
+            ]
+          },
+          {
+            "gameNo": 15,
+            "dealSeed": 432244942,
+            "fingerprint": "61c7de167587dd7d5ed60b826d003f20fc788b0372d3c2829e57bff312cb30a0",
+            "levels": [
+              14,
+              14
+            ]
+          }
+        ],
+        "ownPlanSummary": null
+      },
+      "roundBaseFamilies": [
+        {
+          "gameNo": 1,
+          "familyId": "first-deal-family:f9472d198a83db5d83478c42251cb9e4ae6a04cafd71af0484d53cc2178b176a"
+        },
+        {
+          "gameNo": 2,
+          "familyId": "first-deal-family:41c907dcd23d8d6e22a22cb146d8ad48895e739f407672a3c483a67f2a690956"
+        },
+        {
+          "gameNo": 3,
+          "familyId": "first-deal-family:5d7493e78ddee09b01eb1dcd895d728259d8021883861f1836a8ea400d675e44"
+        },
+        {
+          "gameNo": 4,
+          "familyId": "first-deal-family:74c64ea2826b63480f7bc8f9e8d969446235f923b14423c438fa387134ff7b30"
+        },
+        {
+          "gameNo": 5,
+          "familyId": "first-deal-family:7974b2193bede5f80b9dc39b1b2f2a62f0638c2a088a0f094ba13d5cc4493b7a"
+        },
+        {
+          "gameNo": 6,
+          "familyId": "first-deal-family:190f7e34b0bce34d52fa915bacd8144bcc54e7a852c9596ddc2f741a3ec74dc0"
+        },
+        {
+          "gameNo": 7,
+          "familyId": "first-deal-family:c9d24cf8cb64f3c503933957fe8a55b9773811273055c2f730ad84112bfd0aaf"
+        },
+        {
+          "gameNo": 8,
+          "familyId": "first-deal-family:0e26425447c42e0ab69c63f466ffde0b10089c7698b12aa822156da5f146408d"
+        },
+        {
+          "gameNo": 9,
+          "familyId": "first-deal-family:8ce0171cd9798ec06f401c2c7022d438bf34654cf4b650ca2c4910e06feb2124"
+        },
+        {
+          "gameNo": 10,
+          "familyId": "first-deal-family:368f0af44c01b1822de0b88627fcff3caa5a4f93e029a2dfb3cb9fe9309d5457"
+        },
+        {
+          "gameNo": 11,
+          "familyId": "first-deal-family:b2a338761a5db953e24c98caf61e004a23ccbdcf8e5361a39e0b1bc0708edb59"
+        },
+        {
+          "gameNo": 12,
+          "familyId": "first-deal-family:7aacaab21bde1614f3a50c28c46c43fc33d2a4f153df098a15c682243f0d640a"
+        },
+        {
+          "gameNo": 13,
+          "familyId": "first-deal-family:d2bccee4278474694a2cdb17507cb06c7dce2dc92f2a4d1749077b8147206220"
+        },
+        {
+          "gameNo": 14,
+          "familyId": "first-deal-family:f69c621b5995b747a648a8a83033712801b8592b211535b62b9b22536cd6588c"
+        },
+        {
+          "gameNo": 15,
+          "familyId": "first-deal-family:dfbfdf2e98859e94e263da253b57bd778c9cfd1f40369a57087431309e7d6b68"
+        }
+      ]
+    }
+  ],
+  "groupDifferences": [
+    0.5,
+    1,
+    0.5
+  ],
+  "macroDifference": 0.6666666666666666,
+  "M1": 0,
+  "M2": 1,
+  "threadId": 4,
+  "activeSeconds": 9.308494082999998
+}

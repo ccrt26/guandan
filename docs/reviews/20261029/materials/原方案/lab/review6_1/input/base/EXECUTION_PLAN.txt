@@ -1,0 +1,370 @@
+## 十一 执行范围与命令约定
+
+本章与前十章构成本轮规范。此前REVIEW5文件用于核历史责任，不再作为新周期的预算。新文件不得覆盖旧协议、旧确认集或旧失败记录。优先级固定为资产与事实正确性、网页可见修复、数据接入、可信教师、直接教学、多轮泛化。
+
+本交付真正已实现的命令只有tools目录中的Python盘点与隔离展开工具，以及修订的旧只读preflight。后文lab/review6/run.mjs是要求GLM在本地仓库实现并验收的新入口，不能把这些示范命令说成我们已经在Mac执行成功。不要猜旧脚本参数后直接开始训练。
+
+新入口应是对现有实现的薄适配层，不再造一个庞大平台。先记录现有函数、CLI和测试的实际路径，再复用。未实现的子命令必须退出非零并写not_implemented，禁止打印空JSON后exit 0。训练、确认与部署保持独立命令，没有一个默认把全部阶段自动做完的all命令。
+
+### 1 周期和目录
+
+周期ID固定review6-humanlike-20261028。任务目录建议lab/review6，数据和运行目录在项目外新建，只保存引用与清单于仓库。解压本交付包的根目录由GLM在本机定位，不假设Downloads里的自动解压名称。
+
+新资产目录示例为$HOME/REVIEW6-assets-20261028-01。若已存在，先读身份；属于同一周期则恢复，属于其他周期则用新序号。不得为方便运行而删除旧目录。读取$HOME作为路径没有问题，不得把HOME或TMPDIR重设成项目目录。
+
+原项目路径/Users/ccrt/game/guandan来自送审文本，先检查目录真实存在。当前131项未提交变更不能用只检出HEAD的工作树替代；那会丢掉本轮真实代码状态。先备份工作区差异、未跟踪代码、已部署政策、配置和大工件，再冻结实际工作树快照。忽略列表中的权重也要进入资产备份；不把.env或密钥打进对外交付包。
+
+### 2 全程状态契约
+
+状态只能是not_started、not_implemented、ready、running、completed、verified、reused、blocked、incomplete、failed。completed表示进程正常结束，verified要求消费具体证据的独立核验入口通过。reused必须指向完全相同身份的已核验工件。所有blocked有机器可读原因、缺失依赖和不受影响的下一任务。
+
+每张收据至少包含taskId、cycleId、输入输出全长SHA、sourceSnapshotHash、完整政策身份、实际argv、开始结束时间、退出码、资源实耗、验收器及其SHA、证据文件列表。收到一个布尔verified字段不能自我背书。报告程序只汇总收据，不自行把missing改pass。
+
+stageStatus与resultCode分开。例如stageStatus=completed、resultCode=window_saved表示运行窗已保存，targetCompleted=false；不能将window_saved塞进状态枚举冒称训练完成。stageStatus=verified只表示该任务验收通过，policyEligible由完整晋级规则另判。
+
+所有命令严格解析：未知参数、空路径、NaN、Infinity、负数、非整数更新数必须在spawn前拒绝。按阶段解析schema：inspect/backup/工程验收/pilot接受--config草案；生产build-teacher-data/train-window/evaluate-dev/confirm必须有--protocol锁文件。草案允许尚未产生的身份为空；已锁必填字段不能空，可选LLM禁用字段和运行后收据按CONFIG_README处理。训练不得回落默认protocol-v3。子进程非零必须上传播；主进程失败时只能终止自己登记的子进程。不得pkill所有node/python。禁止后台失联跑训练。
+
+### 3 三条禁止改写的边界
+
+不能删旧证据、不能把本轮偏差改写成原轮合规、不能因未完成而降低验收门或改分母。可以做最小修复、恢复和开发迭代；影响规则、数据、网络或评测的实质变更必须先升协议身份。已授权的工程修复不需要反复问用户；新增付费服务、超出现有明确费用上限或正式替换部署属于另一个具体动作，不夹带执行。
+
+## 十二 GLM 按任务实施的详细清单
+
+### Task 0 盘点和恢复
+
+先执行随包工具，命令见第十三章。核当前部署为完整包：权重、网络、候选、规则、编码、推理、难度路由和网页构建。不能仅比weights hash。盘点本地REVIEW5 91文件ZIP是否存在、完整SHA、CRC、内部清单、132文件快照、六run账本与末尾检查点；本轮聊天未附该ZIP，不代表本机不存在。
+
+先只在新建lab/review6实现inspect、backup、selftest薄入口，不改既有业务源文件或资产；backup读回验收完成后，再实施后续产品改动。inspect首次运行即建立全周期不可覆盖budget-ledger，记录冻结前工作，后续freeze引用既有余额，不新开72小时。
+
+所有本地计算spawn与付费API发出之前，按同一账本原子核余额并预留；结束结算实际消耗与释放余额。并发不能各读同一旧余额。检查点退出预留也包含在窗上限和周期上限内，不额外加时。
+
+从原REVIEW4 ZIP隔离恢复字节，不覆盖源码。按sourceDiskPath、original archive path、SHA、字节数建立恢复映射。八个误命名权重按原始二进制保留；不要JSON parse或重新序列化。恢复72张DecisionReview时保留原来源、规则与动作版本，不能先迁移再冒称原件。
+
+核六项基础修复的真实前后负例：pass列迁移、合法范围内的错误队伍标签、末波与断点账目、同牌换边与截断、完整部署身份、冻结快照启动。每个至少有真实代码调用点、失败前证据、修复后证据；确实已有相同身份证据则复用，避免再跑六个训练run。核ck400双方发牌指纹；XOR仅用于arm流才合规。
+
+Task 0产物：asset-inventory.json、recovery-map.json、baseline-identity.json、review5-deviations.json、implementation-map.json、backup-readback.json。backup-readback须实际读回至少一份当前部署和恢复权重并核hash，不以文件存在替代。缺旧原谱不阻断新数据回放和通用回归；缺当前父政策或规则身份则阻断新训练。
+
+### Task 1 规则事实与网页复盘
+
+先查实际文件；旧源码定位参考packages/engine/src/combo.ts、packages/ai/src/heuristic.ts、packages/review/src/decisionReview.ts、teamContext.ts、analyzer.ts、nnAdvisor.ts及ReviewPage。实际改动路径写implementation-map，不假设新版同名函数仍一样。
+
+建立DecisionFactsV3，至少含decisionId、actorSeat、viewerSeat、teamId、eventIndex、rulesId、stageOwner、effectiveLevel、currentTrickOwner、beforeCounts、legalActualAction、actualActionId、afterCounts、revealedFacts、observationHash、policyIdentity。四席旋转以actor和viewer分开；提示里的“你”绑定viewer，分析队友绑定actor，禁止把所有动作actionId写成seat0。
+
+RuleRelation由引擎生成：动作牌数、牌型、比较关系、是否能压当前牌、四炸与五炸强度。PolicyAdvice单独记录source=nn/heuristic/search、preferredActionId、全候选分数或证据、policyId和claimLevel。不同来源可以不同，不得共用一条不带来源的“模型首选”。启发式breakdown必须按同一actionId查取，Σterms=score。
+
+为五5事故先生成IncidentRecord：原截图、截图可见事实、无法核实字段、旧源码根因候选。若本地仍有该手完整record，导出原件并验证eventIndex与五张实际牌；找不到则caseStatus=screenshot_only。不得用constructed替代真实记录。另建可达构造例验证四炸和五炸都合法、强度有别、两种余手结构的差异；至少含“多走一张更好”和“保留一张确有用途”的反向情形，无法证明最优则只断言事实。
+
+检查启发式的ceil(restLen/4)与break-bomb。修复错误资源重叠判定；不能写“凡五炸都优于四炸”的新硬规则。余手方案使用合法组合分解，重叠受资源约束；若搜索被截断，界/上界/近似分开，不把启发式手数当精确最少手数。
+
+这些修复用于新复盘评估器与新研究候选。现役旧完整政策的决策运行时仍加载它自己的冻结heuristic/combo/candidate/encoder，不能因它们与复盘共享模块就被网页重建暗改。若现有构建未隔离，先修包加载与身份验证，再交付UI；需要改变现役规则或策略行为时明确作为新完整政策版本，不能标“仅改复盘”。
+
+自然语言的数字、规则、来源和比较关系从事实模板渲染。LLM只填允许的策略条件与说明，不自由发明这些硬事实。claims引用还需语义蕴含检查；不支持的自然语言强断言回退为确定性说明。六条旧负例、恢复原卡中的真原件、相应正例一起跑。summary、标题、正文、流式结束、缓存命中全部走同一契约。缓存键加入facts/schema/policy/prompt/validator hash；旧缓存不重验就不能展示为新验收结果。
+
+接完真实ReviewPage：四席选取、队友炸弹/大牌接管作为关键事件、点击跳到该手、三种建议来源、证据不足提示、事故导出。事故包包含行动前合法观察、全候选及ID、推荐分解、版本、原谱引用；调试完整暗牌另放事后调试区，不进入出牌和事前复盘输入。
+
+先建60个开发回归：10个家族各6个（让牌、必要接管、4/5炸弹、余手结构、阻止收尾、已知贡还、角色旋转、规则上下文、证据不足、计划失效）。60只保证工程覆盖起点。每例要有原始状态或生成种子、可达性验证、允许断言、正反例。对战策略证据不足时不强设唯一动作。真实事故单列，不能被构造案例数量掩盖。
+
+验收通过后可交付同一完整旧出牌政策下的新复盘网页。记录网页buildId与政策identity，进入真实浏览器从历史记录点击、复盘、导出、重载并检查缓存。静态截图或CLI输出不等于页面接线。产物为facts-contract.json、case-results.json、claims-validation.json、browser-acceptance.json和可打开事故包。
+
+### Task 2 数据接入和真人代理
+
+实现一个按完整match replay的判定器，不以候选是否含目标替代引擎合法性。逐decisionId记录raw卡码、映射版本、目标规则判断、PolicyCandidates包含情况、第一次不兼容eventIndex、具体原因集合。报告总数94450、91762、2688及原因重叠的可复算表，核新源码后填写，不沿用旧摘要数字作为事实。
+
+严格兼容整场A、第一次不兼容前的合法前缀B、歧义或非法C三类分开。B只有当前信息合法时才可用于H的行为预测；不得接不同规则后续的胜负标签。C不消费。若本地规则实现有bug，依据冻结规则合同修复并升版本；若确为源平台差异，保留双域，不为过数字门静默改目标游戏。
+
+候选等价依据完整牌资源、多重张数和必要花色，不能退回仅点数去重。同花色同点数两副物理副本可在确实无未来差异时归为等价目标集合，日志保存原ID和等价理由。NLL采用-log(目标等价集合概率之和)，H、uniform、kind-frequency三个模型使用同一合法支持，频率基线只用训练集拟合。
+
+源match整体隔离，不能按随机decision拆60/20/20。已用于模型评测或调参的旧holdout只能继续当历史诊断；单纯完整性扫描不等于看过模型成绩。报告称原数据1305个match而上一轮只消费100个；先核消费ID，再从其余未用记录锁新开发/保留，不再机械限在原100个。找不到未用数据则如实报告仅旧数据开发，正式人类泛化证据不足。记录玩家ID可用性与跨集合重叠；无玩家ID不得称不同真人留出。技能一律按可核实信息填写，unknown正常。
+
+正式H训练可复用原小网络。第一版沿用旧3epoch和一次拟合，时间改由预先实测预算支持；不把20分钟当需训练满。训练分支必须从干净初始化/父权重起步，不能在可能污染的H上继续假装干净。报告逐类别NLL、Top1、概率校准、pass比例、少数动作覆盖、去重数和match bootstrap差值。行为样本来自真实记录，但无需用户另打20场；如果合格数据不足，先补解码或来源，不用机器人伪装。
+
+接入H至少要求数据合法与来源门过；在未用于拟合的同支持集合上，相对两个基线的NLL差值区间上界<0；pass/nonpass、队友控权、炸弹、接管分层有足够观测且不退化。稀缺层写不足，不用加权总分掩盖。此门只允许称“这批人的行为代理”。若H不合格，含H实验blocked；可以按下述预登记分支执行真正的非真人直接教学，不把它重命名成人类实验。
+
+质量门具体化：NLL差按源match聚类作固定20,000次percentile bootstrap，97.5%双侧区间上界<0，两个基线均需过。每个必查层至少30条合格决策且来自5个源match；这是覆盖下限，不是高精度保证。每层NLL点估不得比训练频率基线差超过0.1 nats，观测pass/非pass任一占比≥5%时，模型对应预测概率的总体平均不得低于1%。同时报告硬Top1的pass比例与观察频率差，不用概率有微小非零掩盖硬动作坍缩。缺层记insufficient_stratum并阻断with_h，但不阻断no_h。所有阈值在H拟合前冻结，不能事后迁就1.47。
+
+分支选择只依据数据与H是否ready，在开发胜率打开前锁定。direct_teacher_with_h沿用四桶及50/30/20根点来源；direct_teacher_no_h两臂同用50%self、25%冻结对手、25%另一冻结搭档，成熟桶1024/512/512、梯度槽512/256/256，根点来源70%学生轨迹和30%构造训练家族。no_h允许Task 3至7的自动研究验收，结果称“非真人搭档上的直接教学”；人类兼容性保持未验收。只有两个分支都预先有预算且各自完整对照时才执行两个，否则先跑满足依赖的一个，不按结果选择名字。
+
+产物为replay-ledger.jsonl、rule-domain-report.json、splits.json、candidate-coverage.json、H-manifest.json、H-evaluation.json。
+
+### Task 3 条件计划与教师
+
+先完成12个可执行计划根点并修信息集。每点保留rootId、matchId/familyId、observedBefore、allowedFacts、actingSeat、actualActionId、合法候选全集、planId、planGoal、condition、trigger、invalidateWhen、fallback。条件只能是程序可执行谓词，不能以一句“形势合适”作为代码。例：队友控权且对手无人已出完；接管后我方某席剩张数阈值满足；某公开牌型已被打掉。确切阈值与依据写在单例，不全球硬编码统一让牌。
+
+计划用受限结构DSL：只能读取允许字段，使用eq/lt/le/and/or/not及合法动作集合谓词，目标/触发/失效/回退均为枚举或结构对象。禁止eval或执行LLM返回的任意代码。每计划最多4次本席条件动作，失效即回退；这是首版复杂度上限，后续更长计划另实验，不限制完整match的续打长度。
+
+计划只能控制被评估策略自身的后续回合。搭档继续按其冻结政策行动；不允许代替搭档下指令才获得胜利。计划失败时回退原政策并记触发次数。学生看不到的条件不得作为教师标签；先记representation_gap，再进入有条件的表示升级。
+
+每个续打profile必须锁四席policyId和角色映射：actingSeat的学生冻结政策、partnerSeat的训练池搭档、opponentSeats的两政策、planControlledSeats只含actingSeat。主profile优先用本轮学生快照与H_train搭档；敏感性profile用另一冻结学生/续打政策与另一个训练池搭档。no_h使用已登记非真人搭档。禁止从开发或确认搭档池挑教师续打；禁止只写一个NN policyId后让四席都变成同一政策。比较A/B只改变预定动作或本席计划，其他三席和随机流完全相同。
+
+世界采样保持自己的手牌、完整公开历史、四家张数与已知贡还归属。隐牌交换不变性测试覆盖观察、候选、所有分数和最终动作；学习型软belief另版校准，不在本轮初版悄悄启用。公共历史中某人pass不作为“必无压制牌”的硬约束。
+
+建议初始教师规格：探索32个世界；每根最多6个候选动作或可执行计划；仅选一个待验证的动作对；独立验证256个世界，第二冻结续打政策128个世界。都使用明确种子命名空间。pilot只能按吞吐和方差，在正式标签生成前把验证量锁为128、256或512之一；不得看同一标签区间后追加世界追过门。
+
+探索候选至少包括学生首选、真实动作、合法pass、必要接管、4/5炸弹相关候选；超过6个时按事前类别与排序保留，并记录未搜索列表。最多6个只是教师成本控制，不减少产品合法候选。不能由搜索只覆盖6个就声称全局最优。
+
+四种比较分别出收据：①A根动作与B根动作，后续都用冻结NN；②同一根动作A，计划续打与原续打；③完整计划政策与原政策；④同根动作比较换另一冻结续打政策。只有①有支持时只能教根动作；只有完整计划验证和学生后续兑现均通过，才能宣称学会计划。初版直接偏好损失仅消费①且通过④方向核验的动作对；②③供后续决策回收，不能把整套计划收益全归给第一手。
+
+补上可执行的后段优先课程：对②③支持而①不支持的计划，extract-plan-tails只收本席较晚行动点，并保存parentPlanId、原familyId、当时合法观察及可达前缀。按从后向前的固定顺序重新采样信息集，用新探索/验证世界验证这些后段根动作；本席无法在当前续打下独立获益的尾点不造标签。合格后段进入本轮训练库，训练后冻结新学生，用未使用世界重新验证原计划前段。重复最多三轮，保留各轮reject原因及实际学生能否兑现。模拟世界的完整暗牌不能作为新根观察，后来事件不能回流给原根。不同尾点继承同源family，不能拆成新的独立测试家族。仍无法成立时明确“多步计划教学未完成”，不要靠一句计划文字判pass。
+
+使用冻结label函数y=g+W：g为当前根点所在本副本队名次升级分±1/±2/±3；W为完整match本队胜负±1。取z=(y+4)/8仅用于归一化证据展示；训练Q仍是原y尺度。不是把整场所有g求和，更不是按我个人先走给分。每世界、每分支用同一组之后发牌随机流；状态分岔时允许轨迹不同，但不能偷偷选更好未来牌。
+
+每世界差d=z(A)-z(B)，配对重采样按世界而非action。初版20,000次固定seed配对bootstrap，取97.5%双侧区间；明确这是经验区间，非分布无关真理。标签支持要求主续打下界>0.02，第二续打下界>0；不足记ambiguous，不给负标签。0.02是教学最小效应工程提案，相当于原y尺度0.16，起跑前锁定。每根只验证探索时选中的一对，不能用验证世界再选赢家。
+
+统一统计实现：percentile bootstrap，等概率有放回采样独立单位，20,000次；分位使用线性插值（R type 7），实现版本和seed写入lock。同一根的两动作始终共用重采样索引；主与第二续打各用自身预锁世界。保存原始d与输出分位，独立recompute验证。禁止换BCa/单边/分位法挽救边界标签。
+
+有未完成分支、非法采样、暗牌泄漏或未来输入，该root不得生成强标签。局部残局证明、只评本副g、截断叶估计可单列为近似教学研究，不偷换完整g+W口径。跨root同时有许多标签时不声称每一条均获得总体95%保证；保留置信度、错误抽查和后续泛化检验。
+
+LLM是可选候选提议器：发送版本化JSON可见事实，输出计划与动作ID；先校验，再搜索。已有费用上限明确时复用用户已授权连接。调用请求、失败重试、token、价格版本、花费都入账；无明确上限则本地教师继续，API子模块blocked_cost_config。两个LLM一致不能免搜索，也不证明高手认可。
+
+产物为teacher-pilot.json、plans.jsonl、world-manifests.json、branch-results.jsonl、teacher-labels.jsonl、teacher-rejections.jsonl。教师产出率按合格去重root/秒，独立源match/家族另计，绝不能用几十万个分支当几十万教学题。
+
+teacherQualityReceipt最低要求12根完整收据全都有明确结果、规则/信息集/动作身份负例全过，并至少获得4个supported根动作、来自至少3个源match或构造family，包含至少一个“让优于接”和一个“接优于让”。这些是双向教学链的工程覆盖门，不是教师准确率证明；不足就如实诊断，不能降低区间或造标签。pilot开始前可以另登记最多48个候选根作为补充探索队列，到界仍不足则teacher_not_ready；已花成本全部算入，不无限追加。第一份正式标签批再按预锁随机抽取10%（至少10个、最多50个；总数不足10取全部）做新世界独立复核，报告方向失败率；出现规则/泄漏问题整批隔离，统计不支持只剔除该标签并重算规模，不重抽有利复核世界。
+
+抽查报告分“同向且支持、同向但不确定、方向相反、规则或信息错误”四类；区间不支持不等于方向错，不将四类合成可称为真实错误率的数字。抽查通过率也不是对全部标签准确率的无偏保证。
+
+### Task 4 速度先导和本轮冻结
+
+先用不属于训练、开发或确认的种子测2、4个worker，完整match至少各16场，并记录热稳态窗口；如果2分钟内不足一场，保留过程继续到完成或技术上限，不能伪造每秒吞吐。测每种arm配置20个成熟更新、教师12根点的拒收和耗时、64个独立配对评测块的方差与块耗时。测速A/B从同一隔离副本开始，B仅消费12点先导中通过门的根动作标签，数量不足64用全部，明确重复曝光；零合格标签则teacher质量未通过，不能用假标签测速后启主训练。pilot权重不成为正式父模型。各项有资源守护，pilot失败不自动启主训练。
+
+64块统计先导锁probePolicyPair：U0与一份已验身份、行为确有差异的冻结训练池政策。若实际差为零或方差偏小，不据此降低正式N。主与每组使用s_design=max(0.5,s_pilot)，并列有界差值标准差1的保守成本。M1、M2分别用二场换边块的实际方差，并以0.5作为保守设计值；它们不是把三组主块的N直接复制一遍。
+
+按第八章成本公式生成budget-plan.json。72小时是周期累计资源保护，四小时是可恢复运行窗；pilot、教师、各run、评测都扣同一累计账。任务耗时按单调时钟记录，断点期间不扣active。并发时同时记录设备墙钟和所有子任务worker秒，不能拿并发“省时”把实际消耗隐藏。默认重计算任务串行。
+
+先预留目标确认、开发、备份及25%余量，再选择本周期root规模与共同训练终点。可选根点100/500/2000；可选共同终点400/1200/3600updates。使用预计较慢分位耗时，不能用一次最快探针宣称都放得下。没条件完整完成最大档就选较小科学问题，不能做到一半删评测。
+
+collect-roots --round 1先生成已选规模的原始教学root清单及来源分割，再生成唯一protocol.lock.json，包含实际sourceSnapshot、规则/候选/编码、干净U0、优化器、所选实验分支、训练搭档池、开发与封存池、全部种子清单hash、教师生成规则与源root身份、统计方法、预算和目标。锁文件的生产必填字段不得为空；LLM禁用字段、尚未生产的结果与学习接线收据按阶段例外。首轮生成后的teacher-label manifest追加到不可覆盖的receipt registry，不回填修改lock本体。冻结后变化建立新版本和因果说明；已有run不偷偷切换版本。
+
+freeze必须创建可运行快照并从该快照实际启动教师、训练、评测，不能只检查活动仓库hash后仍import活动源码。记录实际入口、各worker入口、全部运行加载模块、锁定依赖和解释器。轻入口只路由至快照；snapshot中的文件启动前逐hash验证，执行期间不得回读活动源码。用隔离副本证明活动仓库改动不影响已锁任务，快照篡改在spawn前退出非零。复用已有132文件机制前先核其真实加载，不凭字段数量验收。
+
+### Task 5 主网络直接学习
+
+沿用399→256→256→1、tanh、线性Q；epsilon=0.05，group=2048，每次不放回子抽样1024，RMSprop lr=0.001、alpha=0.9、eps=0.00001、momentum=0、centered=false、weight_decay=0。若最新实测实现与此不符，先记录修正并冻结，不在训练途中试参。两臂同样重置optimizer，从同一干净U0开始；当前产品frozenChampion另存。ck400旧实验权重不自动变成本轮更强父政策。
+
+with_h两臂都用50%self、25%冻结对手、12.5%合规H搭档、12.5%另一冻结异质搭档，以实际团队梯度槽512/256/128/128计；no_h按Task 2独立三桶合同。各桶成熟group按比例再各取一半；不满不借桶凑，不学习冻结席位动作。池内具体policyId起跑前锁定。此次唯一额外因素是教师偏好损失，不是再次比较混池对自博弈。
+
+共同损失L_base为现有团队目标MSE(Q,y)，加0.01×锚定MSE(Q,Q_U0)。锚定样本从本轮训练域固定池抽取，不含开发或确认；每更新64个根局面，局面内候选平均。0.01是固定工程起点，不声称最优。
+
+A只用L_base；B在相同团队更新上额外加0.1×L_pref。每更新抽64个不同教师root，不足64时用全部且不复制凑数；跨更新按打乱轮转采样，报告真实复用次数。L_pref为每root内部偏好对平均的softplus(0.16-[Q(a+)-Q(a-)])，再跨root平均。当前每root一对；温度1。分值尺度是原y，不把0.16写成16%胜率。softplus平滑推动排序，0.16不是硬停止margin；即使分差超过0.16仍有梯度。记录Q分布及教师/团队梯度范数比，防数值失控。教师系数0.1和margin0.16起跑前锁定。
+
+每臂每次团队更新只做一次optimizer.step；B将梯度合并后step，禁止多做一次step却称相同updates。教师root和锚定样本量另列，不能假称两臂总监督量相同。B新增教师数据就是干预，等墙钟效率另报。
+
+接线负例：错队伍符号、隐藏未来字段、偏好正负颠倒、labelId不在锁清单、根点只在验证集、JSON空标签、梯度全零、optimizer根本未step。真实两更新探针记录教师单项梯度非零、标签消费、差分诊断、权重hash变化与所有合法候选首选。总损失的每一步不保证某分差必升，用隔离小批教师梯度检查方向，并另报混合训练实际变化，不制造单调假设。
+
+三对训练seed由cycle、pair1/2/3和purpose派生并预存列表。每对基础发牌清单共享；arm专用探索/采样流独立且写明。冻结随机流与牌指纹；策略分岔不要求动作完全相同。每run在0/400/1200/3600中已锁范围保存检查点，不能一臂较快就偷偷多学再比较。
+
+检查点包含权重、optimizer、RNG、各桶队列、行为政策版本、wave游标、剩余未成熟match、数据调度器、teacher消费游标、预算总账与身份。窗结束先停新采样，在预留退出时间内原子保存；无法完整保存则明确incomplete并保留最后可信点，不回写“完成目标”。恢复同一run不增加attempt，必须经过断点连续性测试。
+
+每个共同检查点按固定开发集比较三个配对差、训练/未见局面的教师一致性、该让/该接错误、M1/M2/J和三组开发搭档。M1/M2/J各32块，三组合作合在32个基础块中，每块12场；六run和U0复用相同开发清单，U0同身份只算一次。若成本先导要求16块，必须在任何主训练开发成绩打开前统一锁定，之后不改。
+
+定义D_i为三个种子B-A的合作主开发差的平均；合作错误率E_i只在固定有合格标签的开发题上算。相对上一共同检查点，D_i增长≥1pp或E_i相对下降≥10%算一次工程进展；E_prev=0时该下降条件不适用。B-U0、S_B-U0与J_B-U0另报，不能与D_i混用。两次预定检查均无进展且不具备候选资格，则暂停扩时诊断；具备资格则可结束增长进入候选锁定。不能仅看训练loss，也不以新seed重新赌。
+
+### Task 6 多轮数据回流及条件分支
+
+首周期最多三轮，每轮完成后冻结学生候选与开发报告，再决定下一轮。with_h待审核root的取样来源50%学生轨迹、30%真人合法轨迹、20%构造训练家族；no_h为70/0/30。比例发生在教师审核前，接受后的比例另报；不能为凑合格比例无限补抽。按协作事件类别、动作分歧和随机普通局面的预登记规则抽取，不能只挑老师容易赢的题。每源match设置取样上限并报告，减少少数长局垄断。计划后段属于其原始来源与family，配额内优先回收，不能另加一份隐性教学预算。
+
+每轮源root清单含有序候选队列和最大尝试数。目标100/500/2000指合格训练root阶梯，成本按全部尝试根计算，探索/主验证/第二续打/计划比较/失败重试分项。合格率保守下界为0时先修教师或缩小问题，不能预算除零。到尝试上限未达目标就记incomplete；不能把几十万个失败分支藏起来只报合格题耗时。
+
+第二轮起使用两臂产生轨迹的等额并集，再一起生成教师库；只有B消费偏好。A/B继续各自已锁检查点、共同新增更新数与epoch边界。不得把上一轮所有已见题放进新盲留出。新教师只用新探索/验证世界；正式确认使用新未见基础发牌块。
+
+round锁同时写startAbsoluteUpdate、additionalUpdates、endAbsoluteUpdate和继承checkpointHash，满足end=start+additional。窗口保存轮/臂/pair与调度游标；恢复不能从pair1重新初始化或把轮2的400误认为总400。六run完成同一轮共同终点后才进入下一轮。
+
+protocol顶层continuationProfiles是轮1默认。后续freeze-round须写本轮实际四席profiles及hash，按预登记规则更新学生续打：primary actingSeat用上一轮B-pair2共同终点，secondary actingSeat用上一轮B-pair1共同终点；不按分数挑最强，其他席位/训练池保持原锁。两个学生来自共同训练数据，不能声称独立算法。若某所需checkpoint不完整，下一轮不得偷偷用latest。旧标签保留原generationRoundId/profileHash，不改写成新教师产物；消费按其生成轮清单核验。新世界复验发现同根偏好相反时标continuation_dependent，隔离冲突偏好并解释依赖，不挑有利旧标签。
+
+若合法同编码见证或具体公开历史遗漏及预登记历史消融证明有表示缺口，建立memory-gap.json后开启GRU子实验，不无限等待精确浮点碰撞。共同事实特征先固定，事件嵌入64、GRU hidden128；行动者自己的因果历史、padding mask、burn-in、在线增量与完整回放一致。无新历史信息时不得把相同输入复制成RNN然后说更像人。MLP与GRU需相同教师、目标和池，参数量区别说明；必要的宽MLP消融另记研究问题和预算。
+
+选择性在线搜索属于后续独立实验，初始产品延迟预算建议p95≤1.5秒、hard timeout≤3秒，沿用项目更严格既有SLO时取更严格者。单步超时回退冻结NN，记录比例；硬超时包括世界采样、推理和返回。阈值从开发冻结，真实Mac和浏览器测，不以服务端离线耗时代替。网络、搜索增强、蒸馏模型分别报告。没有明确收益瓶颈不启动Transformer重构。
+
+### Task 7 评测与候选封存
+
+三组训练外搭档先登记：独立冻结政策、未参与训练的人类代理或可核真人来源、未入训练的策略风格。每组需完整身份和共享来源说明；同一H换seed不成为另一种独立人类风格。no_h分支允许在起跑前登记三组非真人冻结搭档做正式自动研究确认，但不声称人类兼容性已验收；不得在with_h成绩不好后换组。三组开发搭档与三组确认搭档角色分开，确认配置不得用于调参。
+
+主指标是完整match teamWin，候选N与旧完整包O各自搭同一H，对相同冻结对手池。每基础块包含三个组的配对比赛，每组N/O都做两场换边；底层初始牌一致，后续每副的发牌由独立dealId派生，不能因先前RNG消费不同造成下一副不同牌。块内12场是相关观测，统计只算一个基础块。每组差值D_j=mean(win_N两场)-mean(win_O两场)，主差D为三个D_j宏平均，范围[-1,1]。
+
+原保护M1为N+N对O+O；M2为N+H对O+H，H沿用已冻结原身份；J沿用未入训练的高级启发式并报告。M1最少128独立块、点估计≥55%且97.5%双侧块区间下界>50%；M2最少256块、下界>45%。新周期可依据先导在开封前增加固定N，不能看完低分再增加。旧REVIEW5一次确认规则不回改，本周期新规则另账。
+
+开发选择保留种子可靠性：S=0.5×M1胜率+0.5×M2胜率；候选相对U0的S≥+5pp、J≥U0-5pp，重大合作错误无新增；教师臂三对平均主开发B-A差>0且至少两对>0；合格教师臂run至少两个，才按开发S取较低中位run。同分按pair固定顺序。若对照臂更好可如实留研究候选，但不能作为“教学有效”发布证明。
+
+一次正式确认只测一个锁定候选，最多三次跨轮确认，使用全新清单。主检验单侧alpha=0.05/3；固定N后一次计算20,000次块bootstrap下界，算法与seed锁定，报告经验区间的近似性质；并并列有界Hoeffding敏感性，不在看结果后改用较有利方法。主下界>0且点改善≥3pp；每搭档组单侧同alpha下界>-3pp；原M1/M2门及严重反例全过才晋级。
+
+确认bootstrap也使用percentile与R type 7分位，三组共用同一次完整基础块重采样索引，保留组间协方差。主下界取alpha分位，原M1/M2双侧97.5%下界取0.0125分位；不能把百分数或单/双侧弄混。统计实现与原raw块随包交付。
+
+这些门是全部必须成立的交并检验，不择一过门；0.05/3是对最多三次候选主张的名义错误率分配。不能由此把每个搭档组的区间宣称为联合同时覆盖95%。若要额外宣称每一组均显著提升，事前另做Holm/Bonferroni；不能事后挑一组。经验bootstrap不是有限样本精确保证，近边界结论并列敏感性且保留这一限制。
+
+正式N由64块先导、预定delta=5pp与主检验power≈0.8估算，再以有界二项/配对模拟复核。合作块N_primary取主检验与三个非劣门所需最大值；N_M1和N_M2分别计算，至少128/256。统计功效目标5pp与产品最低点改善3pp不同；80%主检验功效也不是全部门联合通过80%。预登记模拟至少包括：三组均+5pp，以及三组+15/0/0pp；M1真率0.60、M2真率0.50。保留组间相关性或给保守场景，报告所有必要门联合通过率及其模拟误差。若真实M1只等于0.55，点估门通过概率约一半，不能加N承诺80%。预算按各任务N独立计场；不能支持保护门就记不足。stats-plan.json逐项写公式、方差、N、备择假设、计量单位、选择规则，禁止只写“bootstrap通过”。
+
+所有计划块进入账，超时、未完场与失败单列。只允许修执行后继续同一块、同一候选、同一协议；在未完成前不查看累计胜率。无法补全则incomplete，并给候选未完成取败/对照取胜的最坏界，不能删除失败块后得pass。正式封存题由未见match/家族构建；构造回归60例全是开发，不做盲测。
+
+严重合作错误封存集初始24例，来源与生成家族不能与训练/开发重叠；在候选冻结前只核清单和标注契约，不把候选跑分给调参。类别至少含无收益炸队友、必要接管被漏掉、残局资源错误、规则事实错误。标签必须是规则/可解残局证明或合格信息集证据；证据不足不预贴唯一正确动作。候选与旧包同场一次打开，任何新增已证严重错误阻断发布；若合格标注少于24，记该门覆盖不足，不能拿60开发例补成封存。24是工程反例门，不作为罕见错误率的精确统计保证。
+
+恢复仅适用于不改变语义的执行中断。若确认中发现规则、候选、策略、目标或统计语义需改，原attempt记invalid并占用一次已开确认额度，旧块保留但不得混入修后结果；新版本需要新封存清单和新的可用attempt。不能通过称“修执行”继续复用旧块与旧额度。
+
+B对O的正式确认只支持候选升级。教学的因果增益在本周期仅有三个B-A开发对照提供初步证据，不称独立方法确认。后续若要更强因果主张，单独预登记新训练种子重复与封存B-A比较，另算预算和多重性。
+
+新候选只能生成完整candidate bundle；不自动替换网页默认部署。确认过门后送出候选身份、门结果、风险和具体发布命令供审阅。已有明确发布授权时按授权执行；否则停在已完成的可审阅候选，不让用户为一份空计划批准。
+
+## 十三 完整命令顺序
+
+### A 随包工具现在即可运行
+
+GLM先在本机定位并进入新包解压根目录，目录内应有tools、config、DESIGN.txt、EXECUTION_PLAN.txt和REVIEW4_EVIDENCE_20261028.zip。下面每行失败就停止本段，禁止用分号吞错误。所有输出名称为新路径；若已存在读身份后改新序号，不能删除重跑。
+
+```bash
+test -d /Users/ccrt/game/guandan || exit 2
+test -f tools/r6_artifacts.py || exit 2
+test -f REVIEW4_EVIDENCE_20261028.zip || exit 2
+python3 -I -S -B tools/r6_artifacts.py --help || exit $?
+python3 -I -S -B tools/r6_artifacts.py selftest || exit $?
+python3 -I -S -B tools/review5_preflight_fixed.py --selftest || exit $?
+python3 -I -S -B tools/r6_artifacts.py inventory \
+  --archive ./REVIEW4_EVIDENCE_20261028.zip \
+  --out "$HOME/REVIEW6-inventory-20261028-01.json" || exit $?
+python3 -I -S -B tools/r6_artifacts.py stage \
+  --archive ./REVIEW4_EVIDENCE_20261028.zip \
+  --dest "$HOME/REVIEW6-stage-20261028-01" \
+  --repo /Users/ccrt/game/guandan || exit $?
+python3 -I -S -B tools/review5_preflight_fixed.py \
+  --repo /Users/ccrt/game/guandan \
+  --output "$HOME/REVIEW6-preflight-20261028-01.json" || exit $?
+```
+
+stage目标不要提前mkdir。它展开证据原结构，不恢复进仓库。此段结束只代表盘点与隔离恢复，不代表训练可以启动。
+
+### B GLM先实现入口再运行工程任务
+
+GLM读取第十二章，先只在新文件实现inspect/backup/selftest三项入口。下面backup成功前不修改既有业务源文件；其后才实现产品修复和其他子命令及真实路径验收，不能未实现就继续敲命令。入口按process.execPath调用Node子进程；Python固定实际venv绝对路径，不依赖PATH碰运气。环境路径由inspect查出写进配置，禁止擅自pip安装或换CPU/MPS路径。
+
+按config/cycle.template.json生成lab/review6/cycle.draft.json，填路径与已知身份，不填猜测值。将本包解压绝对路径填packageRoot，资产目录填artifactRoot，读取结果登记而非复制旧source覆盖。新入口--help必须逐一显示下列子命令和参数。
+
+```bash
+cd /Users/ccrt/game/guandan || exit 2
+test -f lab/review6/run.mjs || exit 2
+node lab/review6/run.mjs --help || exit $?
+node lab/review6/run.mjs selftest --synthetic-only || exit $?
+node lab/review6/run.mjs inspect \
+  --config lab/review6/cycle.draft.json || exit $?
+node lab/review6/run.mjs backup \
+  --config lab/review6/cycle.draft.json || exit $?
+node lab/review6/run.mjs verify-baseline \
+  --config lab/review6/cycle.draft.json || exit $?
+node lab/review6/run.mjs verify-product \
+  --config lab/review6/cycle.draft.json --scope facts-review-ui || exit $?
+node lab/review6/run.mjs verify-data \
+  --config lab/review6/cycle.draft.json || exit $?
+node lab/review6/run.mjs train-human-proxy \
+  --config lab/review6/cycle.draft.json || exit $?
+node lab/review6/run.mjs verify-teacher \
+  --config lab/review6/cycle.draft.json --pilot-roots 12 || exit $?
+node lab/review6/run.mjs pilot \
+  --config lab/review6/cycle.draft.json || exit $?
+node lab/review6/run.mjs collect-roots \
+  --config lab/review6/cycle.draft.json --round 1 || exit $?
+node lab/review6/run.mjs freeze \
+  --config lab/review6/cycle.draft.json \
+  --out lab/review6/protocol.lock.json || exit $?
+```
+
+inspect与backup不可运行项目训练；backup退出前读回核验。verify-product必须调用已实现真实产品入口和浏览器验收，不能只检查文档含字符串。freeze只读取已验收收据；缺本分支数据门、教师质量、速度/成本或未填必需身份时退出2。no_h的H字段可为空且必须附分支选择收据。
+
+不受阻断任务可以单独调用。例如H不合格时可以继续verify-product、本地verify-teacher以及单独no_h分支真实教学；这不允许freeze正式含H配方。train-human-proxy返回blocked时本段停止串行脚本，由GLM按已登记分支填selectedExperiment后继续不受影响任务，不能吞掉错误仍按with_h运行。入口需要明确错误依赖，不把整个周期无期限挂起等人类数据。
+
+### C 生成教学数据并执行可恢复长训练
+
+```bash
+node lab/review6/run.mjs build-teacher-data \
+  --protocol lab/review6/protocol.lock.json --round 1 || exit $?
+node lab/review6/run.mjs verify-learning \
+  --protocol lab/review6/protocol.lock.json --updates 2 || exit $?
+node lab/review6/run.mjs train-window \
+  --protocol lab/review6/protocol.lock.json \
+  --round 1 --window-seconds 14400 || exit $?
+node lab/review6/run.mjs status \
+  --protocol lab/review6/protocol.lock.json || exit $?
+```
+
+train-window只能调度锁清单内六run，按pair1A、pair1B、pair2A、pair2B、pair3A、pair3B循环推进至下一个共同检查点；不能一个run用完72小时。14400为最大窗，任务或周期余额更少则提前保存退出。退出0时必须区分window_saved与target_completed，前者不是训练过门。
+
+未完成且无阻断时重复同一个train-window命令，恢复同一run、同一累计账。不能加--force、--new-budget、--reset或静默重建目录。达到共同检查点后再执行开发，不让train-window自行打开确认集。
+
+```bash
+node lab/review6/run.mjs evaluate-dev \
+  --protocol lab/review6/protocol.lock.json --round 1 || exit $?
+node lab/review6/run.mjs decide-next \
+  --protocol lab/review6/protocol.lock.json --round 1 || exit $?
+```
+
+decide-next只产生continue/diagnose/next_round/eligible_to_lock/stopped的决策收据，不启动训练、不扣确认次数。若next_round且预算计划批准了第二轮，collect-roots读取两臂轨迹等额并集，冻结round-2清单后继续相同流程；第三轮同理。
+
+```bash
+node lab/review6/run.mjs collect-roots \
+  --protocol lab/review6/protocol.lock.json --from-round 1 --to-round 2 || exit $?
+node lab/review6/run.mjs extract-plan-tails \
+  --protocol lab/review6/protocol.lock.json --from-round 1 --to-round 2 || exit $?
+node lab/review6/run.mjs freeze-round \
+  --protocol lab/review6/protocol.lock.json --round 2 || exit $?
+node lab/review6/run.mjs build-teacher-data \
+  --protocol lab/review6/protocol.lock.json --round 2 || exit $?
+node lab/review6/run.mjs train-window \
+  --protocol lab/review6/protocol.lock.json \
+  --round 2 --window-seconds 14400 || exit $?
+```
+
+这些第二轮命令仅在第一轮收据允许时有效；不是无论结果如何都照抄运行。轮2/3新增更新量、根点规模和资源余额在round锁中先固定，旧确认题绝不能回流后再称封存。
+
+### D 候选确认和回交
+
+```bash
+node lab/review6/run.mjs lock-candidate \
+  --protocol lab/review6/protocol.lock.json --round 1 --attempt 1 \
+  --out lab/review6/confirm-1/candidate.lock.json || exit $?
+node lab/review6/run.mjs confirm \
+  --protocol lab/review6/protocol.lock.json \
+  --candidate lab/review6/confirm-1/candidate.lock.json --attempt 1 || exit $?
+node lab/review6/run.mjs report \
+  --protocol lab/review6/protocol.lock.json || exit $?
+node lab/review6/run.mjs verify-delivery \
+  --protocol lab/review6/protocol.lock.json || exit $?
+```
+
+lock-candidate无合格候选则退出3并写not_eligible，正常工作是到此保留旧部署；不因为脚本中下一行是confirm就继续。确认失败退出3并保留完整结果。report、status、verify-delivery可在任何失败后单独运行，以回交失败与未完成内容；报告成功不改变模型是否过门。lock-candidate按attempt从protocol预留的confirm-1/2/3命名空间取独立种子与场次清单，创建新candidate锁和eval-manifest；路径已存在则只允许核身份后resume，禁止覆盖。后续使用--attempt 2及confirm-2新路径，必须是新轮有资格候选，不能同一个候选失败后重抽。attempt号全周期全分支共用上限3。
+
+lock-candidate只锁身份，不消耗已开确认次数。confirm在首次开封或执行任何正式块之前原子写opened并占用attempt；再次调用只恢复同candidate/protocol/manifest身份，不能重新记未开封或换候选。读取政策清单/哈希不算看过成绩，运行正式块才进入此一次性账。
+
+没有默认deploy命令。若后续有具体发布授权，GLM另给基于已锁candidate的完整包替换与回滚命令；不得只复制weights.f32进旧网页。真实用户界面版本与候选一致性再检查。
+
+## 十四 必须实现的接口与交付字段
+
+### 1 最小数据接口
+
+这些是接口契约，不要求重复发明已有模块。类型名可适配现有工程，字段意义不可删。
+
+DecisionFactsV3对应第十二章Task 1。TeacherLabel字段至少为labelId、rootId、sourceMatchId、familyId、split、rulesHash、candidateHash、encoderHash、observationHash、preferredActionId、otherActionId、scope=root_action、rewardFunctionHash、worldExploreHash、worldVerifyHash、continuationIds、worldCount、pairedMean、ciMethod、ciLow、ciHigh、secondaryCiLow、missingBranches、informationAudit、support、rawTargetMargin、labelProvenance。
+
+只有support=paired_supported、missingBranches=0、informationAudit=pass、scope=root_action、source split=train的标签进入当前偏好损失。strong标签仍只表示固定假设下支持，不是数学全局最优。计划标签另表，不复用root_action字段掩盖范围。
+
+RunReceipt包含runId、arm、pairId、roundId、parentHash、sourceSnapshotHash、configHash、checkpointHash、optimizerHash、rngHash、teamSlotsByBucket、teacherRootsUnique、teacherExposures、anchorExposures、updates、consumedLabels、subsamplingDiscarded、tail、pendingMatches、budgetActiveSeconds、stageStatus。numGames与numUpdates不能互代。
+
+EvalBlock包含blockId、seedManifestHash、groupId、policyIds、seatRotation、initialDealFingerprint、allDealFingerprints、completed、teamWin、rootG（如有）、duration、failureReason。聚合保留raw块，独立recompute从这些字段重建所有点估计与区间。
+
+### 2 必须有的负例
+
+本轮额外有必要测试的高风险边界包括：无protocol拒绝、NaN拒绝、子进程exit4传播、snapshot源码变更拒绝、正常/symlink TMPDIR、预算恢复不归零、末波账目、同牌换边、截断不当输、隐藏信息三层不变、队伍标签符号、候选遗漏与规则非法区分、claim语义翻转、四席“你”和actionId、缓存绕过、教师验证集泄漏、已开确认集拒重开、空任务不能verified。测试跟真实调用路径，不能只测试新写的镜像函数。
+
+无需为每个文案或简单可逆编辑写测试。只针对这些会造成静默错训、误报、丢证据或用户事实错误的边界。验收数量不是目标，失败前后证据和真实路径才是。
+
+### 3 最终目录与报告
+
+回交包必须包含EXECUTION_REPORT、MISSING、DEVIATIONS、MANIFEST，以及R0资产/R1网页/R2数据/R3教师/R4训练/R5开发/R7确认的原始工件或可验证引用。MANIFEST逐文件大小与SHA；每项声明可映射至具体字段，不以一张汇总图替代。
+
+报告首页固定写：实际网页build与默认完整政策、这次真正上线的变化、研究候选是否过门、已完成/部分完成/未开始、实际花费、下一步。所有带“人类”“高手”“学会配合”的措辞写证据范围。明确区分H像数据、老师建议受支持、学生训练题会做、未见题泛化、跨搭档提高和真人体验。
+
+需要用户补充时只请求确实本机无法找到的原始事故包、明确费用上限或最终发布决定；其他工程、验证与可复用数据工作继续。不要再让用户为了证明20场是否足够承担额外20场任务。正常游玩中标记不满动作即可，自动导出原谱由产品承担。
+
+## 十五 发给 GLM 的开工指令
+
+请执行本包DESIGN.txt与EXECUTION_PLAN.txt，以protocol.lock.json为新周期冻结合同。先完成Task 0资产保护与审计、Task 1真实网页事实修复、Task 2数据接入、Task 3可信教师和Task 4速度成本先导，再开展Task 5至7。不要直接重跑上一轮P，也不要先加长训练掩盖复盘错误。
+
+当前已提供tools是真正可运行的恢复与只读工具；lab/review6/run.mjs是你须实现的薄入口，不得假称已存在或猜旧CLI参数。先负例验入口与冻结契约，任何未实现任务写not_implemented。失败不覆盖旧报告，不删除lab/review2或任何证据目录。
+
+每完成一项，把用户能看到的产品变化、证据路径、实际成本和下一步写清。前端复盘修好后先给可体验版本，再继续多轮训练。仅当教师标签进入真实梯度且未见局面/搭档指标成立，才升级“学会协作”的结论。72小时是整个首周期上限，4小时窗是恢复点；达界保存续跑身份，不能换runId洗预算。付费API复用用户已有明确授权，无额度时继续本地教师。
+
+结束时按第十四章回交报告和紧凑证据包。若某环节blocked，完成所有不依赖它的工作，逐项说真实阻碍，不把工程没实现说成模型训练失败，也不把部分CLI完成说成网页已交付。

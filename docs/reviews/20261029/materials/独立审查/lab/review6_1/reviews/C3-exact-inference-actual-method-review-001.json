@@ -1,0 +1,1064 @@
+{
+  "schemaVersion": "r6-independent-method-result-review-v1",
+  "role": "method",
+  "reviewId": "C3-exact-inference-actual-method-review-001",
+  "at": "2026-10-28T22:16:30.024426+00:00",
+  "requestSHA256": "67e9bb83eb62e0b777df590a0e94d694988052868ecc6a12a48acf68843f5b52",
+  "requestBinding": {
+    "kind": "actual-result-followup-to-original-execution-request",
+    "originalExecutionRequestPath": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-exact-inference-execution-request-001.json",
+    "originalExecutionRequestSHA256": "67e9bb83eb62e0b777df590a0e94d694988052868ecc6a12a48acf68843f5b52",
+    "reviewedActualProofReportPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/proof-report.json",
+    "reviewedActualProofReportSHA256": "3d9e87b37aba80f54f69488a8736cc63cf83f1d9a975caa9fc86a15d7145bc19"
+  },
+  "reviewedContractSHA256": "e49fab97ac026226a94015fe4654ed9703610ae614eaa1cfca7c25fc91be38d4",
+  "reviewedSnapshotSHA256": "93feb76f61f020b9d89e972e02fb8b637addc166a38a81ba7cc724e56c00dd10",
+  "overallDecision": "EQUIVALENCE_AND_LOCAL_TIMING_VERIFIED",
+  "P1": [],
+  "P2": [],
+  "blockers": [],
+  "scope": "Accept observed execution equivalence and finite local serial whole-match timing for original/verify/plain-fast on this immutable48-case proof only; inspect two variance-pair metadata records for declared premeasurement revision/lineage only. Reuse design, teacher math/source/world/DSL results; no rerun of model or matches.",
+  "acceptance": {
+    "bounded48CaseExactExecutionProof": true,
+    "localSerialMedianAndP90Timing": true,
+    "variancePairMetadataLineageAndRecordedBehaviorQualification": true,
+    "optimizedProductionTeacherLearnerOrEvaluationApplication": false,
+    "variance64ExecutionOrVariancePowerConclusion": false,
+    "teacherScientificAccuracyOrPlansLearned": false,
+    "strongerPolicyOrGameStrength": false,
+    "C3Overall": false,
+    "main": false,
+    "formal": false
+  },
+  "readOnlyBoundary": {
+    "repositoryBusinessEvidenceLedgerOrLeaseFilesWritten": 0,
+    "newProductionWeightModelLoadsForForward": 0,
+    "newNNForwardCalls": 0,
+    "newSyntheticForwardCalls": 0,
+    "newActualMatchesOrRollouts": 0,
+    "newTorchComputations": 0,
+    "newTeacherLabels": 0,
+    "newTrainingUpdates": 0,
+    "formalOrSealedResultsOpened": 0,
+    "onlyPrivateTmpReportAndMechanicalProbeWrites": true
+  },
+  "findings": [
+    {
+      "id": "A01-complete-raw-denominators",
+      "status": "VERIFIED",
+      "evidence": "48 distinct immutable case files, ordinals1..16 x3 modes;16 families reused from speed seeds. All48 complete, incompleteReason null. Every full result object equal across three modes for each ordinal, including rootRoundResult, complete, winner, games, decisions, g, W, target, four policy IDs, trace SHA, all indexed deals, ownPlanSummary.",
+      "physicalCounts": {
+        "matches": 48,
+        "games": 471,
+        "decisions": 47307,
+        "families": 16
+      },
+      "limit": "These are48 physical executions of16 reused deterministic trajectories, not48 independent strength samples or labels."
+    },
+    {
+      "id": "A02-original-reproduction-and-roles",
+      "status": "VERIFIED",
+      "evidence": "Each newly executed original is joined by ordinal to prior actual speed2-worker sample; all16 seed/traceSHA/games/decisions equal. Frozen primary profile physically maps U0 actor0, O seats1/3, heuristic0 partner2. All case policy IDs match that mapping. Initial deal seed and each future deal seed independently recomputed by frozen FNV formula; all471 deal entries match.",
+      "priorReferenceSHA256": "797f03325193b9b27880303d41125c20532b168adb472821beff3522c13459b3"
+    },
+    {
+      "id": "A03-per-batch-score-verification",
+      "status": "VERIFIED_EXECUTION_INVARIANT_AND_COUNTERS",
+      "evidence": "All16 verify cases have batches>0 and bitwiseComparedBatches=referenceForwardCalls=batches. Raw totals11428 batches and69768 candidate score vectors equal final diagnostics; original and fast have same batch/vector counts. Six distinct diagnostic identities are exactly two weight/dimension identities times3 modes; frozen source/cache installation proof from prior review remains unchanged. Actual module readback binds MLP, neuralSeat, exact adapter, match-play and worker to immutable snapshot.",
+      "independentlyRecomparedPersistedRawFloatWords": false,
+      "reason": "Per-batch reference/fast score arrays were not persisted. No reviewer model forward is allowed. Acceptance rests on unchanged already-reviewed throw-before-return comparison code actually loaded, successful guarded execution, complete per-case counters and final diagnostics; not on a new numerical rerun."
+    },
+    {
+      "id": "A04-timing-recomputation",
+      "status": "VERIFIED_LOCAL_MEASUREMENTS",
+      "evidence": "Predeclared odd/even original/verify/fast execution order confirmed from all48 stdout progress rows. For each mode exclude ordinal1 as one warm match, then recompute type7 median/P90 over15 steady matches. Every timing sum/quantile and both speed ratios equals saved report with numerical difference0.",
+      "medianWholeMatchSpeedup": 1.3898530733333634,
+      "p90WholeMatchSpeedup": 1.4010736399481063,
+      "limit": "Descriptive timing for this one serial Node policy process, these known16 seeds, same host/runtime. It is not2/4-worker throughput, universal speedup, cold start speed, strength improvement or independent performance population inference. Verify timing includes extra original-reference work. Existing microbenchmark002 is not used as whole-match measurement."
+    },
+    {
+      "id": "A05-actual-authority-module-and-accounting",
+      "status": "VERIFIED_AFFECTED_SCOPE",
+      "evidence": "Actual launch/authorization/current two role approvals/request/contract/spec/reference/snapshot hashes match. All156 snapshot files rehashed unchanged. All47 translated module file paths parsed from actual Node stderr are bound snapshot files; required worker/adapter/match-play/MLP/neuralSeat present. ChildPID35246 exits0 without signal/error. Canonical ledger has exactly one600-second reserve followed by one64.36816350000001-second settlement for this task; local entry hashes/chain and settlement budgetHead match.",
+      "parentFullWallSeconds": 32.184081750000004,
+      "conservativeChargedWorkerSeconds": 64.36816350000001,
+      "workerReportWallSeconds": 31.908872083,
+      "sumTimedMatchSeconds": 31.665165955000006,
+      "limit": "Parent full window, worker internal window and sum of match timers are distinct quantities. Only parent full window x2 is budget charge; child timer is not substituted. This is not a new full-cycle accounting audit."
+    },
+    {
+      "id": "A06-variance-pair-metadata",
+      "status": "VERIFIED_METADATA_ONLY",
+      "evidence": "Old U0/O actual preflight selections independently normalized to necessary resource/effect keys:0 differences over same18 roots. Preregistration002 explicitly revises pair to frozen U0/training heuristic0, references prior design/preflight hashes, precedes new behavior record by saved timestamp and is hash-referenced by that record. All18 U0 student action keys/actors exactly reuse existing preflight; recorded heuristic comparison has10 key differences. Both records disclose0 variance blocks/outcomes and no new NN/rollout; floor.5, worstSTD1, NI alternative0 and finalN unselected are preserved.",
+      "interpretation": "An explicit premeasurement behavior-qualification revision after old-pair behavior was observed is documented. This is not a claim that the original pair intent stayed unchanged. No reward/variance outcome-based policy choice appears in supplied records.",
+      "limit": "Metadata and recorded-key comparison only: reviewer did not regenerate heuristic actions or independently test their legality, infer variance/power, authorize64 blocks, or establish historical order with an external trusted timestamp service."
+    }
+  ],
+  "rawRecomputation": {
+    "caseCount": 48,
+    "modeCounts": {
+      "original": 16,
+      "exact-prefix-verify": 16,
+      "exact-prefix-v1": 16
+    },
+    "families": 16,
+    "incompleteMatches": 0,
+    "allThreeFullResultObjectsExactlyEqual": true,
+    "fullResultFieldsChecked": [
+      "winner",
+      "games",
+      "decisions",
+      "rootRoundResult",
+      "rootTeamTarget",
+      "rootG",
+      "finalW",
+      "policyIds",
+      "traceSHA256",
+      "deals",
+      "ownPlanSummary"
+    ],
+    "sourceInitialAndEveryFutureDealSeedCheckedCount": 471,
+    "fourSeatPolicyIds": [
+      "review6-clean-U0-399-action64-candv3",
+      "frozenChampion-clean2-ck7051-encv1-candv2",
+      "review6-train-heuristic0-counter-v1",
+      "frozenChampion-clean2-ck7051-encv1-candv2"
+    ],
+    "perOrdinalChecks": [
+      {
+        "ordinal": 1,
+        "seed": 1347310672,
+        "familyId": "first-deal-family:110626a42cee50ba64525eadc923c92725ec413ce6da6e57e68f26140f80b60f",
+        "traceSHA256": "5675f512da0cd88b9444d28e57ca6e0a71cee8ba2a8e7dd99b4fcab11c31aa79",
+        "games": 10,
+        "decisions": 984,
+        "rootG": -2,
+        "finalW": -1,
+        "rootTeamTarget": -3,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 710,
+          "candidateVectors": 4223,
+          "bitwiseComparedBatches": 710,
+          "referenceForwardCalls": 710
+        }
+      },
+      {
+        "ordinal": 2,
+        "seed": 3394519793,
+        "familyId": "first-deal-family:8150d5d106976d27c8535a6130ad3515785d00a65bfccd06610698fe7f1b84c0",
+        "traceSHA256": "cc20a95529553dd806a774b2bffbf498499597c17b9e1bf082683ad0172c1d48",
+        "games": 7,
+        "decisions": 724,
+        "rootG": -2,
+        "finalW": -1,
+        "rootTeamTarget": -3,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 522,
+          "candidateVectors": 3374,
+          "bitwiseComparedBatches": 522,
+          "referenceForwardCalls": 522
+        }
+      },
+      {
+        "ordinal": 3,
+        "seed": 2465526494,
+        "familyId": "first-deal-family:774229fe12d5f54d27175e5ff33a0edd59fa0175ffa478ebb69f36c517e8e8e8",
+        "traceSHA256": "6b7841188e29f471c1abd31798f1fda0a7c1489c3021344535331fa8a7b40244",
+        "games": 7,
+        "decisions": 766,
+        "rootG": -3,
+        "finalW": -1,
+        "rootTeamTarget": -4,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 555,
+          "candidateVectors": 3244,
+          "bitwiseComparedBatches": 555,
+          "referenceForwardCalls": 555
+        }
+      },
+      {
+        "ordinal": 4,
+        "seed": 3736332855,
+        "familyId": "first-deal-family:368d575ae840fed063a8370039149973158b69d9ad861d8d3427122fe0c4d95e",
+        "traceSHA256": "de2b398dd2bc9b4ace389ae4943781020b088415e47d49aee5b9593a21deb50e",
+        "games": 9,
+        "decisions": 918,
+        "rootG": -2,
+        "finalW": -1,
+        "rootTeamTarget": -3,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 661,
+          "candidateVectors": 4105,
+          "bitwiseComparedBatches": 661,
+          "referenceForwardCalls": 661
+        }
+      },
+      {
+        "ordinal": 5,
+        "seed": 3190340084,
+        "familyId": "first-deal-family:b8049010f7377b000dcf36db8686ce4ae7eac556f454d7aa6de80309dbd115e6",
+        "traceSHA256": "b90f36292fddc162ee95290378b5cbb99010e38d91301abbadc1cfc4e31297a4",
+        "games": 12,
+        "decisions": 1161,
+        "rootG": -2,
+        "finalW": -1,
+        "rootTeamTarget": -3,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 835,
+          "candidateVectors": 4891,
+          "bitwiseComparedBatches": 835,
+          "referenceForwardCalls": 835
+        }
+      },
+      {
+        "ordinal": 6,
+        "seed": 3575360725,
+        "familyId": "first-deal-family:2f3c20c207416ae70b152c2a4ee590f0de017552efa57852d86c4e808d0b434b",
+        "traceSHA256": "763f1183339dd95222a398626fa4cc7590a9d2955fd6f651142bdfca6101f657",
+        "games": 6,
+        "decisions": 608,
+        "rootG": -3,
+        "finalW": -1,
+        "rootTeamTarget": -4,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 439,
+          "candidateVectors": 2946,
+          "bitwiseComparedBatches": 439,
+          "referenceForwardCalls": 439
+        }
+      },
+      {
+        "ordinal": 7,
+        "seed": 2712629410,
+        "familyId": "first-deal-family:35e62c4f4c3f1f6a7a3aec05a113deb92edaf1379893e90ca2bba0a6b102e12c",
+        "traceSHA256": "f01508ac648fb5da6f9efbfc1df93ea00688e9ae528e43af0a1c4a401b6ff187",
+        "games": 11,
+        "decisions": 1141,
+        "rootG": -3,
+        "finalW": -1,
+        "rootTeamTarget": -4,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 840,
+          "candidateVectors": 5496,
+          "bitwiseComparedBatches": 840,
+          "referenceForwardCalls": 840
+        }
+      },
+      {
+        "ordinal": 8,
+        "seed": 831972347,
+        "familyId": "first-deal-family:ce947c9678a3d5021b9c0ca70e61d06541b4b10c42b6ec1c72ea76af0eea7fff",
+        "traceSHA256": "d60743147edebe24b4bd4160edb124c5a8dba37015cd90839a09635e08d1b880",
+        "games": 8,
+        "decisions": 785,
+        "rootG": -2,
+        "finalW": -1,
+        "rootTeamTarget": -3,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 571,
+          "candidateVectors": 3509,
+          "bitwiseComparedBatches": 571,
+          "referenceForwardCalls": 571
+        }
+      },
+      {
+        "ordinal": 9,
+        "seed": 2933604760,
+        "familyId": "first-deal-family:d098b8e45adf7cc5006da2453449fb0ece5df3b6bcba774e579c70616b152844",
+        "traceSHA256": "807b3302815c40f98f9ab617ca3fea942be90503cc37d34e27e516174ea3ec4f",
+        "games": 9,
+        "decisions": 892,
+        "rootG": -3,
+        "finalW": -1,
+        "rootTeamTarget": -4,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 643,
+          "candidateVectors": 3893,
+          "bitwiseComparedBatches": 643,
+          "referenceForwardCalls": 643
+        }
+      },
+      {
+        "ordinal": 10,
+        "seed": 1404022137,
+        "familyId": "first-deal-family:cdb5d9dba7c7848ee0855bb718be61c985321597cac386a801dab037ebdd46b5",
+        "traceSHA256": "4166168f7c1596910daede3e7094fd7bac9c48c072e471ed10bcd40e4cee316c",
+        "games": 8,
+        "decisions": 871,
+        "rootG": -1,
+        "finalW": -1,
+        "rootTeamTarget": -2,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 628,
+          "candidateVectors": 3954,
+          "bitwiseComparedBatches": 628,
+          "referenceForwardCalls": 628
+        }
+      },
+      {
+        "ordinal": 11,
+        "seed": 3678397783,
+        "familyId": "first-deal-family:ceedaeeb135d1accdfa867bff1c787b7cd89034cd315ab3a55d2c1e9d504e21d",
+        "traceSHA256": "d54c554c997bacd2744b2eb64a96ba84d52347faf9930f61ea5aa720550260b7",
+        "games": 12,
+        "decisions": 1183,
+        "rootG": -2,
+        "finalW": -1,
+        "rootTeamTarget": -3,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 863,
+          "candidateVectors": 5163,
+          "bitwiseComparedBatches": 863,
+          "referenceForwardCalls": 863
+        }
+      },
+      {
+        "ordinal": 12,
+        "seed": 1122828798,
+        "familyId": "first-deal-family:0812bcc56ce306872cdaa296e88e4ad243ba4fe2ef3275a1ea6b2accf1fd8c7b",
+        "traceSHA256": "bdce8c11615c38586c4b50a51c3801954dbc0e162583b25f1a5a5fea9f3584e5",
+        "games": 8,
+        "decisions": 825,
+        "rootG": -2,
+        "finalW": -1,
+        "rootTeamTarget": -3,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 595,
+          "candidateVectors": 3811,
+          "bitwiseComparedBatches": 595,
+          "referenceForwardCalls": 595
+        }
+      },
+      {
+        "ordinal": 13,
+        "seed": 1585787921,
+        "familyId": "first-deal-family:58380da388050ffc110e50eaf750623b60a20d59ca183dbf084bea825ae6e51e",
+        "traceSHA256": "9fe19d8819c4f40c0f26574f3209f690f6aa9039b9d3713de94e16ac63b1858d",
+        "games": 11,
+        "decisions": 1132,
+        "rootG": -1,
+        "finalW": -1,
+        "rootTeamTarget": -2,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 835,
+          "candidateVectors": 4615,
+          "bitwiseComparedBatches": 835,
+          "referenceForwardCalls": 835
+        }
+      },
+      {
+        "ordinal": 14,
+        "seed": 3665330544,
+        "familyId": "first-deal-family:3b712a46842197dc77db3846e6c7224bb12e7008d522baa688acf24e4b17a315",
+        "traceSHA256": "c4d467f603a6c057ed50fad92b74a50408b4f9b5d3e8482bae7c99a2fc186df6",
+        "games": 14,
+        "decisions": 1321,
+        "rootG": -2,
+        "finalW": -1,
+        "rootTeamTarget": -3,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 954,
+          "candidateVectors": 5416,
+          "bitwiseComparedBatches": 954,
+          "referenceForwardCalls": 954
+        }
+      },
+      {
+        "ordinal": 15,
+        "seed": 4238110619,
+        "familyId": "first-deal-family:17615c58f9f84b2a6ff6e78040457bb50b1c49ab9f52ceefc62eaaf10a505411",
+        "traceSHA256": "63f2de023be9b73711873411b90fc7d708ed1511d275c806525f65fde1d0485b",
+        "games": 16,
+        "decisions": 1573,
+        "rootG": 1,
+        "finalW": -1,
+        "rootTeamTarget": 0,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 1134,
+          "candidateVectors": 6539,
+          "bitwiseComparedBatches": 1134,
+          "referenceForwardCalls": 1134
+        }
+      },
+      {
+        "ordinal": 16,
+        "seed": 2856264898,
+        "familyId": "first-deal-family:8934e239bba106bc0c20ed14fd95f67a5596c4f3df9a0aca88f187e59a78037c",
+        "traceSHA256": "353adc439a5028b877e4e71d9e391729ce94e2e66a3e0ed7b33e9dfc203d036e",
+        "games": 9,
+        "decisions": 885,
+        "rootG": 1,
+        "finalW": -1,
+        "rootTeamTarget": 0,
+        "allThreeFullResultObjectsExactlyEqual": true,
+        "priorOriginalSeedTraceGamesDecisionsEqual": true,
+        "verify": {
+          "batches": 643,
+          "candidateVectors": 4589,
+          "bitwiseComparedBatches": 643,
+          "referenceForwardCalls": 643
+        }
+      }
+    ],
+    "inferenceTotals": {
+      "original": {
+        "batches": 11428,
+        "candidateVectors": 69768,
+        "bitwiseComparedBatches": 0,
+        "referenceForwardCalls": 0
+      },
+      "exact-prefix-verify": {
+        "batches": 11428,
+        "candidateVectors": 69768,
+        "bitwiseComparedBatches": 11428,
+        "referenceForwardCalls": 11428
+      },
+      "exact-prefix-v1": {
+        "batches": 11428,
+        "candidateVectors": 69768,
+        "bitwiseComparedBatches": 0,
+        "referenceForwardCalls": 0
+      }
+    },
+    "sixDistinctModelModeIdentities": [
+      {
+        "identity": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01:399:original",
+        "mode": "original",
+        "batches": 3845,
+        "candidateVectors": 34546,
+        "bitwiseComparedBatches": 0,
+        "referenceForwardCalls": 0
+      },
+      {
+        "identity": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55:385:original",
+        "mode": "original",
+        "batches": 7583,
+        "candidateVectors": 35222,
+        "bitwiseComparedBatches": 0,
+        "referenceForwardCalls": 0
+      },
+      {
+        "identity": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01:399:exact-prefix-verify",
+        "mode": "exact-prefix-verify",
+        "batches": 3845,
+        "candidateVectors": 34546,
+        "bitwiseComparedBatches": 3845,
+        "referenceForwardCalls": 3845
+      },
+      {
+        "identity": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55:385:exact-prefix-verify",
+        "mode": "exact-prefix-verify",
+        "batches": 7583,
+        "candidateVectors": 35222,
+        "bitwiseComparedBatches": 7583,
+        "referenceForwardCalls": 7583
+      },
+      {
+        "identity": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01:399:exact-prefix-v1",
+        "mode": "exact-prefix-v1",
+        "batches": 3845,
+        "candidateVectors": 34546,
+        "bitwiseComparedBatches": 0,
+        "referenceForwardCalls": 0
+      },
+      {
+        "identity": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55:385:exact-prefix-v1",
+        "mode": "exact-prefix-v1",
+        "batches": 7583,
+        "candidateVectors": 35222,
+        "bitwiseComparedBatches": 0,
+        "referenceForwardCalls": 0
+      }
+    ],
+    "timings": {
+      "original": {
+        "matches": 16,
+        "warmMatches": 1,
+        "steadyMatches": 15,
+        "steadyMedianSeconds": 0.5509013329999998,
+        "steadyP90Seconds": 0.7428049001999992,
+        "sumMatchActiveSeconds": 9.502706956999997
+      },
+      "exact-prefix-verify": {
+        "matches": 16,
+        "warmMatches": 1,
+        "steadyMatches": 15,
+        "steadyMedianSeconds": 0.8994771249999994,
+        "steadyP90Seconds": 1.2058003749999988,
+        "sumMatchActiveSeconds": 15.399924373000001
+      },
+      "exact-prefix-v1": {
+        "matches": 16,
+        "warmMatches": 1,
+        "steadyMatches": 15,
+        "steadyMedianSeconds": 0.39637379200000034,
+        "steadyP90Seconds": 0.5301683502000021,
+        "sumMatchActiveSeconds": 6.76253462500001
+      }
+    },
+    "speedup": {
+      "median": 1.3898530733333634,
+      "p90": 1.4010736399481063
+    },
+    "timingDifferenceFromReport": {
+      "original": {
+        "matches": 0,
+        "warmMatches": 0,
+        "steadyMatches": 0,
+        "steadyMedianSeconds": 0.0,
+        "steadyP90Seconds": 0.0,
+        "sumMatchActiveSeconds": 0.0
+      },
+      "exact-prefix-verify": {
+        "matches": 0,
+        "warmMatches": 0,
+        "steadyMatches": 0,
+        "steadyMedianSeconds": 0.0,
+        "steadyP90Seconds": 0.0,
+        "sumMatchActiveSeconds": 0.0
+      },
+      "exact-prefix-v1": {
+        "matches": 0,
+        "warmMatches": 0,
+        "steadyMatches": 0,
+        "steadyMedianSeconds": 0.0,
+        "steadyP90Seconds": 0.0,
+        "sumMatchActiveSeconds": 0.0
+      }
+    },
+    "physicalGames": 471,
+    "physicalDecisions": 47307,
+    "progressOrderMatchesPredeclaredOddEven": true,
+    "actualTranslatedModuleFiles": [
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/boot.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/action-effect.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/data-replay.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/exact-inference.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/executable-snapshot.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/frozen-launch-guard.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/inference-proof-worker.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/inference-proof.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/match-play.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/plan-dsl.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/policy-registry.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/product-artifacts.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/review6/runtime.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/lab/src/review5_tuning/kscbReplay.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/esbuild/lib/main.js",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/tsx/dist/cjs/index.cjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/tsx/dist/esm/index.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/tsx/dist/index-Bqjv9TxC.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/tsx/dist/index-DE3OBZuV.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/tsx/dist/lexer-CanA6ArK.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/tsx/dist/loader.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/tsx/dist/register-nyXW-TH3.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/tsx/dist/require-CBjy4Foe.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/node_modules/tsx/dist/temporary-directory-Du7LpLp9.mjs",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/heuristic.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/index.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/legal.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/memory.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/nn/mlp.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/nn/neuralSeat.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/nn/nnplayer.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/nn/observationAudit.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/nn/schema.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/nn/tiered.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/nn/wave.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/planner.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/player.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/sim.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/ai/src/types.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/engine/src/combo.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/engine/src/deck.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/engine/src/game.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/engine/src/index.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/engine/src/rank.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/engine/src/record.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/engine/src/rng.ts",
+      "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/packages/engine/src/types.ts"
+    ],
+    "actualTranslatedModuleCount": 47,
+    "actualTranslatedModulePathsOutsideSnapshot": [],
+    "settlement": {
+      "taskId": "C3-exact-inference-proof-execution-001",
+      "at": "2026-10-28T22:04:24.069Z",
+      "deviceWallSeconds": 32.184081750000004,
+      "conservativelyChargedWorkerSeconds": 64.36816350000001,
+      "maxWorkersCharged": 2,
+      "chargeBasis": "maximum simultaneous policy worker count times full device window, including startup/parent/statistics; measured worker/task seconds separately reported",
+      "childPID": 35246,
+      "exitCode": 0,
+      "signal": null,
+      "error": null,
+      "leaseSHA256": "705ef10be41e39de3ba9f54ad16b0398dbd9d2607289b7cdbf1652a613140a0e",
+      "budgetHead": "94092f06e9bdfa24669f215b0bb38a5b3034765ca67831604981ed99155c409d"
+    },
+    "workerReportDeviceWallSeconds": 31.908872083,
+    "sumTimedMatchSeconds": 31.665165955000006,
+    "canonicalTaskLedgerEntries": [
+      {
+        "kind": "reserve",
+        "cycleId": "review6-humanlike-20261028",
+        "taskId": "C3-exact-inference-proof-execution-001",
+        "seconds": 600,
+        "at": "2026-10-28T22:03:51.879Z",
+        "previousHash": "5a55b2177cf62af7bde5671f647ba47c50fbdc8397bb0d64ca636c333e0ab6a5",
+        "entryHash": "f3972b68194d0088bbe9792d720fab2a4d745d25c9db6871cc9b89da2795dae7"
+      },
+      {
+        "kind": "settle",
+        "cycleId": "review6-humanlike-20261028",
+        "taskId": "C3-exact-inference-proof-execution-001",
+        "actualSeconds": 64.36816350000001,
+        "at": "2026-10-28T22:04:24.064Z",
+        "previousHash": "f3972b68194d0088bbe9792d720fab2a4d745d25c9db6871cc9b89da2795dae7",
+        "entryHash": "94092f06e9bdfa24669f215b0bb38a5b3034765ca67831604981ed99155c409d"
+      }
+    ],
+    "metadataOnlyVariancePairCheck": {
+      "preregistrationSHA256": "891733f26938fee016a18d091d757846535f0134d609418df1d3ca73225aafd7",
+      "behaviorSHA256": "a2d20cd4e3799b8c125186d614417985f67da7485a3080113402a7c7087f9751",
+      "previousU0OVerifiedActionDifferences": 0,
+      "previousPairSameStates": 18,
+      "fixedNextPair": [
+        "review6-clean-U0-399-action64-candv3",
+        "review6-train-heuristic0-counter-v1"
+      ],
+      "fixedBeforeBehaviorByTimestamp": true,
+      "same18StudentActionsReusedExactlyFromPreflight": true,
+      "differentActionsRecount": 10,
+      "differentRootIds": [
+        "C3-pilot-source-001:root-01",
+        "C3-pilot-source-001:root-03",
+        "C3-pilot-source-001:root-04",
+        "C3-pilot-source-001:root-07",
+        "C3-pilot-source-001:root-09",
+        "C3-pilot-source-001:root-10",
+        "C3-pilot-source-001:root-11",
+        "C3-pilot-source-001:root-15",
+        "C3-pilot-source-001:root-17",
+        "C3-pilot-source-001:root-18"
+      ],
+      "varianceFloor": 0.5,
+      "worstStdSensitivity": 1,
+      "noninferiorityAlternative": 0,
+      "newNNForwards": 0,
+      "newRollouts": 0,
+      "varianceOutcomes": 0,
+      "formalNSelected": false,
+      "limits": "This verifies metadata lineage/order and actual recorded key differences, not independent recomputation of18 heuristic decisions or legalities. No reward/variance/performance outcomes appear in either record; historical file creation order is supported by saved timestamps and cross-hash references, not an external trusted timestamp service.",
+      "pairIntentRevisionAcknowledged": true,
+      "changeIsBeforeVarianceMeasurement": true,
+      "noRewardOrVarianceOutcomeBasedPolicySelectionShown": true,
+      "newPairIsExistingFrozenTrainingPoolPolicyPair": true,
+      "behaviorQualificationOnlyNotVarianceOrPowerEstimate": true,
+      "metadataDoesNotAuthorize64BlockExecution": true
+    },
+    "errors": [],
+    "allChecksPassed": true,
+    "newReviewerNNForwards": 0,
+    "newReviewerRollouts": 0,
+    "newReviewerTorch": 0,
+    "newReviewerRealLedgerOrLeaseWrites": 0
+  },
+  "sourceAndExecutionIdentity": {
+    "snapshotManifestSHA256": "93feb76f61f020b9d89e972e02fb8b637addc166a38a81ba7cc724e56c00dd10",
+    "snapshotFilesRehashed": 156,
+    "snapshotFileHashMismatches": 0,
+    "actualTranslatedModuleCount": 47,
+    "actualTranslatedModulesOutsideBoundSnapshot": [],
+    "approvedPreviousMethodReportSHA256": "75f6cd0e5a529b8a351e0e9a10b5fdccd05fbe99528c4bc4e1eef4c3e918d9b0",
+    "originalTeacherSnapshot003And18_4_4UnmodifiedAndNotRecomputed": true,
+    "HFailureNoHBranchAndTeacherMathSourceNotReopened": true
+  },
+  "rawHashes": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/proof-report.json",
+      "sha256": "3d9e87b37aba80f54f69488a8736cc63cf83f1d9a975caa9fc86a15d7145bc19",
+      "bytes": 3831
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/opened.json",
+      "sha256": "ab051e601e073753f5f1c010314a3374665f9987c2b4ccf990da80b882ef45d3",
+      "bytes": 534
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/spec.lock.json",
+      "sha256": "4f99a2cacc849e9eaa17bc401892ce3ef4e6aaa04ad8f77de370d45a894b48d2",
+      "bytes": 8693
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-contract-001.json",
+      "sha256": "e49fab97ac026226a94015fe4654ed9703610ae614eaa1cfca7c25fc91be38d4",
+      "bytes": 2155
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/snapshot-manifest.json",
+      "sha256": "93feb76f61f020b9d89e972e02fb8b637addc166a38a81ba7cc724e56c00dd10",
+      "bytes": 56767
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-authorization-001.json",
+      "sha256": "a780d76f906ad4da9d3fff9a5e1362993f1b88c4c36553ebbde84d64db760df2",
+      "bytes": 921
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-exact-inference-execution-request-001.json",
+      "sha256": "67e9bb83eb62e0b777df590a0e94d694988052868ecc6a12a48acf68843f5b52",
+      "bytes": 8468
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/speed-results-001/speed-report.json",
+      "sha256": "797f03325193b9b27880303d41125c20532b168adb472821beff3522c13459b3",
+      "bytes": 16853
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-exact-inference-001/source-manifest.json",
+      "sha256": "c4b2e42b6dc76bd5dc80da1ecb14cc08caa8f48a70325689d9119792ba024803",
+      "bytes": 14731
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/statistics-design-preregistration-001.json",
+      "sha256": "a6391714c0ae9437958e51f455f5b77d252e4545cfe3015f48a2517329bba2db",
+      "bytes": 3691
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/statistics-probe-pair-preregistration-002.json",
+      "sha256": "891733f26938fee016a18d091d757846535f0134d609418df1d3ca73225aafd7",
+      "bytes": 1536
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/statistics-probe-behavior-001.json",
+      "sha256": "a2d20cd4e3799b8c125186d614417985f67da7485a3080113402a7c7087f9751",
+      "bytes": 6224
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/exact-inference-preflight-002.json",
+      "sha256": "4c134fc69bea89e832104e3a90134cd6d5e19dee79b967c28a2b879d79f578f4",
+      "bytes": 29696
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-exact-inference-execution-engineering-review-001.json",
+      "sha256": "d4de1dbe0886eb46a327ae3c0c2d5dc147fa1a0a0340d7775fd7021f483e0a74",
+      "bytes": 37293
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-exact-inference-execution-method-review-001.json",
+      "sha256": "75f6cd0e5a529b8a351e0e9a10b5fdccd05fbe99528c4bc4e1eef4c3e918d9b0",
+      "bytes": 112549
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-exact-inference-proof-execution-001-settlement.json",
+      "sha256": "fdffe0c75c0ffd9336074c1b26416d9c26f4bb5e89c15ee2a5925a1837dd76e5",
+      "bytes": 636
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-exact-inference-proof-execution-001.json",
+      "sha256": "8b5f4c27b57a056d6df8e6e6f01cb9d1186efe7c2e88d77351b4b6bf68f2f3a5",
+      "bytes": 2688
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-exact-inference-proof-execution-001.stderr",
+      "sha256": "62e16e20738e960858a974942a95cd5e0128ff79d3d1ee54201d1b73fe58707d",
+      "bytes": 3755994
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-exact-inference-proof-execution-001.stdout",
+      "sha256": "01fedc7a7499b38474d7f6a2c753dc6469308990492da1f9ac0333ac6dcc6343",
+      "bytes": 4620
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-001-exact-prefix-v1.json",
+      "sha256": "edf163d9429cffe110108f7f35a546b5f98f5ef7bb3aeda5caf3618be3afc21c",
+      "bytes": 3199
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-001-exact-prefix-verify.json",
+      "sha256": "d43182914d9937d6c5a4a89f21143c07e342c29e7726923164fcd4f299c25544",
+      "bytes": 3199
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-001-original.json",
+      "sha256": "0fe46459eb38beb9176ef8cf040052ad9e65afa037cb0255aadb79f4e953e4de",
+      "bytes": 3182
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-002-exact-prefix-v1.json",
+      "sha256": "d81764e914841a52aba2dd67e1f31ed3993b69e6e8391fae03f32e2df593a2a0",
+      "bytes": 2551
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-002-exact-prefix-verify.json",
+      "sha256": "e0eb4b5df03f64fe071b5e7a3f076aca6f831d6f5bc5ccad5f29243c76e3ce02",
+      "bytes": 2558
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-002-original.json",
+      "sha256": "753f87d8082cc07e459aaa064abf5d06137f2e647b7a5ae4c37bde83351513c3",
+      "bytes": 2543
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-003-exact-prefix-v1.json",
+      "sha256": "9b06e5fb793b6a4ea29e03056e1e6183f83f0e1c3cff8e65a692898eae65315f",
+      "bytes": 2547
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-003-exact-prefix-verify.json",
+      "sha256": "cdad0a1313abf3830e73222a34169fb41c7440a3d1e385c5940dd9e54b3af95a",
+      "bytes": 2555
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-003-original.json",
+      "sha256": "8bdfd5ed1a0374ddb089c6e81f7081ab7580928f68c69956fb57b38be86e166a",
+      "bytes": 2540
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-004-exact-prefix-v1.json",
+      "sha256": "8fffc80776af6da0043d2f122a75f57cc06177cddbee6e371cbc1d8dbf993732",
+      "bytes": 2980
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-004-exact-prefix-verify.json",
+      "sha256": "92caa26d2d45f504320a23c90bac5a6bde60431696305e5cb7b54ca36dacecf4",
+      "bytes": 2987
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-004-original.json",
+      "sha256": "f3385b235f9d5306bbb4f3d8a641800c9dfdda2e18c057d56328b24dbfd24957",
+      "bytes": 2972
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-005-exact-prefix-v1.json",
+      "sha256": "f97f82f02b84353273262efc0ddb86f164f20a593348eea5d0f60ebb50001035",
+      "bytes": 3635
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-005-exact-prefix-verify.json",
+      "sha256": "3d03afa969af46fac9d0a17ffb6aa4f7650d4a80d9c10f76ebe4e29b682f7198",
+      "bytes": 3635
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-005-original.json",
+      "sha256": "86c2968ebd405d8d5d471c1b56bf4343f3d661c3cc50ea7d4d2c3f81e8cc37e2",
+      "bytes": 3628
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-006-exact-prefix-v1.json",
+      "sha256": "a95b9347505b976efdfea58ba2d1c0b1ef63c506facb2ab6322db3f81b4452bd",
+      "bytes": 2330
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-006-exact-prefix-verify.json",
+      "sha256": "f5373f46624b84c3c79ec2f0355de21b6ba34d8b8604a7945fff4a7d24a7d6ab",
+      "bytes": 2339
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-006-original.json",
+      "sha256": "dc9d6bba2a7801e522a29afa8424d8e20327ac7ff3f094efce5af5e319753392",
+      "bytes": 2324
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-007-exact-prefix-v1.json",
+      "sha256": "b3f7cf55d70705e1b30f3aad44dff981b555c8a08c4584b6bac0ae023f9eca1e",
+      "bytes": 3417
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-007-exact-prefix-verify.json",
+      "sha256": "085432963f4affff3b27ac5d5cfc3a6bda14767857d7a75444c601be11406cfe",
+      "bytes": 3425
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-007-original.json",
+      "sha256": "306e14bf908fa477aee26f34e51c38f48efa1dcceb7102b2d707413f188896bd",
+      "bytes": 3409
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-008-exact-prefix-v1.json",
+      "sha256": "2021d8b65d9484326325b2e714b56f4aceae64465e2364f91e841918e32ca061",
+      "bytes": 2766
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-008-exact-prefix-verify.json",
+      "sha256": "b727a5ef14921098275dc23a040cc2ba529790b8ccc2cf920e0eb23e9052d577",
+      "bytes": 2773
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-008-original.json",
+      "sha256": "2f0b68b6535cba528563400bd2e900ce4eebe282fc09861542ebea354e865ccd",
+      "bytes": 2759
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-009-exact-prefix-v1.json",
+      "sha256": "e1142919938c637a05873d52d92c6324026d3a1f8e27dc530beb23c6adb4bd60",
+      "bytes": 2983
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-009-exact-prefix-verify.json",
+      "sha256": "19d2ebf1ffc8727e80f172c713b27a696a3726a8c43a1543fb256a0a2a2bb3e2",
+      "bytes": 2991
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-009-original.json",
+      "sha256": "2b8391564b87d404e60f7a013adb42dca7d92d0ffe0f10cb9dd23be52d889d32",
+      "bytes": 2976
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-010-exact-prefix-v1.json",
+      "sha256": "72e188a3e382de1a50c16a736befd703f1e88a95d9de645f0daa48cdde3a3c78",
+      "bytes": 2764
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-010-exact-prefix-verify.json",
+      "sha256": "d7c1d69227d516dbbd6eb8e51bb578fcc5751aad2c8a2284c73538e5ef3fe3b9",
+      "bytes": 2772
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-010-original.json",
+      "sha256": "09b424f9650a2277e3a7647d16daaedc0790db75e80075b9263237ee74016827",
+      "bytes": 2757
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-011-exact-prefix-v1.json",
+      "sha256": "22e80f0d30afbed4d0906ac9934df67b029b0688d504bcd6f0490177385d22a0",
+      "bytes": 3638
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-011-exact-prefix-verify.json",
+      "sha256": "20028073459c9f6bb343ccaa4e3bd49317c9d0e5a7c0e1b346ef5bf3c605e6a3",
+      "bytes": 3646
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-011-original.json",
+      "sha256": "1c99cca7ea7bb9584af4f0eab634a9a45679244e08f98e47272fc7ab8b0b288c",
+      "bytes": 3631
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-012-exact-prefix-v1.json",
+      "sha256": "c91ea00f5dcd4c3c08c718ad63b1bb46cda98926c50f20ca812a45e465e75943",
+      "bytes": 2768
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-012-exact-prefix-verify.json",
+      "sha256": "2bd74482b58a3c4a81d964c97d74ff083921a7c09c1a23f8db601cac31fbcdcc",
+      "bytes": 2775
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-012-original.json",
+      "sha256": "6451b00c62094ffa0c26edd0fe6711721d64fa1fc07cb5174def60664c3db372",
+      "bytes": 2760
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-013-exact-prefix-v1.json",
+      "sha256": "fc00677cb612eed29e6d6e77ca8322385ccca81a6bfb4156fb867715c8c321f8",
+      "bytes": 3423
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-013-exact-prefix-verify.json",
+      "sha256": "04e4be0405fc3691a9f13bb96f8ddbccecae7c6748c62e79b8ac7a80b4fa0cb2",
+      "bytes": 3430
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-013-original.json",
+      "sha256": "ea76df1b829052c717cc6169598f3897de8ff245645ad6522d868a681934380b",
+      "bytes": 3415
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-014-exact-prefix-v1.json",
+      "sha256": "f2691d2a032a7ef8e627a07e3d48c2d9920d4668ec2d91c09eb0a46677568ba4",
+      "bytes": 4080
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-014-exact-prefix-verify.json",
+      "sha256": "0142eb208289bc7996abef068698aef15db9edfa9ea6ab182a77036b84db2f44",
+      "bytes": 4087
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-014-original.json",
+      "sha256": "377c7d5117e091e237c9f3de597f89325c5441ae3a0738275899a35a54d3bad2",
+      "bytes": 4073
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-015-exact-prefix-v1.json",
+      "sha256": "d589c6fe17cf3c21474af9afd910facddf8ef377d5d5e053509128c256979777",
+      "bytes": 4510
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-015-exact-prefix-verify.json",
+      "sha256": "7bad6f352e8a396757a872a0ca7416499874e5c74dd4bf60910cf10aacfb324d",
+      "bytes": 4519
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-015-original.json",
+      "sha256": "ff6a943e9dda686fe4c8e6331c3433d62364c7548e5b212acfcd78dc61d4b7d4",
+      "bytes": 4503
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-016-exact-prefix-v1.json",
+      "sha256": "87f9972a5c0222e513d751741d9200dd8bba5d39415657f1b878dbf5d74a35e2",
+      "bytes": 2983
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-016-exact-prefix-verify.json",
+      "sha256": "e96f9f315e79a9dc5965dd833568aac605a5e392eeac2ba10629ac37dce41aba",
+      "bytes": 2989
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-016-original.json",
+      "sha256": "091b09c0e9e9d6a070707c3529ade5d00c774ae1ee56cfd15d596c14a3e3c3b1",
+      "bytes": 2975
+    }
+  ],
+  "probeFiles": [
+    {
+      "path": "/private/tmp/c3-exact-inference-actual-method-001/recompute.py",
+      "sha256": "af754358a93f7c94c6a9a16b451d2a56d8fa1b655a113f80aeb5d9bbe3ce6eb1"
+    },
+    {
+      "path": "/private/tmp/c3-exact-inference-actual-method-001/recomputation.json",
+      "sha256": "71852aa31cd8044b96331c79bf9a506152cf792d9f2c014a9914c3764535c3e5"
+    },
+    {
+      "path": "/private/tmp/c3-exact-inference-actual-method-001/recomputation.log",
+      "sha256": "bc7c4aa5fd2f2e490e13b371e349f657334779e3f8820dc4c895116868cc44e2"
+    }
+  ],
+  "limitations": [
+    "Stored trace digests are independently compared, not rebuilt by replaying actions. No new NN, match, rollout or heavy Torch computation was performed.",
+    "The11428 all-score equality checks are the actual guarded executable invariant; raw score arrays are not available for a separate offline word comparison.",
+    "One seed family is one underlying deterministic performance case. Repeating three modes does not increase the independent family denominator from16 to48.",
+    "Timing evidence is restricted to measured serial execution on the specified host, runtime, model pair and reused seed domain.",
+    "Teacher18/4/4 coverage and old snapshot003 remain their prior measured scope; this proof creates0 labels and says nothing about teacher correctness, planning ability or stronger play.",
+    "Variance metadata verifies declared sequencing and recorded action qualification only. Actual64-block variance, joint-power/cost work, optimized application, mature training, C3 overall and main/formal remain unapproved."
+  ]
+}

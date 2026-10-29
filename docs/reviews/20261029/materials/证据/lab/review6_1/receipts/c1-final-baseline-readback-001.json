@@ -1,0 +1,828 @@
+{
+  "schemaVersion": "review6-handoff-v1",
+  "cycleId": "review6-humanlike-20261028",
+  "stageStatus": "completed",
+  "resultCode": "baseline_backup_verified_working_drift_reported",
+  "at": "2026-10-28T12:07:54.239Z",
+  "requestedModel": "gpt-6.1-sol",
+  "reasoningEffort": "xhigh",
+  "observedExecutor": {
+    "model": "gpt-6.1-sol",
+    "effort": "xhigh",
+    "cwd": "/Users/ccrt/game/guandan",
+    "source": "/Users/ccrt/.codex/sessions/2026/10/28/rollout-2026-10-28T17-46-09-01a181e7-1afb-7be2-af70-ad7824868ed6.jsonl",
+    "recordSha256": "8ccf0be9492ee02dfbf53012b4b4cce381fc271bb4368b0c24bbeecda86a27a7",
+    "evidenceType": "actual_turn_context"
+  },
+  "repoRealPath": "/Users/ccrt/game/guandan",
+  "baseline": {
+    "schemaVersion": "review6-baseline-inventory-v1",
+    "gitHead": "0436df1d299eeccc95ea8c6eca3c8f458aa55637",
+    "branch": "ui/play-tribute",
+    "dirtyManifestHash": "52cce14a53bb01f5ef9e4c742f65f448a1e1265ea9499f8b25005551f05e470f",
+    "recordedDeployedPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+    "actualWeightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+    "recordedWeightHashMatches": true,
+    "localCompleteContentHash": "37549324225e099d3727eb04cffc6b359fc193aeb02f1b0514e415e546a6ab9e",
+    "webBuildId": null,
+    "webBuildStatus": "browser_loaded_identity_not_yet_verified",
+    "files": [
+      {
+        "path": "/Users/ccrt/game/guandan/package-lock.json",
+        "sha256": "1621d54965b9b339149172789e0849b443d230682d87a50b65fdcdfe48895f6b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/package.json",
+        "sha256": "f9ac11ef5d27bc55f38bef4eb81b177a8fdb0893614ac8e2d5f183ea6c8665ce"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/vite.config.ts",
+        "sha256": "a9dd700d9df1dd8c0f1701f336c3471fadd1df5f52c924e5e55954a643a59163"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/index.html",
+        "sha256": "f5549b7fa0072f29182c1eb757bda1b16e04810b028561ba710a06d2b4088928"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/.DS_Store",
+        "sha256": "eede1021dff19406ef165c3c07ca4ba353bdbf5b0e9afccb66755f3bdee1048c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/design_picker.html",
+        "sha256": "a025d12f8e469f53f147428d7637dfaf63576ffb4cee0270d825fab8bfbd916b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/felt_green.jpg",
+        "sha256": "27ae6584bb6c2d197cbfdbcd9d195dd3d94ac36ba0bc6eb172fbd036b974859d"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/design_stats.html",
+        "sha256": "6a937e3b184029893276ae7f43a35736bb796bf470fb944076d911388f18b13f"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/sp/user.svg",
+        "sha256": "c8f0e7e24929dcbc3cb3a76d50c9227f9e6004b7b8f4f11ee214664b0c7c9350"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/sp/paper.svg",
+        "sha256": "61b6718161a502db1a02deb36b3317c99ac8ce94810a2b3072cd4c8cc8d2ac84"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/sp/icons.svg",
+        "sha256": "4664baa2e947f8e31f588605175951ac3a0b55ed3b91be89b4bb84223836f12c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/licenses/Noto-CJK-OFL.txt",
+        "sha256": "849f4ea9c214fa4ac3593b770c699f387534b11ce671264c1b10d85bdcb5997b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/licenses/cards54/SOURCES.json",
+        "sha256": "63fd4c4d4469f434bfe47b2397916bfeafa6aa2a463d26e816eec008632fa54a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/licenses/cards54/Card-art-MIT.txt",
+        "sha256": "fe677a80c2b4ff84c482d46903cde46df6920636061e28779e9248a38b90b832"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/licenses/cards54/Liberation-SIL-OFL-1.1.txt",
+        "sha256": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/9_of_diamonds.svg",
+        "sha256": "7cc92cb3e507c36ad6ca89c60809f67e0307c273a13b86d036e9bcacbdeb0c32"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/ace_of_clubs.svg",
+        "sha256": "42c20fab29984c3cc70b7c92aa7aba7dc41a3558bbfd05a9889c3c409804ec83"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/king_of_hearts.svg",
+        "sha256": "d55da9791daf264d13687428bd3f90c49f9bb62821f4690e5ecb4fded3bbca5a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/queen_of_diamonds.svg",
+        "sha256": "5387514d6c8c1b659591c07a1c62facfe1209338dbe2a1ebc1c3ac6da18e8261"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/7_of_hearts.svg",
+        "sha256": "3bdf894e208a544fa4aa5a6ae7936477a18d8cda4bfdc44db7d3439da3b1fad9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/6_of_diamonds.svg",
+        "sha256": "2042ec058c7fab0d9b5034c780ee2fbe564af2c037113711292e268c8974c7c0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/3_of_hearts.svg",
+        "sha256": "b80821bc66ac0fe147fe45f6f09eec0b82985249283dc9468b27ab7a6112a215"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/5_of_spades.svg",
+        "sha256": "70e0de71872251fb0803c7005538ea46053b122df1284ffeeb9c2ee5adc9c68a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/queen_of_clubs.svg",
+        "sha256": "3b4b357a5805cee971f659bc5e94c9d584fd5131b03cabe3afa0c7f35f1a4888"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/4_of_hearts.svg",
+        "sha256": "cca5461d70df374a776fdec98ac8d38d3ebf255958cb73e6ae1cd31530211457"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/2_of_spades.svg",
+        "sha256": "d3b40c52106a596f90ead1a8d351cfdbee294f1fe0cee57bb016ebe29a1c3887"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/6_of_spades.svg",
+        "sha256": "6598166e9fbf257c69238e5ff7fbde06cdc363c99d7d46ec3e0b8cf9ac152d4b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/black_joker.svg",
+        "sha256": "55d9057d9c31db0eb5d5d94bfa1f7d87d845be8dee30b7d5c3c5ecc3879428f8"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/jack_of_clubs.svg",
+        "sha256": "7505b126c04fe7d085cdaa6a90b4589bb3ca027aba5a22ed3708fd08f02f7b22"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/10_of_spades.svg",
+        "sha256": "a7c40f699b142b49c89ddbc056d64cc5ef49d901d39bfbb4cce62e686bb03496"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/10_of_diamonds.svg",
+        "sha256": "46877cd917fd0af4a5a7360c3a864ab68d6edb57f8c4da3ab1a9bcd9e8075e5a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/king_of_clubs.svg",
+        "sha256": "8050f69cc7bd72e09a8287d4845e6500d147b3c865c502b017b24038efe6e53f"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/7_of_clubs.svg",
+        "sha256": "627b8502c5672fd3c7ab343162ad88c0b05eea665125052377a270b454e6d60c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/8_of_spades.svg",
+        "sha256": "9e407eef85fe29204c765c8fb0fea0757155594cb923864e991bd5921865aac8"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/ace_of_hearts.svg",
+        "sha256": "07adb0a7426a9734a3a699fa46f607078c2a87b8591619f7e3f755e096451e27"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/6_of_clubs.svg",
+        "sha256": "94d2c33e26e9ba59a92867a163be08a068c12fa7a85107cbbee20c652bad01da"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/8_of_diamonds.svg",
+        "sha256": "4ad9aa95fe07c0f5bf2c5ef21cce1eebf77ea4715eca7d9d6098c6b4eb43342b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/9_of_hearts.svg",
+        "sha256": "cf904ee813f255d6aded31ce52418b9a5ae1d1076da0a97914a10e7f3e8b36f5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/jack_of_spades.svg",
+        "sha256": "7a407a8a56e86e094ddb0fa8de03340cacc640f96fd8228eb4a4aae746225d81"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/queen_of_spades.svg",
+        "sha256": "1b7994a912473f237bd9478ff39a4d8470646836ef5b79ec13afe9df4402f8ff"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/7_of_diamonds.svg",
+        "sha256": "9b823764bf11301e01d4868ddcb500e4e0c7b25e6afc4358c2d7ba8532ecd9d9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/SOURCE.txt",
+        "sha256": "fd3b1304dfa6b6ab7dfca37388ff53441c0369075e028c6a336c74d74cd54600"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/3_of_clubs.svg",
+        "sha256": "872130d9467df56f758ea246d5bd57fb6440f4fc0e0b5a7caa61ff7ca9c66bc3"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/4_of_clubs.svg",
+        "sha256": "7cedc25d0498b3b42584115cb1d900d1ec18c704394e2c59d5938ae444025fe5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/8_of_hearts.svg",
+        "sha256": "dbc1d072177716838aee84dc1364539e80bb20b2096af2e10a5f651041e19995"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/2_of_diamonds.svg",
+        "sha256": "fe93846e4627434e7cd29d10b0caedfef5e1365d0513bdd742761aba1b27c441"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/red_joker.svg",
+        "sha256": "c1fbbd82229d392bf027e45077e645368abbeec966db0cb73870bc000164f926"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/10_of_clubs.svg",
+        "sha256": "7ca1d193b4cd20305da78ee7c415d66120a04be7deb2424530c557c90f4fc3ba"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/jack_of_hearts.svg",
+        "sha256": "a58b33ef67e912c76cbf5d0311e85c6c309224f93c3b51d6503b1938c540b781"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/5_of_clubs.svg",
+        "sha256": "b1a942b0501f1e2f94399d547c31525b03cbc7b35b605efac1b2ec23e24af064"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/2_of_clubs.svg",
+        "sha256": "a05e0950da7724de06aa5160a05d48d9f5259990b845c1aeb0e370ae692e3594"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/queen_of_hearts.svg",
+        "sha256": "52e8e437691837d074b48f0ebcaf35305e57453b556b3fc8d8188901033836a3"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/ace_of_diamonds.svg",
+        "sha256": "de62dd093186ac240c6ea2f840c3d64f637f7b263fc89cd9ed3d8cfb49f9ac85"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/9_of_spades.svg",
+        "sha256": "0816072cfe98443f8ef301764018fb7555c7547024c461770eddc38482bdc390"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/ace_of_spades.svg",
+        "sha256": "8bdcfa7c56e2370d60f47013abbc9c819ce7bab5457c91b43cbb9187e5f213e0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/5_of_diamonds.svg",
+        "sha256": "59c4539bfed72d95345e4141729f36cf25653e9efc158e5754384c2161ebecd7"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/7_of_spades.svg",
+        "sha256": "8ed6958a0fe599d1d8bf0cd8bf8ecfeefec2ceb9b36de6aec4e7f53d4ed18c6a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/3_of_spades.svg",
+        "sha256": "d4b342c1de771fb81f05a3243c1a57c5409080c69d98fbd53c15f806c71e60cc"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/jack_of_diamonds.svg",
+        "sha256": "5a0ecc384a7ea290dee4bf938ffebf5b3f248cbcef2336efa003c94f921be274"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/5_of_hearts.svg",
+        "sha256": "7131d76be101dc2534d5fe522babab2ceb1aa5b57fc6fed7b468b42d5de9ec33"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/8_of_clubs.svg",
+        "sha256": "4ecb3d462b585db1444307798ae9a911fee5c393a994c95110b08def4bb109bc"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/4_of_diamonds.svg",
+        "sha256": "f236ff89f53adc909f751de4b9dcd0dbf9fc36e36f8d070dc7052b0f0bda0757"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/king_of_spades.svg",
+        "sha256": "4bb370c631627e7219a0033b5a580112e1d3011f72a1907bf905df6aca26c751"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/10_of_hearts.svg",
+        "sha256": "a6647d79b5b0b26b443a543580529517f9b633468fa2920d4214155062194ca1"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/3_of_diamonds.svg",
+        "sha256": "1e9190d2968d3a34e6a5fd3092f9e5b9b0a941280536281e0a7e6fcfae4fb777"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/4_of_spades.svg",
+        "sha256": "e825f444ab009bcfe87f83c90f21b337f83767b32ac0ff3a17c50e2e53ed9207"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/king_of_diamonds.svg",
+        "sha256": "beb7acd612a760f504a7c9bcd32c0823a2f8d7aa71b4aa917b6485b24cbc4ad7"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/2_of_hearts.svg",
+        "sha256": "629c8a5b6b734d2f317190ee3bdedd438ba72f1ae765198d63cd55279fa867ea"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/6_of_hearts.svg",
+        "sha256": "b53778ea482a583bc9b15ee76f68d51b660e7945b66bfa6c9b00b858a2cef7cc"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards/9_of_clubs.svg",
+        "sha256": "7f22deed978e1dd650aeda1d56262c2716a0bc9c7b942bd83341e67e2189bce8"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/BJ.png",
+        "sha256": "6ad48dcae24dd32322b436dab7c4133763271097375118098e94f9309efbf894"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/6D.png",
+        "sha256": "e22f0b7273e6b37c48008306fd4d36e0409aa22d8c7591b33f0dff14c4193896"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/5H.png",
+        "sha256": "59ec1665c3872ad7839b6999f21f16eff38693b38bdb958f1a27afc67619ba62"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/6S.png",
+        "sha256": "634891e07881acc3e8ee1e7999b50a4add10a0f627291d32d90ccbfb99eb3287"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/7C.png",
+        "sha256": "0b6c24e2c678133563e3ac581a5d9cba611bf8e34b44ca04f29c2a067e53e02e"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/AS.png",
+        "sha256": "d60e2dd6efc884c200dad6a47a3bce73fa453d297c0cb41bb054ad017d16f426"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/AD.png",
+        "sha256": "78907bc50c730be2901d7484f1d2a83b2112ab11ee77ec1fe6daea3f5caa6668"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/9H.png",
+        "sha256": "730b3b7ff5dfffe5217f5b1fc5d72631bf3b720d0633d70b8d8831efd0b87333"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/8H.png",
+        "sha256": "380e4ac7ca0fd96cf517400ea8a797a87bc88f90aec04c3b5c563eb947fdb8d7"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/6C.png",
+        "sha256": "a05228acd49ed48b0c56f9a910b5fe313410f81bd6a60b14a0b36a56a96f69c0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/7D.png",
+        "sha256": "4858073ad1c1271ff640a5d05fc1939febc0eb6aeea06d6ff82754d2d5debae8"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/7S.png",
+        "sha256": "fd535c9ea436e83946d479db84302c959ddddb46befc00e4877a70699eea8b74"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/4H.png",
+        "sha256": "d12b2e7117cf297611a12e3766eb11c5fd0e36de96f08c284f9effeddaf89f32"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/AC.png",
+        "sha256": "5e6ef83ce8ea932ed1a380a0913dcf23a89a97551af4760b25a487596592f95c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/QH.png",
+        "sha256": "8984f1d9696c1cfa46503aa572a922244bc04b10d602228d27948e3c13f17aae"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/JC.png",
+        "sha256": "9c5de7d8862514eba0294afb9b131f14d5e2917e443d57f90dc384ee0db2dc89"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/10D.png",
+        "sha256": "e8e358a3affc497d57c5bedfa646a563223684a52f37daf6b58e709589ecb42e"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/10S.png",
+        "sha256": "f87d7954c9a4bf830e6bb0d7f2970d2f6ca0f6c8cc8ad5eb795d918d3cad9010"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/3H.png",
+        "sha256": "c978192519b0d4f0067e89675d8a971e2ba93d287965040319fa0970bc0b91e0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/KS.png",
+        "sha256": "21169c7b1ec225f6524ee2ccb9c45595b35b37bdc1330f954d7004ff69ab7c09"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/KD.png",
+        "sha256": "60d56bfda03b8ea6c1addfde6b9fbbb46af7ad79db602f02248d8e9efdd9451f"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/JS.png",
+        "sha256": "64251438421e049387a2b09b0b612a50542785e081e628d2a4d89a8b4a634cd4"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/JD.png",
+        "sha256": "4d5627218704a2a74b195efcf15483435fec648a4f9d485b0c2c6b9a3378b293"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/2H.png",
+        "sha256": "4ce0813596adb0b0e55bae179f40de3c8e55f49060a7035b2449365161adea8a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/KC.png",
+        "sha256": "7da206d3f77605bfa93a68b0fcc63a96916f3d8676c455931e082edbaeb73ac5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/10C.png",
+        "sha256": "c8d81bbd17a740f68c29d87c2c3bcfa17e1aa8433370a865045e7df7a0041bd1"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/3C.png",
+        "sha256": "461eabbe1ec525ee31fdb25591d503e542b7c0a6edfca407cd5e663a3de727a6"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/JH.png",
+        "sha256": "ca8464bfcb1e599e01e8fd94ba92d0a5be74e5b3d415290f2fa014eb4d7ad5a0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/2S.png",
+        "sha256": "6ad758570772a92745c4886d1cc5fad5f66995f5b22686058d2131045767df62"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/2D.png",
+        "sha256": "94b0ad436d1693ee7a9cb43ef026c906db6a6bbfe8a68a2b657c71c83538d379"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/QC.png",
+        "sha256": "8083c2a22bfdb21a0f64863f5e256d6175be45a3191a64cac5c1e6f55c5a9747"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/10H.png",
+        "sha256": "bf37b378c4b1e9e48bd4b9454f60e3397014e18eea7d9dab63fa664826f8f8b5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/3S.png",
+        "sha256": "2d2f7b40e1c5930c628af1b533278fde42f6c6ad139319b5f03890a3d47bc3b1"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/3D.png",
+        "sha256": "af6894ad6a6a90702727e2ae306e1c7e586d978c642d5bf12cac18ded38c4e30"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/KH.png",
+        "sha256": "554ac004b65ddc45ad8549404394e029e65a1808f4f3450b247513fe740e2819"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/RJ.png",
+        "sha256": "ee98183426f7dfffde6b4faa029f8eb00d07b00df60a9f035ce5d476ea0e1fb0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/QS.png",
+        "sha256": "ffb85fca3a1a2e608a03df0e9f0cd531439dce86e8b834c4857b2bb3438603d6"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/QD.png",
+        "sha256": "64d291eb1509bd6b4b0c84f94fd499edbd3084f4511c4efa37db2220fa5a2275"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/2C.png",
+        "sha256": "6845aacb49b2953d25d76ddd7b520610ff28adf4590cdf24c76ef0a688071b48"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/9C.png",
+        "sha256": "4175262973d57a01ea63d36d6c8a5775482c81a7a162e5963e1d35bdb1d3c5f8"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/4S.png",
+        "sha256": "40fb7ffc4aef4bbc4a733ef6d9529ddea6bc77ff990b367ec4095be8d0efeae3"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/7H.png",
+        "sha256": "4ade5edfcc4e1b4f2b5c1e7619e1a7ddfa59a89074bde3924b111d2a59e45790"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/4D.png",
+        "sha256": "b0ef33d682744d4f2b07a17b3d455459fb82fc72c7772067429655832ef21573"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/8S.png",
+        "sha256": "a52b15b9e9b096310790a83de5c9f81a9d645276d0208e4510f92aa9d5b1a1f4"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/8D.png",
+        "sha256": "1754dd66417b77da87ebc04205f21adc8e3605bd7879e98eedbd052dbbddf8f3"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/5C.png",
+        "sha256": "45649fc3078d118463b28959061809d33da41a8d8e5f8170ed56e69585063f65"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/4C.png",
+        "sha256": "056040e9900c5ec8b66f06b32afe01de71c2e3e253d5c0394ecde5c44cb41bd5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/AH.png",
+        "sha256": "76f0f7ee5240c0506c56c2bc4617bb2e25fb7b200e9371d9fc69bec2dd8ae623"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/9S.png",
+        "sha256": "8cc943565b9d2fb08b6040eaab7af33cf80835553a414d508c20535ca72cd9f6"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/9D.png",
+        "sha256": "534205e99b3e98488cf41d2f88cde97d513b5ded92cbb43bd86bd51ecb142f8b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/6H.png",
+        "sha256": "49797c742524c773091c574024e7821242816afcaa0e4a0bb808abbed3db2ec9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/5S.png",
+        "sha256": "3b19d8b9d63cb121bef889241e62c0da2cd73d1caf05f0fd0ab5108def8977cf"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/5D.png",
+        "sha256": "e0bd6e2699c5eedc882e7ecc694b1f57a6902d33c4cffbc5468e73c5edf01a85"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/cards54/8C.png",
+        "sha256": "01768e02136a006b33a1178e56c22870ef0abc457c2fbbb102bef72dc1c43f35"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/img/felt-clean-400.png",
+        "sha256": "1235123fff4851b2c149f2c1a90d74410125ad6682e93de19387b5c47098e506"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/ai/armA.meta.json",
+        "sha256": "f60b97873fdc81d0462af44faee465d3630568af71dd48903907a7cd3df24358"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/ai/clean1.meta.json",
+        "sha256": "f3976145993851cf4e1636bb343a00f63ab0e8b60d74ec96f1113129f23a5fd9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/ai/clean2.meta.json",
+        "sha256": "3fa63ba78889ea72647b0f7aafc2f67dbee11b1d81bfecc0a39c4ed423f4290c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/ai/armA.f32",
+        "sha256": "08da7239f256e856dc7212e97b79cb86d6ccf9a3ecb7c57b08cdecef4803d3e9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/ai/deployed-identity.json",
+        "sha256": "23a6d1faf0abde7108a29d205d68f1b2235e59295a5c1379afb48cfbf6e1c81e"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/ai/clean1.f32",
+        "sha256": "576e0c88680fc01b42f7521b7081e1be65e48c3b8fc39b2a667777a67f4fdc76"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/ai/clean2.f32",
+        "sha256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/preview/wide_intermediate.jpg",
+        "sha256": "63e5b84ae42bd00151f9cbbbeda33e7ea866b5240e1c3c403ab50447a6e2b067"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/preview/wide_beginner.jpg",
+        "sha256": "bcf2cc77395df2b3f45edc176830ec3090167b5713584f000c86081753616941"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/preview/wide_advanced.jpg",
+        "sha256": "3672b5f33cd19d7fa8d449334de8e3daf5325c0c7291b6f82140403263438eb8"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/fonts/StatsSerif-Regular.otf",
+        "sha256": "68308f2a0613b548873981d586f247a25ff9d84cba76498c37954a2b41c31d17"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/fonts/StatsSerif-Bold.otf",
+        "sha256": "94d5c62894e517f868eff71ce0d89e2c4944871cef3f6df280b23932033f0e9f"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/fonts/TableSans-Bold.otf",
+        "sha256": "ed52d4b8541270449d0826c17c8578ed02da97155af4334db5fde8943832caba"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/fonts/StatsBody-Regular.otf",
+        "sha256": "7f3fa90372915fb3f5ab79d43b0d666e6e0ada24debe42b36f4d6cb257ee17e5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/fonts/StatsBody-Bold.otf",
+        "sha256": "6934ad80eaeff51e38253802d44d2cc751bba1156a9e7ce23e421079cb7cd916"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/fonts/TableSans.otf",
+        "sha256": "2585c98c40baa52cef05804d162355c3ff0f758070516ff56ab0795dd69e74ce"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/assets/index-CFXieAKa.css",
+        "sha256": "473ae9acdc67c0040ecd995cff22d23c18b6542e311f72e4c754cabf6185db20"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/assets/index-Yi_ZK09H.js",
+        "sha256": "93c2469a0e1f1a228fd46ba0f1852bbbbd9498ec67384791facfdc1e90e8ec7c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/ace_of_clubs.svg",
+        "sha256": "8ec005af6f67d04144486bd23dc11648813db121a1854c7b99ca120221290ee3"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/king_of_hearts.svg",
+        "sha256": "416b0907601ecd1e692cd32fbe0b4c3d0b035991ca236f5f113b150368d80e45"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/queen_of_diamonds.svg",
+        "sha256": "1057fab72f1e62ae4fdbbc5976fd894742053648300f37278db778983f22fdbb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/black_joker.svg",
+        "sha256": "e08a03296ce82b38d5cf6c22dc2636014bff00f4706d5c5a1bd37f77b36ba7f6"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/king_of_clubs.svg",
+        "sha256": "f1d0c8c22a629db51f440e5605f8bd351213a3d35ace516bdba5b395b02064e9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/rast.html",
+        "sha256": "bd5d491ba2b3c1f48e1f3fec0988cee672619b3ab98848bdfe1b5d052ce5e00d"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/jack_of_spades.svg",
+        "sha256": "90588d5da12a36b89988ce5f46cc45cf0f16e39dee18a26a39b9b04f879c81cb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/red_joker.svg",
+        "sha256": "edd878bc6fffc6e5a5c75cf9b2c84c8e56f2426d8f465895f6637d0f149e09ea"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/queen_of_hearts.svg",
+        "sha256": "c2731e8410e4e2b11f547c8736011291ef70dad599e1334940735f1dbb9fea20"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/ace_of_spades.svg",
+        "sha256": "2e107bcfff5a06c66e4cebfca8e432720840974cab0900db1239de48fb832bb0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/dist/rast/king_of_spades.svg",
+        "sha256": "5902f595c43d78096b9a053bf8f7f7ca24646c1c887b3b6b5b685416907d81e5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/public/ai/armA.meta.json",
+        "sha256": "f60b97873fdc81d0462af44faee465d3630568af71dd48903907a7cd3df24358"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/public/ai/clean1.meta.json",
+        "sha256": "f3976145993851cf4e1636bb343a00f63ab0e8b60d74ec96f1113129f23a5fd9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/public/ai/clean2.meta.json",
+        "sha256": "3fa63ba78889ea72647b0f7aafc2f67dbee11b1d81bfecc0a39c4ed423f4290c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/public/ai/armA.f32",
+        "sha256": "08da7239f256e856dc7212e97b79cb86d6ccf9a3ecb7c57b08cdecef4803d3e9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/public/ai/deployed-identity.json",
+        "sha256": "23a6d1faf0abde7108a29d205d68f1b2235e59295a5c1379afb48cfbf6e1c81e"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/public/ai/clean1.f32",
+        "sha256": "576e0c88680fc01b42f7521b7081e1be65e48c3b8fc39b2a667777a67f4fdc76"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/public/ai/clean2.f32",
+        "sha256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/src/App.tsx",
+        "sha256": "c5d06edcf62959c0cdb3dda1fead5afa66ebac231e25ddf3c57cff9ab3a3ed44"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/src/game/storage.ts",
+        "sha256": "a1e9c559f4688c7650d2730ea758e9b766e323d8e287181874e805c356cbe06d"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/src/game/exchange.ts",
+        "sha256": "e1aed25cf9d06c38bdfa612e47203ef794a2530f70b7bf1308c44d207b636937"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/web/src/game/controller.ts",
+        "sha256": "38e60d2723a7e073cff8ad141c2f74b69c5b908b37a96b3ac1ef19c5f0b77458"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/heuristic.ts",
+        "sha256": "7326256937e4f2fbb9cc20ccdf87e5de0c60b3e8addd0a7efd285078b3b79c67"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/player.ts",
+        "sha256": "5a3107e641d680979f13338ac92d732dd969d9d439976c2b1b01da63096e55d1"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/types.ts",
+        "sha256": "5d006d09beecf4be7070e768806dfbf45fcb7a2e69ac1fc944c5c220e7f7e932"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/memory.ts",
+        "sha256": "e51dd273d7adc41d553b83c2bb57f3d4590d1fa99da2c95cbcc7f468185006cf"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/index.ts",
+        "sha256": "effde0207522327307d10df8c23d84ebccc38085a4b5c52e09c9b0a49babafdd"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/planner.ts",
+        "sha256": "066e31111ff77de464ecd97564e5335a31d83c037168c11dc6b9a6726d1730f9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/sim.ts",
+        "sha256": "5ebbf481fb7b024ba71d3999b00d6f0f71e3be720d4b96dcf2909486e49d767c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/legal.ts",
+        "sha256": "adfdb04186b188e42b511cdbcafb1196762627318d34de52a84d5ea94406ec33"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/schema.ts",
+        "sha256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/tiered.ts",
+        "sha256": "20ad2e55d201e0fca54f07b064669094bd41dea6cd2d69d9628893e62bc6cf09"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/nnplayer.ts",
+        "sha256": "cf5318978857a44baf362f1f2889bc25b236bb73fee8c194ce1ef2d459ee7e49"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/mlp.ts",
+        "sha256": "404326a8665e82bf071c1dc655a0e714dab913ff79e8ce9882c580fef7070521"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/wave.ts",
+        "sha256": "3e90ca6520477384d407f6f4b6e82165c0ed8bd0a385d5ad8f8b7676ac85090a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/observationAudit.ts",
+        "sha256": "9cecaaaa0b291476629264b2b9e799ae22f086e1b12b7182ac2f4a9336a304c6"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/neuralSeat.ts",
+        "sha256": "cb9d0aa9dbfbd66a44c444e8531abf7b633d1c293e9ec6292d1192e9b9d2eb50"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/engine/src/rank.ts",
+        "sha256": "030bd2bf0dec2c2847c7d459874ad16677374f7628ac5c69883bde9ffa1f795f"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/engine/src/combo.ts",
+        "sha256": "9619a3912f757fce8a7e4842559789dbafe54aa1f71763057ae44b6a78035bb2"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/engine/src/record.ts",
+        "sha256": "946dd97ca0dbc1377b61f24d96eda0b518cfeb21cc50af134eef57d0cdf5e983"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/engine/src/types.ts",
+        "sha256": "6ca0b3e1392e7ed055f2bf169f7480f63882017bd8be6adb52fc5f35f3e91609"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/engine/src/rng.ts",
+        "sha256": "787efe5ffbea7a21917b20bb30d48d7073d914a7d3a7ed01916078798da82b10"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/engine/src/game.ts",
+        "sha256": "dc99988cdf82e3ed73782aa5c0d0050221f50b5291b7e767a3cc79d4db3df763"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/engine/src/index.ts",
+        "sha256": "bdb43175b8826881901b016445b967804bec8620f6f4d156f7243b20ab83e934"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/engine/src/deck.ts",
+        "sha256": "083c547bdb3203908dbc3a29f8b8e2378fafd9a42b06ac9691a93b1209f26888"
+      }
+    ]
+  },
+  "sourceChanges": [
+    {
+      "path": "/Users/ccrt/game/guandan/packages/web/src/game/storage.ts",
+      "baselineHash": "a1e9c559f4688c7650d2730ea758e9b766e323d8e287181874e805c356cbe06d",
+      "currentHash": "d1d71e08761fb0a8a70a5c1d5cc19308c476e5fde0a6fd85521ed6491e8e510f"
+    }
+  ],
+  "budget": {
+    "cycleId": "review6-humanlike-20261028",
+    "limitSeconds": 259200,
+    "spentSeconds": 6589.373023708,
+    "reservedSeconds": 3600,
+    "availableSeconds": 249010.626976292,
+    "reservations": {
+      "C1-close-C2-data-window-003": 3600
+    },
+    "settledTaskIds": [
+      "C0-tools-and-baseline-suite-001",
+      "C0-archive-recovery-001",
+      "C0-C1-engineering-window-001",
+      "C1-review-C2-engineering-window-002"
+    ],
+    "headHash": "a542c7ec687ac3b8abfd38fd3353ecd51b074a4a41eda5d8938353b51ee08df2"
+  },
+  "baseProtocolHash": null,
+  "inheritedRunState": {
+    "round": 0,
+    "absoluteUpdate": 0,
+    "confirmationAttemptsOpened": 0,
+    "openedAttempts": [],
+    "checkpointManifestPath": null,
+    "status": "not_started",
+    "runs": [],
+    "sourceIndexPath": "/Users/ccrt/game/guandan/lab/review6/state-index.json",
+    "sourceIndexHash": "743569e35d65e0fb078be080ebe6f9e7bbbf6d11ab336191e904115b1beb2340"
+  },
+  "singleWriterReceipt": "/Users/ccrt/game/guandan/lab/review6_1/receipts/process-inventory-001.json",
+  "nextStage": "C0_independent_reviews",
+  "capabilityMeasured": false,
+  "backupReadback": {
+    "files": 1601,
+    "manifestHash": "52cce14a53bb01f5ef9e4c742f65f448a1e1265ea9499f8b25005551f05e470f",
+    "allFilesHashVerified": true
+  }
+}

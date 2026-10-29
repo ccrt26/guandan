@@ -1,0 +1,168 @@
+{
+  "reviewId": "C2-pre-H-method-001",
+  "requestId": "C2-pre-H-request-001",
+  "scope": "首次 H 拟合前的数据与方法审查；不验收 C2 整体、H 质量或新能力。",
+  "reviewedFileHashes": {
+    "request": "515370b6cb6f9bb1613bad51b235b7b61cb1ed9e7d435dc8c5b5af6d7c0b3f0f",
+    "sourceManifest": "1a72b34bcf2581edd59a14eb941ffdcb004fd77e6ab6a2c6201a5471e1ecd687",
+    "sourceDataset": "72377a12553c85c2f3ecdc7fede553ef1382ac5465179606a623bc61f9648cfa",
+    "planLock": "2c11b7a38fbc7b65bd30a996d3ab1e24b5f5c9a7d113764f30b282bc908c9f55",
+    "splitLock": "405668363dd72de17a2b128c8a34237333519cd8f60b71d844317db8df40f950",
+    "reviewedDataReplaySource": "1e564c34401f6ae070feb24e3deb43b6f48b3e7d39020b5767d79abc3482222c",
+    "replayLedger": "8c428fbc281da81bc19b3fff52ab2850e5aa6a6695a09c16a1068015175d9ab3",
+    "patternContractV3": "23e19c2c8adadddaf606a8e6664ec92ba41e85c24e572aa6cb04dac8f90e3fb1"
+  },
+  "integrity": {
+    "requestLinkedReferencesChecked": 16,
+    "initialHashMismatches": 0,
+    "immutableSourceCopiesChecked": 11,
+    "immutableSourceCopyMismatches": 0,
+    "workingSourceChangedDuringReview": [
+      "lab/review6/data-replay.ts",
+      "lab/review6/data-audit.ts",
+      "lab/tests/review6_data_replay.test.ts"
+    ],
+    "boundary": "上述工作区变化属于主执行者后续修复，不纳入本次通过判断。本报告针对不可变 pre-H-001 副本。"
+  },
+  "findings": [
+    {
+      "id": "C2-METHOD-P1-001",
+      "severity": "P1",
+      "status": "open_against_reviewed_snapshot",
+      "title": "贡还初始化遗漏导致有效原谱被实现错误截断",
+      "location": "lab/review6/data-replay.ts:36",
+      "cause": "buildSourceRound 保存了 applyTribute 的返回值，却未赋给 state.tribute；completeReturn 同时要求 pendingReturns 和 state.tribute。",
+      "reproduction": {
+        "sourceMatchId": "GD_MATCH_0004",
+        "roundIndex": 1,
+        "priorTargetResultExists": true,
+        "originalError": "当前没有待还的贡牌",
+        "temporaryInMemoryChange": "仅补 state.tribute=tribute。",
+        "resultAfterChange": {
+          "successfulReturns": 1,
+          "unconsumedTransfers": 0,
+          "firstActorMatchesSource": true,
+          "handCounts": [
+            27,
+            27,
+            27,
+            27
+          ]
+        }
+      },
+      "impact": "240个保存的首断点使用该错误原因。不能把这些截断当成真实源规则不兼容；它们改变一次性 H 拟合可用样本及贡还场景覆盖。",
+      "requiredBeforeFit": "修复状态初始化，保留旧版失败证据，在同一源、同一 split 上重新审计，再核对新原始行与汇总。不得据此重分组或查看 H 分数。"
+    }
+  ],
+  "rawRecomputation": {
+    "source": {
+      "matches": 1305,
+      "rounds": 14823,
+      "rawActions": 1217604
+    },
+    "splits": {
+      "historical_diagnostic": 100,
+      "train": 723,
+      "dev": 241,
+      "holdout": 241,
+      "uniqueMatchIds": 1305,
+      "uniqueFirstDealFamilies": 1305,
+      "familiesCrossingSplits": 0,
+      "consumedIdsEnteringFreshSplits": 0,
+      "anyRoundDealFamilyCrossingSplits": 0
+    },
+    "historicalDiagnostic": {
+      "rounds": 1159,
+      "rawActions": 94778,
+      "actualCallbackRows": 94450,
+      "candidateMatched": 91762,
+      "candidateUnmatched": 2688,
+      "notReachedByCallback": 328,
+      "scope": "已从原始 callback 行复算；不是严格目标规则通过率。"
+    },
+    "strictReplay003": {
+      "ledgerRows": 1217604,
+      "matchGroups": 1305,
+      "classes": {
+        "A": 0,
+        "B": 1261,
+        "C": 44
+      },
+      "compatiblePrefixActions": 83217,
+      "targetLegalAuditedActions": 83396,
+      "usableBehaviorRows": 82023,
+      "outsideVerifiedPrefixRows": 1133681,
+      "usableBySplit": {
+        "historical_diagnostic": 5820,
+        "train": 44490,
+        "dev": 15460,
+        "holdout": 16253
+      },
+      "usableRowsWithAmbiguityBreakMissingTargetOrSplitMismatch": 0,
+      "futureOutcomeLabelsConsumed": false,
+      "qualification": "这些是已存003证据的真实复算值；因 P1 实现截断，不能当成最终合法域结论。"
+    }
+  },
+  "patternMapping": {
+    "independentOldMismatchRowsClassified": 1136,
+    "joinedToOriginalRawEvents": 1136,
+    "rawCardsOrPatternJoinMismatches": 0,
+    "classificationCounts": {
+      "source3_pair_seq": 286,
+      "source5_trio_seq": 129,
+      "source7_trio_pair": 521,
+      "source8_flush_and_straight_shapes": 200
+    },
+    "unsupportedByCorrectedMap": 0,
+    "source8Interpretation": "同花顺物理牌也可形成普通顺子形状；源类别8限定为 bomb/flush/joker_bomb，不因此注入普通顺子标签。",
+    "fourJokerEvidence": "另六例均为源类别8和两张94、两张95；独立四王回归证据保留。",
+    "selectionIndependence": "修正依据机械牌型与原谱类别，未使用 H 分数。"
+  },
+  "informationAndApplicability": {
+    "BPrefixBoundary": "仅首个不兼容或歧义事件之前的已核行为可用于动作预测；不得从后续失败局面构造奖励、胜负或教师支持标签。C不消费。",
+    "unknownDeclarations": "可用行均有唯一声明和非空等价目标索引；歧义或无法核验声明在首断点处停止。",
+    "bankerRoleProvenance": "作者文档把 is_banker 定义为该轮 banker-side partnership。字段位于 result 中本身不等于未来泄漏；当前构造器仅读该角色，不读终局名次或余牌。",
+    "schemaReference": "[KSCB 原作者字段说明](https://github.com/Calix-L/CardKS/tree/main/KSCB#guandan-terminal-results)",
+    "documentationBoundary": "当前文档的数据规模与本地旧版本不同；1305分母以已锁本地原始字节复算为准。",
+    "independentRealRoundProbes": {
+      "futureFinishHandsScoreOutcomeMutationPreservesObservation": true,
+      "hiddenOtherHandSwapPreservesObservation": true,
+      "hiddenOtherHandSwapPreservesCandidates": true,
+      "changingActualTargetPreservesObservation": true,
+      "changingActualTargetPreservesCandidateSet": true
+    },
+    "transferTiming": "扫描原始事件未发现交换事件位于本轮首个决策之后。",
+    "representationGap": "已知贡还牌归属未完整进入当前编码的缺口有明确标记；不得把未编码的信息称为 H 已利用。"
+  },
+  "candidateSupport": {
+    "legalitySeparateFromProposal": true,
+    "targetDependentInjectionFound": false,
+    "resourceEffectDefinition": "比较完整花色点数重数、必要声明效果、万能牌代入及组合结构；仅未来效果相同的物理副本可等价。",
+    "enumeratorOmissions": "1194个单独的合法资源变体遗漏行不消费，但继续保持规则合法性；不把候选遗漏改称非法。",
+    "unexplainedDedupOmissionsInSavedAudit": 0
+  },
+  "fitBoundary": {
+    "HFitReviewedOrStarted": false,
+    "HQuality": "not_measured",
+    "modelScoresOpened": false,
+    "reviewedTrainingEntry": "train-human-proxy 在本次快照仍返回 not_implemented。",
+    "importantConsumerConstraint": "usableForH=true 包含5820条历史诊断行。未来拟合消费者必须与锁定 split 联结，仅用 train；开发和留出评分分别限定对应 split。不能只过滤 usableForH。",
+    "currentFitDecision": "不得依据 pre-H-001/003审计结果启动一次性拟合；先关闭 P1 并复审修订证据。"
+  },
+  "independentProbeArtifacts": {
+    "/private/tmp/c2-method-tribute-probe-001.mts": "f227bdf061db986b926b5ff24a9a4fae777172f55a571d28530a2aa325bd94e5",
+    "/private/tmp/c2-method-tribute-probe-001.json": "476e9573eae3bd4af127ef6a7c63ab35672b6e13fcbb4002d911f1954d543a1b",
+    "/private/tmp/c2-method-frozen-data-replay-001.ts": "159898414acb15f4f1be973b3dd962da4062c508a444f9342a06437b958ce130",
+    "/private/tmp/c2-method-pattern-information-001.mts": "b2a50048edf39cf36c597dd03b541cdfdf79fb93515d3005e98ab5d4af9ff955"
+  },
+  "blockedReasons": [
+    "C2-METHOD-P1-001 尚未在本次不可变快照关闭。"
+  ],
+  "overallDecision": "CHANGES_REQUIRED_BEFORE_FIRST_H_FIT",
+  "limitations": [
+    "未验收 H 泛化、NLL、分层质量、with_h资格或 C2 整体。",
+    "源玩家身份仅为席位别名，跨人隔离与技能等级仍未知。",
+    "未运行模型、训练、正式或封存评测，未修改业务、证据或账本。",
+    "没有其他已复现的 P1；后续 H 消费、迁移与评分实现不在本次已审范围。"
+  ]
+}

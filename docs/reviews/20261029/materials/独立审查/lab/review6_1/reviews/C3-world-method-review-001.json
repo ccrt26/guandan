@@ -1,0 +1,320 @@
+{
+  "reviewId": "C3-world-method-001",
+  "role": "method",
+  "requestSHA256": "9a26b36b4b0f634b1990ad375c8c0563fddd80e19a590050b2dd32c1782385cf",
+  "reviewedSourceManifestSHA256": "155a47e727b19b64463f4c06365611bd11b9589fd46600444285171e5ab434ea",
+  "overallDecision": "CHANGES_REQUIRED",
+  "worldSamplerApprovedForPilot": false,
+  "C3OverallAccepted": false,
+  "teacherQualityApproved": false,
+  "mainTrainingApproved": false,
+  "formalEvaluationApproved": false,
+  "scope": "Read-only pre-pilot review of the six immutable001 source copies, actual317+14 schema and listed evidence. Mechanical temporary projection/sampling/history/representation probes only. Prior H/baseline/source-target proofs retained without rerunning them.",
+  "reviewedFileHashes": {
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-request-001.json": "9a26b36b4b0f634b1990ad375c8c0563fddd80e19a590050b2dd32c1782385cf",
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source-manifest.json": "155a47e727b19b64463f4c06365611bd11b9589fd46600444285171e5ab434ea",
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/review6/visible-world.ts": "b9c1d48260fa0768166a8ed6545a0a7b68524852a2f0a29e71eca580c078611a",
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/review6/match-play.ts": "246b3ea3994939ab9a584e24745526128d2877d1f902d98255b307effd6ee619",
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/review6/action-effect.ts": "9e2a8eb4841cedc92f3543a82a79bbc87d36ebca254e86736099c2174629f863",
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/tests/review6_visible_world.test.ts": "2f3643397fadef93b5d3b546337ddc45e2c0003ec1fadb6db46799e6184dd193",
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/tests/review6_match_play.test.ts": "cc1fcb67f678921fa72337eede9b69e0d15db14fea78926e8ae4612ed3ac9cea",
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/packages/ai/src/nn/schema.ts": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8",
+    "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-visible-world-red-001.log": "265101535c8ddefaf2d3fd2ad256592b3b8ae02a604fb11662ddae07b6a68e58",
+    "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-visible-world-green-001.log": "ca3e872a0644911d056ab282123d67cc506e165e5ab45084f29c5e18ad2ce63e",
+    "/Users/ccrt/game/guandan/lab/review6_1/data/no-H-policy-registry-001.json": "d34a08fbc5db833ca5580670ef87e11cda03bd215eb1de2c318e04dd1e236202",
+    "/Users/ccrt/game/guandan/lab/review6_1/data/experiment-branch.lock.json": "e9d578996e4dd23537a3e89a9320ebe65712a57d0bb6485b0254b66c16ffec1f",
+    "/Users/ccrt/game/guandan/lab/review6_1/data/H-evaluation-scope-addendum-001.json": "268092f16f23d3247bcc8614cc57ccb4b30f73c88471706bbeae12b41ab25d27"
+  },
+  "findings": [
+    {
+      "id": "C3-WORLD-M01",
+      "priority": "P1",
+      "status": "OPEN_ON_IMMUTABLE_001",
+      "title": "Nested source metadata leaks original hidden hands and changes the observation-derived sampling seed.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/review6/visible-world.ts",
+        "functions": [
+          "toVisibleRoot",
+          "checkVisible"
+        ]
+      },
+      "evidence": {
+        "optsLeak": {
+          "cleanHiddenSwapAndSourceRngInvariant": true,
+          "nestedOptsOriginalHiddenHandsSerialized": true,
+          "same331": true,
+          "hiddenChangeChangesObservationSHA": true,
+          "sameSeedDifferentSampledLayout": true,
+          "samplerAcceptsNestedHiddenField": true
+        },
+        "historyRowLeak": {
+          "extraHistoryRowSerialized": true,
+          "samplerAccepted": true
+        }
+      },
+      "minimalReproduction": "Add debugHiddenHands to an otherwise valid state.match.opts, or to an otherwise valid PublicStep row. assertRootHistory accepts the valid game/history, toVisibleRoot structuredClone copies the unknown nested field, and sampleVisibleWorld accepts it. The same genuine own/public state and same model331 input, but a valid alternate original hidden layout inside this metadata, produces a different observationSHA and sampled layout under the same caller seed.",
+      "impact": "The payload is not a strict own/public projection. A teacher could receive the original opponent hands, and sampled finite worlds become keyed to source-private metadata. Top-level selection plus a content SHA is insufficient.",
+      "requestedClosure": "Explicitly project all allowed fields recursively for rules, result, card, combo, wildcard assignment, tribute/return, history row and every event type. Source debug extras must not survive into the payload/hash. Strictly validate all nested sampler-input fields/types/arrays and reject forged extras even after the caller recomputes the content hash. Preserve legitimate past public result fields; exclude original hidden hands, RNG, next action and future results."
+    },
+    {
+      "id": "C3-WORLD-M02",
+      "priority": "P2",
+      "status": "OPEN_DOMAIN_OR_GAP_BOUNDARY",
+      "title": "Accepted terminal-rule variation is absent from model331 and receives no representation-gap flag.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/review6/visible-world.ts",
+        "function": "exchangeRepresentationGaps / visible rule-domain boundary"
+      },
+      "evidence": {
+        "sameModel331": true,
+        "gapsA": [],
+        "gapsB": [],
+        "publicRuleA": "head3",
+        "publicRuleB": "double",
+        "sameFinishOrder": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "head3PassedA": true,
+        "doublePassedA": false,
+        "bothSamplerAccepted": true
+      },
+      "impact": "The encoder has no passA feature. For the same fresh hands/levels[14,2], head3 and double are both accepted with identical331 inputs and gaps[], while the same finish order[0,1,2,3] passesA only under head3. This is a concrete public condition relevant to the complete-match objective, not a label-derived eligibility criterion.",
+      "requestedClosure": "For this fixed-rule pilot, explicitly enforce the predeclared frozen rule identity at the ingress. If broader rule contexts are intentionally accepted, conservatively flag/isolate the unencoded variation before any scoring/labeling; do not silently expand student input or mix these tasks. A globally fixed rule need not be newly encoded if it is actually enforced as constant.",
+      "scopeLimit": "This does not show that the already frozen DEFAULT_RULES baseline/H measurements are wrong; they are not re-opened here."
+    },
+    {
+      "id": "C3-WORLD-M03",
+      "priority": "P2",
+      "status": "OPEN_RESOURCE_BOUNDARY",
+      "title": "The attempt cap is not constrained to a safe bounded integer range.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-world-001/source/lab/review6/visible-world.ts",
+        "function": "sampleVisibleWorld maxAttempts validation"
+      },
+      "evidence": {
+        "acceptedCap": 9007199254740994,
+        "accepted": true,
+        "jsIncrementStagnatesAt2Pow53": true,
+        "ordinaryThreeAttemptBound": {
+          "accepted": false,
+          "error": "Error: bounded legal-world sampler exhausted without substituting true hidden cards: history does not reconstruct root field passCount",
+          "maxAttempts": 3,
+          "exactAttemptCount": 3,
+          "noSourceTruthAvailableToFallback": true,
+          "instrumentation": "One side-effect-only global iteration counter added to a separate temporary source copy; no sampling/acceptance code changed."
+        }
+      },
+      "impact": "Number.isInteger accepts9007199254740994. A rejecting loop can reach2^53 where attempt++ no longer changes the value while remaining below that accepted cap. Ordinary caps work, but the public boundary does not establish the claimed bounded rejection. No long-running loop was executed.",
+      "requestedClosure": "Require a positive safe integer and a finite predeclared maximum consistent with the existing4096 default/protocol. Reject invalid limits before allocating/shuffling. Do not enlarge the cap after inspecting label outcomes or substitute source truth on exhaustion."
+    }
+  ],
+  "nonblockingObservations": [
+    {
+      "id": "C3-WORLD-O01",
+      "kind": "conservative_overflag",
+      "evidence": {
+        "moveNo": 266,
+        "actor": 2,
+        "counts": [
+          1,
+          1,
+          25,
+          0
+        ],
+        "hiddenPhysicalCards": [
+          {
+            "id": 7,
+            "suit": "S",
+            "rank": 9
+          },
+          {
+            "id": 61,
+            "suit": "S",
+            "rank": 9
+          }
+        ],
+        "representationGaps": [
+          "known_transfer_owner_not_encoded_in_schema_v4"
+        ],
+        "allOtherNonemptyHandsForcedSameSuitRank": true,
+        "knownCopyIdentityDoesNotChangeLegalCardValues": true,
+        "observationSHA256": "c117d4e61055ef0623957ac9e6a3b0e7ce81cee739f716e9c7fe13522a67df0d",
+        "historyRows": 266
+      },
+      "interpretation": "In a fully legal266-action history, actor2 has25 cards and the two other nonempty seats each have1; the entire unseen pool is twoS9 physical copies. model331 contains this suit/rank pool and the two counts, so both hidden hands must have the same S9 value. The known-transfer-copy ownership flag excludes this root even though the remaining copy-ID distinction carries no additional game-resource value condition.",
+      "recommendation": "It is permissible to retain this conservative exclusion and disclose the narrower eligible set. Any refinement should use a pre-score mechanical implication/equivalent-copy proof, never teacher support rates or outcomes. This observation alone does not block the pilot."
+    },
+    {
+      "id": "C3-WORLD-O02",
+      "kind": "scope_limit",
+      "interpretation": "The three exchange flags are an initial conservative filter, not proof that317+14 is a sufficient statistic for all complete public history or every continuation policy. Future concrete encoder collisions or policy-history dependencies still need diagnosis before their labels are consumed."
+    }
+  ],
+  "positiveIndependentChecks": {
+    "frozenWorldUnitTests": {
+      "passed": 4,
+      "failed": 0,
+      "NNDisabled": true,
+      "log": {
+        "path": "/private/tmp/c3-world-method-001/frozen-world-tests.log",
+        "sha256": "157b61925b85feddda9ece2554a4772c3fd2cccf7f9c77f8aa4ebde543fbb6a8"
+      },
+      "redReceiptInterpretation": "The stored red receipt is a module-load failure before implementation, not four executed behavioral assertion failures. The green receipt and independent temporary run each execute all four tests."
+    },
+    "ordinaryProjection": {
+      "otherHiddenHandSwapAndOriginalRngChangeInvariant": true,
+      "ownCardsAndCountsPreserved": true,
+      "model331RepeatedExactly": true,
+      "limit": "This passes for ordinary canonical source values; it does not close the nested-extra leak above."
+    },
+    "smallInformationSetEnumeration": {
+      "fixtureSourceSeed": 201,
+      "unknownCards": 3,
+      "counts": [
+        5,
+        0,
+        1,
+        2
+      ],
+      "legalUnorderedAllocations": 3,
+      "draws": 512,
+      "observedAllocations": 3,
+      "countsByAllocation": {
+        "own||71|4,63": 168,
+        "own||63|4,71": 147,
+        "own||4|63,71": 197
+      },
+      "attemptHistogram": {
+        "1": 512
+      }
+    },
+    "uniformityReasoning": "For a fixed canonical visible input, Fisher-Yates permutes the unseen card pool, then fills fixed per-seat deficits. Every unordered physical allocation has the same product-of-seat-factorials multiplicity; subsequent within-hand shuffles also have fixed multiplicity. Conditioning this proposal on the same legal public-history/exchange predicate preserves uniformity under the transparent pseudorandom-shuffle assumption. Re-encoding is constant on worlds preserving the own/public facts. The512 empirical counts are descriptive, not a statistical proof of uniformity or a criterion for selecting favorable roots.",
+    "passIsChoiceOnly": {
+      "passer": 3,
+      "originalCouldBeat": true,
+      "draws": 64,
+      "sampledWorldsWherePasserCouldBeat": 64
+    },
+    "passCodeInspection": "Neither playedBy nor root-history replay infers inability from pass. resolveLegalMove only requires that a target exists for passing. All64 sampled worlds in the optional-pass witness still let the passer beat the target.",
+    "knownOwnersAndRejection": {
+      "knownOwners": [
+        {
+          "id": 105,
+          "owner": 0,
+          "actualSampledOwner": 0
+        },
+        {
+          "id": 26,
+          "owner": 2,
+          "actualSampledOwner": 2
+        }
+      ],
+      "legalExchangeWorldAttempts": 1,
+      "sourceContradictoryExchangeRejected": true,
+      "sourceError": "Error: known public tribute/return ownership violated",
+      "malformedObservationRejected": true,
+      "malformedError": "Error: bounded legal-world sampler exhausted without substituting true hidden cards: public exchange does not reconstruct the initial deal",
+      "unsafeIntegerAttemptCap": 9007199254740994,
+      "unsafeIntegerCapAccepted": true,
+      "counterStagnatesAt2Pow53": true,
+      "productionTeacherLabels": 0,
+      "newNNCalls": 0
+    },
+    "boundedRejectionAtOrdinaryCap": {
+      "accepted": false,
+      "error": "Error: bounded legal-world sampler exhausted without substituting true hidden cards: history does not reconstruct root field passCount",
+      "maxAttempts": 3,
+      "exactAttemptCount": 3,
+      "noSourceTruthAvailableToFallback": true,
+      "instrumentation": "One side-effect-only global iteration counter added to a separate temporary source copy; no sampling/acceptance code changed."
+    },
+    "noSourceTruthFallback": "sampleVisibleWorld receives only VisibleRoot, caller seed and cap, constructs from the canonical deck, and throws on exhaustion. The contradictory public-owner and passCount observations reject instead of returning the original hidden layout. The nested payload leak must still be fixed before this architectural separation is reliable."
+  },
+  "schemaAssessment": {
+    "readActualFrozenSchemaSHA256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8",
+    "layout": "317 contains current own suit/rank counts, aggregate public played counts through unknownPool, current target physical cards/kind/key/size/owner, other seats counts/finished statuses, their last3 compact moves, team levels, own wild count and two tribute bits. The14 extension adds effective-level onehot and own-team-on-stage.",
+    "notEncodedByTheseFields": [
+      "Full known tribute/return card-to-seat identities.",
+      "Exact public giver roles/resistance restrictions beyond the two compact tribute bits.",
+      "Forced pre-exchange maximum constraints for another remaining giver.",
+      "Variable passA and other nonfixed rule settings."
+    ],
+    "eligibilityRule": "Keep the conservative filter/version fixed before teacher scores. An empty list means none of these implemented checks fired; it is not a general historical sufficiency certificate."
+  },
+  "openP0": [],
+  "openP1": [
+    "C3-WORLD-M01"
+  ],
+  "openP2": [
+    "C3-WORLD-M02",
+    "C3-WORLD-M03"
+  ],
+  "blockedReasons": [
+    "The immutable001 VisibleRoot can contain original hidden source metadata in nested fields.",
+    "The accepted public-rule domain and attempt-limit boundary need explicit closure before the module is approved as a bounded pilot sampler."
+  ],
+  "cyclePreservation": {
+    "cycleIds": [
+      "review6-humanlike-20261028"
+    ],
+    "initializeRows": [
+      {
+        "kind": "initialize",
+        "cycleId": "review6-humanlike-20261028",
+        "limitSeconds": 259200,
+        "actualSeconds": 445.891214,
+        "at": "2026-10-28T09:53:34.977Z",
+        "previousHash": null,
+        "entryHash": "66d45addaf0531a072e76b807e19a7e8bb7a681aa7dd3e809cf25fef8b72b337"
+      }
+    ],
+    "initializeCount": 1,
+    "HFitReserveCount": 1,
+    "HFitSettleCount": 1,
+    "ledgerSHA256": "fa35080963c48de67228869e918c7504d93797b0ab3f1585f59e7aad70bc784e",
+    "atReadEntries": 28,
+    "originalLimitSeconds": 259200,
+    "calendarRolloverCreatesNewCycle": false,
+    "experimentBranch": "direct_teacher_no_h",
+    "HQualified": false,
+    "formalAttemptResetByReviewer": false,
+    "scope": "The same review6-humanlike-20261028 cycle still has one initialize entry and the once-only H reserve/settle pair. Prior H/baseline proof is reused; no fresh H/model/formal result audit or new attempt is performed."
+  },
+  "executionSafety": {
+    "NNForwardCalls": 0,
+    "NNDecisionCalls": 0,
+    "productionTeacherLabelsGenerated": 0,
+    "trainingUpdates": 0,
+    "businessBaselineReruns": 0,
+    "HRefits": 0,
+    "wholeSourceReplayReruns": 0,
+    "formalOrSealedRuns": 0,
+    "externalModelCalls": 0,
+    "repositoryOrRealLedgerWrites": 0,
+    "temporaryWritesOnly": "/private/tmp/c3-world-method-001",
+    "mechanicalFixtures": "Handcrafted legal histories, visible allocations and pure engine rule-result checks only; no root-action preference or teacher outcome labels were generated."
+  },
+  "reproductionArtifacts": {
+    "/private/tmp/c3-world-method-001/probe.mts": "bf25d4781971303a95a4dd9a65a43582cef0e9e6ced1fe7c4760a078e16c659d",
+    "/private/tmp/c3-world-method-001/probe.json": "557f3db0f1f4777bfad199ef6e92bdecdf6cefdfc0487d7084927084346b1a9c",
+    "/private/tmp/c3-world-method-001/gap-bound-probe.mts": "73ff3a6c8bbcbccac656dc4b4be07c1a4cff6459da22c52030d2dc2dfca2f216",
+    "/private/tmp/c3-world-method-001/gap-bound-probe.json": "fa235cdc280d27d2f3f3d68179613f31b615a35b064fd9ad2f42c5bb6a84f92f",
+    "/private/tmp/c3-world-method-001/exchange-negative-probe.mts": "f09684db6cce0e21afea1203d5fa7ede74586da7d7c5fae85d3e49c72613df11",
+    "/private/tmp/c3-world-method-001/exchange-negative-probe.json": "363991e6badb970b5be677c74e77bc8d374c216c45c9e8fba8efe950e1613684",
+    "/private/tmp/c3-world-method-001/cycle-identity.json": "37727a37240973424d37f539cbfb795d5fd48d26ed7e8f2ae99bebb6d63cff3c",
+    "/private/tmp/c3-world-method-001/frozen-world-tests.log": "157b61925b85feddda9ece2554a4772c3fd2cccf7f9c77f8aa4ebde543fbb6a8",
+    "/private/tmp/c3-world-method-001/deny-nn.ts": "5e2974f89fe7c0068827d61774405a388575d68535a379c9ca5a338d29061953",
+    "/private/tmp/c3-world-method-001/vitest.config.mjs": "956abd6d8a5bcb840240561f4c3a65818807ebb163ad11b3563d3df6dbad641a",
+    "/private/tmp/c3-world-method-001/lab/review6/visible-world-instrumented.ts": "9d61fff6634ec071465f04c86ceaa913f1a3783a5a9ba58ae08c83bd8d34df39"
+  },
+  "instrumentationLimit": "Only the separate visible-world-instrumented temporary copy adds a side-effect-only loop-iteration counter to establish the ordinary3-attempt bound. All acceptance, uniformity, leak, pass and rule/gap probes use the unmodified frozen logic with dependency import paths relocated. No production source or evidence was edited.",
+  "limitations": [
+    "This report does not approve teacher quality, C3 overall, labels, policy improvement, main training or formal evaluation.",
+    "Uniformity is conditional on the stated own/public information set and legal-rejection rules; no calibrated human behavior weighting is claimed.",
+    "The fixed seed sample frequencies and toy worlds are diagnostics only, not game-strength evidence or a license to alter eligibility after model outcomes.",
+    "Root-history/public-exchange checks and H/baseline results remain as independently reviewed; they were not replaced or rerun."
+  ]
+}

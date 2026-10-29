@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "r6-stage-acceptance-v1",
+  "stage": "C1",
+  "stageStatus": "completed",
+  "at": "2026-10-28T12:07:55.006864+00:00",
+  "scope": "finite development facts and actual local four-seat UI; no stronger playing ability acceptance",
+  "currentProduct": "/Users/ccrt/game/guandan/lab/review6_1/capability/product-007",
+  "currentPreview": "http://localhost:5180",
+  "previewBuildId": "review6-facts-ui-20261028-03",
+  "currentPlayingPolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+  "playingPolicyUpdated": false,
+  "cards": 240,
+  "checkedAssertions": 1440,
+  "missingAssertions": 0,
+  "errorAssertions": 0,
+  "normalUIRootIdentityAudit": {
+    "completed": 717,
+    "scope": "posthoc deterministic development only"
+  },
+  "remainingP1": 0,
+  "remainingP2": 0,
+  "reviews": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C1-engineering-review-004.json",
+      "sha256": "49d140502c9eee9f52dbe84419420b25856a545ff6a46f96582c651e8d41ea69"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C1-method-review-004.json",
+      "sha256": "24b5e3000f4b9d092ebac994f6b9e52e30d20a9c2eb09e1bbff6de2109d43079"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/stages/facts-contract.json",
+      "sha256": "799f9d028f341aaa92b37e493ffadc0fdcd8e1ab5a38b4b39aa3bdc2ccc1bba5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/stages/claims-validation.json",
+      "sha256": "235b65d773d4fee8a96bfd89c0804db3c6d8ae687d8d6cafccd1d977d2e7d10c"
+    }
+  ],
+  "receipts": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c1-final-product-readback-001.json",
+      "sha256": "e6427118c51d156e1fc78bde927bee31d64e594111a7905e0e71bbcebb76bb54"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c1-final-baseline-readback-001.json",
+      "sha256": "f90e44f77f62a9a0cf371a10ce5b11a38fad08a43d204ebfc644cd5af92701ee"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/browser-acceptance-004.json",
+      "sha256": "62bd8e06d124c1c836d7f9d6e2f395a63383576a3bfee521f1c3fc35b7a10d52"
+    }
+  ],
+  "formalSkillsMeasured": false,
+  "nextStage": "C2"
+}

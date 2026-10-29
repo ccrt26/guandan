@@ -1,0 +1,38 @@
+{
+  "reviewId": "C1-engineering-004",
+  "requestId": "C1-request-004",
+  "overallDecision": "PASS_C1_FINITE_ENGINEERING_SCOPE",
+  "scope": "Focused read-only closure of C1-E07 only; prior C1-003 review retained.",
+  "reviewedFileHashes": {
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C1-request-004.json": "7f341e24225ea46047011a8f9b5e16230b92a3b6e78aa0bf53bc962a28986692",
+    "/Users/ccrt/game/guandan/packages/review/src/knowledge.ts": "d216bd4422eb5ab22bc8e9954b5e0190074f31d955c22c77a89c75d73fc4de2f",
+    "/Users/ccrt/game/guandan/lab/review6_1/reviews/C1-004/diff.patch": "9fe4824aaf75c0ad7b7f905575bed5986e9baf6f28b5accc430159d45d1e8aa7"
+  },
+  "closure": {
+    "id": "C1-E07",
+    "previousSeverity": "P2",
+    "decision": "CLOSED",
+    "evidence": "Actual source matches the immutable copy and declared hash. Comparison with C1-003 confirms the single knowledge-entry change. The incorrect fixed exclusion of 2 is removed; sequence eligibility now explicitly depends on the actual rule context. No engine-rule change was needed."
+  },
+  "referenceChecks": {
+    "requestReferences": "All hashes matched, including retained prior reviews.",
+    "browserReceipt": "Declared source/evidence hashes and carry-forward receipt/module hashes matched. Reuse is explicit; no browser rerun is claimed.",
+    "productReceipt": "Current receipt binds product-007 to browser-004 and reports 240 cards, 1440 checked assertions, zero missing/errors.",
+    "export": "Export manifest and both output-file hashes matched; it binds verification receipt 004 and records zero new evaluations, external calls and formal confirmations."
+  },
+  "findings": [],
+  "remainingP1Count": 0,
+  "remainingP2Count": 0,
+  "blockedReasons": [],
+  "verification": {
+    "method": "Read-only SHA256 checks, exact source/copy comparison, single-line diff and referenced receipt/export checks.",
+    "exitCode": 0,
+    "unrelatedTestsOrSimulationsRepeated": false
+  },
+  "limitations": [
+    "Acceptance remains limited to C1 engineering and the declared finite development evidence.",
+    "Prior E01-E06 closures remain scoped to their reviewed versions and preserved evidence.",
+    "No stronger playing ability, teaching success, sealed skills, formal match improvement or human compatibility is established.",
+    "No source, evidence, protocol or ledger files were modified; no training, formal evaluation or external model calls were performed."
+  ]
+}

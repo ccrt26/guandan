@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-29T00:07:16.568Z",
+  "rows": [
+    {
+      "url": "http://localhost:5180",
+      "status": 200,
+      "bytes": 599,
+      "bodySHA256": "83fdb8b668e5e0720552635332a756b8b00ecd144e8a6907a6ff9b5d34eed417",
+      "factsPreviewIDPresent": false,
+      "backendOK": null
+    },
+    {
+      "url": "http://localhost:8787/api/health",
+      "status": 200,
+      "bytes": 43,
+      "bodySHA256": "bdecf3930e2abdeed2d258c63a715b342bca12ba5e22662b88072970cf1ecad5",
+      "factsPreviewIDPresent": false,
+      "backendOK": true
+    },
+    {
+      "url": "http://localhost:5180/src/ui/DecisionFactsPanel.tsx",
+      "status": 200,
+      "bytes": 19500,
+      "bodySHA256": "11ae5bd8abd71d2b45d5341f1c8d4b0aa63bdb4f87c0d44be62808ce11263601",
+      "factsPreviewIDPresent": true,
+      "backendOK": null
+    }
+  ],
+  "currentWeights": {
+    "url": "http://localhost:5180/ai/clean2.f32",
+    "httpStatus": 200,
+    "bytes": 659460,
+    "sha256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+  },
+  "modelForwardCalls": 0,
+  "externalLLMRequests": 0,
+  "scope": "Readonlyactualservingidentity/health; existinghealthendpoint returnsok, nochat/import/deploy mutation. Previous/health404 waswrongroute, notservicefailure; restrictedlocalnetworkEPERM followedauthorizedreadonly escalation."
+}

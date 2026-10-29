@@ -1,0 +1,105 @@
+{
+  "implementation": "r6-paired-percentile-type7-20k-v1",
+  "resultCode": "supported",
+  "supported": true,
+  "primary": {
+    "implementation": "r6-paired-percentile-type7-20k-v1",
+    "method": "percentile",
+    "interpolation": "R_type_7_linear",
+    "replicates": 20000,
+    "seed": 1544122906,
+    "independentUnits": 256,
+    "unitIdsSHA256": "b9d87e3c8f859a85fb626a1b52de0b99d71b41074631666d4ed875f19af9d55d",
+    "sharedResamplingIndicesAcrossColumns": true,
+    "probabilities": [
+      0.0125,
+      0.9875
+    ],
+    "columns": {
+      "d": {
+        "point": 0.076171875,
+        "quantiles": [
+          0.0341796875,
+          0.11767578125
+        ]
+      }
+    }
+  },
+  "secondary": {
+    "implementation": "r6-paired-percentile-type7-20k-v1",
+    "method": "percentile",
+    "interpolation": "R_type_7_linear",
+    "replicates": 20000,
+    "seed": 2862496006,
+    "independentUnits": 128,
+    "unitIdsSHA256": "a0b77be096d1583b3c9a96f283d82f38f9f84f36dde3eca24a4fe710173acf27",
+    "sharedResamplingIndicesAcrossColumns": true,
+    "probabilities": [
+      0.0125,
+      0.9875
+    ],
+    "columns": {
+      "d": {
+        "point": 0.078125,
+        "quantiles": [
+          0.015625,
+          0.140625
+        ]
+      }
+    }
+  },
+  "reasons": [],
+  "thresholds": {
+    "primaryLowerStrictlyAbove": 0.02,
+    "secondaryLowerStrictlyAbove": 0
+  },
+  "scope": "root_action_only",
+  "negativeLabelProduced": false,
+  "primaryComparisonsWithSharedIndices": {
+    "implementation": "r6-paired-percentile-type7-20k-v1",
+    "method": "percentile",
+    "interpolation": "R_type_7_linear",
+    "replicates": 20000,
+    "seed": 1544122906,
+    "independentUnits": 256,
+    "unitIdsSHA256": "b9d87e3c8f859a85fb626a1b52de0b99d71b41074631666d4ed875f19af9d55d",
+    "sharedResamplingIndicesAcrossColumns": true,
+    "probabilities": [
+      0.0125,
+      0.9875
+    ],
+    "columns": {
+      "full_plan_vs_original": {
+        "point": 0.0009765625,
+        "quantiles": [
+          -0.00732421875,
+          0.009765625
+        ]
+      },
+      "root_action": {
+        "point": 0.076171875,
+        "quantiles": [
+          0.0341796875,
+          0.11767578125
+        ]
+      },
+      "same_first_action_plan_continuation": {
+        "point": 0.0009765625,
+        "quantiles": [
+          -0.00732421875,
+          0.009765625
+        ]
+      }
+    }
+  },
+  "planContinuationSupported": false,
+  "fullPlanSupported": false,
+  "learnedPlanClaim": false,
+  "trainingConsumes": "root_action_pair_only_if_primary_and_secondary_support",
+  "planOnlyTailIntakeEligible": false,
+  "inputSHA256": "e662399aa853c08cea76b3d3a375add3faac43d99100274623f087205742e3ce",
+  "sourceSHA256": "839cef71e9ebdf527a383098700e29b857134e5545d5094e330dbd258d529049",
+  "torchVersion": "2.8.0",
+  "device": "cpu",
+  "torchThreads": 2
+}

@@ -1,0 +1,4840 @@
+{
+  "schemaVersion": "r6-product-examples-v1",
+  "measuredAt": "2026-10-28T11:50:03.867Z",
+  "sourceDirectory": "/Users/ccrt/game/guandan/lab/review6_1/capability/product-007",
+  "selectionRule": "first three fixed indices per four categories, plus evidence_insufficient-1; no success selection",
+  "weightsHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+  "examples": [
+    {
+      "id": "yield-1",
+      "category": "yield",
+      "recordSha256": "7ab05d8ddcc8d6834b2a93d6d648d1ffef2d052d93a2ba04ef5ae58178df2fa2",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♦5、♦5、♠5、♠5、♥5；声明：5张炸弹 55555",
+      "candidateAction": null,
+      "actualAction": "不出",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 27 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-yield-0#m3",
+        "recordId": "r6-dev-yield-0",
+        "recordHash": "f527a176bddd8e41",
+        "moveNo": 3,
+        "seat": 2,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 3,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "81c2411d35bc10b9",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "pass#",
+          "pass": true,
+          "physicalCards": [],
+          "declaration": "pass",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "exact",
+            "index": 2
+          }
+        },
+        "candidates": {
+          "setHash": "f31a3b60dd215585",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 15,
+          "ranking": [
+            {
+              "actionId": "bomb:5:1:5#D5,D5,H5,S5,S5",
+              "text": "♦5、♦5、♠5、♠5、♥5；声明：5张炸弹 55555",
+              "score": -0.1614
+            },
+            {
+              "actionId": "bomb:5:1:4#D5,H5,S5,S5",
+              "text": "♦5、♠5、♠5、♥5；声明：4张炸弹 5555",
+              "score": -0.1981
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": -0.2736
+            },
+            {
+              "actionId": "bomb:5:1:6#D5,D5,H2,H5,S5,S5",
+              "text": "♦5、♦5、♠5、♠5、♥5、♥2(当5)；声明：6张炸弹 555555",
+              "score": -0.4561
+            },
+            {
+              "actionId": "bomb:8:1:4#C8,C8,D8,S8",
+              "text": "♣8、♣8、♠8、♦8；声明：4张炸弹 8888",
+              "score": -0.4789
+            },
+            {
+              "actionId": "trio_pair:8:1:5+4#C4,C8,D8,S4,S8",
+              "text": "♣8、♠8、♦8、♣4、♠4；声明：三带二 8³+44",
+              "score": -0.6355
+            },
+            {
+              "actionId": "trio_pair:9:1:5+4#C4,C9,D9,S4,S9",
+              "text": "♠9、♦9、♣9、♣4、♠4；声明：三带二 9³+44",
+              "score": -0.646
+            },
+            {
+              "actionId": "bomb:4:1:4#C4,C4,H2,S4",
+              "text": "♣4、♣4、♠4、♥2(当4)；声明：4张炸弹 4444",
+              "score": -0.6813
+            },
+            {
+              "actionId": "bomb:9:1:4#C9,D9,H2,S9",
+              "text": "♠9、♦9、♣9、♥2(当9)；声明：4张炸弹 9999",
+              "score": -0.7558
+            },
+            {
+              "actionId": "bomb:8:1:5#C8,C8,D8,H2,S8",
+              "text": "♣8、♣8、♠8、♦8、♥2(当8)；声明：5张炸弹 88888",
+              "score": -0.769
+            },
+            {
+              "actionId": "flush:10:5:5#C10,C6,C8,C9,H2",
+              "text": "♣6、♥2(当7)、♣8、♣9、♣10；声明：同花顺 ♣",
+              "score": -0.8575
+            },
+            {
+              "actionId": "trio_pair:10:1:5+4#C10,C10,C4,H2,S4",
+              "text": "♣10、♣10、♥2(当10)、♣4、♠4；声明：三带二 10³+44",
+              "score": -0.8786
+            },
+            {
+              "actionId": "flush:12:5:5#C10,C12,C8,C9,H2",
+              "text": "♣8、♣9、♣10、♥2(当J)、♣Q；声明：同花顺 ♣",
+              "score": -0.8882
+            },
+            {
+              "actionId": "trio_pair:13:1:5+4#C4,D13,H13,H2,S4",
+              "text": "♦K、♥K、♥2(当K)、♣4、♠4；声明：三带二 K³+44",
+              "score": -0.9623
+            },
+            {
+              "actionId": "trio_pair:12:1:5+4#C12,C4,H12,H2,S4",
+              "text": "♥Q、♣Q、♥2(当Q)、♣4、♠4；声明：三带二 Q³+44",
+              "score": -0.9729
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "pass#",
+          "note": "与启发式首选一致（让牌）",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "let-mate",
+              "label": "让队友走（配合）",
+              "value": 12
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "pass#",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "不出",
+            "remainingCards": 27,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": null
+          },
+          "alternatives": [
+            {
+              "actionId": "bomb:5:1:5#D5,D5,H5,S5,S5",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♦5、♦5、♠5、♠5、♥5；声明：5张炸弹 55555",
+              "remainingCards": 22,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "bomb",
+                "cards": [
+                  {
+                    "id": 29,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 83,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 3,
+                    "suit": "S",
+                    "rank": 5
+                  },
+                  {
+                    "id": 57,
+                    "suit": "S",
+                    "rank": 5
+                  },
+                  {
+                    "id": 16,
+                    "suit": "H",
+                    "rank": 5
+                  }
+                ],
+                "size": 5,
+                "keyRank": 5,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 5,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "5b93b4464ff955cd",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-yield-0#m3",
+            "subjectActionId": "bomb:5:1:5#D5,D5,H5,S5,S5",
+            "factIds": [
+              "f3-ctx",
+              "f3-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♦5、♦5、♠5、♠5、♥5；声明：5张炸弹 55555压得过当前要压的♦7、♠7、♠7、♠8、♥8；声明：三带二 7³+88（引擎规则判定）（第3手，r6-dev-yield-0）"
+          },
+          {
+            "claimId": "d68fd63ce8f789f9",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-yield-0#m3",
+            "subjectActionId": "bomb:5:1:5#D5,D5,H5,S5,S5",
+            "contrastActionId": "pass#",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♦5、♦5、♠5、♠5、♥5；声明：5张炸弹 55555（评分 -0.1614），这是偏好排序不是对错判定（第3手，r6-dev-yield-0）"
+          },
+          {
+            "claimId": "0bb4dc3d143be624",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-yield-0#m3",
+            "subjectActionId": "pass#",
+            "contrastActionId": "pass#",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 实际打法：不出，与实际/模型的意见可能不同——同屏呈现不裁决（第3手，r6-dev-yield-0）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "pass#",
+            "terms": [
+              {
+                "key": "let-mate",
+                "label": "让队友走（配合）",
+                "value": 12
+              }
+            ],
+            "score": 12,
+            "sum": 12,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "bomb:5:1:5#D5,D5,H5,S5,S5",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": 2.2
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "beat-mate",
+                "label": "压队友（配合纪律）",
+                "value": -26
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 9→7（均非最优证明）",
+                "value": 12
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": -38.8,
+            "sum": -38.8,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "disagreement",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）"
+        ],
+        "missing": [],
+        "expressionScope": "可陈述启发式与模型偏好分歧与各自理由，必须同屏呈现，不得裁决对错",
+        "facts": {
+          "f3-ctx": "当前要压的是南家的♦7、♠7、♠7、♠8、♥8；声明：三带二 7³+88；本轮领出者南；各家剩牌 南22张、东27张、北27张、西27张",
+          "f3-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "pass#": "实际打法：不出",
+          "bomb:5:1:5#D5,D5,H5,S5,S5": "模型首选：♦5、♦5、♠5、♠5、♥5；声明：5张炸弹 55555",
+          "bomb:5:1:4#D5,H5,S5,S5": "♦5、♠5、♠5、♥5；声明：4张炸弹 5555",
+          "bomb:5:1:6#D5,D5,H2,H5,S5,S5": "♦5、♦5、♠5、♠5、♥5、♥2(当5)；声明：6张炸弹 555555",
+          "bomb:8:1:4#C8,C8,D8,S8": "♣8、♣8、♠8、♦8；声明：4张炸弹 8888",
+          "trio_pair:8:1:5+4#C4,C8,D8,S4,S8": "♣8、♠8、♦8、♣4、♠4；声明：三带二 8³+44",
+          "trio_pair:9:1:5+4#C4,C9,D9,S4,S9": "♠9、♦9、♣9、♣4、♠4；声明：三带二 9³+44",
+          "bomb:4:1:4#C4,C4,H2,S4": "♣4、♣4、♠4、♥2(当4)；声明：4张炸弹 4444",
+          "bomb:9:1:4#C9,D9,H2,S9": "♠9、♦9、♣9、♥2(当9)；声明：4张炸弹 9999",
+          "bomb:8:1:5#C8,C8,D8,H2,S8": "♣8、♣8、♠8、♦8、♥2(当8)；声明：5张炸弹 88888",
+          "flush:10:5:5#C10,C6,C8,C9,H2": "♣6、♥2(当7)、♣8、♣9、♣10；声明：同花顺 ♣",
+          "trio_pair:10:1:5+4#C10,C10,C4,H2,S4": "♣10、♣10、♥2(当10)、♣4、♠4；声明：三带二 10³+44",
+          "flush:12:5:5#C10,C12,C8,C9,H2": "♣8、♣9、♣10、♥2(当J)、♣Q；声明：同花顺 ♣",
+          "trio_pair:13:1:5+4#C4,D13,H13,H2,S4": "♦K、♥K、♥2(当K)、♣4、♠4；声明：三带二 K³+44",
+          "trio_pair:12:1:5+4#C12,C4,H12,H2,S4": "♥Q、♣Q、♥2(当Q)、♣4、♠4；声明：三带二 Q³+44"
+        }
+      }
+    },
+    {
+      "id": "yield-2",
+      "category": "yield",
+      "recordSha256": "be4e13e9502a7440b30038b59969a14e07e313f894faadf1a6bbf3c05403c75a",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♦5、♣5、♠5、♥5、♥5；声明：5张炸弹 55555",
+      "candidateAction": null,
+      "actualAction": "不出",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 27 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-yield-1#m3",
+        "recordId": "r6-dev-yield-1",
+        "recordHash": "8d35a1765e2205c0",
+        "moveNo": 3,
+        "seat": 2,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 3,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "db7e38fc35764644",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "pass#",
+          "pass": true,
+          "physicalCards": [],
+          "declaration": "pass",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "exact",
+            "index": 2
+          }
+        },
+        "candidates": {
+          "setHash": "cfe74adc1b126c9a",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 6,
+          "ranking": [
+            {
+              "actionId": "bomb:5:1:5#C5,D5,H5,H5,S5",
+              "text": "♦5、♣5、♠5、♥5、♥5；声明：5张炸弹 55555",
+              "score": -0.4283
+            },
+            {
+              "actionId": "bomb:5:1:4#C5,H5,H5,S5",
+              "text": "♣5、♠5、♥5、♥5；声明：4张炸弹 5555",
+              "score": -0.4733
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": -0.64
+            },
+            {
+              "actionId": "trio_pair:9:1:5+3#C9,H3,H9,H9,S3",
+              "text": "♥9、♥9、♣9、♥3、♠3；声明：三带二 9³+33",
+              "score": -0.7692
+            },
+            {
+              "actionId": "trio_pair:10:1:5+3#C10,D10,H3,S10,S3",
+              "text": "♠10、♣10、♦10、♥3、♠3；声明：三带二 10³+33",
+              "score": -0.8072
+            },
+            {
+              "actionId": "trio_pair:12:1:5+3#C12,D12,H12,H3,S3",
+              "text": "♣Q、♦Q、♥Q、♥3、♠3；声明：三带二 Q³+33",
+              "score": -0.8976
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "pass#",
+          "note": "与启发式首选一致（让牌）",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "let-mate",
+              "label": "让队友走（配合）",
+              "value": 12
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "pass#",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "不出",
+            "remainingCards": 27,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": null
+          },
+          "alternatives": [
+            {
+              "actionId": "bomb:5:1:5#C5,D5,H5,H5,S5",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♦5、♣5、♠5、♥5、♥5；声明：5张炸弹 55555",
+              "remainingCards": 22,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "bomb",
+                "cards": [
+                  {
+                    "id": 83,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 42,
+                    "suit": "C",
+                    "rank": 5
+                  },
+                  {
+                    "id": 3,
+                    "suit": "S",
+                    "rank": 5
+                  },
+                  {
+                    "id": 16,
+                    "suit": "H",
+                    "rank": 5
+                  },
+                  {
+                    "id": 70,
+                    "suit": "H",
+                    "rank": 5
+                  }
+                ],
+                "size": 5,
+                "keyRank": 5,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 5,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "9d97a29935c03fac",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-yield-1#m3",
+            "subjectActionId": "bomb:5:1:5#C5,D5,H5,H5,S5",
+            "factIds": [
+              "f3-ctx",
+              "f3-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♦5、♣5、♠5、♥5、♥5；声明：5张炸弹 55555压得过当前要压的♠7、♦7、♣7、♠8、♦8；声明：三带二 7³+88（引擎规则判定）（第3手，r6-dev-yield-1）"
+          },
+          {
+            "claimId": "19559f19194bbcdc",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-yield-1#m3",
+            "subjectActionId": "bomb:5:1:5#C5,D5,H5,H5,S5",
+            "contrastActionId": "pass#",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♦5、♣5、♠5、♥5、♥5；声明：5张炸弹 55555（评分 -0.4283），这是偏好排序不是对错判定（第3手，r6-dev-yield-1）"
+          },
+          {
+            "claimId": "41684d344027e4d9",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-yield-1#m3",
+            "subjectActionId": "pass#",
+            "contrastActionId": "pass#",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 实际打法：不出，与实际/模型的意见可能不同——同屏呈现不裁决（第3手，r6-dev-yield-1）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "pass#",
+            "terms": [
+              {
+                "key": "let-mate",
+                "label": "让队友走（配合）",
+                "value": 12
+              }
+            ],
+            "score": 12,
+            "sum": 12,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "bomb:5:1:5#C5,D5,H5,H5,S5",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": 2.2
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "beat-mate",
+                "label": "压队友（配合纪律）",
+                "value": -26
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 10→10（均非最优证明）",
+                "value": 0
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": -45.8,
+            "sum": -45.8,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "disagreement",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）"
+        ],
+        "missing": [],
+        "expressionScope": "可陈述启发式与模型偏好分歧与各自理由，必须同屏呈现，不得裁决对错",
+        "facts": {
+          "f3-ctx": "当前要压的是南家的♠7、♦7、♣7、♠8、♦8；声明：三带二 7³+88；本轮领出者南；各家剩牌 南22张、东27张、北27张、西27张",
+          "f3-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "pass#": "实际打法：不出",
+          "bomb:5:1:5#C5,D5,H5,H5,S5": "模型首选：♦5、♣5、♠5、♥5、♥5；声明：5张炸弹 55555",
+          "bomb:5:1:4#C5,H5,H5,S5": "♣5、♠5、♥5、♥5；声明：4张炸弹 5555",
+          "trio_pair:9:1:5+3#C9,H3,H9,H9,S3": "♥9、♥9、♣9、♥3、♠3；声明：三带二 9³+33",
+          "trio_pair:10:1:5+3#C10,D10,H3,S10,S3": "♠10、♣10、♦10、♥3、♠3；声明：三带二 10³+33",
+          "trio_pair:12:1:5+3#C12,D12,H12,H3,S3": "♣Q、♦Q、♥Q、♥3、♠3；声明：三带二 Q³+33"
+        }
+      }
+    },
+    {
+      "id": "yield-3",
+      "category": "yield",
+      "recordSha256": "6c4f7d89af615ed564c235e0a185a808e886b1b36dde46fae65812636dda9e81",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♠5、♠5、♦5、♥5、♣5；声明：5张炸弹 55555",
+      "candidateAction": null,
+      "actualAction": "不出",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 27 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-yield-2#m3",
+        "recordId": "r6-dev-yield-2",
+        "recordHash": "262e30ec2af5aa19",
+        "moveNo": 3,
+        "seat": 2,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 3,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "57ac19be57a388ae",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "pass#",
+          "pass": true,
+          "physicalCards": [],
+          "declaration": "pass",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "exact",
+            "index": 2
+          }
+        },
+        "candidates": {
+          "setHash": "76d9b294c0260af3",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 5,
+          "ranking": [
+            {
+              "actionId": "bomb:5:1:5#C5,D5,H5,S5,S5",
+              "text": "♠5、♠5、♦5、♥5、♣5；声明：5张炸弹 55555",
+              "score": -0.3988
+            },
+            {
+              "actionId": "bomb:5:1:4#C5,D5,H5,S5",
+              "text": "♠5、♦5、♥5、♣5；声明：4张炸弹 5555",
+              "score": -0.4136
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": -0.4992
+            },
+            {
+              "actionId": "bomb:3:1:4#C3,D3,S3,S3",
+              "text": "♣3、♠3、♠3、♦3；声明：4张炸弹 3333",
+              "score": -0.5385
+            },
+            {
+              "actionId": "trio_pair:11:1:5+3#C11,D11,D3,H11,S3",
+              "text": "♦J、♣J、♥J、♠3、♦3；声明：三带二 J³+33",
+              "score": -0.8078
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "pass#",
+          "note": "与启发式首选一致（让牌）",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "let-mate",
+              "label": "让队友走（配合）",
+              "value": 12
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "pass#",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "不出",
+            "remainingCards": 27,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": null
+          },
+          "alternatives": [
+            {
+              "actionId": "bomb:5:1:5#C5,D5,H5,S5,S5",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♠5、♠5、♦5、♥5、♣5；声明：5张炸弹 55555",
+              "remainingCards": 22,
+              "wildsSpent": 0,
+              "factIds": [
+                "f3-n0"
+              ],
+              "combo": {
+                "kind": "bomb",
+                "cards": [
+                  {
+                    "id": 57,
+                    "suit": "S",
+                    "rank": 5
+                  },
+                  {
+                    "id": 3,
+                    "suit": "S",
+                    "rank": 5
+                  },
+                  {
+                    "id": 83,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 16,
+                    "suit": "H",
+                    "rank": 5
+                  },
+                  {
+                    "id": 42,
+                    "suit": "C",
+                    "rank": 5
+                  }
+                ],
+                "size": 5,
+                "keyRank": 5,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 5,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "2dd4240fc084df44",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-yield-2#m3",
+            "subjectActionId": "bomb:5:1:5#C5,D5,H5,S5,S5",
+            "factIds": [
+              "f3-ctx",
+              "f3-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♠5、♠5、♦5、♥5、♣5；声明：5张炸弹 55555压得过当前要压的♠7、♣7、♠7、♦8、♥8；声明：三带二 7³+88（引擎规则判定）（第3手，r6-dev-yield-2）"
+          },
+          {
+            "claimId": "1c137cb4d7045439",
+            "kind": "resource_change",
+            "decisionId": "r6-dev-yield-2#m3",
+            "subjectActionId": "bomb:5:1:5#C5,D5,H5,S5,S5",
+            "factIds": [
+              "f3-n0"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♠5、♠5、♦5、♥5、♣5；声明：5张炸弹 55555后剩 22 张（第3手，r6-dev-yield-2）"
+          },
+          {
+            "claimId": "671517ba7d32019b",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-yield-2#m3",
+            "subjectActionId": "bomb:5:1:5#C5,D5,H5,S5,S5",
+            "contrastActionId": "pass#",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♠5、♠5、♦5、♥5、♣5；声明：5张炸弹 55555（评分 -0.3988），这是偏好排序不是对错判定（第3手，r6-dev-yield-2）"
+          },
+          {
+            "claimId": "8ef1e9a3debff90e",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-yield-2#m3",
+            "subjectActionId": "pass#",
+            "contrastActionId": "pass#",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 实际打法：不出，与实际/模型的意见可能不同——同屏呈现不裁决（第3手，r6-dev-yield-2）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "pass#",
+            "terms": [
+              {
+                "key": "let-mate",
+                "label": "让队友走（配合）",
+                "value": 12
+              }
+            ],
+            "score": 12,
+            "sum": 12,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "bomb:5:1:5#C5,D5,H5,S5,S5",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": 2.2
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "beat-mate",
+                "label": "压队友（配合纪律）",
+                "value": -26
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 10→10（均非最优证明）",
+                "value": 0
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": -50.8,
+            "sum": -50.8,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "disagreement",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）"
+        ],
+        "missing": [],
+        "expressionScope": "可陈述启发式与模型偏好分歧与各自理由，必须同屏呈现，不得裁决对错",
+        "facts": {
+          "f3-n0": "仍持有 4 张炸弹 C3S3S3D3",
+          "f3-ctx": "当前要压的是南家的♠7、♣7、♠7、♦8、♥8；声明：三带二 7³+88；本轮领出者南；各家剩牌 南22张、东27张、北27张、西27张",
+          "f3-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "pass#": "实际打法：不出",
+          "bomb:5:1:5#C5,D5,H5,S5,S5": "模型首选：♠5、♠5、♦5、♥5、♣5；声明：5张炸弹 55555",
+          "bomb:5:1:4#C5,D5,H5,S5": "♠5、♦5、♥5、♣5；声明：4张炸弹 5555",
+          "bomb:3:1:4#C3,D3,S3,S3": "♣3、♠3、♠3、♦3；声明：4张炸弹 3333",
+          "trio_pair:11:1:5+3#C11,D11,D3,H11,S3": "♦J、♣J、♥J、♠3、♦3；声明：三带二 J³+33"
+        }
+      }
+    },
+    {
+      "id": "takeover-1",
+      "category": "takeover",
+      "recordSha256": "f734f82c5581b18c6e5aa571216a193ae3a89e285c06a98d648265ed68365ac9",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♦5、♣5、♣5、♥5、♠5；声明：5张炸弹 55555",
+      "candidateAction": null,
+      "actualAction": "♦5、♣5、♥5、♣5、♠5；声明：5张炸弹 55555",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 22 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-takeover-0#m3",
+        "recordId": "r6-dev-takeover-0",
+        "recordHash": "20f7969e68646da0",
+        "moveNo": 3,
+        "seat": 2,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 3,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "3b421daee1e264ee",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "bomb:5:1:5#C5,C5,D5,H5,S5",
+          "pass": false,
+          "physicalCards": [
+            "D5#83",
+            "C5#42",
+            "H5#70",
+            "C5#96",
+            "S5#57"
+          ],
+          "declaration": "bomb:5:1:5",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "exact",
+            "index": 0
+          }
+        },
+        "candidates": {
+          "setHash": "d8fc3804aae5f0f1",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 10,
+          "ranking": [
+            {
+              "actionId": "bomb:5:1:5#C5,C5,D5,H5,S5",
+              "text": "♦5、♣5、♣5、♥5、♠5；声明：5张炸弹 55555",
+              "score": -0.695
+            },
+            {
+              "actionId": "bomb:6:1:4#D6,H6,S6,S6",
+              "text": "♥6、♦6、♠6、♠6；声明：4张炸弹 6666",
+              "score": -0.7029
+            },
+            {
+              "actionId": "bomb:5:1:4#C5,C5,H5,S5",
+              "text": "♣5、♣5、♥5、♠5；声明：4张炸弹 5555",
+              "score": -0.7381
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": -0.7661
+            },
+            {
+              "actionId": "flush:9:5:5#D5,D6,D7,D8,D9",
+              "text": "♦5、♦6、♦7、♦8、♦9；声明：同花顺 ♦",
+              "score": -0.8491
+            },
+            {
+              "actionId": "trio_pair:11:1:5+5#D11,H11,H5,S11,S5",
+              "text": "♥J、♠J、♦J、♥5、♠5；声明：三带二 J³+55",
+              "score": -0.9144
+            },
+            {
+              "actionId": "trio_pair:9:1:5+5#D9,H5,H9,S5,S9",
+              "text": "♠9、♥9、♦9、♥5、♠5；声明：三带二 9³+55",
+              "score": -0.959
+            },
+            {
+              "actionId": "flush:10:5:5#D10,D6,D7,D8,D9",
+              "text": "♦6、♦7、♦8、♦9、♦10；声明：同花顺 ♦",
+              "score": -0.964
+            },
+            {
+              "actionId": "flush:11:5:5#D10,D11,D7,D8,D9",
+              "text": "♦7、♦8、♦9、♦10、♦J；声明：同花顺 ♦",
+              "score": -0.9911
+            },
+            {
+              "actionId": "trio_pair:8:1:5+5#D8,D8,H5,H8,S5",
+              "text": "♥8、♦8、♦8、♥5、♠5；声明：三带二 8³+55",
+              "score": -1.0546
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "pass#",
+          "note": "这轮是队友在发力，你的大牌应该留给拦对手；对手离走还远，这颗炸弹炸早了",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "let-mate",
+              "label": "让队友走（配合）",
+              "value": 12
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "bomb:5:1:5#C5,C5,D5,H5,S5",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♦5、♣5、♥5、♣5、♠5；声明：5张炸弹 55555",
+            "remainingCards": 22,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "bomb",
+              "cards": [
+                {
+                  "id": 83,
+                  "suit": "D",
+                  "rank": 5
+                },
+                {
+                  "id": 42,
+                  "suit": "C",
+                  "rank": 5
+                },
+                {
+                  "id": 70,
+                  "suit": "H",
+                  "rank": 5
+                },
+                {
+                  "id": 96,
+                  "suit": "C",
+                  "rank": 5
+                },
+                {
+                  "id": 57,
+                  "suit": "S",
+                  "rank": 5
+                }
+              ],
+              "size": 5,
+              "keyRank": 5,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 5,
+              "wildAs": []
+            }
+          },
+          "alternatives": [
+            {
+              "actionId": "pass#",
+              "label": "启发式更偏好（heuristic:review6-resource-v1）",
+              "sourceId": "heuristic:review6-resource-v1",
+              "text": "不出",
+              "remainingCards": 27,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": null
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "cc48f097b6ebc1bb",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-takeover-0#m3",
+            "subjectActionId": "bomb:5:1:5#C5,C5,D5,H5,S5",
+            "factIds": [
+              "f3-ctx",
+              "f3-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "实际动作♦5、♣5、♥5、♣5、♠5；声明：5张炸弹 55555压得过当前要压的♥7、♣7、♥7、♣8、♥8；声明：三带二 7³+88（引擎规则判定）（第3手，r6-dev-takeover-0）"
+          },
+          {
+            "claimId": "ad2337f011f459a4",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-takeover-0#m3",
+            "subjectActionId": "pass#",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）选择不出（pass 只表示不压，不等于压不过）（第3手，r6-dev-takeover-0）"
+          },
+          {
+            "claimId": "d1873d1a7c41f86e",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-takeover-0#m3",
+            "subjectActionId": "bomb:5:1:5#C5,C5,D5,H5,S5",
+            "contrastActionId": "bomb:5:1:5#C5,C5,D5,H5,S5",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♦5、♣5、♣5、♥5、♠5；声明：5张炸弹 55555（评分 -0.695），这是偏好排序不是对错判定（第3手，r6-dev-takeover-0）"
+          },
+          {
+            "claimId": "7d558a03b487f6d9",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-takeover-0#m3",
+            "subjectActionId": "pass#",
+            "contrastActionId": "bomb:5:1:5#C5,C5,D5,H5,S5",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 启发式更偏好：不出，与实际/模型的意见可能不同——同屏呈现不裁决（第3手，r6-dev-takeover-0）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "bomb:5:1:5#C5,C5,D5,H5,S5",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": 2.2
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "beat-mate",
+                "label": "压队友（配合纪律）",
+                "value": -26
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 11→10（均非最优证明）",
+                "value": 6
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": -39.8,
+            "sum": -39.8,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "pass#",
+            "terms": [
+              {
+                "key": "let-mate",
+                "label": "让队友走（配合）",
+                "value": 12
+              }
+            ],
+            "score": 12,
+            "sum": 12,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "disagreement",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）"
+        ],
+        "missing": [],
+        "expressionScope": "可陈述启发式与模型偏好分歧与各自理由，必须同屏呈现，不得裁决对错",
+        "facts": {
+          "f3-ctx": "当前要压的是南家的♥7、♣7、♥7、♣8、♥8；声明：三带二 7³+88；本轮领出者南；各家剩牌 南22张、东27张、北27张、西27张",
+          "f3-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "bomb:5:1:5#C5,C5,D5,H5,S5": "实际打法：♦5、♣5、♥5、♣5、♠5；声明：5张炸弹 55555",
+          "bomb:6:1:4#D6,H6,S6,S6": "♥6、♦6、♠6、♠6；声明：4张炸弹 6666",
+          "bomb:5:1:4#C5,C5,H5,S5": "♣5、♣5、♥5、♠5；声明：4张炸弹 5555",
+          "pass#": "启发式更偏好：不出",
+          "flush:9:5:5#D5,D6,D7,D8,D9": "♦5、♦6、♦7、♦8、♦9；声明：同花顺 ♦",
+          "trio_pair:11:1:5+5#D11,H11,H5,S11,S5": "♥J、♠J、♦J、♥5、♠5；声明：三带二 J³+55",
+          "trio_pair:9:1:5+5#D9,H5,H9,S5,S9": "♠9、♥9、♦9、♥5、♠5；声明：三带二 9³+55",
+          "flush:10:5:5#D10,D6,D7,D8,D9": "♦6、♦7、♦8、♦9、♦10；声明：同花顺 ♦",
+          "flush:11:5:5#D10,D11,D7,D8,D9": "♦7、♦8、♦9、♦10、♦J；声明：同花顺 ♦",
+          "trio_pair:8:1:5+5#D8,D8,H5,H8,S5": "♥8、♦8、♦8、♥5、♠5；声明：三带二 8³+55"
+        }
+      }
+    },
+    {
+      "id": "takeover-2",
+      "category": "takeover",
+      "recordSha256": "b38974cecb72c3bd2bb6dccbcd4efc2257e5009d9f35221d0fc61caa95d1ceb4",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♦5、♦5、♣5、♥5、♥5；声明：5张炸弹 55555",
+      "candidateAction": null,
+      "actualAction": "♦5、♦5、♣5、♥5、♥5；声明：5张炸弹 55555",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 22 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-takeover-1#m3",
+        "recordId": "r6-dev-takeover-1",
+        "recordHash": "afd4c23f3d45eda9",
+        "moveNo": 3,
+        "seat": 2,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 3,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "70b8cb0e17c1f3b6",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "bomb:5:1:5#C5,D5,D5,H5,H5",
+          "pass": false,
+          "physicalCards": [
+            "D5#29",
+            "D5#83",
+            "C5#42",
+            "H5#70",
+            "H5#16"
+          ],
+          "declaration": "bomb:5:1:5",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "exact",
+            "index": 0
+          }
+        },
+        "candidates": {
+          "setHash": "c4645988453696e6",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 6,
+          "ranking": [
+            {
+              "actionId": "bomb:5:1:5#C5,D5,D5,H5,H5",
+              "text": "♦5、♦5、♣5、♥5、♥5；声明：5张炸弹 55555",
+              "score": 0.5286
+            },
+            {
+              "actionId": "bomb:5:1:4#C5,D5,H5,H5",
+              "text": "♦5、♣5、♥5、♥5；声明：4张炸弹 5555",
+              "score": 0.4794
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": 0.1912
+            },
+            {
+              "actionId": "bomb:9:1:4#C9,D9,H9,S9",
+              "text": "♦9、♠9、♥9、♣9；声明：4张炸弹 9999",
+              "score": 0.1245
+            },
+            {
+              "actionId": "bomb:9:1:5#C9,D9,D9,H9,S9",
+              "text": "♦9、♦9、♠9、♥9、♣9；声明：5张炸弹 99999",
+              "score": 0.1153
+            },
+            {
+              "actionId": "trio_pair:9:1:5+4#C4,C9,H9,S4,S9",
+              "text": "♠9、♥9、♣9、♣4、♠4；声明：三带二 9³+44",
+              "score": -0.0085
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "pass#",
+          "note": "这轮是队友在发力，你的大牌应该留给拦对手；对手离走还远，这颗炸弹炸早了",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "let-mate",
+              "label": "让队友走（配合）",
+              "value": 12
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "bomb:5:1:5#C5,D5,D5,H5,H5",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♦5、♦5、♣5、♥5、♥5；声明：5张炸弹 55555",
+            "remainingCards": 22,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "bomb",
+              "cards": [
+                {
+                  "id": 29,
+                  "suit": "D",
+                  "rank": 5
+                },
+                {
+                  "id": 83,
+                  "suit": "D",
+                  "rank": 5
+                },
+                {
+                  "id": 42,
+                  "suit": "C",
+                  "rank": 5
+                },
+                {
+                  "id": 70,
+                  "suit": "H",
+                  "rank": 5
+                },
+                {
+                  "id": 16,
+                  "suit": "H",
+                  "rank": 5
+                }
+              ],
+              "size": 5,
+              "keyRank": 5,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 5,
+              "wildAs": []
+            }
+          },
+          "alternatives": [
+            {
+              "actionId": "pass#",
+              "label": "启发式更偏好（heuristic:review6-resource-v1）",
+              "sourceId": "heuristic:review6-resource-v1",
+              "text": "不出",
+              "remainingCards": 27,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": null
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "5c8c97c834660224",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-takeover-1#m3",
+            "subjectActionId": "bomb:5:1:5#C5,D5,D5,H5,H5",
+            "factIds": [
+              "f3-ctx",
+              "f3-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "实际动作♦5、♦5、♣5、♥5、♥5；声明：5张炸弹 55555压得过当前要压的♥7、♥7、♦7、♥8、♦8；声明：三带二 7³+88（引擎规则判定）（第3手，r6-dev-takeover-1）"
+          },
+          {
+            "claimId": "93575c9be230a1ad",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-takeover-1#m3",
+            "subjectActionId": "pass#",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）选择不出（pass 只表示不压，不等于压不过）（第3手，r6-dev-takeover-1）"
+          },
+          {
+            "claimId": "5185a1cf9a9b3451",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-takeover-1#m3",
+            "subjectActionId": "bomb:5:1:5#C5,D5,D5,H5,H5",
+            "contrastActionId": "bomb:5:1:5#C5,D5,D5,H5,H5",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♦5、♦5、♣5、♥5、♥5；声明：5张炸弹 55555（评分 0.5286），这是偏好排序不是对错判定（第3手，r6-dev-takeover-1）"
+          },
+          {
+            "claimId": "fb5d2632123916ee",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-takeover-1#m3",
+            "subjectActionId": "pass#",
+            "contrastActionId": "bomb:5:1:5#C5,D5,D5,H5,H5",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 启发式更偏好：不出，与实际/模型的意见可能不同——同屏呈现不裁决（第3手，r6-dev-takeover-1）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "bomb:5:1:5#C5,D5,D5,H5,H5",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": 2.2
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "beat-mate",
+                "label": "压队友（配合纪律）",
+                "value": -26
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 12→9（均非最优证明）",
+                "value": 18
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": -27.8,
+            "sum": -27.8,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "pass#",
+            "terms": [
+              {
+                "key": "let-mate",
+                "label": "让队友走（配合）",
+                "value": 12
+              }
+            ],
+            "score": 12,
+            "sum": 12,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "disagreement",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）"
+        ],
+        "missing": [],
+        "expressionScope": "可陈述启发式与模型偏好分歧与各自理由，必须同屏呈现，不得裁决对错",
+        "facts": {
+          "f3-ctx": "当前要压的是南家的♥7、♥7、♦7、♥8、♦8；声明：三带二 7³+88；本轮领出者南；各家剩牌 南22张、东27张、北27张、西27张",
+          "f3-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "bomb:5:1:5#C5,D5,D5,H5,H5": "实际打法：♦5、♦5、♣5、♥5、♥5；声明：5张炸弹 55555",
+          "bomb:5:1:4#C5,D5,H5,H5": "♦5、♣5、♥5、♥5；声明：4张炸弹 5555",
+          "pass#": "启发式更偏好：不出",
+          "bomb:9:1:4#C9,D9,H9,S9": "♦9、♠9、♥9、♣9；声明：4张炸弹 9999",
+          "bomb:9:1:5#C9,D9,D9,H9,S9": "♦9、♦9、♠9、♥9、♣9；声明：5张炸弹 99999",
+          "trio_pair:9:1:5+4#C4,C9,H9,S4,S9": "♠9、♥9、♣9、♣4、♠4；声明：三带二 9³+44"
+        }
+      }
+    },
+    {
+      "id": "takeover-3",
+      "category": "takeover",
+      "recordSha256": "b803874621da056ef93556a9ff5a0aacb1c8b8a8c1edda3df31f5dcdef0f40fa",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♣5、♦5、♦5、♥5；声明：4张炸弹 5555",
+      "candidateAction": null,
+      "actualAction": "♣5、♦5、♥5、♦5、♣5；声明：5张炸弹 55555",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 22 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-takeover-2#m3",
+        "recordId": "r6-dev-takeover-2",
+        "recordHash": "b80d99fa60a6adc2",
+        "moveNo": 3,
+        "seat": 2,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 3,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "c2cfb09da0bde659",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "bomb:5:1:5#C5,C5,D5,D5,H5",
+          "pass": false,
+          "physicalCards": [
+            "C5#42",
+            "D5#29",
+            "H5#16",
+            "D5#83",
+            "C5#96"
+          ],
+          "declaration": "bomb:5:1:5",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "exact",
+            "index": 1
+          }
+        },
+        "candidates": {
+          "setHash": "e7d890339317e5e9",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 14,
+          "ranking": [
+            {
+              "actionId": "bomb:5:1:4#C5,D5,D5,H5",
+              "text": "♣5、♦5、♦5、♥5；声明：4张炸弹 5555",
+              "score": 0.4922
+            },
+            {
+              "actionId": "bomb:5:1:5#C5,C5,D5,D5,H5",
+              "text": "♣5、♣5、♦5、♦5、♥5；声明：5张炸弹 55555",
+              "score": 0.4823
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": 0.2351
+            },
+            {
+              "actionId": "trio_pair:12:1:5+5#D12,D5,H12,H5,S12",
+              "text": "♥Q、♠Q、♦Q、♦5、♥5；声明：三带二 Q³+55",
+              "score": 0.2135
+            },
+            {
+              "actionId": "bomb:5:1:6#C5,C5,D5,D5,H2,H5",
+              "text": "♣5、♣5、♦5、♦5、♥5、♥2(当5)；声明：6张炸弹 555555",
+              "score": 0.1543
+            },
+            {
+              "actionId": "trio_pair:9:1:5+5#C9,D5,H5,S9,S9",
+              "text": "♣9、♠9、♠9、♦5、♥5；声明：三带二 9³+55",
+              "score": 0.1466
+            },
+            {
+              "actionId": "flush:7:5:5#D4,D5,D6,D7,H2",
+              "text": "♥2(当3)、♦4、♦5、♦6、♦7；声明：同花顺 ♦",
+              "score": 0.1446
+            },
+            {
+              "actionId": "flush:8:5:5#D4,D5,D6,D7,H2",
+              "text": "♦4、♦5、♦6、♦7、♥2(当8)；声明：同花顺 ♦",
+              "score": 0.1432
+            },
+            {
+              "actionId": "trio_pair:2:1:5+5#C2,D2,D5,H2,H5",
+              "text": "♣2、♦2、♥2(当2)、♦5、♥5；声明：三带二 2³+55",
+              "score": 0.1418
+            },
+            {
+              "actionId": "bomb:7:1:4#D7,H2,H7,S7",
+              "text": "♥7、♠7、♦7、♥2(当7)；声明：4张炸弹 7777",
+              "score": 0.0894
+            },
+            {
+              "actionId": "trio_pair:14:1:5+5#D14,D5,H5,S14,S14",
+              "text": "♠A、♠A、♦A、♦5、♥5；声明：三带二 A³+55",
+              "score": -0.0073
+            },
+            {
+              "actionId": "bomb:12:1:4#D12,H12,H2,S12",
+              "text": "♥Q、♠Q、♦Q、♥2(当Q)；声明：4张炸弹 QQQQ",
+              "score": -0.0234
+            },
+            {
+              "actionId": "bomb:9:1:4#C9,H2,S9,S9",
+              "text": "♣9、♠9、♠9、♥2(当9)；声明：4张炸弹 9999",
+              "score": -0.0653
+            },
+            {
+              "actionId": "bomb:14:1:4#D14,H2,S14,S14",
+              "text": "♠A、♠A、♦A、♥2(当A)；声明：4张炸弹 AAAA",
+              "score": -0.2359
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "pass#",
+          "note": "这轮是队友在发力，你的大牌应该留给拦对手；对手离走还远，这颗炸弹炸早了",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "let-mate",
+              "label": "让队友走（配合）",
+              "value": 12
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "bomb:5:1:5#C5,C5,D5,D5,H5",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♣5、♦5、♥5、♦5、♣5；声明：5张炸弹 55555",
+            "remainingCards": 22,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "bomb",
+              "cards": [
+                {
+                  "id": 42,
+                  "suit": "C",
+                  "rank": 5
+                },
+                {
+                  "id": 29,
+                  "suit": "D",
+                  "rank": 5
+                },
+                {
+                  "id": 16,
+                  "suit": "H",
+                  "rank": 5
+                },
+                {
+                  "id": 83,
+                  "suit": "D",
+                  "rank": 5
+                },
+                {
+                  "id": 96,
+                  "suit": "C",
+                  "rank": 5
+                }
+              ],
+              "size": 5,
+              "keyRank": 5,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 5,
+              "wildAs": []
+            }
+          },
+          "alternatives": [
+            {
+              "actionId": "pass#",
+              "label": "启发式更偏好（heuristic:review6-resource-v1）",
+              "sourceId": "heuristic:review6-resource-v1",
+              "text": "不出",
+              "remainingCards": 27,
+              "wildsSpent": 0,
+              "factIds": [
+                "f3-h0"
+              ],
+              "combo": null
+            },
+            {
+              "actionId": "bomb:5:1:4#C5,D5,D5,H5",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♣5、♦5、♦5、♥5；声明：4张炸弹 5555",
+              "remainingCards": 23,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "bomb",
+                "cards": [
+                  {
+                    "id": 42,
+                    "suit": "C",
+                    "rank": 5
+                  },
+                  {
+                    "id": 29,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 83,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 16,
+                    "suit": "H",
+                    "rank": 5
+                  }
+                ],
+                "size": 4,
+                "keyRank": 5,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 5,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "e831a0a2be9eed80",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-takeover-2#m3",
+            "subjectActionId": "bomb:5:1:5#C5,C5,D5,D5,H5",
+            "factIds": [
+              "f3-ctx",
+              "f3-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "实际动作♣5、♦5、♥5、♦5、♣5；声明：5张炸弹 55555压得过当前要压的♥7、♣7、♣7、♠8、♥8；声明：三带二 7³+88（引擎规则判定）（第3手，r6-dev-takeover-2）"
+          },
+          {
+            "claimId": "e9049e9a6feddf7a",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-takeover-2#m3",
+            "subjectActionId": "pass#",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）选择不出（pass 只表示不压，不等于压不过）（第3手，r6-dev-takeover-2）"
+          },
+          {
+            "claimId": "eb81700f288aed5c",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-takeover-2#m3",
+            "subjectActionId": "bomb:5:1:4#C5,D5,D5,H5",
+            "factIds": [
+              "f3-ctx",
+              "f3-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♣5、♦5、♦5、♥5；声明：4张炸弹 5555压得过当前要压的♥7、♣7、♣7、♠8、♥8；声明：三带二 7³+88（引擎规则判定）（第3手，r6-dev-takeover-2）"
+          },
+          {
+            "claimId": "4993c26e2067a19c",
+            "kind": "resource_change",
+            "decisionId": "r6-dev-takeover-2#m3",
+            "subjectActionId": "pass#",
+            "factIds": [
+              "f3-h0"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）不出后剩 27 张（第3手，r6-dev-takeover-2）"
+          },
+          {
+            "claimId": "c99b571c5a154354",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-takeover-2#m3",
+            "subjectActionId": "bomb:5:1:4#C5,D5,D5,H5",
+            "contrastActionId": "bomb:5:1:5#C5,C5,D5,D5,H5",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♣5、♦5、♦5、♥5；声明：4张炸弹 5555（评分 0.4922），这是偏好排序不是对错判定（第3手，r6-dev-takeover-2）"
+          },
+          {
+            "claimId": "d9c2761d696e1ceb",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-takeover-2#m3",
+            "subjectActionId": "pass#",
+            "contrastActionId": "bomb:5:1:5#C5,C5,D5,D5,H5",
+            "factIds": [
+              "f3-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 启发式更偏好：不出，与实际/模型的意见可能不同——同屏呈现不裁决（第3手，r6-dev-takeover-2）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "bomb:5:1:5#C5,C5,D5,D5,H5",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": 2.2
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "beat-mate",
+                "label": "压队友（配合纪律）",
+                "value": -26
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 12→11（均非最优证明）",
+                "value": 6
+              }
+            ],
+            "score": -34.8,
+            "sum": -34.8,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "pass#",
+            "terms": [
+              {
+                "key": "let-mate",
+                "label": "让队友走（配合）",
+                "value": 12
+              }
+            ],
+            "score": 12,
+            "sum": 12,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "bomb:5:1:4#C5,D5,D5,H5",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": 2.2
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "beat-mate",
+                "label": "压队友（配合纪律）",
+                "value": -26
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 12→8（均非最优证明）",
+                "value": 24
+              },
+              {
+                "key": "break-bomb",
+                "label": "部分消耗参考拆分中的炸弹资源",
+                "value": -12
+              }
+            ],
+            "score": -28.8,
+            "sum": -28.8,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "disagreement",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）"
+        ],
+        "missing": [],
+        "expressionScope": "可陈述启发式与模型偏好分歧与各自理由，必须同屏呈现，不得裁决对错",
+        "facts": {
+          "f3-h0": "仍持有 5 张炸弹 C5C5D5D5♥5",
+          "f3-ctx": "当前要压的是南家的♥7、♣7、♣7、♠8、♥8；声明：三带二 7³+88；本轮领出者南；各家剩牌 南22张、东27张、北27张、西27张",
+          "f3-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "bomb:5:1:5#C5,C5,D5,D5,H5": "实际打法：♣5、♦5、♥5、♦5、♣5；声明：5张炸弹 55555",
+          "bomb:5:1:4#C5,D5,D5,H5": "模型首选：♣5、♦5、♦5、♥5；声明：4张炸弹 5555",
+          "pass#": "启发式更偏好：不出",
+          "trio_pair:12:1:5+5#D12,D5,H12,H5,S12": "♥Q、♠Q、♦Q、♦5、♥5；声明：三带二 Q³+55",
+          "bomb:5:1:6#C5,C5,D5,D5,H2,H5": "♣5、♣5、♦5、♦5、♥5、♥2(当5)；声明：6张炸弹 555555",
+          "trio_pair:9:1:5+5#C9,D5,H5,S9,S9": "♣9、♠9、♠9、♦5、♥5；声明：三带二 9³+55",
+          "flush:7:5:5#D4,D5,D6,D7,H2": "♥2(当3)、♦4、♦5、♦6、♦7；声明：同花顺 ♦",
+          "flush:8:5:5#D4,D5,D6,D7,H2": "♦4、♦5、♦6、♦7、♥2(当8)；声明：同花顺 ♦",
+          "trio_pair:2:1:5+5#C2,D2,D5,H2,H5": "♣2、♦2、♥2(当2)、♦5、♥5；声明：三带二 2³+55",
+          "bomb:7:1:4#D7,H2,H7,S7": "♥7、♠7、♦7、♥2(当7)；声明：4张炸弹 7777",
+          "trio_pair:14:1:5+5#D14,D5,H5,S14,S14": "♠A、♠A、♦A、♦5、♥5；声明：三带二 A³+55",
+          "bomb:12:1:4#D12,H12,H2,S12": "♥Q、♠Q、♦Q、♥2(当Q)；声明：4张炸弹 QQQQ",
+          "bomb:9:1:4#C9,H2,S9,S9": "♣9、♠9、♠9、♥2(当9)；声明：4张炸弹 9999",
+          "bomb:14:1:4#D14,H2,S14,S14": "♠A、♠A、♦A、♥2(当A)；声明：4张炸弹 AAAA"
+        }
+      }
+    },
+    {
+      "id": "remaining_structure-1",
+      "category": "remaining_structure",
+      "recordSha256": "95dc26af8be69970d6b2b18f934150a98a16dce3f1ca0ace626c930488861cd2",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♣2、♣2；声明：对子 22",
+      "candidateAction": null,
+      "actualAction": "♣2、♣2；声明：对子 22",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 8 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-remaining_structure-0#m36",
+        "recordId": "r6-dev-remaining_structure-0",
+        "recordHash": "69b9606aa2db7ac7",
+        "moveNo": 36,
+        "seat": 2,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 146,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "1f138e3cea93137c",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "pair:2:1:2#C2,C2",
+          "pass": false,
+          "physicalCards": [
+            "C2#39",
+            "C2#93"
+          ],
+          "declaration": "pair:2:1:2",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "exact",
+            "index": 0
+          }
+        },
+        "candidates": {
+          "setHash": "2ab214cf5bad7b48",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 2,
+          "ranking": [
+            {
+              "actionId": "pair:2:1:2#C2,C2",
+              "text": "♣2、♣2；声明：对子 22",
+              "score": 1.3713
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": 0.2611
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "pair:2:1:2#C2,C2",
+          "note": "与启发式首选一致",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "base",
+              "label": "跟牌基础分",
+              "value": 15
+            },
+            {
+              "key": "minimal",
+              "label": "最小压制（超出牌力是浪费）",
+              "value": -8.8
+            },
+            {
+              "key": "wild",
+              "label": "万能牌消耗",
+              "value": 0
+            },
+            {
+              "key": "hands-delta",
+              "label": "合法参考拆分手数 7→6（均非最优证明）",
+              "value": 6
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "pair:2:1:2#C2,C2",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♣2、♣2；声明：对子 22",
+            "remainingCards": 8,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "pair",
+              "cards": [
+                {
+                  "id": 39,
+                  "suit": "C",
+                  "rank": 2
+                },
+                {
+                  "id": 93,
+                  "suit": "C",
+                  "rank": 2
+                }
+              ],
+              "size": 2,
+              "keyRank": 22,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 2,
+              "wildAs": []
+            }
+          },
+          "alternatives": []
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "b2f13aac7261cf06",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-remaining_structure-0#m36",
+            "subjectActionId": "pair:2:1:2#C2,C2",
+            "factIds": [
+              "f36-ctx",
+              "f36-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "实际动作♣2、♣2；声明：对子 22压得过当前要压的♣A、♠A；声明：对子 AA（引擎规则判定）（第36手，r6-dev-remaining_structure-0）"
+          },
+          {
+            "claimId": "a62f1e09e3c1b5d9",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-remaining_structure-0#m36",
+            "subjectActionId": "pair:2:1:2#C2,C2",
+            "contrastActionId": "pair:2:1:2#C2,C2",
+            "factIds": [
+              "f36-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♣2、♣2；声明：对子 22（评分 1.3713），这是偏好排序不是对错判定（第36手，r6-dev-remaining_structure-0）"
+          },
+          {
+            "claimId": "a15a9ee4819ed6d6",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-remaining_structure-0#m36",
+            "subjectActionId": "pair:2:1:2#C2,C2",
+            "contrastActionId": "pair:2:1:2#C2,C2",
+            "factIds": [
+              "f36-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 实际打法：♣2、♣2；声明：对子 22，与实际/模型的意见可能不同——同屏呈现不裁决（第36手，r6-dev-remaining_structure-0）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "pair:2:1:2#C2,C2",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -8.8
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 7→6（均非最优证明）",
+                "value": 6
+              }
+            ],
+            "score": 12.2,
+            "sum": 12.2,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "model_preference",
+        "conflicts": [],
+        "missing": [],
+        "expressionScope": "可陈述各来源偏好差异与取舍，不得说某选择\"更差/错误\"",
+        "facts": {
+          "f36-ctx": "当前要压的是西家的♣A、♠A；声明：对子 AA；本轮领出者东；各家剩牌 南15张、东17张、北10张、西19张",
+          "f36-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "pair:2:1:2#C2,C2": "实际打法：♣2、♣2；声明：对子 22",
+          "pass#": "不出"
+        }
+      }
+    },
+    {
+      "id": "remaining_structure-2",
+      "category": "remaining_structure",
+      "recordSha256": "e398104526bccfd6db6d0977b852c80bbb3a52fcea1eb89de7c550aae12cfa10",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♦2、♠2；声明：对子 22",
+      "candidateAction": null,
+      "actualAction": "♦A、♦A；声明：对子 AA",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 7 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-remaining_structure-1#m31",
+        "recordId": "r6-dev-remaining_structure-1",
+        "recordHash": "2a4ba2f85153dc34",
+        "moveNo": 31,
+        "seat": 1,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 112,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "ccc11177759541e5",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "pair:14:1:2#D14,D14",
+          "pass": false,
+          "physicalCards": [
+            "D14#92",
+            "D14#38"
+          ],
+          "declaration": "pair:14:1:2",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "exact",
+            "index": 2
+          }
+        },
+        "candidates": {
+          "setHash": "3c438cf98a1e5e6a",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 3,
+          "ranking": [
+            {
+              "actionId": "pair:2:1:2#D2,S2",
+              "text": "♦2、♠2；声明：对子 22",
+              "score": 0.7912
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": 0.027
+            },
+            {
+              "actionId": "pair:14:1:2#D14,D14",
+              "text": "♦A、♦A；声明：对子 AA",
+              "score": -0.1919
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "pass#",
+          "note": "与启发式分歧较大（启发式更偏好 不要）——筛选信号，非判错",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "let-mate",
+              "label": "让队友走（配合）",
+              "value": 12
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "pair:14:1:2#D14,D14",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♦A、♦A；声明：对子 AA",
+            "remainingCards": 7,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "pair",
+              "cards": [
+                {
+                  "id": 92,
+                  "suit": "D",
+                  "rank": 14
+                },
+                {
+                  "id": 38,
+                  "suit": "D",
+                  "rank": 14
+                }
+              ],
+              "size": 2,
+              "keyRank": 14,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          },
+          "alternatives": [
+            {
+              "actionId": "pass#",
+              "label": "启发式更偏好（heuristic:review6-resource-v1）",
+              "sourceId": "heuristic:review6-resource-v1",
+              "text": "不出",
+              "remainingCards": 9,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": null
+            },
+            {
+              "actionId": "pair:2:1:2#D2,S2",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♦2、♠2；声明：对子 22",
+              "remainingCards": 7,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "pair",
+                "cards": [
+                  {
+                    "id": 26,
+                    "suit": "D",
+                    "rank": 2
+                  },
+                  {
+                    "id": 54,
+                    "suit": "S",
+                    "rank": 2
+                  }
+                ],
+                "size": 2,
+                "keyRank": 22,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 2,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "7ef198839c48a18e",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-remaining_structure-1#m31",
+            "subjectActionId": "pair:14:1:2#D14,D14",
+            "factIds": [
+              "f31-ctx",
+              "f31-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "实际动作♦A、♦A；声明：对子 AA压得过当前要压的♦K、♦K；声明：对子 KK（引擎规则判定）（第31手，r6-dev-remaining_structure-1）"
+          },
+          {
+            "claimId": "c294d5bf41d4c7df",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-remaining_structure-1#m31",
+            "subjectActionId": "pass#",
+            "factIds": [
+              "f31-ctx"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）选择不出（pass 只表示不压，不等于压不过）（第31手，r6-dev-remaining_structure-1）"
+          },
+          {
+            "claimId": "2429717bfe2978ef",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-remaining_structure-1#m31",
+            "subjectActionId": "pair:2:1:2#D2,S2",
+            "factIds": [
+              "f31-ctx",
+              "f31-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♦2、♠2；声明：对子 22压得过当前要压的♦K、♦K；声明：对子 KK（引擎规则判定）（第31手，r6-dev-remaining_structure-1）"
+          },
+          {
+            "claimId": "731086238e29ae1f",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-remaining_structure-1#m31",
+            "subjectActionId": "pair:2:1:2#D2,S2",
+            "contrastActionId": "pair:14:1:2#D14,D14",
+            "factIds": [
+              "f31-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♦2、♠2；声明：对子 22（评分 0.7912），这是偏好排序不是对错判定（第31手，r6-dev-remaining_structure-1）"
+          },
+          {
+            "claimId": "7ec721361cf86260",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-remaining_structure-1#m31",
+            "subjectActionId": "pass#",
+            "contrastActionId": "pair:14:1:2#D14,D14",
+            "factIds": [
+              "f31-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 启发式更偏好：不出，与实际/模型的意见可能不同——同屏呈现不裁决（第31手，r6-dev-remaining_structure-1）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "pair:14:1:2#D14,D14",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -1.1
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "beat-mate",
+                "label": "压队友（配合纪律）",
+                "value": -26
+              },
+              {
+                "key": "relay-cheap",
+                "label": "小顶接力",
+                "value": 10
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 4→5（均非最优证明）",
+                "value": -6
+              }
+            ],
+            "score": -8.1,
+            "sum": -8.1,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "pass#",
+            "terms": [
+              {
+                "key": "let-mate",
+                "label": "让队友走（配合）",
+                "value": 12
+              }
+            ],
+            "score": 12,
+            "sum": 12,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "pair:2:1:2#D2,S2",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -9.9
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "beat-mate",
+                "label": "压队友（配合纪律）",
+                "value": -26
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 4→3（均非最优证明）",
+                "value": 6
+              }
+            ],
+            "score": -14.9,
+            "sum": -14.9,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "disagreement",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）"
+        ],
+        "missing": [],
+        "expressionScope": "可陈述启发式与模型偏好分歧与各自理由，必须同屏呈现，不得裁决对错",
+        "facts": {
+          "f31-ctx": "当前要压的是西家的♦K、♦K；声明：对子 KK；本轮领出者南；各家剩牌 南14张、东9张、北15张、西16张",
+          "f31-rule": "级牌口径=stage（台上=对方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "pair:14:1:2#D14,D14": "实际打法：♦A、♦A；声明：对子 AA",
+          "pair:2:1:2#D2,S2": "模型首选：♦2、♠2；声明：对子 22",
+          "pass#": "启发式更偏好：不出"
+        }
+      }
+    },
+    {
+      "id": "remaining_structure-3",
+      "category": "remaining_structure",
+      "recordSha256": "be68b75182bf7c960ec13348cf2d324be8cb6a48c464e48dad99d7615f008da0",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♣2；声明：单张 2",
+      "candidateAction": null,
+      "actualAction": "♥9；声明：单张 9",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 9 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-remaining_structure-2#m43",
+        "recordId": "r6-dev-remaining_structure-2",
+        "recordHash": "a3a03238899c504c",
+        "moveNo": 43,
+        "seat": 1,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 121,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "76b02393485abb99",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "single:9:1:1#H9",
+          "pass": false,
+          "physicalCards": [
+            "H9#20"
+          ],
+          "declaration": "single:9:1:1",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "uncovered",
+            "index": -1
+          }
+        },
+        "candidates": {
+          "setHash": "79aba9b071fbcba7",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 9,
+          "ranking": [
+            {
+              "actionId": "single:2:1:1#C2",
+              "text": "♣2；声明：单张 2",
+              "score": -0.4161
+            },
+            {
+              "actionId": "single:6:1:1#S6",
+              "text": "♠6；声明：单张 6",
+              "score": -0.5671
+            },
+            {
+              "actionId": "single:5:1:1#C5",
+              "text": "♣5；声明：单张 5",
+              "score": -0.6265
+            },
+            {
+              "actionId": "single:8:1:1#C8",
+              "text": "♣8；声明：单张 8",
+              "score": -0.6625
+            },
+            {
+              "actionId": "single:16:1:1#J16",
+              "text": "小王；声明：单张 小王",
+              "score": -0.6849
+            },
+            {
+              "actionId": "single:10:1:1#C10",
+              "text": "♣10；声明：单张 10",
+              "score": -0.6917
+            },
+            {
+              "actionId": "single:9:1:1#D9",
+              "text": "♦9；声明：单张 9",
+              "score": -0.695
+            },
+            {
+              "actionId": "single:11:1:1#D11",
+              "text": "♦J；声明：单张 J",
+              "score": -0.6996
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": -0.7662
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "single:6:1:1#S6",
+          "note": "与启发式分歧较大（启发式更偏好 单张 6）——筛选信号，非判错",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "base",
+              "label": "跟牌基础分",
+              "value": 15
+            },
+            {
+              "key": "minimal",
+              "label": "最小压制（超出牌力是浪费）",
+              "value": -2.2
+            },
+            {
+              "key": "wild",
+              "label": "万能牌消耗",
+              "value": 0
+            },
+            {
+              "key": "hands-delta",
+              "label": "合法参考拆分手数 8→7（均非最优证明）",
+              "value": 6
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "single:9:1:1#H9",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♥9；声明：单张 9",
+            "remainingCards": 9,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "single",
+              "cards": [
+                {
+                  "id": 20,
+                  "suit": "H",
+                  "rank": 9
+                }
+              ],
+              "size": 1,
+              "keyRank": 9,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 9,
+              "wildAs": []
+            }
+          },
+          "alternatives": [
+            {
+              "actionId": "single:6:1:1#S6",
+              "label": "启发式更偏好（heuristic:review6-resource-v1）",
+              "sourceId": "heuristic:review6-resource-v1",
+              "text": "♠6；声明：单张 6",
+              "remainingCards": 9,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "single",
+                "cards": [
+                  {
+                    "id": 58,
+                    "suit": "S",
+                    "rank": 6
+                  }
+                ],
+                "size": 1,
+                "keyRank": 6,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 6,
+                "wildAs": []
+              }
+            },
+            {
+              "actionId": "single:2:1:1#C2",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♣2；声明：单张 2",
+              "remainingCards": 9,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "single",
+                "cards": [
+                  {
+                    "id": 93,
+                    "suit": "C",
+                    "rank": 2
+                  }
+                ],
+                "size": 1,
+                "keyRank": 22,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 2,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "ab9272c3bdb3c7da",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-remaining_structure-2#m43",
+            "subjectActionId": "single:9:1:1#H9",
+            "factIds": [
+              "f43-ctx",
+              "f43-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "实际动作♥9；声明：单张 9压得过当前要压的♣4；声明：单张 4（引擎规则判定）（第43手，r6-dev-remaining_structure-2）"
+          },
+          {
+            "claimId": "13e641e2a9ba79fb",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-remaining_structure-2#m43",
+            "subjectActionId": "single:6:1:1#S6",
+            "factIds": [
+              "f43-ctx",
+              "f43-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）♠6；声明：单张 6压得过当前要压的♣4；声明：单张 4（引擎规则判定）（第43手，r6-dev-remaining_structure-2）"
+          },
+          {
+            "claimId": "d89d246a5721dd03",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-remaining_structure-2#m43",
+            "subjectActionId": "single:2:1:1#C2",
+            "factIds": [
+              "f43-ctx",
+              "f43-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♣2；声明：单张 2压得过当前要压的♣4；声明：单张 4（引擎规则判定）（第43手，r6-dev-remaining_structure-2）"
+          },
+          {
+            "claimId": "def77d1b77fb6c95",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-remaining_structure-2#m43",
+            "subjectActionId": "single:2:1:1#C2",
+            "contrastActionId": "single:9:1:1#H9",
+            "factIds": [
+              "f43-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♣2；声明：单张 2（评分 -0.4161），这是偏好排序不是对错判定（第43手，r6-dev-remaining_structure-2）"
+          },
+          {
+            "claimId": "046cfe2e06222b52",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-remaining_structure-2#m43",
+            "subjectActionId": "single:6:1:1#S6",
+            "contrastActionId": "single:9:1:1#H9",
+            "factIds": [
+              "f43-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 启发式更偏好：♠6；声明：单张 6，与实际/模型的意见可能不同——同屏呈现不裁决（第43手，r6-dev-remaining_structure-2）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "single:9:1:1#H9",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -5.5
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 8→8（均非最优证明）",
+                "value": 0
+              }
+            ],
+            "score": 9.5,
+            "sum": 9.5,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "single:6:1:1#S6",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -2.2
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 8→7（均非最优证明）",
+                "value": 6
+              }
+            ],
+            "score": 18.8,
+            "sum": 18.8,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "single:2:1:1#C2",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -19.8
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 8→7（均非最优证明）",
+                "value": 6
+              }
+            ],
+            "score": 1.2,
+            "sum": 1.2,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "uncovered",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）",
+          "实际动作未被模型候选覆盖（uncovered）——不比较打分"
+        ],
+        "missing": [],
+        "expressionScope": "实际动作不在模型候选集：只可陈述事实与规则层结构，不得比较打分",
+        "facts": {
+          "f43-ctx": "当前要压的是南家的♣4；声明：单张 4；本轮领出者南；各家剩牌 南10张、东10张、北13张、西14张",
+          "f43-rule": "级牌口径=stage（台上=对方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "single:9:1:1#H9": "实际打法：♥9；声明：单张 9",
+          "single:2:1:1#C2": "模型首选：♣2；声明：单张 2",
+          "single:6:1:1#S6": "启发式更偏好：♠6；声明：单张 6",
+          "single:5:1:1#C5": "♣5；声明：单张 5",
+          "single:8:1:1#C8": "♣8；声明：单张 8",
+          "single:16:1:1#J16": "小王；声明：单张 小王",
+          "single:10:1:1#C10": "♣10；声明：单张 10",
+          "single:9:1:1#D9": "♦9；声明：单张 9",
+          "single:11:1:1#D11": "♦J；声明：单张 J",
+          "pass#": "不出"
+        }
+      }
+    },
+    {
+      "id": "plan_invalidated-1",
+      "category": "plan_invalidated",
+      "recordSha256": "7ceec5b46e50bce224601d6b285bfad94b2c034ee420511f6e6cc46bf7ffa878",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♣5、♦5、♦5、♥5；声明：4张炸弹 5555",
+      "candidateAction": null,
+      "actualAction": "♦6；声明：单张 6",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 26 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-plan_invalidated-0#m2",
+        "recordId": "r6-dev-plan_invalidated-0",
+        "recordHash": "84b2a1017dfc1f8e",
+        "moveNo": 2,
+        "seat": 2,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 137,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "b83f62422de0977c",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "single:6:1:1#D6",
+          "pass": false,
+          "physicalCards": [
+            "D6#84"
+          ],
+          "declaration": "single:6:1:1",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "uncovered",
+            "index": -1
+          }
+        },
+        "candidates": {
+          "setHash": "65764581a45f3cb1",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 15,
+          "ranking": [
+            {
+              "actionId": "bomb:5:1:4#C5,D5,D5,H5",
+              "text": "♣5、♦5、♦5、♥5；声明：4张炸弹 5555",
+              "score": -0.5349
+            },
+            {
+              "actionId": "single:2:1:1#D2",
+              "text": "♦2；声明：单张 2",
+              "score": -0.6381
+            },
+            {
+              "actionId": "bomb:4:1:4#C4,D4,D4,H4",
+              "text": "♣4、♦4、♦4、♥4；声明：4张炸弹 4444",
+              "score": -0.6474
+            },
+            {
+              "actionId": "single:11:1:1#D11",
+              "text": "♦J；声明：单张 J",
+              "score": -0.6777
+            },
+            {
+              "actionId": "single:9:1:1#D9",
+              "text": "♦9；声明：单张 9",
+              "score": -0.6781
+            },
+            {
+              "actionId": "single:7:1:1#H7",
+              "text": "♥7；声明：单张 7",
+              "score": -0.6871
+            },
+            {
+              "actionId": "single:10:1:1#C10",
+              "text": "♣10；声明：单张 10",
+              "score": -0.6887
+            },
+            {
+              "actionId": "single:5:1:1#C5",
+              "text": "♣5；声明：单张 5",
+              "score": -0.6939
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": -0.6981
+            },
+            {
+              "actionId": "single:4:1:1#C4",
+              "text": "♣4；声明：单张 4",
+              "score": -0.7144
+            },
+            {
+              "actionId": "single:8:1:1#S8",
+              "text": "♠8；声明：单张 8",
+              "score": -0.7272
+            },
+            {
+              "actionId": "single:6:1:1#C6",
+              "text": "♣6；声明：单张 6",
+              "score": -0.749
+            },
+            {
+              "actionId": "single:13:1:1#D13",
+              "text": "♦K；声明：单张 K",
+              "score": -0.7682
+            },
+            {
+              "actionId": "single:14:1:1#S14",
+              "text": "♠A；声明：单张 A",
+              "score": -0.7722
+            },
+            {
+              "actionId": "single:12:1:1#C12",
+              "text": "♣Q；声明：单张 Q",
+              "score": -0.7792
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "single:11:1:1#D11",
+          "note": "与启发式首选略有分歧，差距不大",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "base",
+              "label": "跟牌基础分",
+              "value": 15
+            },
+            {
+              "key": "minimal",
+              "label": "最小压制（超出牌力是浪费）",
+              "value": -8.8
+            },
+            {
+              "key": "wild",
+              "label": "万能牌消耗",
+              "value": 0
+            },
+            {
+              "key": "hands-delta",
+              "label": "合法参考拆分手数 10→7（均非最优证明）",
+              "value": 18
+            },
+            {
+              "key": "break-seq",
+              "label": "部分消耗参考拆分中的长组合",
+              "value": -5
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "single:6:1:1#D6",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♦6；声明：单张 6",
+            "remainingCards": 26,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "single",
+              "cards": [
+                {
+                  "id": 84,
+                  "suit": "D",
+                  "rank": 6
+                }
+              ],
+              "size": 1,
+              "keyRank": 6,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 6,
+              "wildAs": []
+            }
+          },
+          "alternatives": [
+            {
+              "actionId": "single:11:1:1#D11",
+              "label": "启发式更偏好（heuristic:review6-resource-v1）",
+              "sourceId": "heuristic:review6-resource-v1",
+              "text": "♦J；声明：单张 J",
+              "remainingCards": 26,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "single",
+                "cards": [
+                  {
+                    "id": 35,
+                    "suit": "D",
+                    "rank": 11
+                  }
+                ],
+                "size": 1,
+                "keyRank": 11,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 11,
+                "wildAs": []
+              }
+            },
+            {
+              "actionId": "bomb:5:1:4#C5,D5,D5,H5",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♣5、♦5、♦5、♥5；声明：4张炸弹 5555",
+              "remainingCards": 23,
+              "wildsSpent": 0,
+              "factIds": [
+                "f2-n0"
+              ],
+              "combo": {
+                "kind": "bomb",
+                "cards": [
+                  {
+                    "id": 42,
+                    "suit": "C",
+                    "rank": 5
+                  },
+                  {
+                    "id": 29,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 83,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 16,
+                    "suit": "H",
+                    "rank": 5
+                  }
+                ],
+                "size": 4,
+                "keyRank": 5,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 5,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "a45c2f315df1616e",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-plan_invalidated-0#m2",
+            "subjectActionId": "single:6:1:1#D6",
+            "factIds": [
+              "f2-ctx",
+              "f2-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "实际动作♦6；声明：单张 6压得过当前要压的♥3；声明：单张 3（引擎规则判定）（第2手，r6-dev-plan_invalidated-0）"
+          },
+          {
+            "claimId": "378f76db6521823d",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-plan_invalidated-0#m2",
+            "subjectActionId": "single:11:1:1#D11",
+            "factIds": [
+              "f2-ctx",
+              "f2-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）♦J；声明：单张 J压得过当前要压的♥3；声明：单张 3（引擎规则判定）（第2手，r6-dev-plan_invalidated-0）"
+          },
+          {
+            "claimId": "e97a4a7af552aceb",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-plan_invalidated-0#m2",
+            "subjectActionId": "bomb:5:1:4#C5,D5,D5,H5",
+            "factIds": [
+              "f2-ctx",
+              "f2-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♣5、♦5、♦5、♥5；声明：4张炸弹 5555压得过当前要压的♥3；声明：单张 3（引擎规则判定）（第2手，r6-dev-plan_invalidated-0）"
+          },
+          {
+            "claimId": "f4d88c8598ab1bba",
+            "kind": "resource_change",
+            "decisionId": "r6-dev-plan_invalidated-0#m2",
+            "subjectActionId": "bomb:5:1:4#C5,D5,D5,H5",
+            "factIds": [
+              "f2-n0"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♣5、♦5、♦5、♥5；声明：4张炸弹 5555后剩 23 张（第2手，r6-dev-plan_invalidated-0）"
+          },
+          {
+            "claimId": "93a063730ae9df59",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-plan_invalidated-0#m2",
+            "subjectActionId": "bomb:5:1:4#C5,D5,D5,H5",
+            "contrastActionId": "single:6:1:1#D6",
+            "factIds": [
+              "f2-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♣5、♦5、♦5、♥5；声明：4张炸弹 5555（评分 -0.5349），这是偏好排序不是对错判定（第2手，r6-dev-plan_invalidated-0）"
+          },
+          {
+            "claimId": "c01061c6d7399c06",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-plan_invalidated-0#m2",
+            "subjectActionId": "single:11:1:1#D11",
+            "contrastActionId": "single:6:1:1#D6",
+            "factIds": [
+              "f2-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 启发式更偏好：♦J；声明：单张 J，与实际/模型的意见可能不同——同屏呈现不裁决（第2手，r6-dev-plan_invalidated-0）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "single:6:1:1#D6",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -3.3
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 10→9（均非最优证明）",
+                "value": 6
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": 12.7,
+            "sum": 12.7,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "single:11:1:1#D11",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -8.8
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 10→7（均非最优证明）",
+                "value": 18
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": 19.2,
+            "sum": 19.2,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "bomb:5:1:4#C5,D5,D5,H5",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -2.2
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 10→9（均非最优证明）",
+                "value": 6
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": -23.2,
+            "sum": -23.2,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "uncovered",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）",
+          "实际动作未被模型候选覆盖（uncovered）——不比较打分"
+        ],
+        "missing": [],
+        "expressionScope": "实际动作不在模型候选集：只可陈述事实与规则层结构，不得比较打分",
+        "facts": {
+          "f2-n0": "仍持有 4 张炸弹 C4D4D4♥4",
+          "f2-ctx": "当前要压的是东家的♥3；声明：单张 3；本轮领出者东；各家剩牌 南27张、东26张、北27张、西27张",
+          "f2-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "single:6:1:1#D6": "实际打法：♦6；声明：单张 6",
+          "bomb:5:1:4#C5,D5,D5,H5": "模型首选：♣5、♦5、♦5、♥5；声明：4张炸弹 5555",
+          "single:2:1:1#D2": "♦2；声明：单张 2",
+          "bomb:4:1:4#C4,D4,D4,H4": "♣4、♦4、♦4、♥4；声明：4张炸弹 4444",
+          "single:11:1:1#D11": "启发式更偏好：♦J；声明：单张 J",
+          "single:9:1:1#D9": "♦9；声明：单张 9",
+          "single:7:1:1#H7": "♥7；声明：单张 7",
+          "single:10:1:1#C10": "♣10；声明：单张 10",
+          "single:5:1:1#C5": "♣5；声明：单张 5",
+          "pass#": "不出",
+          "single:4:1:1#C4": "♣4；声明：单张 4",
+          "single:8:1:1#S8": "♠8；声明：单张 8",
+          "single:6:1:1#C6": "♣6；声明：单张 6",
+          "single:13:1:1#D13": "♦K；声明：单张 K",
+          "single:14:1:1#S14": "♠A；声明：单张 A",
+          "single:12:1:1#C12": "♣Q；声明：单张 Q"
+        }
+      }
+    },
+    {
+      "id": "plan_invalidated-2",
+      "category": "plan_invalidated",
+      "recordSha256": "ff39ba23d438d1a6a94dd2b7e93b29f75475ae894bc1d6beb6540c23a177aa18",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♣4、♦4、♠4、♠4；声明：4张炸弹 4444",
+      "candidateAction": null,
+      "actualAction": "♣4、♠4、♠4；声明：三张 444",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 24 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-plan_invalidated-1#m2",
+        "recordId": "r6-dev-plan_invalidated-1",
+        "recordHash": "42d31eb8e0a61ab7",
+        "moveNo": 2,
+        "seat": 0,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 145,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "0c7d30f9c717c20f",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "trio:4:1:3#C4,S4,S4",
+          "pass": false,
+          "physicalCards": [
+            "C4#95",
+            "S4#56",
+            "S4#2"
+          ],
+          "declaration": "trio:4:1:3",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "uncovered",
+            "index": -1
+          }
+        },
+        "candidates": {
+          "setHash": "07ffa592659afd58",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 6,
+          "ranking": [
+            {
+              "actionId": "bomb:4:1:4#C4,D4,S4,S4",
+              "text": "♣4、♦4、♠4、♠4；声明：4张炸弹 4444",
+              "score": 0.5301
+            },
+            {
+              "actionId": "trio:4:1:3#D4,S4,S4",
+              "text": "♦4、♠4、♠4；声明：三张 444",
+              "score": 0.4234
+            },
+            {
+              "actionId": "flush:13:5:5#S10,S11,S12,S13,S9",
+              "text": "♠9、♠10、♠J、♠Q、♠K；声明：同花顺 ♠",
+              "score": 0.1767
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": 0.1731
+            },
+            {
+              "actionId": "trio:13:1:3#H13,H13,S13",
+              "text": "♥K、♥K、♠K；声明：三张 KKK",
+              "score": 0.1633
+            },
+            {
+              "actionId": "flush:14:5:5#S10,S11,S12,S13,S14",
+              "text": "♠10、♠J、♠Q、♠K、♠A；声明：同花顺 ♠",
+              "score": 0.1287
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "trio:4:1:3#D4,S4,S4",
+          "note": "与启发式首选一致",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "base",
+              "label": "跟牌基础分",
+              "value": 15
+            },
+            {
+              "key": "minimal",
+              "label": "最小压制（超出牌力是浪费）",
+              "value": -1.1
+            },
+            {
+              "key": "wild",
+              "label": "万能牌消耗",
+              "value": 0
+            },
+            {
+              "key": "hands-delta",
+              "label": "合法参考拆分手数 9→8（均非最优证明）",
+              "value": 6
+            },
+            {
+              "key": "break-seq",
+              "label": "部分消耗参考拆分中的长组合",
+              "value": -5
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "trio:4:1:3#C4,S4,S4",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♣4、♠4、♠4；声明：三张 444",
+            "remainingCards": 24,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "trio",
+              "cards": [
+                {
+                  "id": 95,
+                  "suit": "C",
+                  "rank": 4
+                },
+                {
+                  "id": 56,
+                  "suit": "S",
+                  "rank": 4
+                },
+                {
+                  "id": 2,
+                  "suit": "S",
+                  "rank": 4
+                }
+              ],
+              "size": 3,
+              "keyRank": 4,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 4,
+              "wildAs": []
+            }
+          },
+          "alternatives": [
+            {
+              "actionId": "trio:4:1:3#D4,S4,S4",
+              "label": "启发式更偏好（heuristic:review6-resource-v1）",
+              "sourceId": "heuristic:review6-resource-v1",
+              "text": "♦4、♠4、♠4；声明：三张 444",
+              "remainingCards": 24,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "trio",
+                "cards": [
+                  {
+                    "id": 28,
+                    "suit": "D",
+                    "rank": 4
+                  },
+                  {
+                    "id": 56,
+                    "suit": "S",
+                    "rank": 4
+                  },
+                  {
+                    "id": 2,
+                    "suit": "S",
+                    "rank": 4
+                  }
+                ],
+                "size": 3,
+                "keyRank": 4,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 4,
+                "wildAs": []
+              }
+            },
+            {
+              "actionId": "bomb:4:1:4#C4,D4,S4,S4",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♣4、♦4、♠4、♠4；声明：4张炸弹 4444",
+              "remainingCards": 23,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "bomb",
+                "cards": [
+                  {
+                    "id": 95,
+                    "suit": "C",
+                    "rank": 4
+                  },
+                  {
+                    "id": 28,
+                    "suit": "D",
+                    "rank": 4
+                  },
+                  {
+                    "id": 56,
+                    "suit": "S",
+                    "rank": 4
+                  },
+                  {
+                    "id": 2,
+                    "suit": "S",
+                    "rank": 4
+                  }
+                ],
+                "size": 4,
+                "keyRank": 4,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 4,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "bd4842b1f02bdb50",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-plan_invalidated-1#m2",
+            "subjectActionId": "trio:4:1:3#C4,S4,S4",
+            "factIds": [
+              "f2-ctx",
+              "f2-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "实际动作♣4、♠4、♠4；声明：三张 444压得过当前要压的♣3、♦3、♦3；声明：三张 333（引擎规则判定）（第2手，r6-dev-plan_invalidated-1）"
+          },
+          {
+            "claimId": "5797f0aaf30c5951",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-plan_invalidated-1#m2",
+            "subjectActionId": "trio:4:1:3#D4,S4,S4",
+            "factIds": [
+              "f2-ctx",
+              "f2-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）♦4、♠4、♠4；声明：三张 444压得过当前要压的♣3、♦3、♦3；声明：三张 333（引擎规则判定）（第2手，r6-dev-plan_invalidated-1）"
+          },
+          {
+            "claimId": "08b0bb741789f00b",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-plan_invalidated-1#m2",
+            "subjectActionId": "bomb:4:1:4#C4,D4,S4,S4",
+            "factIds": [
+              "f2-ctx",
+              "f2-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♣4、♦4、♠4、♠4；声明：4张炸弹 4444压得过当前要压的♣3、♦3、♦3；声明：三张 333（引擎规则判定）（第2手，r6-dev-plan_invalidated-1）"
+          },
+          {
+            "claimId": "53efd43a7f65dc76",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-plan_invalidated-1#m2",
+            "subjectActionId": "bomb:4:1:4#C4,D4,S4,S4",
+            "contrastActionId": "trio:4:1:3#C4,S4,S4",
+            "factIds": [
+              "f2-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♣4、♦4、♠4、♠4；声明：4张炸弹 4444（评分 0.5301），这是偏好排序不是对错判定（第2手，r6-dev-plan_invalidated-1）"
+          },
+          {
+            "claimId": "83dbee23bfe89131",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-plan_invalidated-1#m2",
+            "subjectActionId": "trio:4:1:3#D4,S4,S4",
+            "contrastActionId": "trio:4:1:3#C4,S4,S4",
+            "factIds": [
+              "f2-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 启发式更偏好：♦4、♠4、♠4；声明：三张 444，与实际/模型的意见可能不同——同屏呈现不裁决（第2手，r6-dev-plan_invalidated-1）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "trio:4:1:3#C4,S4,S4",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -1.1
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 9→8（均非最优证明）",
+                "value": 6
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": 14.9,
+            "sum": 14.9,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "trio:4:1:3#D4,S4,S4",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -1.1
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 9→8（均非最优证明）",
+                "value": 6
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": 14.9,
+            "sum": 14.9,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "bomb:4:1:4#C4,D4,S4,S4",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -1.1
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 9→7（均非最优证明）",
+                "value": 12
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": -11.1,
+            "sum": -11.1,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "uncovered",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）",
+          "实际动作未被模型候选覆盖（uncovered）——不比较打分"
+        ],
+        "missing": [],
+        "expressionScope": "实际动作不在模型候选集：只可陈述事实与规则层结构，不得比较打分",
+        "facts": {
+          "f2-ctx": "当前要压的是西家的♣3、♦3、♦3；声明：三张 333；本轮领出者西；各家剩牌 南27张、东27张、北27张、西24张",
+          "f2-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "trio:4:1:3#C4,S4,S4": "实际打法：♣4、♠4、♠4；声明：三张 444",
+          "bomb:4:1:4#C4,D4,S4,S4": "模型首选：♣4、♦4、♠4、♠4；声明：4张炸弹 4444",
+          "trio:4:1:3#D4,S4,S4": "启发式更偏好：♦4、♠4、♠4；声明：三张 444",
+          "flush:13:5:5#S10,S11,S12,S13,S9": "♠9、♠10、♠J、♠Q、♠K；声明：同花顺 ♠",
+          "pass#": "不出",
+          "trio:13:1:3#H13,H13,S13": "♥K、♥K、♠K；声明：三张 KKK",
+          "flush:14:5:5#S10,S11,S12,S13,S14": "♠10、♠J、♠Q、♠K、♠A；声明：同花顺 ♠"
+        }
+      }
+    },
+    {
+      "id": "plan_invalidated-3",
+      "category": "plan_invalidated",
+      "recordSha256": "29264f9e3ead96760a085407ec6ed964a4752c90aa6ba40de0e2f12be43317bc",
+      "kind": "development_example",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♣4、♦4、♥4、♠4；声明：4张炸弹 4444",
+      "candidateAction": null,
+      "actualAction": "♣4、♦4、♠4、♣6、♦6；声明：三带二 4³+66",
+      "teamGoal": "默认：按参考拆分组递进出牌，万能牌整局保留到关键接管点",
+      "resourceImpact": "实际动作后行动者剩 22 张；参考拆分不是最优证明",
+      "changeCondition": "上述任一触发条件出现 → 改按对应计划执行",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-plan_invalidated-2#m2",
+        "recordId": "r6-dev-plan_invalidated-2",
+        "recordHash": "dcb9ec0b4ce24350",
+        "moveNo": 2,
+        "seat": 0,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 158,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "9ed0be866026a34e",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "trio_pair:4:1:5+6#C4,C6,D4,D6,S4",
+          "pass": false,
+          "physicalCards": [
+            "C4#95",
+            "D4#28",
+            "S4#56",
+            "C6#43",
+            "D6#30"
+          ],
+          "declaration": "trio_pair:4:1:5+6",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "uncovered",
+            "index": -1
+          }
+        },
+        "candidates": {
+          "setHash": "75feccf75c6e5e06",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 8,
+          "ranking": [
+            {
+              "actionId": "bomb:4:1:4#C4,D4,H4,S4",
+              "text": "♣4、♦4、♥4、♠4；声明：4张炸弹 4444",
+              "score": 0.2571
+            },
+            {
+              "actionId": "trio_pair:4:1:5+6#D4,D6,H4,S4,S6",
+              "text": "♦4、♥4、♠4、♦6、♠6；声明：三带二 4³+66",
+              "score": 0.2329
+            },
+            {
+              "actionId": "trio_pair:6:1:5+4#C6,D6,H4,S4,S6",
+              "text": "♣6、♦6、♠6、♥4、♠4；声明：三带二 6³+44",
+              "score": 0.1161
+            },
+            {
+              "actionId": "trio_pair:8:1:5+4#H4,H8,H8,S4,S8",
+              "text": "♥8、♥8、♠8、♥4、♠4；声明：三带二 8³+44",
+              "score": -0.0053
+            },
+            {
+              "actionId": "bomb:8:1:4#D8,H8,H8,S8",
+              "text": "♦8、♥8、♥8、♠8；声明：4张炸弹 8888",
+              "score": -0.0107
+            },
+            {
+              "actionId": "trio_pair:13:1:5+4#D13,H13,H4,S13,S4",
+              "text": "♦K、♥K、♠K、♥4、♠4；声明：三带二 K³+44",
+              "score": -0.1486
+            },
+            {
+              "actionId": "pass#",
+              "text": "不出",
+              "score": -0.1523
+            },
+            {
+              "actionId": "bomb:13:1:4#C13,D13,H13,S13",
+              "text": "♣K、♦K、♥K、♠K；声明：4张炸弹 KKKK",
+              "score": -0.1715
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "pass#",
+          "note": "从炸弹里拆牌跟牌，破坏了 4张炸弹 4444",
+          "perItemBreakdown": true
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "trio_pair:4:1:5+6#C4,C6,D4,D6,S4",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♣4、♦4、♠4、♣6、♦6；声明：三带二 4³+66",
+            "remainingCards": 22,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "trio_pair",
+              "cards": [
+                {
+                  "id": 95,
+                  "suit": "C",
+                  "rank": 4
+                },
+                {
+                  "id": 28,
+                  "suit": "D",
+                  "rank": 4
+                },
+                {
+                  "id": 56,
+                  "suit": "S",
+                  "rank": 4
+                },
+                {
+                  "id": 43,
+                  "suit": "C",
+                  "rank": 6
+                },
+                {
+                  "id": 30,
+                  "suit": "D",
+                  "rank": 6
+                }
+              ],
+              "size": 5,
+              "keyRank": 4,
+              "length": 1,
+              "pairRanks": [
+                6
+              ],
+              "mainRank": 4,
+              "wildAs": []
+            }
+          },
+          "alternatives": [
+            {
+              "actionId": "pass#",
+              "label": "启发式更偏好（heuristic:review6-resource-v1）",
+              "sourceId": "heuristic:review6-resource-v1",
+              "text": "不出",
+              "remainingCards": 27,
+              "wildsSpent": 0,
+              "factIds": [
+                "f2-h0",
+                "f2-h1"
+              ],
+              "combo": null
+            },
+            {
+              "actionId": "bomb:4:1:4#C4,D4,H4,S4",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♣4、♦4、♥4、♠4；声明：4张炸弹 4444",
+              "remainingCards": 23,
+              "wildsSpent": 0,
+              "factIds": [
+                "f2-n0"
+              ],
+              "combo": {
+                "kind": "bomb",
+                "cards": [
+                  {
+                    "id": 95,
+                    "suit": "C",
+                    "rank": 4
+                  },
+                  {
+                    "id": 28,
+                    "suit": "D",
+                    "rank": 4
+                  },
+                  {
+                    "id": 15,
+                    "suit": "H",
+                    "rank": 4
+                  },
+                  {
+                    "id": 56,
+                    "suit": "S",
+                    "rank": 4
+                  }
+                ],
+                "size": 4,
+                "keyRank": 4,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 4,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "f1cf25fce2343f78",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-plan_invalidated-2#m2",
+            "subjectActionId": "trio_pair:4:1:5+6#C4,C6,D4,D6,S4",
+            "factIds": [
+              "f2-ctx",
+              "f2-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "实际动作♣4、♦4、♠4、♣6、♦6；声明：三带二 4³+66压得过当前要压的♣3、♦3、♥3、♣4、♥4；声明：三带二 3³+44（引擎规则判定）（第2手，r6-dev-plan_invalidated-2）"
+          },
+          {
+            "claimId": "5565acd537cd37a3",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-plan_invalidated-2#m2",
+            "subjectActionId": "pass#",
+            "factIds": [
+              "f2-ctx"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）选择不出（pass 只表示不压，不等于压不过）（第2手，r6-dev-plan_invalidated-2）"
+          },
+          {
+            "claimId": "ac23a4d0b93ce74b",
+            "kind": "rule_relation",
+            "decisionId": "r6-dev-plan_invalidated-2#m2",
+            "subjectActionId": "bomb:4:1:4#C4,D4,H4,S4",
+            "factIds": [
+              "f2-ctx",
+              "f2-rule"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♣4、♦4、♥4、♠4；声明：4张炸弹 4444压得过当前要压的♣3、♦3、♥3、♣4、♥4；声明：三带二 3³+44（引擎规则判定）（第2手，r6-dev-plan_invalidated-2）"
+          },
+          {
+            "claimId": "75b91ea7c46bc4af",
+            "kind": "resource_change",
+            "decisionId": "r6-dev-plan_invalidated-2#m2",
+            "subjectActionId": "pass#",
+            "factIds": [
+              "f2-h0",
+              "f2-h1"
+            ],
+            "scope": "provable_fact",
+            "text": "启发式更偏好（heuristic:review6-resource-v1）不出后剩 27 张（第2手，r6-dev-plan_invalidated-2）"
+          },
+          {
+            "claimId": "b4c61fdbd9b5f2ce",
+            "kind": "resource_change",
+            "decisionId": "r6-dev-plan_invalidated-2#m2",
+            "subjectActionId": "bomb:4:1:4#C4,D4,H4,S4",
+            "factIds": [
+              "f2-n0"
+            ],
+            "scope": "provable_fact",
+            "text": "模型首选（建议排名）♣4、♦4、♥4、♠4；声明：4张炸弹 4444后剩 23 张（第2手，r6-dev-plan_invalidated-2）"
+          },
+          {
+            "claimId": "8466d8e18d4ec0c7",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-plan_invalidated-2#m2",
+            "subjectActionId": "bomb:4:1:4#C4,D4,H4,S4",
+            "contrastActionId": "trio_pair:4:1:5+6#C4,C6,D4,D6,S4",
+            "factIds": [
+              "f2-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♣4、♦4、♥4、♠4；声明：4张炸弹 4444（评分 0.2571），这是偏好排序不是对错判定（第2手，r6-dev-plan_invalidated-2）"
+          },
+          {
+            "claimId": "5665741cf7247778",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-plan_invalidated-2#m2",
+            "subjectActionId": "pass#",
+            "contrastActionId": "trio_pair:4:1:5+6#C4,C6,D4,D6,S4",
+            "factIds": [
+              "f2-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 启发式更偏好：不出，与实际/模型的意见可能不同——同屏呈现不裁决（第2手，r6-dev-plan_invalidated-2）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "trio_pair:4:1:5+6#C4,C6,D4,D6,S4",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -1.1
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 9→10（均非最优证明）",
+                "value": -6
+              },
+              {
+                "key": "break-bomb",
+                "label": "部分消耗参考拆分中的炸弹资源",
+                "value": -12
+              }
+            ],
+            "score": -4.1,
+            "sum": -4.1,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "bomb:4:1:4#C4,D4,H4,S4",
+            "terms": [
+              {
+                "key": "base",
+                "label": "跟牌基础分",
+                "value": 15
+              },
+              {
+                "key": "minimal",
+                "label": "最小压制（超出牌力是浪费）",
+                "value": -1.1
+              },
+              {
+                "key": "bomb-use",
+                "label": "炸弹：时机未到（抑制）",
+                "value": -32
+              },
+              {
+                "key": "wild",
+                "label": "万能牌消耗",
+                "value": 0
+              },
+              {
+                "key": "hands-delta",
+                "label": "合法参考拆分手数 9→8（均非最优证明）",
+                "value": 6
+              }
+            ],
+            "score": -12.1,
+            "sum": -12.1,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "uncovered",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）",
+          "实际动作未被模型候选覆盖（uncovered）——不比较打分"
+        ],
+        "missing": [
+          "启发式评分未提供逐项分解（actionId=pass#，仅偏好说明，不让 LLM 反推原因）"
+        ],
+        "expressionScope": "实际动作不在模型候选集：只可陈述事实与规则层结构，不得比较打分",
+        "facts": {
+          "f2-h0": "仍持有 4 张炸弹 C4D4♥4S4",
+          "f2-h1": "仍持有 4 张炸弹 C13D13♥13S13",
+          "f2-n0": "仍持有 4 张炸弹 C13D13♥13S13",
+          "f2-ctx": "当前要压的是西家的♣3、♦3、♥3、♣4、♥4；声明：三带二 3³+44；本轮领出者西；各家剩牌 南27张、东27张、北27张、西22张",
+          "f2-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "trio_pair:4:1:5+6#C4,C6,D4,D6,S4": "实际打法：♣4、♦4、♠4、♣6、♦6；声明：三带二 4³+66",
+          "bomb:4:1:4#C4,D4,H4,S4": "模型首选：♣4、♦4、♥4、♠4；声明：4张炸弹 4444",
+          "trio_pair:4:1:5+6#D4,D6,H4,S4,S6": "♦4、♥4、♠4、♦6、♠6；声明：三带二 4³+66",
+          "trio_pair:6:1:5+4#C6,D6,H4,S4,S6": "♣6、♦6、♠6、♥4、♠4；声明：三带二 6³+44",
+          "trio_pair:8:1:5+4#H4,H8,H8,S4,S8": "♥8、♥8、♠8、♥4、♠4；声明：三带二 8³+44",
+          "bomb:8:1:4#D8,H8,H8,S8": "♦8、♥8、♥8、♠8；声明：4张炸弹 8888",
+          "trio_pair:13:1:5+4#D13,H13,H4,S13,S4": "♦K、♥K、♠K、♥4、♠4；声明：三带二 K³+44",
+          "pass#": "启发式更偏好：不出",
+          "bomb:13:1:4#C13,D13,H13,S13": "♣K、♦K、♥K、♠K；声明：4张炸弹 KKKK"
+        }
+      }
+    },
+    {
+      "id": "evidence_insufficient-1",
+      "category": "evidence_insufficient",
+      "recordSha256": "9612ead502ed22f958b2bc0553764d0d0d476996e22783920e7771fab2f8748c",
+      "kind": "evidence_insufficient",
+      "baselinePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "baselineScope": "hard tier greedy single-step preference, not a supported strategic label",
+      "baselineAction": "♦5、♦5、♥5、♠5；声明：4张炸弹 5555",
+      "candidateAction": null,
+      "actualAction": "♦3、♣4、♠5、♠6、♠7；声明：顺子（5张连）",
+      "teamGoal": "领出时争夺出牌权：优先打出参考拆分中的低牌组，保留炸弹/同花顺整组",
+      "resourceImpact": "实际动作后行动者剩 22 张；参考拆分不是最优证明",
+      "changeCondition": "对手任一家剩牌≤4 → 改为出最高牌力压制收尾；队友剩牌≤4 且本轮无对手接手 → 可出队友能压的组让队友走",
+      "evidenceStatus": "development_only_strategy_unverified",
+      "evidence": {
+        "decisionId": "r6-dev-evidence_insufficient-0#m1",
+        "recordId": "r6-dev-evidence_insufficient-0",
+        "recordHash": "f1ba6df53519a94f",
+        "moveNo": 1,
+        "seat": 2,
+        "replayStatus": "exact",
+        "verifiedPrefixEnd": 160,
+        "ruleContext": {
+          "levelMode": "stage",
+          "stageTeam": 0,
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "version": "5d21a829129b49a7"
+        },
+        "observation": {
+          "hash": "d5d6839f0d1398cd",
+          "basis": "encodeState(317维：自家手牌+公开事件+轮次/级数等公开字段)"
+        },
+        "actual": {
+          "actionId": "straight:7:5:5#C4,D3,S5,S6,S7",
+          "pass": false,
+          "physicalCards": [
+            "D3#27",
+            "C4#95",
+            "S5#3",
+            "S6#58",
+            "S7#59"
+          ],
+          "declaration": "straight:7:5:5",
+          "wildAs": [],
+          "legal": true,
+          "coverage": {
+            "status": "uncovered",
+            "index": -1
+          }
+        },
+        "candidates": {
+          "setHash": "b9868c324e962dbd",
+          "candidateVersion": "cand-dedup-v2",
+          "encoderVersion": "gd-lab-schema-v1",
+          "n": 39,
+          "ranking": [
+            {
+              "actionId": "bomb:5:1:4#D5,D5,H5,S5",
+              "text": "♦5、♦5、♥5、♠5；声明：4张炸弹 5555",
+              "score": -0.0055
+            },
+            {
+              "actionId": "trio_pair:5:1:5+4#C4,D5,H5,S4,S5",
+              "text": "♦5、♥5、♠5、♣4、♠4；声明：三带二 5³+44",
+              "score": -0.0326
+            },
+            {
+              "actionId": "straight:7:5:5#D3,S4,S5,S6,S7",
+              "text": "♦3、♠4、♠5、♠6、♠7；声明：顺子（5张连）",
+              "score": -0.0826
+            },
+            {
+              "actionId": "straight:8:5:5#H8,S4,S5,S6,S7",
+              "text": "♠4、♠5、♠6、♠7、♥8；声明：顺子（5张连）",
+              "score": -0.1314
+            },
+            {
+              "actionId": "trio:5:1:3#D5,H5,S5",
+              "text": "♦5、♥5、♠5；声明：三张 555",
+              "score": -0.1567
+            },
+            {
+              "actionId": "pair:2:1:2#C2,S2",
+              "text": "♣2、♠2；声明：对子 22",
+              "score": -0.1714
+            },
+            {
+              "actionId": "trio_pair:7:1:5+4#C4,D7,H7,S4,S7",
+              "text": "♦7、♥7、♠7、♣4、♠4；声明：三带二 7³+44",
+              "score": -0.2412
+            },
+            {
+              "actionId": "pair:5:1:2#H5,S5",
+              "text": "♥5、♠5；声明：对子 55",
+              "score": -0.2512
+            },
+            {
+              "actionId": "straight:9:5:5#H8,S5,S6,S7,S9",
+              "text": "♠5、♠6、♠7、♥8、♠9；声明：顺子（5张连）",
+              "score": -0.2675
+            },
+            {
+              "actionId": "single:2:1:1#C2",
+              "text": "♣2；声明：单张 2",
+              "score": -0.2771
+            },
+            {
+              "actionId": "single:5:1:1#D5",
+              "text": "♦5；声明：单张 5",
+              "score": -0.2821
+            },
+            {
+              "actionId": "single:6:1:1#S6",
+              "text": "♠6；声明：单张 6",
+              "score": -0.2913
+            },
+            {
+              "actionId": "pair:4:1:2#C4,S4",
+              "text": "♣4、♠4；声明：对子 44",
+              "score": -0.3103
+            },
+            {
+              "actionId": "single:7:1:1#D7",
+              "text": "♦7；声明：单张 7",
+              "score": -0.3199
+            },
+            {
+              "actionId": "single:13:1:1#H13",
+              "text": "♥K；声明：单张 K",
+              "score": -0.3326
+            },
+            {
+              "actionId": "single:3:1:1#D3",
+              "text": "♦3；声明：单张 3",
+              "score": -0.3346
+            },
+            {
+              "actionId": "single:8:1:1#H8",
+              "text": "♥8；声明：单张 8",
+              "score": -0.3359
+            },
+            {
+              "actionId": "single:4:1:1#C4",
+              "text": "♣4；声明：单张 4",
+              "score": -0.3396
+            },
+            {
+              "actionId": "single:10:1:1#C10",
+              "text": "♣10；声明：单张 10",
+              "score": -0.3406
+            },
+            {
+              "actionId": "trio:7:1:3#D7,H7,S7",
+              "text": "♦7、♥7、♠7；声明：三张 777",
+              "score": -0.3504
+            },
+            {
+              "actionId": "single:14:1:1#C14",
+              "text": "♣A；声明：单张 A",
+              "score": -0.3517
+            },
+            {
+              "actionId": "straight:10:5:5#H10,H8,S6,S7,S9",
+              "text": "♠6、♠7、♥8、♠9、♥10；声明：顺子（5张连）",
+              "score": -0.3557
+            },
+            {
+              "actionId": "single:11:1:1#C11",
+              "text": "♣J；声明：单张 J",
+              "score": -0.357
+            },
+            {
+              "actionId": "single:12:1:1#D12",
+              "text": "♦Q；声明：单张 Q",
+              "score": -0.3604
+            },
+            {
+              "actionId": "pair:13:1:2#H13,S13",
+              "text": "♥K、♠K；声明：对子 KK",
+              "score": -0.3752
+            },
+            {
+              "actionId": "pair:7:1:2#H7,S7",
+              "text": "♥7、♠7；声明：对子 77",
+              "score": -0.3779
+            },
+            {
+              "actionId": "single:9:1:1#S9",
+              "text": "♠9；声明：单张 9",
+              "score": -0.3799
+            },
+            {
+              "actionId": "pair:12:1:2#D12,S12",
+              "text": "♦Q、♠Q；声明：对子 QQ",
+              "score": -0.3947
+            },
+            {
+              "actionId": "trio_pair:10:1:5+4#C10,C4,D10,H10,S4",
+              "text": "♣10、♦10、♥10、♣4、♠4；声明：三带二 10³+44",
+              "score": -0.3948
+            },
+            {
+              "actionId": "pair:10:1:2#D10,H10",
+              "text": "♦10、♥10；声明：对子 1010",
+              "score": -0.4272
+            },
+            {
+              "actionId": "trio:10:1:3#C10,D10,H10",
+              "text": "♣10、♦10、♥10；声明：三张 101010",
+              "score": -0.4442
+            },
+            {
+              "actionId": "pair:9:1:2#S9,S9",
+              "text": "♠9、♠9；声明：对子 99",
+              "score": -0.4642
+            },
+            {
+              "actionId": "straight:11:5:5#C11,H10,H8,S7,S9",
+              "text": "♠7、♥8、♠9、♥10、♣J；声明：顺子（5张连）",
+              "score": -0.4685
+            },
+            {
+              "actionId": "single:17:1:1#J17",
+              "text": "大王；声明：单张 大王",
+              "score": -0.4698
+            },
+            {
+              "actionId": "pair:14:1:2#C14,S14",
+              "text": "♣A、♠A；声明：对子 AA",
+              "score": -0.483
+            },
+            {
+              "actionId": "straight:12:5:5#C11,H10,H8,S12,S9",
+              "text": "♥8、♠9、♥10、♣J、♠Q；声明：顺子（5张连）",
+              "score": -0.4862
+            },
+            {
+              "actionId": "straight:13:5:5#C11,H10,S12,S13,S9",
+              "text": "♠9、♥10、♣J、♠Q、♠K；声明：顺子（5张连）",
+              "score": -0.4872
+            },
+            {
+              "actionId": "straight:14:5:5#C11,H10,S12,S13,S14",
+              "text": "♥10、♣J、♠Q、♠K、♠A；声明：顺子（5张连）",
+              "score": -0.5387
+            },
+            {
+              "actionId": "pair_seq:14:3:6#C14,D12,H13,S12,S13,S14",
+              "text": "♦Q、♠Q、♥K、♠K、♣A、♠A；声明：三连对（3对连）",
+              "score": -0.613
+            }
+          ]
+        },
+        "policy": {
+          "proposalPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "weightHash": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+        },
+        "heuristic": {
+          "sourceId": "heuristic:review6-resource-v1",
+          "topActionId": "straight:7:5:5#D3,S4,S5,S6,S7",
+          "note": "与启发式首选一致",
+          "perItemBreakdown": true,
+          "terms": [
+            {
+              "key": "plan",
+              "label": "与拆解计划一致",
+              "value": 6
+            },
+            {
+              "key": "low-first",
+              "label": "低牌先出（大牌折价）",
+              "value": -2.45
+            },
+            {
+              "key": "size",
+              "label": "多出牌",
+              "value": 2
+            },
+            {
+              "key": "wild",
+              "label": "万能牌别乱用",
+              "value": 0
+            },
+            {
+              "key": "hands",
+              "label": "合法参考拆分：余牌可用 8 手出完（上界，非最优）",
+              "value": -24
+            }
+          ]
+        },
+        "singleStep": {
+          "actual": {
+            "actionId": "straight:7:5:5#C4,D3,S5,S6,S7",
+            "label": "实际打法",
+            "sourceId": "对局记录",
+            "text": "♦3、♣4、♠5、♠6、♠7；声明：顺子（5张连）",
+            "remainingCards": 22,
+            "wildsSpent": 0,
+            "factIds": [],
+            "combo": {
+              "kind": "straight",
+              "cards": [
+                {
+                  "id": 27,
+                  "suit": "D",
+                  "rank": 3
+                },
+                {
+                  "id": 95,
+                  "suit": "C",
+                  "rank": 4
+                },
+                {
+                  "id": 3,
+                  "suit": "S",
+                  "rank": 5
+                },
+                {
+                  "id": 58,
+                  "suit": "S",
+                  "rank": 6
+                },
+                {
+                  "id": 59,
+                  "suit": "S",
+                  "rank": 7
+                }
+              ],
+              "size": 5,
+              "keyRank": 7,
+              "length": 5,
+              "pairRanks": [],
+              "mainRank": 7,
+              "wildAs": []
+            }
+          },
+          "alternatives": [
+            {
+              "actionId": "straight:7:5:5#D3,S4,S5,S6,S7",
+              "label": "启发式更偏好（heuristic:review6-resource-v1）",
+              "sourceId": "heuristic:review6-resource-v1",
+              "text": "♦3、♠4、♠5、♠6、♠7；声明：顺子（5张连）",
+              "remainingCards": 22,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "straight",
+                "cards": [
+                  {
+                    "id": 27,
+                    "suit": "D",
+                    "rank": 3
+                  },
+                  {
+                    "id": 56,
+                    "suit": "S",
+                    "rank": 4
+                  },
+                  {
+                    "id": 3,
+                    "suit": "S",
+                    "rank": 5
+                  },
+                  {
+                    "id": 58,
+                    "suit": "S",
+                    "rank": 6
+                  },
+                  {
+                    "id": 59,
+                    "suit": "S",
+                    "rank": 7
+                  }
+                ],
+                "size": 5,
+                "keyRank": 7,
+                "length": 5,
+                "pairRanks": [],
+                "mainRank": 7,
+                "wildAs": []
+              }
+            },
+            {
+              "actionId": "bomb:5:1:4#D5,D5,H5,S5",
+              "label": "模型首选（建议排名）",
+              "sourceId": "frozenChampion-clean2-ck7051-encv1-candv2",
+              "text": "♦5、♦5、♥5、♠5；声明：4张炸弹 5555",
+              "remainingCards": 23,
+              "wildsSpent": 0,
+              "factIds": [],
+              "combo": {
+                "kind": "bomb",
+                "cards": [
+                  {
+                    "id": 29,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 83,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 16,
+                    "suit": "H",
+                    "rank": 5
+                  },
+                  {
+                    "id": 3,
+                    "suit": "S",
+                    "rank": 5
+                  }
+                ],
+                "size": 4,
+                "keyRank": 5,
+                "length": 1,
+                "pairRanks": [],
+                "mainRank": 5,
+                "wildAs": []
+              }
+            }
+          ]
+        },
+        "rollouts": [],
+        "claims": [
+          {
+            "claimId": "b6eb80ae947ce707",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-evidence_insufficient-0#m1",
+            "subjectActionId": "bomb:5:1:4#D5,D5,H5,S5",
+            "contrastActionId": "straight:7:5:5#C4,D3,S5,S6,S7",
+            "factIds": [
+              "f1-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "模型（frozenChampion-clean2-ck7051-encv1-candv2）首选 ♦5、♦5、♥5、♠5；声明：4张炸弹 5555（评分 -0.0055），这是偏好排序不是对错判定（第1手，r6-dev-evidence_insufficient-0）"
+          },
+          {
+            "claimId": "8dbeeda7fc1eb96a",
+            "kind": "policy_preference",
+            "decisionId": "r6-dev-evidence_insufficient-0#m1",
+            "subjectActionId": "straight:7:5:5#D3,S4,S5,S6,S7",
+            "contrastActionId": "straight:7:5:5#C4,D3,S5,S6,S7",
+            "factIds": [
+              "f1-ctx"
+            ],
+            "scope": "model_preference",
+            "text": "启发式（heuristic:review6-resource-v1 分析口径）更偏好 启发式更偏好：♦3、♠4、♠5、♠6、♠7；声明：顺子（5张连），与实际/模型的意见可能不同——同屏呈现不裁决（第1手，r6-dev-evidence_insufficient-0）"
+          }
+        ],
+        "heuristicBreakdowns": [
+          {
+            "actionId": "straight:7:5:5#C4,D3,S5,S6,S7",
+            "terms": [
+              {
+                "key": "plan",
+                "label": "与拆解计划一致",
+                "value": 6
+              },
+              {
+                "key": "low-first",
+                "label": "低牌先出（大牌折价）",
+                "value": -2.45
+              },
+              {
+                "key": "size",
+                "label": "多出牌",
+                "value": 2
+              },
+              {
+                "key": "wild",
+                "label": "万能牌别乱用",
+                "value": 0
+              },
+              {
+                "key": "hands",
+                "label": "合法参考拆分：余牌可用 8 手出完（上界，非最优）",
+                "value": -24
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": -23.45,
+            "sum": -23.45,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "straight:7:5:5#D3,S4,S5,S6,S7",
+            "terms": [
+              {
+                "key": "plan",
+                "label": "与拆解计划一致",
+                "value": 6
+              },
+              {
+                "key": "low-first",
+                "label": "低牌先出（大牌折价）",
+                "value": -2.45
+              },
+              {
+                "key": "size",
+                "label": "多出牌",
+                "value": 2
+              },
+              {
+                "key": "wild",
+                "label": "万能牌别乱用",
+                "value": 0
+              },
+              {
+                "key": "hands",
+                "label": "合法参考拆分：余牌可用 8 手出完（上界，非最优）",
+                "value": -24
+              }
+            ],
+            "score": -18.45,
+            "sum": -18.45,
+            "sumEqualsScore": true
+          },
+          {
+            "actionId": "bomb:5:1:4#D5,D5,H5,S5",
+            "terms": [
+              {
+                "key": "low-first",
+                "label": "低牌先出（大牌折价）",
+                "value": -1.75
+              },
+              {
+                "key": "size",
+                "label": "多出牌",
+                "value": 1.6
+              },
+              {
+                "key": "bomb-lead",
+                "label": "炸弹别乱领",
+                "value": -28
+              },
+              {
+                "key": "wild",
+                "label": "万能牌别乱用",
+                "value": 0
+              },
+              {
+                "key": "hands",
+                "label": "合法参考拆分：余牌可用 10 手出完（上界，非最优）",
+                "value": -30
+              },
+              {
+                "key": "break-seq",
+                "label": "部分消耗参考拆分中的长组合",
+                "value": -5
+              }
+            ],
+            "score": -63.15,
+            "sum": -63.15,
+            "sumEqualsScore": true
+          }
+        ],
+        "claimLevel": "uncovered",
+        "conflicts": [
+          "启发式首选与模型首选不同（分歧如实呈现，不裁决）",
+          "实际动作未被模型候选覆盖（uncovered）——不比较打分"
+        ],
+        "missing": [],
+        "expressionScope": "实际动作不在模型候选集：只可陈述事实与规则层结构，不得比较打分",
+        "facts": {
+          "f1-ctx": "你领出此轮",
+          "f1-rule": "级牌口径=stage（台上=我方）；双方级数 2/2"
+        },
+        "actionTexts": {
+          "straight:7:5:5#C4,D3,S5,S6,S7": "实际打法：♦3、♣4、♠5、♠6、♠7；声明：顺子（5张连）",
+          "bomb:5:1:4#D5,D5,H5,S5": "模型首选：♦5、♦5、♥5、♠5；声明：4张炸弹 5555",
+          "trio_pair:5:1:5+4#C4,D5,H5,S4,S5": "♦5、♥5、♠5、♣4、♠4；声明：三带二 5³+44",
+          "straight:7:5:5#D3,S4,S5,S6,S7": "启发式更偏好：♦3、♠4、♠5、♠6、♠7；声明：顺子（5张连）",
+          "straight:8:5:5#H8,S4,S5,S6,S7": "♠4、♠5、♠6、♠7、♥8；声明：顺子（5张连）",
+          "trio:5:1:3#D5,H5,S5": "♦5、♥5、♠5；声明：三张 555",
+          "pair:2:1:2#C2,S2": "♣2、♠2；声明：对子 22",
+          "trio_pair:7:1:5+4#C4,D7,H7,S4,S7": "♦7、♥7、♠7、♣4、♠4；声明：三带二 7³+44",
+          "pair:5:1:2#H5,S5": "♥5、♠5；声明：对子 55",
+          "straight:9:5:5#H8,S5,S6,S7,S9": "♠5、♠6、♠7、♥8、♠9；声明：顺子（5张连）",
+          "single:2:1:1#C2": "♣2；声明：单张 2",
+          "single:5:1:1#D5": "♦5；声明：单张 5",
+          "single:6:1:1#S6": "♠6；声明：单张 6",
+          "pair:4:1:2#C4,S4": "♣4、♠4；声明：对子 44",
+          "single:7:1:1#D7": "♦7；声明：单张 7",
+          "single:13:1:1#H13": "♥K；声明：单张 K",
+          "single:3:1:1#D3": "♦3；声明：单张 3",
+          "single:8:1:1#H8": "♥8；声明：单张 8",
+          "single:4:1:1#C4": "♣4；声明：单张 4",
+          "single:10:1:1#C10": "♣10；声明：单张 10",
+          "trio:7:1:3#D7,H7,S7": "♦7、♥7、♠7；声明：三张 777",
+          "single:14:1:1#C14": "♣A；声明：单张 A",
+          "straight:10:5:5#H10,H8,S6,S7,S9": "♠6、♠7、♥8、♠9、♥10；声明：顺子（5张连）",
+          "single:11:1:1#C11": "♣J；声明：单张 J",
+          "single:12:1:1#D12": "♦Q；声明：单张 Q",
+          "pair:13:1:2#H13,S13": "♥K、♠K；声明：对子 KK",
+          "pair:7:1:2#H7,S7": "♥7、♠7；声明：对子 77",
+          "single:9:1:1#S9": "♠9；声明：单张 9",
+          "pair:12:1:2#D12,S12": "♦Q、♠Q；声明：对子 QQ",
+          "trio_pair:10:1:5+4#C10,C4,D10,H10,S4": "♣10、♦10、♥10、♣4、♠4；声明：三带二 10³+44",
+          "pair:10:1:2#D10,H10": "♦10、♥10；声明：对子 1010",
+          "trio:10:1:3#C10,D10,H10": "♣10、♦10、♥10；声明：三张 101010",
+          "pair:9:1:2#S9,S9": "♠9、♠9；声明：对子 99",
+          "straight:11:5:5#C11,H10,H8,S7,S9": "♠7、♥8、♠9、♥10、♣J；声明：顺子（5张连）",
+          "single:17:1:1#J17": "大王；声明：单张 大王",
+          "pair:14:1:2#C14,S14": "♣A、♠A；声明：对子 AA",
+          "straight:12:5:5#C11,H10,H8,S12,S9": "♥8、♠9、♥10、♣J、♠Q；声明：顺子（5张连）",
+          "straight:13:5:5#C11,H10,S12,S13,S9": "♠9、♥10、♣J、♠Q、♠K；声明：顺子（5张连）",
+          "straight:14:5:5#C11,H10,S12,S13,S14": "♥10、♣J、♠Q、♠K、♠A；声明：顺子（5张连）",
+          "pair_seq:14:3:6#C14,D12,H13,S12,S13,S14": "♦Q、♠Q、♥K、♠K、♣A、♠A；声明：三连对（3对连）"
+        }
+      }
+    }
+  ]
+}

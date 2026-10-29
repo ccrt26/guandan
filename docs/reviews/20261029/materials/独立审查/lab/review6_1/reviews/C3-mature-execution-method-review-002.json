@@ -1,0 +1,653 @@
+{
+  "schemaVersion": 1,
+  "role": "method",
+  "reviewId": "C3-mature-execution-method-review-002",
+  "requestSHA256": "1f96f058a629357fefdb8c3c3b247941be2c8ce75935eb47140f494fd2770a1f",
+  "reviewedContractSHA256": "616c3420904fad9ba3e99d517a8a7aef85ff7e902ddb31376c4ae627233274be",
+  "overallDecision": "CHANGES_REQUIRED",
+  "executionAuthorization": false,
+  "reviewedAt": "2026-10-28T23:42:15.295224+00:00",
+  "scope": {
+    "request": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-request-002.json",
+    "affectedReviewOnly": true,
+    "onlyWouldAuthorize": "this exact 20-per-arm Task4 mature pilot, never teacher quality, C3 overall, main, formal or production continuity",
+    "scienceReusedFrom": {
+      "path": "/private/tmp/C3-mature-execution-method-review-001.json",
+      "sha256": "4af266414256b4a42a5f5eff7ed1dc20ad5833f34a8514763fe39c6531cb094c"
+    },
+    "actualMatureResultsReviewed": false,
+    "newActualMatureOrModelWorkAuthorized": false
+  },
+  "immutableBindings": {
+    "sourceManifest": {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/source-manifest.json",
+      "sha256": "31b9f7859ce631f222a95b79e68453b1078f6d83c6d9e00a98097b1f0f63c014"
+    },
+    "actualSnapshot": {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-002/execution-snapshot-001/snapshot-manifest.json",
+      "sha256": "828244f586d69ca88e537cefc15cf207f2026acae066e15a3ad91872c006804f"
+    },
+    "contracts": [
+      {
+        "mode": "mature",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-002/execution-contract-001.json",
+        "sha256": "616c3420904fad9ba3e99d517a8a7aef85ff7e902ddb31376c4ae627233274be"
+      }
+    ],
+    "references": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/source-manifest.json",
+        "sha256": "31b9f7859ce631f222a95b79e68453b1078f6d83c6d9e00a98097b1f0f63c014"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-002/execution-snapshot-001/snapshot-manifest.json",
+        "sha256": "828244f586d69ca88e537cefc15cf207f2026acae066e15a3ad91872c006804f"
+      },
+      {
+        "mode": "mature",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-002/execution-contract-001.json",
+        "sha256": "616c3420904fad9ba3e99d517a8a7aef85ff7e902ddb31376c4ae627233274be"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-002/spec.lock.json",
+        "sha256": "dbb1148733ad5bfb5c20d1fbe0558e956ac0ef0fd6a9f529212d27291d81197a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/data/mature-torch-runtime-lock-001.json",
+        "sha256": "72f33eec0f6e6b5400c1e19096b0ee32691518b9e4b99812efca2fff7408efe5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-engineering-review-001.json",
+        "sha256": "3c8c9d16489654a64f614bd13526535b2a8138819b36e13b43b25f6b80e34c04"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-method-review-001.json",
+        "sha256": "4af266414256b4a42a5f5eff7ed1dc20ad5833f34a8514763fe39c6531cb094c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-python-rpc-expired-send-red-001.log",
+        "sha256": "c7fc0d92c4cdeb952943b46249c4f218d2f4657cad79a2c1484371abade56f53"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-python-rpc-hardfinish-red-001.log",
+        "sha256": "a318ddca61cdb65fae79f1ba5a44003f8938a8bad1f615f6c2f8edd7fbf27022"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-python-rpc-hardfinish-test-intervention-001.json",
+        "sha256": "c8b0f5ebeebd8f6700878ac0b4f6e9f0a17bb3ced195a47fd744293ad087fdd0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-process-green-001.log",
+        "sha256": "a46892670dce79a5ef5d3d1d9c9c1c5ab8a02248900de4f79397b8cfd6ae8f18"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-python-guard-red-001.log",
+        "sha256": "2ba6f7176bb876ebbf1a7f79b27a8eeeadb0b19245c76cd7711635be16b3fa80"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-python-guard-green-003.log",
+        "sha256": "6f283ee6225d2cef4c0127d95456a6f954c45141c92b97dd89016cb1c630e8f4"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-owned-process-red-001.log",
+        "sha256": "b78d92ce3d3ab159aebcb1a1d57f3575d16a4e7653511130a08c6edf33e3d256"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-owned-process-green-001.log",
+        "sha256": "6ed9c4152427abf8c93bf6e45acdc722bfb411f07e77a2d4da1bb71b5e1abae6"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-owned-window-green-001.log",
+        "sha256": "4435788248c8d80b5e8c831a60f3c092e48b5566618867c6e83f6d59d970e24f"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-runtime-green-002.log",
+        "sha256": "854024a7a96a82fb1263a391fa5c5d5392a853091cccbd0a0ae643216e68dd01"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/data/mature-source-draft-001.json",
+        "sha256": "a742477449a95405f691bb5f6a94e8f5e6c6a96effbb77ed304b3f4c4fd223d0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/mature-pilot-002/teacher-input-lock.json",
+        "sha256": "49fc1a663adb4f302d8166d0ec196ea7ced1bf0a80f7706ab2944524cd9fcaec"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/pilot-label-manifest-001.json",
+        "sha256": "ff880e81b74e61785bf5792cf7bff35d92adf3d32f772bd4d9eafe7a8fccb4a3"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/variance-report.json",
+        "sha256": "302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/capability/severe-source-draft-001.json",
+        "sha256": "ff3af265ce139fcc02db94b6910ec42622eee922cb2394095d723cbf5f666df0"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/teacher-quality-receipt-001.json",
+        "sha256": "e2782c0971b84e002faa782ca1bbbb2db4776c8959b547b80e00cd96db69d749"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/proof-report.json",
+        "sha256": "3d9e87b37aba80f54f69488a8736cc63cf83f1d9a975caa9fc86a15d7145bc19"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/data/mature-implementation-status-001.json",
+        "sha256": "b78ac966345c18c57756abbb1cc1cb36980e3430db0210e4f8a2845d90f9a6eb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-current-recorder-red-001.log",
+        "sha256": "cf3571650c7a333083e57dc0e4761b8471023ba277f53870e8b2e63519d12d12"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-current-recorder-green-001.log",
+        "sha256": "57aed67eb1c2bcd00d1840ac69c42d720d3a33515b8bae3223338cae769433ab"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-collection-green-001.log",
+        "sha256": "789cfa4279b6fb6fb37348629f0a9dcb74600f3e02073e63fc882fd1ef714b04"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-training-loss-red-001.log",
+        "sha256": "afcf4be16d8b5d07f4b4ed129b0de04bef69a614f07954b2690313f99c40835a"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-loss-green-001.log",
+        "sha256": "2db242136d1a8fa290a768142e5a4ddf0209ae0fbe825ba846f38bb6be374f5c"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-protocol-red-002.log",
+        "sha256": "4f0aca1d554f4cf3f664745bd90e9307c668af099b243e52cea73eb371ecf795"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-protocol-green-001.log",
+        "sha256": "6f283ee6225d2cef4c0127d95456a6f954c45141c92b97dd89016cb1c630e8f4"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-typed-target-red-001.log",
+        "sha256": "516bd51478aae9142ae20700275321410f5ae4e01007cf56e4f8deda9b695bce"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-typed-target-green-001.log",
+        "sha256": "6f283ee6225d2cef4c0127d95456a6f954c45141c92b97dd89016cb1c630e8f4"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-python-rpc-spawn-red-001.log",
+        "sha256": "4d08854e03c58a00119858d0dc1b2dbea91523eb6976c2c10c308afbf9eb8fbb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-python-rpc-spawn-green-001.log",
+        "sha256": "ac31fab50a9843358397adfab59c4c3524c020b6ae41b31ff6f044e039670a98"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-python-rpc-finish-red-001.log",
+        "sha256": "00fedaf0f7198a2a42e8a36b98461e938bcd69decffb17e7fb3aed550cc62cc9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-python-rpc-finish-green-001.log",
+        "sha256": "87f4e647bc9296ded70984238d036baf1ffab08b9dad0a930e34ec59051d88b9"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-guard-red-001.log",
+        "sha256": "7e2cdefc744918a016e9a275986d22b03d1e0e498bcec6722fda52f3e554fe1f"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-mature-guard-green-001.log",
+        "sha256": "14da847bdbbc0c860e29b82c07f5055c2b9297fcd79f5cfff5bb1441eb947397"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-snapshot-transpilation-green-001.log",
+        "sha256": "262c6a24186857487976e21fd274eaffa163f555a35c2317f89564d468b3b3fb"
+      }
+    ],
+    "sourceCopies": [
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/owned-process-runner.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/owned-process-runner.mjs",
+        "sha256": "77246d8f720fb0c755b0ebda23bb6efb52fee7bf71bdb3dfcd4e890dca07a64e"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/owned-process-group.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/owned-process-group.mjs",
+        "sha256": "1cfbef2794c2998176cc5b382b563cbed7a6f2caeab9d7ecf9cf5c96a31610ae"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/owned-window.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/owned-window.mjs",
+        "sha256": "252d71679d5ea9b7a29f8dd354e550efb4e8f7c393654a10ada4944b6c424e6e"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/mature-worker.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/mature-worker.ts",
+        "sha256": "c660b5fb38a7106cfb05978faa0fbac7f33a49a02c1f9867899a20eb23a037af"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/mature-task.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/mature-task.ts",
+        "sha256": "02b18faebbb37c8990833f21a6cfd109765b71347f625e0491a4bb261fb00780"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/mature-match.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/mature-match.ts",
+        "sha256": "a56ce7abdfb7d8edb4721586ebb71b30e5ba39d0d7e73a4c6fc7428f63c9bbfa"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/training-collector.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/training-collector.ts",
+        "sha256": "c90dc1e942a0a61401bb4b919f5791532e0c2ee44743241213aeed17a4212c2c"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/training-samples.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/training-samples.ts",
+        "sha256": "8799b92d9f5d4f440d3e38513a6d98ad4d02ecbf897cb31cb49c18f603ee8b52"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/mature-queues.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/mature-queues.ts",
+        "sha256": "d732de94b1b47f504550a327dbd91438addffa53065cc27a0892b70114524784"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/training-ancestry.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/training-ancestry.ts",
+        "sha256": "02112f77ff3557cb7bbc493581589af12baa03b5e527e773989fc585845ff78e"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/mature-service.py",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/mature-service.py",
+        "sha256": "0fb80bb90485f5c8459c5de35e3e9f2582da5021640e7dbadd5bcfc78d737311"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/mature_protocol.py",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/mature_protocol.py",
+        "sha256": "3c0f30a49ba3a51f562c8d86e5b60c8bb56b879521a8a1ad3e769cc4bb639aea"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/training_core.py",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/training_core.py",
+        "sha256": "eb90b5f1dc8ded625a5f655dd35831feaec24e55e389d6a5c0a21b01b8bbe1b3"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/python-rpc.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/python-rpc.mjs",
+        "sha256": "f4451315677fdeba8fbcf3bd7b3b2e4363fef58dec33a1be06c28d06a7e9a6f3"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/match-play.ts",
+        "sha256": "67c7d83609e872b453ff97d7919c7e1a576001b94bc678a082b6369de6dbb51d"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/exact-inference.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/exact-inference.ts",
+        "sha256": "17c694d24cbe5d45c7c7e044f7a8ed3437ed336026d03b569138886971b4fd6c"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/teacher-roots.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/teacher-roots.ts",
+        "sha256": "755634f4e15097b578ed2a64a9e0e3f1e5bc0bfea7cbb38148bc9cbe63eb1b34"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/compute-pool.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/compute-pool.mjs",
+        "sha256": "7b85aa9a02e42644cf3e5cacab7d0a897f6f1ce6d3dfdc5ff3af87087bc8c765"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/policy-registry.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/policy-registry.ts",
+        "sha256": "3aaf1e9b7a6e0ce4e4eafa73747b983479efb8b61d7dfd95373e67c8c2e59f2d"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-launch.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/pilot-launch.mjs",
+        "sha256": "6774c9ce4264501102e06ccc4068066023cd6f48579257e797f3b3b75472e087"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-retry.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/pilot-retry.mjs",
+        "sha256": "347acb595947da98bbe21495b98fa62d02edd3f106d6c14c0238513798b46e38"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/frozen-launch-guard.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/frozen-launch-guard.mjs",
+        "sha256": "782db5f849e174dd8db739cd30e5c2447b9b1b5a050920a6dfb98ed28383c0d1"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/executable-snapshot.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/executable-snapshot.mjs",
+        "sha256": "512fc290142578981d5e68964214fbcc88022189a08dfb54e8462da5b352eef3"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/runtime.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/runtime.mjs",
+        "sha256": "44df2c9dae95dfea538ecd71c50ff9ecf01458863a74124b735b86e7057c8f30"
+      }
+    ]
+  },
+  "rawRecomputation": {
+    "requestSHA256": "1f96f058a629357fefdb8c3c3b247941be2c8ce75935eb47140f494fd2770a1f",
+    "referencesChecked": 41,
+    "sourceCopiesChecked": 24,
+    "snapshotFilesChecked": 198,
+    "inputHashesChecked": 14,
+    "allScienceFieldsExactlyReused": true,
+    "specDiffKeys": [
+      "sourceFiles",
+      "teacherInputLock",
+      "at",
+      "installedTorchRuntime"
+    ],
+    "13CoreScientificModuleHashesUnchanged": true,
+    "changedOrNewOperationalSources": [
+      {
+        "name": "owned-process-runner.mjs",
+        "added": true
+      },
+      {
+        "name": "owned-process-group.mjs",
+        "added": true
+      },
+      {
+        "name": "owned-window.mjs",
+        "added": true
+      },
+      {
+        "name": "mature-worker.ts",
+        "added": false
+      },
+      {
+        "name": "mature-service.py",
+        "added": false
+      },
+      {
+        "name": "python-rpc.mjs",
+        "added": false
+      },
+      {
+        "name": "pilot-launch.mjs",
+        "added": false
+      },
+      {
+        "name": "frozen-launch-guard.mjs",
+        "added": false
+      }
+    ],
+    "labels4AndRegistryOnlyCopiedPathsChanged": true,
+    "source1537AndExclusions5855Unchanged": true,
+    "preTorchBudgetFullChainTreeAndPidAdmissionSourcePresent": true,
+    "externalTorchRuntimeCriticalFileCount": 6,
+    "externalTorchRuntimeTotalBytes": 240841380,
+    "runtimeFingerprintHashesPass": true,
+    "runtimeVersion": "2.8.0",
+    "runtimeGit": "a1cb3cc05d46d198467bebbb6e8fba50a325d4e7",
+    "torchNotImportedByThisMetadataProbe": true,
+    "actualMatureReportExists": false,
+    "errors": [],
+    "allMetadataChecksPassed": true,
+    "newNN": 0,
+    "newDecide": 0,
+    "newPlayedMatchesOrRollouts": 0,
+    "newTorch": 0,
+    "realBudgetOrLeaseActions": 0
+  },
+  "verifiedClosedTreeAndCanonicalShape": {
+    "actual198FileTreeClosedAndRealpathsVerified": true,
+    "ownedGroupFlagRequired": true,
+    "unapprovedOrdinal2Rejected": true,
+    "noRealLeaseOrBudgetCall": true
+  },
+  "previousFindingDispositions": [
+    {
+      "id": "M-M01",
+      "previousPriority": "P1",
+      "status": "CLOSED_IN_002",
+      "reason": "RPC now checks the absolute deadline before accepting a queued response or writing a request, rejects stale queued packets and concurrent requests, and waits for child close after TERM/KILL within its absolute deadline. Independent mock streams verify zero writes after expiry and one in-flight write; fresh pure process tests verify finish escalation.",
+      "evidence": [
+        "rpc-admission.json",
+        "process.log"
+      ]
+    },
+    {
+      "id": "M-M02",
+      "previousPriority": "P1",
+      "status": "ORIGINAL_HARD_TIMEOUT_AND_NORMAL_EXIT_PATH_CLOSED; NEW_LIFECYCLE_GAP_M-M04_OPEN",
+      "reason": "Detached owned PGID plus separate synchronous cleanup waits for the whole group, including a TERM-ignoring descendant, before ordinary parent settlement. Cleanup-unconfirmed failure retains reservation and lease. These changes address the original sole-main-PID hardkill defect. They do not survive simultaneous outer and primary exit; do not interpret this disposition as full lifecycle closure.",
+      "evidence": [
+        "process.log",
+        "owner-race.json"
+      ]
+    },
+    {
+      "id": "M-M03",
+      "previousPriority": "P2",
+      "status": "CLOSED_IN_002",
+      "reason": "The Python stdlib admission now verifies the original raw genesis/hash chain, exactly one live 6000-second reservation, canonical launch/contract/lease/parent and opened-node identities, interpreter SHA, full copied tree/realpaths and the registered external Torch critical-file fingerprint before importing Torch. Synthetic stdlib budget/tree negative tests pass. No real lease admission or Torch import was run by this review.",
+      "evidence": [
+        "python-guard.log",
+        "metadata.json"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "M-M04",
+      "priority": "P1",
+      "status": "OPEN",
+      "title": "Primary-owned unref polling guard disappears before enforcing the owned group lifetime",
+      "file": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-mature-execution-002/owned-window.mjs",
+      "line": 3,
+      "evidence": "guardOwnedWindow uses only an unref 50ms interval in the primary Node. In the independently run pure-process fixture the primary exits naturally 15ms after creating an unref owned child; the outer waits for the PID handshake then also exits after 15ms. Both owners are gone before the first interval tick, while the owned child remains alive. No surviving timer or parent finally can enforce the deadline.",
+      "observed": {
+        "purpose": "Pure owned-process lifecycle synthetic; no Python/Torch/model/budget.",
+        "controllerAndOuterExitBeforeFirst50msTick": true,
+        "unrefOwnedChildSurvives": true,
+        "pids": {
+          "controller": 38795,
+          "child": 38796
+        },
+        "fixtureDirectory": "/private/tmp/c3-method-owner-race-yzASEJ",
+        "newNN": 0,
+        "newDecide": 0,
+        "newTorch": 0,
+        "newPlayedMatchesOrRollouts": 0,
+        "realBudgetOrLeaseActions": 0,
+        "explicitProbeCleanup": {
+          "pgid": 38795,
+          "termSent": true,
+          "killSent": false,
+          "remaining": false,
+          "seconds": 0.012287624999999991
+        }
+      },
+      "impact": "An orphan auxiliary process may outlive both reviewed controllers and the declared deadline. Nominal reservation arithmetic and successful hardtimeout tests do not bound that lifecycle, so this exact package cannot execute.",
+      "minimalRequiredClosure": "A separately surviving owned-group watchdog or equivalent independent enforcement of primary death, outer death and monotonic deadline; maintain whole-group cleanup before parent settlement when the parent survives; account for the extra auxiliary task conservatively in the same cumulative budget. Verify the fast natural-exit race without NN or real budget writes."
+    }
+  ],
+  "P1": [
+    "M-M04"
+  ],
+  "P2": [],
+  "openP1Count": 1,
+  "openP2Count": 0,
+  "independentProbes": {
+    "nodeRuntimeTests": {
+      "pass": 8,
+      "fail": 0,
+      "log": "/private/tmp/c3-mature-execution-method-002/process.log",
+      "contents": "pure child-process RPC, hardtimeout, normal-exit and outer-death-while-primary-survives tests; the latter does not cover both owners exiting before the first tick"
+    },
+    "pythonStdlibGuardTests": {
+      "pass": 2,
+      "fail": 0,
+      "log": "/private/tmp/c3-mature-execution-method-002/python-guard.log",
+      "importsTorch": false,
+      "contents": "synthetic raw hash-chain budget and closed-tree rejection only"
+    },
+    "rpcMockBoundaryProbe": {
+      "onlyProcessLocalMockStreams": true,
+      "expiredQueuedReadyRejected": true,
+      "expiredStepWrites": 0,
+      "unsolicitedQueuedReplyBlocksNewWrite": true,
+      "concurrentSecondRequestBlocked": true,
+      "oneInFlightWriteCount": 1,
+      "newOSChildren": 0,
+      "newNN": 0,
+      "newTorch": 0,
+      "realBudgetOrLeaseActions": 0
+    },
+    "independentFastOwnerDeathNegativeProbe": {
+      "purpose": "Pure owned-process lifecycle synthetic; no Python/Torch/model/budget.",
+      "controllerAndOuterExitBeforeFirst50msTick": true,
+      "unrefOwnedChildSurvives": true,
+      "pids": {
+        "controller": 38795,
+        "child": 38796
+      },
+      "fixtureDirectory": "/private/tmp/c3-method-owner-race-yzASEJ",
+      "newNN": 0,
+      "newDecide": 0,
+      "newTorch": 0,
+      "newPlayedMatchesOrRollouts": 0,
+      "realBudgetOrLeaseActions": 0,
+      "explicitProbeCleanup": {
+        "pgid": 38795,
+        "termSent": true,
+        "killSent": false,
+        "remaining": false,
+        "seconds": 0.012287624999999991
+      }
+    },
+    "actual198FileTreeAndCanonicalFlagProbe": {
+      "actual198FileTreeClosedAndRealpathsVerified": true,
+      "ownedGroupFlagRequired": true,
+      "unapprovedOrdinal2Rejected": true,
+      "noRealLeaseOrBudgetCall": true
+    },
+    "rawArtifacts": [
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/metadata.json",
+        "sha256": "9dee8547f13016d4cc110332a35da9ad2ae497dbfa44470e2bea60768b9d212a",
+        "bytes": 1646
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/metadata.log",
+        "sha256": "9dee8547f13016d4cc110332a35da9ad2ae497dbfa44470e2bea60768b9d212a",
+        "bytes": 1646
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/metadata.py",
+        "sha256": "a3e832672de50e3ab019c62625745465d2602753c120a3d3f58df2a2cd440bae",
+        "bytes": 4352
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/owner-race.json",
+        "sha256": "3439f03e761e3df7ff5fb5e42c7f910d35e205f7521378e5b72cb31d660f4c85",
+        "bytes": 578
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/owner-race.log",
+        "sha256": "1a8ede59a05861027460562f821757d074dbe2934ca269ba691a1508da1ebdeb",
+        "bytes": 485
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/owner-race.mjs",
+        "sha256": "096ded7fc32d83002bbfbdfda099996ba6e7af039c9f89836efec297d75aefd5",
+        "bytes": 2276
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/process.log",
+        "sha256": "844083ad122588ea8f52eb500507e829a5c589570a6ca45e0355e248d41f48a2",
+        "bytes": 883
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/python-guard.log",
+        "sha256": "6f283ee6225d2cef4c0127d95456a6f954c45141c92b97dd89016cb1c630e8f4",
+        "bytes": 100
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/rpc-admission.json",
+        "sha256": "ce34896548b4adb017715ebb5cedaca565c1743edb0643182ccea6a364d2e617",
+        "bytes": 312
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/rpc-admission.log",
+        "sha256": "e50443b3c8e3da1876c98ff6d859b7b2dde0f41cb2dca1facb3ae7893b372425",
+        "bytes": 271
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/rpc-admission.mjs",
+        "sha256": "0ffd431d916723510020baa182f2f80db718331a67a51f9f182fb57bc93407b7",
+        "bytes": 2143
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/tree.json",
+        "sha256": "ba4a85e60894836d3a63663771389bafcaaf84c957d88e64bf6ca643ddb9f0c5",
+        "bytes": 165
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/tree.log",
+        "sha256": "4f126544d2fd2ad6896376d8148a7eb030910c471d8a11aaeb23d8bc0e3998c1",
+        "bytes": 148
+      },
+      {
+        "path": "/private/tmp/c3-mature-execution-method-002/tree.mjs",
+        "sha256": "1f93388a6d06c98085069e5e5e898f89035de722f20003564e5e1fdc5c54c870",
+        "bytes": 1335
+      }
+    ]
+  },
+  "scientificScopePreserved": {
+    "coreScienceSpecFieldsUnchanged": true,
+    "changedSpecKeys": [
+      "sourceFiles",
+      "teacherInputLock",
+      "at",
+      "installedTorchRuntime"
+    ],
+    "unchangedScientificSourceHashes": true,
+    "unchangedInputFamilies": 1537,
+    "unchangedExcludedFamilies": 5855,
+    "unchangedTeacherLabels": 4,
+    "unchangedAnchorRoots": 64,
+    "unchangedMatureUpdatesPerArm": 20,
+    "unchangedPolicyWorkers": 4,
+    "unchangedCpuLearnerThreads": 2,
+    "sameSourceAndLabelsAfterOnlyCopiedPathNormalization": true,
+    "sameSourceNNArchitectureLossQuotaAndRmsprop": true,
+    "detailsReused": "The 001 report retains the exact round-g plus whole-match-W target, same isolated U0 A/B, 2048 quota to 1024 half-sample gradients and discard, .01 anchors, B-only .1 mean softplus(.16-gap), all four labels once each step, one merged RMSprop step, per-label/update/weight hash provenance and 20 actual updates per arm requirements. None was relaxed or rerun here.",
+    "torchEquivalenceLimit": "Torch float32 training is the registered backend, not a claim of bitwise JS Number inference identity. External runtime critical fingerprint is pinned, not an assertion that all Torch dependencies were copied."
+  },
+  "nominalAccounting": {
+    "currentPackageReservationSeconds": 6000,
+    "currentPackageMaxChargedWorkers": 5,
+    "hardSeconds": 1080,
+    "engineeringReserveSeconds": 120,
+    "nominalHardAllowancePlusReserveSeconds": 5520,
+    "sameCumulativeBudgetNoReset": true,
+    "qualification": "This arithmetic does not repair M-M04; uncontrolled orphan lifetime invalidates actual enforcement. No real budget or lease was created, settled or modified in this review."
+  },
+  "limits": {
+    "newNNForward": 0,
+    "newPolicyDecide": 0,
+    "newPlayedMatchesOrRollouts": 0,
+    "newTrainingOrOptimizerUpdates": 0,
+    "newProductionTorchOrActualWeightsComputation": 0,
+    "newTorchImportThisRevision": 0,
+    "businessRepositoryEvidenceLedgerAndLeaseWrites": 0,
+    "temporaryPureChildProcessesCreatedAndCleaned": true,
+    "realOfficialPythonLaunchAdmissionExecuted": false,
+    "prior001SyntheticToyTorchOnly": "Reused report evidence; not repeated in002.",
+    "futureFormalOrSealedResultsOpened": false,
+    "notAnApprovalOf": [
+      "teacher accuracy",
+      "learned plan",
+      "stronger policy",
+      "production training continuity",
+      "C3 overall",
+      "main",
+      "formal evaluation",
+      "future004 package before its own review"
+    ]
+  },
+  "conclusion": "Original RPC deadline and pre-Torch budget/runtime issues are closed in this immutable package. The independently reproduced both-owner-death race remains a P1. CHANGES_REQUIRED; do not execute002."
+}

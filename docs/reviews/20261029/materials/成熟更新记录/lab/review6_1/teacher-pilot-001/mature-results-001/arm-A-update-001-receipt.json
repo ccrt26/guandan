@@ -1,0 +1,57 @@
+{
+  "kind": "stepped",
+  "arm": "A",
+  "update": 1,
+  "optimizerStepsThisRequest": 1,
+  "matureGradientSlots": {
+    "self": 512,
+    "frozen_opponent": 256,
+    "other_partner": 256
+  },
+  "anchorRoots": 64,
+  "anchorCandidates": 960,
+  "labelIds": [],
+  "teacherExposureCounts": {
+    "review6-pilot:C3-pilot-source-001:root-03": 0,
+    "review6-pilot:C3-pilot-source-001:root-05": 0,
+    "review6-pilot:C3-pilot-source-001:root-06": 0,
+    "review6-pilot:C3-pilot-source-001:root-20": 0
+  },
+  "losses": {
+    "team": 5.1213860511779785,
+    "anchor": 0,
+    "preference": 0,
+    "total": 5.1213860511779785
+  },
+  "teamGradientNorm": 10.785676956176758,
+  "weightedTeacherGradientNorm": 0,
+  "weightedTeacherToTeamGradientNormRatio": 0,
+  "teacherGapBefore": [],
+  "teacherGapAfter": [],
+  "weightsPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-001-weights.f32",
+  "weightsSHA256": "c53aab42ce0ac5a3e07408b367cee939130c8ca2565424aba8fcb5577fa4a36a",
+  "optimizerCheckpointPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-001-optimizer.pt",
+  "optimizerCheckpointSHA256": "0dee8d2e4152675d612eb511a7a074704e19b87c5c7fdd7f65a146d8df65d501",
+  "seconds": 0.09431370799999961,
+  "maxRSSBytes": 514572288,
+  "matureUpdateDeviceSeconds": 3.9771298749999997,
+  "teamData": {
+    "featuresPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-001-team.f32",
+    "featuresSHA256": "c68cb7b96c93feb3db4accfcc5388e8a49e8232abbfba99dbcf3086af854d9cc",
+    "metaPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-001-team-metadata.json",
+    "metaSHA256": "e6842f9d811d591c548c3553a015f399afe6c529b047cfec8e5cbeac3226ae83"
+  },
+  "matureConsumed": 2048,
+  "subsamplingDiscarded": 1024,
+  "sourceCursors": {
+    "self": 4,
+    "frozen_opponent": 4,
+    "other_partner": 4
+  },
+  "queueCounts": {
+    "self": 2799,
+    "frozen_opponent": 1571,
+    "other_partner": 266
+  },
+  "sourceWaveCount": 4
+}

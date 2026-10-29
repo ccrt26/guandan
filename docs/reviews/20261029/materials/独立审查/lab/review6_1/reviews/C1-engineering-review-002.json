@@ -1,0 +1,185 @@
+{
+  "reviewId": "C1-engineering-002",
+  "requestId": "C1-request-002",
+  "overallDecision": "BLOCK_C1_ACCEPTANCE_PENDING_P1_REPAIR",
+  "scope": "Independent read-only affected-scope review of immutable C1-002 sources, E01-E05 repairs, four-seat report identities, product-006 inputs/examples, browser evidence and product-only capability export. No C2-C6 acceptance.",
+  "requestSHA256": "07695216d442dea523f2abd1b4505db4136df86fe8c137228cd657d3fd78e6fa",
+  "sourceManifestSHA256": "9bdc9a176d40a5fcbe8e12db50eb82abacc30bf4e6c045eed90c37763f0625ba",
+  "diffSHA256": "89bdce13eb60f5a6867d1b0ebca7830283c3c4017767e56063f85c400ad07bd5",
+  "hashVerification": {
+    "requestArtifacts": "All matched.",
+    "sourceFiles": "All 35 actual source files matched immutable copies and the source manifest.",
+    "browserFiles": "All declared browser source files and 45 evidence files matched.",
+    "playingPolicy": "All 32 preservation-manifest files independently matched the external pre-C0 backup.",
+    "productInputManifestSHA256": "205a10ef07a1507428c95606aff34ccee572e371ae3c2b4f17bb83c9c9220b73",
+    "productManifestFilesVerified": 68
+  },
+  "closureDecisions": [
+    {
+      "id": "C1-E01",
+      "previousSeverity": "P1",
+      "decision": "CLOSED",
+      "evidence": "Independently replayed the four original unsupported text variants and invented summary identities across all four viewers: 20/20 rejected. Four current deterministic explanations and cache round-trips passed. Twelve applicable current-example rule-claim explanations also passed. The new gate requires complete attributed program sentences or restricted neutral connective sentences. Raw browser captures show all ten local SSE negative classes falling back without accepted output."
+    },
+    {
+      "id": "C1-E02",
+      "previousSeverity": "P1",
+      "decision": "CLOSED",
+      "evidence": "Duplicate-role laundering, wrong decisionId and invented rule applicability prose now fail direct verifyProductCard calls. The actual CLI rejects a temporary copied dataset with mutated expected assertions, exit 2, product input changed. Independently rechecked unchanged product-006: 240 cards and 1440 assertions passed. Exact role reconstruction and externally referenced input-manifest hashing now prevent the original bypass."
+    },
+    {
+      "id": "C1-E03",
+      "previousSeverity": "P1",
+      "decision": "CLOSED_FOR_ORIGINAL_VIEWER_SCOPE_DEFECT",
+      "evidence": "The actual counterfactual function rejects the original wrong-seat call. Correctly scoped viewer-1 move119 reports gActual=-1 and gAlternative=-2, with the correct team outcome. ReviewPage passes rec, keys results by scoped record identity and rejects stale progress/completion. Report acceptance is scoped synchronously to current evidence. Supplied raw browser captures show completed counterfactual state cleared after changing viewer and unchanged current output after a delayed old stream.",
+      "qualification": "A separate actual-action declaration defect was reproduced in the same counterfactual path and is recorded as new P1 C1-E06."
+    },
+    {
+      "id": "C1-E04",
+      "previousSeverity": "P1",
+      "decision": "CLOSED",
+      "evidence": "Independent four-viewer evidence/prompt calls now label each selected seat as 你 and stageTeam 0 as 对方 for viewers 1/3, 我方 for viewers 0/2. The actual SSE request log contains correct prompts for all four viewers. The viewer-1 report capture displays 台上=对方."
+    },
+    {
+      "id": "C1-METHOD-P1-001",
+      "previousSeverity": "P1",
+      "decision": "CLOSED_FOR_RELATIVE_IDENTITY_DEFECT",
+      "evidence": "Same actual evidence, report and prompt identity checks as C1-E04; the original seat-0-relative facts no longer reproduce."
+    },
+    {
+      "id": "C1-E05",
+      "previousSeverity": "P2",
+      "decision": "CLOSED_FOR_PRODUCT_BRANCH",
+      "evidence": "The actual thin CLI successfully exports into a new temporary directory. Exported measurement/display bytes equal the stored product-006 inputs. Repeating the same output exits 2 and refuses overwrite. The exporter imports filesystem/artifact-validation helpers, with no engine, model or measurement module, and records newEvaluations=0. Research branches remain outside this acceptance."
+    }
+  ],
+  "findings": [
+    {
+      "id": "C1-E06",
+      "severity": "P1",
+      "path": "/Users/ccrt/game/guandan/packages/review/src/counterfactual.ts",
+      "startLine": 80,
+      "endLine": 83,
+      "problem": "The counterfactual actual branch reconstructs the recorded cards with bestResponse instead of preserving the recorded declaration. With wildcards, it can silently change the actual combination and then present the resulting simulation as the user's actual play. DecisionReview correctly preserves the declaration, so the two real report paths disagree about actualActionId.",
+      "reproduction": {
+        "record": "/Users/ccrt/game/guandan/lab/review6_1/capability/product-006/records/rule_context-2.json",
+        "recordSHA256": "90b33d93ab0052f16a234bfbe33a2fd17ffc8083b259c7569c07c0b9e0cbccea",
+        "steps": [
+          "Load record and scope it with humanSeat=2.",
+          "Compute analyzeGame(scopedRecord); select its moveNo 4 analysis.",
+          "Compute buildDecisionReviews(scopedRecord,{moves:[4],maxPoints:1})[0].",
+          "Call runCounterfactual(scopedRecord,[move4Analysis],{maxDecisions:1})."
+        ],
+        "normalUIReachability": "Move 4 is divergent and is among the actual top-four roots [108,4,44,60].",
+        "recordedAndDecisionReviewActualActionId": "flush:8:5:5#C5,C6,C7,C8,H2",
+        "counterfactualActualActionId": "flush:9:5:5#C5,C6,C7,C8,H2",
+        "actualResult": "The counterfactual changes the wildcard declaration from the recorded 8-high straight flush to a 9-high straight flush and reports that changed branch as actualText/actualOutcome, with gActual=3.",
+        "secondReproduction": {
+          "record": "/Users/ccrt/game/guandan/lab/review6_1/capability/product-006/records/plan_invalidated-5.json",
+          "recordSHA256": "2de22309385db2e342a1f1c4b09be66880de671cb5fd64d799703323de66ba86",
+          "moveNo": 4,
+          "viewerSeat": 3,
+          "recordedActualActionId": "flush:13:5:5#C10,C11,C12,C13,H2",
+          "counterfactualActualActionId": "flush:14:5:5#C10,C11,C12,C13,H2"
+        },
+        "exitCode": 0
+      },
+      "impact": "A normal current C1 record produces an incorrect actual-action identity and a simulation of a different declared action. Existing 240-card facts remain correct, but they do not cover this separate counterfactual exit.",
+      "fixNeeded": "Resolve actual actions through the shared declaration-preserving strict replay path. Refuse or explicitly degrade an unverifiable declaration rather than reselecting it. Verify counterfactual.actualActionId equals the corresponding DecisionReview actual identity, including wildcard declaration, and retain a regression using the current rule_context-2 move4 record."
+    }
+  ],
+  "productAndLineage": {
+    "dataset": "/Users/ccrt/game/guandan/lab/review6_1/capability/product-006",
+    "cardsRechecked": 240,
+    "assertionsRechecked": 1440,
+    "developmentExamples": 13,
+    "exampleRecordHashesMatched": 13,
+    "examplesIndependentlyRecomputed": "13/13 saved evidence objects, baseline actions and actual actions matched recomputation using current product-006 records, frozen weights and declared encoder settings.",
+    "baselineWeightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+    "candidateActions": "All null.",
+    "scope": "Finite development facts and old-policy greedy preferences; no supported strategic labels, sealed skills or complete-match improvement.",
+    "originalIncident": "Unchanged screenshot_only receipt retained; constructed regressions and hub-ui-1 remain separately attributed."
+  },
+  "verification": [
+    {
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "classification": "Independently rerun."
+    },
+    {
+      "command": "node --test lab/review6/runtime.test.mjs",
+      "exitCode": 0,
+      "result": "16/16 passed; temporary fixture ledgers."
+    },
+    {
+      "command": "node lab/review6/run.mjs verify-product --config lab/review6/cycle.draft.json --scope facts-review-ui",
+      "exitCode": 0,
+      "result": "Current anchored product-006 verified: 240 cards / 1440 assertions."
+    },
+    {
+      "command": "node lab/review6/run.mjs capability-export --config lab/review6/cycle.draft.json --scope product --out-dir /private/tmp/c1-recheck-gSuVzb/export",
+      "exitCode": 0,
+      "result": "13 stored examples exported; output bytes match anchored input measurements."
+    },
+    {
+      "command": "Repeat capability-export with the same output directory",
+      "exitCode": 2,
+      "result": "output exists; refuse overwrite"
+    },
+    {
+      "command": "Actual product-cli.ts against a temporary copied dataset with duplicate expected roles",
+      "exitCode": 2,
+      "result": "product input changed: expected-assertions.lock.json"
+    },
+    {
+      "command": "Independent TSX probes of prior failures, positive explanations, current example recomputation and counterfactual declaration identity",
+      "exitCode": 0,
+      "result": "E01-E05 original failures repaired; new E06 reproduced."
+    },
+    {
+      "artifact": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c1-review-full-suite-004.log",
+      "sha256": "c0a2b40bd909c1efe9ed10bf173fb7c70f0f458b37360f2c410d1b22fc54d18c",
+      "observedTail": "43 test files passed; 393 tests passed."
+    },
+    {
+      "artifact": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c1-review-build-003.log",
+      "sha256": "91a9ec14be486834e2ab16040116209200d7a3e95c867809538992c904dcb408",
+      "observedTail": "100 modules transformed; production build completed."
+    }
+  ],
+  "reviewedFileHashes": {
+    "/Users/ccrt/game/guandan/lab/review6/run.mjs": "2b42dd1d2648cd5a843b0f5d26e69ce49f3ca0c25397da05b1e4b66cc684f415",
+    "/Users/ccrt/game/guandan/lab/review6/product.ts": "e8d3d101a7c0fe592cbd651c04b74b1fd49c5a184c3bbba3aa9f290b505c5782",
+    "/Users/ccrt/game/guandan/lab/review6/product-cli.ts": "c3ea3f5c74caea9f6fc4e715647e055d0b7ee9bc6eaecf12fb789127f4dc753b",
+    "/Users/ccrt/game/guandan/lab/review6/product-export.ts": "8bc4f24e99cffca9935c860423892e0bc8abbff61f4b4e501fdba0ad32daeed5",
+    "/Users/ccrt/game/guandan/lab/review6/product-artifacts.ts": "1c87788643c9277cff858daca1a23f4237fd6b33ee5e0f492f90ddab47c4652b",
+    "/Users/ccrt/game/guandan/lab/review6/product-examples.ts": "cd04eccbc186d38c93b00bc2354e3f9495a4d7375dddcd6e034e7344b376994e",
+    "/Users/ccrt/game/guandan/lab/review6/browser-fixture.ts": "eb3a1050bddd5d8b0d1e01af54150278ad090af1f2c09a57861609418927b53a",
+    "/Users/ccrt/game/guandan/lab/review6/cycle.draft.json": "7f56c29cf309ac73b7dd40b2438c692dc43b760725eb021c2f6e0f76b7dfbf06",
+    "/Users/ccrt/game/guandan/packages/review/src/decisionReview.ts": "e28e5c78e7a46f3832734819607b46d3037a72a5a84b4166300d1dcf896861da",
+    "/Users/ccrt/game/guandan/packages/review/src/coachJson.ts": "fce6574e859afd86093f22bf5957b973154a47cd7e2a5df7ea1114fd47bbbe10",
+    "/Users/ccrt/game/guandan/packages/review/src/counterfactual.ts": "9e59b92d35be83ad777c41b5979cd1fa1a69298df0ec384df1703af4424b88b1",
+    "/Users/ccrt/game/guandan/packages/web/src/ui/ReviewPage.tsx": "494e5e09f0c30ff16fa647567bc8460eb44389829a8dfba053e4ff2246ac4f7f",
+    "/Users/ccrt/game/guandan/packages/web/src/ui/DecisionFactsPanel.tsx": "64ff7f6b6d6061a4b5d639f88fd0ec261931605af73b76126c23bc7535b9abfa",
+    "/Users/ccrt/game/guandan/packages/web/src/ui/VerifiedReportTab.tsx": "9a0fea2a90f9dac0bf7f550f648a057217ff1cc838a11e7b08d59cb47c232c0c",
+    "/Users/ccrt/game/guandan/packages/review/tests/coach_surfaces.test.ts": "d69e6dc09825b9c4949c02adf1e864b2e6c4273fdd097219126a7b141061c5cf",
+    "/Users/ccrt/game/guandan/packages/review/tests/four_seat_contract.test.ts": "efd27196eeeaaf10ed4eb3ad491b6c081e23f9a6f351a9bae2a4e567177a5f91",
+    "/Users/ccrt/game/guandan/lab/tests/review6_product.test.ts": "f9bf22d3dcb98bad3bb337addb28c2f3993658ba47945b1761b7c3bacbde6fc0",
+    "/Users/ccrt/game/guandan/lab/tests/review6_product_cli.test.ts": "2a72190e4903aeca2d9abdb060a014309990650273fe2df68c25c52b0074d8df",
+    "/Users/ccrt/game/guandan/packages/web/public/review6-product-status-002.json": "cebad0013dde0bb5a848e1ed7a7e158ade5ea668ed6e50e299f8857404bad6cb"
+  },
+  "unchangedFileHashReference": "The remaining 16 source hashes were verified against the anchored 35-file C1-002 manifest; unaffected initial findings were not reopened.",
+  "blockedReasons": [
+    "New P1 C1-E06 remains open in the actual counterfactual output path."
+  ],
+  "limitations": [
+    "No repository source, evidence, protocol or real ledger files were modified.",
+    "Independent copied-data and export probes used /private/tmp only.",
+    "No sealed/formal evaluation, training or external model calls were performed.",
+    "Browser findings use inspected raw captures, request logs, screenshot and actual source. This reviewer did not run a new interactive browser session.",
+    "The local SSE fixtures verify application exits, not external-model capability.",
+    "Prose acceptance is intentionally restricted; these positive probes demonstrate usable supported outputs, not unrestricted natural-language validation.",
+    "This decision applies to the immutable C1-002 version. E06 repairs require a new affected-scope identity and recheck.",
+    "This is task-independent review, not different-model cross-validation or proof that no other defects exist."
+  ]
+}

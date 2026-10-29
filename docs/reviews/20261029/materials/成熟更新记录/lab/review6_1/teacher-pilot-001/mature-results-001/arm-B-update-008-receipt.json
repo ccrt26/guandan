@@ -1,0 +1,72 @@
+{
+  "kind": "stepped",
+  "arm": "B",
+  "update": 8,
+  "optimizerStepsThisRequest": 1,
+  "matureGradientSlots": {
+    "self": 512,
+    "frozen_opponent": 256,
+    "other_partner": 256
+  },
+  "anchorRoots": 64,
+  "anchorCandidates": 960,
+  "labelIds": [
+    "review6-pilot:C3-pilot-source-001:root-05",
+    "review6-pilot:C3-pilot-source-001:root-03",
+    "review6-pilot:C3-pilot-source-001:root-06",
+    "review6-pilot:C3-pilot-source-001:root-20"
+  ],
+  "teacherExposureCounts": {
+    "review6-pilot:C3-pilot-source-001:root-03": 8,
+    "review6-pilot:C3-pilot-source-001:root-05": 8,
+    "review6-pilot:C3-pilot-source-001:root-06": 8,
+    "review6-pilot:C3-pilot-source-001:root-20": 8
+  },
+  "losses": {
+    "team": 4.0616888999938965,
+    "anchor": 0.5620806217193604,
+    "preference": 0.4170827269554138,
+    "total": 4.109018325805664
+  },
+  "teamGradientNorm": 4.404360771179199,
+  "weightedTeacherGradientNorm": 0.09738171845674515,
+  "weightedTeacherToTeamGradientNormRatio": 0.022110295572057032,
+  "teacherGapBefore": [
+    0.4965951442718506,
+    0.7669400572776794,
+    2.104001522064209,
+    0.445430725812912
+  ],
+  "teacherGapAfter": [
+    0.5914292335510254,
+    0.7084334492683411,
+    1.9456799030303955,
+    0.47416049242019653
+  ],
+  "weightsPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-008-weights.f32",
+  "weightsSHA256": "c761ef9ae92b18fc88fe9c6d5d211466e06a5ccc9e0b508d0a6afe748a08e622",
+  "optimizerCheckpointPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-008-optimizer.pt",
+  "optimizerCheckpointSHA256": "d4ed6cb9a8e9d9796ff748548b024fea55ef5f4424dbb3b44a055c2b01d65ac3",
+  "seconds": 0.02684291599999966,
+  "maxRSSBytes": 514572288,
+  "matureUpdateDeviceSeconds": 4.115498333999996,
+  "teamData": {
+    "featuresPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-008-team.f32",
+    "featuresSHA256": "364b9ae9e39469ed60099ee7dbfa7f2cda6c5545fda459661b3bbbea38d8ad9e",
+    "metaPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-B-update-008-team-metadata.json",
+    "metaSHA256": "469615563960e234bb6455a5d2030433d7973ea0c128a66fc4418d9d6b997c2c"
+  },
+  "matureConsumed": 2048,
+  "subsamplingDiscarded": 1024,
+  "sourceCursors": {
+    "self": 12,
+    "frozen_opponent": 12,
+    "other_partner": 20
+  },
+  "queueCounts": {
+    "self": 2862,
+    "frozen_opponent": 2083,
+    "other_partner": 616
+  },
+  "sourceWaveCount": 35
+}

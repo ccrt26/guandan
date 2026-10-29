@@ -1,0 +1,6003 @@
+{
+  "slot": 3,
+  "rootId": "C3-pilot-source-001:root-03",
+  "sourceFamilyId": "first-deal-family:176f7f6cbc4d3cd46cb1d8c12ea553d6f4cffe19e13fb6bf07b4a65f9818b3f3",
+  "sourceCompletion": {
+    "complete": true,
+    "incompleteReason": null,
+    "games": 7,
+    "decisions": 674,
+    "traceSHA256": "d418da40f257a2a5d4c595182a36c21f98715fdd4130a9409a086f4bf52e6c5f",
+    "policyIds": [
+      "review6-clean-U0-399-action64-candv3",
+      "review6-clean-U0-399-action64-candv3",
+      "review6-clean-U0-399-action64-candv3",
+      "review6-clean-U0-399-action64-candv3"
+    ],
+    "roundFamilies": [
+      {
+        "gameNo": 1,
+        "familyId": "first-deal-family:176f7f6cbc4d3cd46cb1d8c12ea553d6f4cffe19e13fb6bf07b4a65f9818b3f3"
+      },
+      {
+        "gameNo": 2,
+        "familyId": "first-deal-family:ca02599ca48e1d3fe2e26022cf279e707c1a8a6224167f7a8c025d91ed62291e"
+      },
+      {
+        "gameNo": 3,
+        "familyId": "first-deal-family:a5933bb11c48ac1529dd0b89b645cdf9ae26a81160acf421a5ff8d6f51804324"
+      },
+      {
+        "gameNo": 4,
+        "familyId": "first-deal-family:1d0d4effa38c3802990682ae4e6a1962804939dc2c48885f1748f0079881d384"
+      },
+      {
+        "gameNo": 5,
+        "familyId": "first-deal-family:accfc2b466f780bc2994e3790cf65bf31a13e37a8e5f28059432d27573d1b0e7"
+      },
+      {
+        "gameNo": 6,
+        "familyId": "first-deal-family:9487deb1dd0d3510f01f78e41023028b58d73805f97c97946dc4dce5c6c14bf3"
+      },
+      {
+        "gameNo": 7,
+        "familyId": "first-deal-family:bc0bdc57b11e1022ecdc4b1874787f9ab0dedd049e004e52516df40051f8c98b"
+      }
+    ]
+  },
+  "eligiblePositionTrials": 1,
+  "rejections": [],
+  "root": {
+    "schemaVersion": "r6-causal-teacher-root-v1",
+    "rootId": "C3-pilot-source-001:root-03",
+    "sourceMatchId": "C3-pilot-source-001:match-03",
+    "sourceFamilyId": "first-deal-family:176f7f6cbc4d3cd46cb1d8c12ea553d6f4cffe19e13fb6bf07b4a65f9818b3f3",
+    "sourceRootRoundFamilyId": "first-deal-family:176f7f6cbc4d3cd46cb1d8c12ea553d6f4cffe19e13fb6bf07b4a65f9818b3f3",
+    "sourceKind": "student_trajectory",
+    "actingSeat": 2,
+    "sourceState": {
+      "match": {
+        "opts": {
+          "levelMode": "stage",
+          "passA": "head3",
+          "pairSeqMin": 3,
+          "pairSeqMax": 3,
+          "trioSeqMin": 2,
+          "trioSeqMax": 2,
+          "flushLen": 5,
+          "straightLen": 5
+        },
+        "levels": [
+          2,
+          2
+        ],
+        "gameNo": 1,
+        "winner": null,
+        "rngState": 199542037763,
+        "lastHead": null,
+        "lastResult": null
+      },
+      "ctx": {
+        "ranks": [
+          2
+        ],
+        "levels": [
+          2,
+          2
+        ]
+      },
+      "levelsBefore": [
+        2,
+        2
+      ],
+      "stageTeam": 0,
+      "hands": [
+        [
+          {
+            "id": 39,
+            "suit": "C",
+            "rank": 2
+          },
+          {
+            "id": 67,
+            "suit": "H",
+            "rank": 2
+          },
+          {
+            "id": 0,
+            "suit": "S",
+            "rank": 2
+          },
+          {
+            "id": 94,
+            "suit": "C",
+            "rank": 3
+          },
+          {
+            "id": 1,
+            "suit": "S",
+            "rank": 3
+          },
+          {
+            "id": 28,
+            "suit": "D",
+            "rank": 4
+          },
+          {
+            "id": 42,
+            "suit": "C",
+            "rank": 5
+          },
+          {
+            "id": 72,
+            "suit": "H",
+            "rank": 7
+          },
+          {
+            "id": 46,
+            "suit": "C",
+            "rank": 9
+          },
+          {
+            "id": 87,
+            "suit": "D",
+            "rank": 9
+          },
+          {
+            "id": 7,
+            "suit": "S",
+            "rank": 9
+          },
+          {
+            "id": 47,
+            "suit": "C",
+            "rank": 10
+          },
+          {
+            "id": 101,
+            "suit": "C",
+            "rank": 10
+          },
+          {
+            "id": 34,
+            "suit": "D",
+            "rank": 10
+          },
+          {
+            "id": 48,
+            "suit": "C",
+            "rank": 11
+          },
+          {
+            "id": 22,
+            "suit": "H",
+            "rank": 11
+          },
+          {
+            "id": 9,
+            "suit": "S",
+            "rank": 11
+          },
+          {
+            "id": 90,
+            "suit": "D",
+            "rank": 12
+          },
+          {
+            "id": 65,
+            "suit": "S",
+            "rank": 13
+          },
+          {
+            "id": 106,
+            "suit": "J",
+            "rank": 16
+          },
+          {
+            "id": 107,
+            "suit": "J",
+            "rank": 17
+          }
+        ],
+        [
+          {
+            "id": 93,
+            "suit": "C",
+            "rank": 2
+          },
+          {
+            "id": 13,
+            "suit": "H",
+            "rank": 2
+          },
+          {
+            "id": 40,
+            "suit": "C",
+            "rank": 3
+          },
+          {
+            "id": 27,
+            "suit": "D",
+            "rank": 3
+          },
+          {
+            "id": 68,
+            "suit": "H",
+            "rank": 3
+          },
+          {
+            "id": 69,
+            "suit": "H",
+            "rank": 4
+          },
+          {
+            "id": 96,
+            "suit": "C",
+            "rank": 5
+          },
+          {
+            "id": 29,
+            "suit": "D",
+            "rank": 5
+          },
+          {
+            "id": 57,
+            "suit": "S",
+            "rank": 5
+          },
+          {
+            "id": 43,
+            "suit": "C",
+            "rank": 6
+          },
+          {
+            "id": 84,
+            "suit": "D",
+            "rank": 6
+          },
+          {
+            "id": 98,
+            "suit": "C",
+            "rank": 7
+          },
+          {
+            "id": 5,
+            "suit": "S",
+            "rank": 7
+          },
+          {
+            "id": 32,
+            "suit": "D",
+            "rank": 8
+          },
+          {
+            "id": 61,
+            "suit": "S",
+            "rank": 9
+          },
+          {
+            "id": 88,
+            "suit": "D",
+            "rank": 10
+          },
+          {
+            "id": 21,
+            "suit": "H",
+            "rank": 10
+          },
+          {
+            "id": 102,
+            "suit": "C",
+            "rank": 11
+          },
+          {
+            "id": 35,
+            "suit": "D",
+            "rank": 11
+          },
+          {
+            "id": 23,
+            "suit": "H",
+            "rank": 12
+          },
+          {
+            "id": 77,
+            "suit": "H",
+            "rank": 12
+          },
+          {
+            "id": 10,
+            "suit": "S",
+            "rank": 12
+          },
+          {
+            "id": 104,
+            "suit": "C",
+            "rank": 13
+          },
+          {
+            "id": 37,
+            "suit": "D",
+            "rank": 13
+          },
+          {
+            "id": 11,
+            "suit": "S",
+            "rank": 13
+          },
+          {
+            "id": 105,
+            "suit": "C",
+            "rank": 14
+          },
+          {
+            "id": 38,
+            "suit": "D",
+            "rank": 14
+          }
+        ],
+        [
+          {
+            "id": 26,
+            "suit": "D",
+            "rank": 2
+          },
+          {
+            "id": 80,
+            "suit": "D",
+            "rank": 2
+          },
+          {
+            "id": 54,
+            "suit": "S",
+            "rank": 2
+          },
+          {
+            "id": 81,
+            "suit": "D",
+            "rank": 3
+          },
+          {
+            "id": 14,
+            "suit": "H",
+            "rank": 3
+          },
+          {
+            "id": 41,
+            "suit": "C",
+            "rank": 4
+          },
+          {
+            "id": 15,
+            "suit": "H",
+            "rank": 4
+          },
+          {
+            "id": 70,
+            "suit": "H",
+            "rank": 5
+          },
+          {
+            "id": 16,
+            "suit": "H",
+            "rank": 5
+          },
+          {
+            "id": 58,
+            "suit": "S",
+            "rank": 6
+          },
+          {
+            "id": 86,
+            "suit": "D",
+            "rank": 8
+          },
+          {
+            "id": 33,
+            "suit": "D",
+            "rank": 9
+          },
+          {
+            "id": 89,
+            "suit": "D",
+            "rank": 11
+          },
+          {
+            "id": 76,
+            "suit": "H",
+            "rank": 11
+          },
+          {
+            "id": 63,
+            "suit": "S",
+            "rank": 11
+          },
+          {
+            "id": 36,
+            "suit": "D",
+            "rank": 12
+          },
+          {
+            "id": 64,
+            "suit": "S",
+            "rank": 12
+          },
+          {
+            "id": 50,
+            "suit": "C",
+            "rank": 13
+          },
+          {
+            "id": 24,
+            "suit": "H",
+            "rank": 13
+          },
+          {
+            "id": 78,
+            "suit": "H",
+            "rank": 13
+          },
+          {
+            "id": 92,
+            "suit": "D",
+            "rank": 14
+          },
+          {
+            "id": 25,
+            "suit": "H",
+            "rank": 14
+          },
+          {
+            "id": 79,
+            "suit": "H",
+            "rank": 14
+          },
+          {
+            "id": 12,
+            "suit": "S",
+            "rank": 14
+          },
+          {
+            "id": 66,
+            "suit": "S",
+            "rank": 14
+          },
+          {
+            "id": 52,
+            "suit": "J",
+            "rank": 16
+          },
+          {
+            "id": 53,
+            "suit": "J",
+            "rank": 17
+          }
+        ],
+        [
+          {
+            "id": 55,
+            "suit": "S",
+            "rank": 3
+          },
+          {
+            "id": 95,
+            "suit": "C",
+            "rank": 4
+          },
+          {
+            "id": 82,
+            "suit": "D",
+            "rank": 4
+          },
+          {
+            "id": 30,
+            "suit": "D",
+            "rank": 6
+          },
+          {
+            "id": 85,
+            "suit": "D",
+            "rank": 7
+          },
+          {
+            "id": 31,
+            "suit": "D",
+            "rank": 7
+          },
+          {
+            "id": 59,
+            "suit": "S",
+            "rank": 7
+          },
+          {
+            "id": 99,
+            "suit": "C",
+            "rank": 8
+          },
+          {
+            "id": 45,
+            "suit": "C",
+            "rank": 8
+          },
+          {
+            "id": 73,
+            "suit": "H",
+            "rank": 8
+          },
+          {
+            "id": 6,
+            "suit": "S",
+            "rank": 8
+          },
+          {
+            "id": 100,
+            "suit": "C",
+            "rank": 9
+          },
+          {
+            "id": 20,
+            "suit": "H",
+            "rank": 9
+          },
+          {
+            "id": 74,
+            "suit": "H",
+            "rank": 9
+          },
+          {
+            "id": 75,
+            "suit": "H",
+            "rank": 10
+          },
+          {
+            "id": 8,
+            "suit": "S",
+            "rank": 10
+          },
+          {
+            "id": 62,
+            "suit": "S",
+            "rank": 10
+          },
+          {
+            "id": 49,
+            "suit": "C",
+            "rank": 12
+          },
+          {
+            "id": 103,
+            "suit": "C",
+            "rank": 12
+          },
+          {
+            "id": 91,
+            "suit": "D",
+            "rank": 13
+          },
+          {
+            "id": 51,
+            "suit": "C",
+            "rank": 14
+          }
+        ]
+      ],
+      "turn": 2,
+      "leader": 3,
+      "lastCombo": {
+        "kind": "pair_seq",
+        "cards": [
+          {
+            "id": 97,
+            "suit": "C",
+            "rank": 6
+          },
+          {
+            "id": 4,
+            "suit": "S",
+            "rank": 6
+          },
+          {
+            "id": 44,
+            "suit": "C",
+            "rank": 7
+          },
+          {
+            "id": 18,
+            "suit": "H",
+            "rank": 7
+          },
+          {
+            "id": 19,
+            "suit": "H",
+            "rank": 8
+          },
+          {
+            "id": 60,
+            "suit": "S",
+            "rank": 8
+          }
+        ],
+        "size": 6,
+        "keyRank": 8,
+        "length": 3,
+        "pairRanks": [],
+        "mainRank": 8,
+        "wildAs": []
+      },
+      "lastPlayer": 0,
+      "passCount": 1,
+      "trickPlays": [
+        {
+          "player": 3,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 2,
+                "suit": "S",
+                "rank": 4
+              },
+              {
+                "id": 56,
+                "suit": "S",
+                "rank": 4
+              },
+              {
+                "id": 83,
+                "suit": "D",
+                "rank": 5
+              },
+              {
+                "id": 3,
+                "suit": "S",
+                "rank": 5
+              },
+              {
+                "id": 17,
+                "suit": "H",
+                "rank": 6
+              },
+              {
+                "id": 71,
+                "suit": "H",
+                "rank": 6
+              }
+            ],
+            "size": 6,
+            "keyRank": 6,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 6,
+            "wildAs": []
+          }
+        },
+        {
+          "player": 0,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 97,
+                "suit": "C",
+                "rank": 6
+              },
+              {
+                "id": 4,
+                "suit": "S",
+                "rank": 6
+              },
+              {
+                "id": 44,
+                "suit": "C",
+                "rank": 7
+              },
+              {
+                "id": 18,
+                "suit": "H",
+                "rank": 7
+              },
+              {
+                "id": 19,
+                "suit": "H",
+                "rank": 8
+              },
+              {
+                "id": 60,
+                "suit": "S",
+                "rank": 8
+              }
+            ],
+            "size": 6,
+            "keyRank": 8,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 8,
+            "wildAs": []
+          }
+        },
+        {
+          "player": 1,
+          "combo": null
+        }
+      ],
+      "finished": [],
+      "over": false,
+      "result": null,
+      "moveNo": 3,
+      "tribute": null,
+      "pendingReturns": []
+    },
+    "sourceHistory": [
+      {
+        "events": [
+          {
+            "type": "play",
+            "player": 3,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 2,
+                  "suit": "S",
+                  "rank": 4
+                },
+                {
+                  "id": 56,
+                  "suit": "S",
+                  "rank": 4
+                },
+                {
+                  "id": 83,
+                  "suit": "D",
+                  "rank": 5
+                },
+                {
+                  "id": 3,
+                  "suit": "S",
+                  "rank": 5
+                },
+                {
+                  "id": 17,
+                  "suit": "H",
+                  "rank": 6
+                },
+                {
+                  "id": 71,
+                  "suit": "H",
+                  "rank": 6
+                }
+              ],
+              "size": 6,
+              "keyRank": 6,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 6,
+              "wildAs": []
+            }
+          }
+        ],
+        "priorTarget": null
+      },
+      {
+        "events": [
+          {
+            "type": "play",
+            "player": 0,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 97,
+                  "suit": "C",
+                  "rank": 6
+                },
+                {
+                  "id": 4,
+                  "suit": "S",
+                  "rank": 6
+                },
+                {
+                  "id": 44,
+                  "suit": "C",
+                  "rank": 7
+                },
+                {
+                  "id": 18,
+                  "suit": "H",
+                  "rank": 7
+                },
+                {
+                  "id": 19,
+                  "suit": "H",
+                  "rank": 8
+                },
+                {
+                  "id": 60,
+                  "suit": "S",
+                  "rank": 8
+                }
+              ],
+              "size": 6,
+              "keyRank": 8,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 8,
+              "wildAs": []
+            }
+          }
+        ],
+        "priorTarget": {
+          "kind": "pair_seq",
+          "cards": [
+            {
+              "id": 2,
+              "suit": "S",
+              "rank": 4
+            },
+            {
+              "id": 56,
+              "suit": "S",
+              "rank": 4
+            },
+            {
+              "id": 83,
+              "suit": "D",
+              "rank": 5
+            },
+            {
+              "id": 3,
+              "suit": "S",
+              "rank": 5
+            },
+            {
+              "id": 17,
+              "suit": "H",
+              "rank": 6
+            },
+            {
+              "id": 71,
+              "suit": "H",
+              "rank": 6
+            }
+          ],
+          "size": 6,
+          "keyRank": 6,
+          "length": 3,
+          "pairRanks": [],
+          "mainRank": 6,
+          "wildAs": []
+        }
+      },
+      {
+        "events": [
+          {
+            "type": "pass",
+            "player": 1
+          }
+        ],
+        "priorTarget": {
+          "kind": "pair_seq",
+          "cards": [
+            {
+              "id": 97,
+              "suit": "C",
+              "rank": 6
+            },
+            {
+              "id": 4,
+              "suit": "S",
+              "rank": 6
+            },
+            {
+              "id": 44,
+              "suit": "C",
+              "rank": 7
+            },
+            {
+              "id": 18,
+              "suit": "H",
+              "rank": 7
+            },
+            {
+              "id": 19,
+              "suit": "H",
+              "rank": 8
+            },
+            {
+              "id": 60,
+              "suit": "S",
+              "rank": 8
+            }
+          ],
+          "size": 6,
+          "keyRank": 8,
+          "length": 3,
+          "pairRanks": [],
+          "mainRank": 8,
+          "wildAs": []
+        }
+      }
+    ],
+    "observedBefore": {
+      "schemaVersion": "r6-visible-root-v1",
+      "actor": 2,
+      "ownCards": [
+        {
+          "id": 26,
+          "suit": "D",
+          "rank": 2
+        },
+        {
+          "id": 80,
+          "suit": "D",
+          "rank": 2
+        },
+        {
+          "id": 54,
+          "suit": "S",
+          "rank": 2
+        },
+        {
+          "id": 81,
+          "suit": "D",
+          "rank": 3
+        },
+        {
+          "id": 14,
+          "suit": "H",
+          "rank": 3
+        },
+        {
+          "id": 41,
+          "suit": "C",
+          "rank": 4
+        },
+        {
+          "id": 15,
+          "suit": "H",
+          "rank": 4
+        },
+        {
+          "id": 70,
+          "suit": "H",
+          "rank": 5
+        },
+        {
+          "id": 16,
+          "suit": "H",
+          "rank": 5
+        },
+        {
+          "id": 58,
+          "suit": "S",
+          "rank": 6
+        },
+        {
+          "id": 86,
+          "suit": "D",
+          "rank": 8
+        },
+        {
+          "id": 33,
+          "suit": "D",
+          "rank": 9
+        },
+        {
+          "id": 89,
+          "suit": "D",
+          "rank": 11
+        },
+        {
+          "id": 76,
+          "suit": "H",
+          "rank": 11
+        },
+        {
+          "id": 63,
+          "suit": "S",
+          "rank": 11
+        },
+        {
+          "id": 36,
+          "suit": "D",
+          "rank": 12
+        },
+        {
+          "id": 64,
+          "suit": "S",
+          "rank": 12
+        },
+        {
+          "id": 50,
+          "suit": "C",
+          "rank": 13
+        },
+        {
+          "id": 24,
+          "suit": "H",
+          "rank": 13
+        },
+        {
+          "id": 78,
+          "suit": "H",
+          "rank": 13
+        },
+        {
+          "id": 92,
+          "suit": "D",
+          "rank": 14
+        },
+        {
+          "id": 25,
+          "suit": "H",
+          "rank": 14
+        },
+        {
+          "id": 79,
+          "suit": "H",
+          "rank": 14
+        },
+        {
+          "id": 12,
+          "suit": "S",
+          "rank": 14
+        },
+        {
+          "id": 66,
+          "suit": "S",
+          "rank": 14
+        },
+        {
+          "id": 52,
+          "suit": "J",
+          "rank": 16
+        },
+        {
+          "id": 53,
+          "suit": "J",
+          "rank": 17
+        }
+      ],
+      "counts": [
+        21,
+        27,
+        27,
+        21
+      ],
+      "matchPublic": {
+        "opts": {
+          "levelMode": "stage",
+          "passA": "head3",
+          "pairSeqMin": 3,
+          "pairSeqMax": 3,
+          "trioSeqMin": 2,
+          "trioSeqMax": 2,
+          "flushLen": 5,
+          "straightLen": 5
+        },
+        "levels": [
+          2,
+          2
+        ],
+        "gameNo": 1,
+        "lastHead": null,
+        "lastResult": null
+      },
+      "statePublic": {
+        "levelsBefore": [
+          2,
+          2
+        ],
+        "stageTeam": 0,
+        "turn": 2,
+        "leader": 3,
+        "lastCombo": {
+          "kind": "pair_seq",
+          "cards": [
+            {
+              "id": 97,
+              "suit": "C",
+              "rank": 6
+            },
+            {
+              "id": 4,
+              "suit": "S",
+              "rank": 6
+            },
+            {
+              "id": 44,
+              "suit": "C",
+              "rank": 7
+            },
+            {
+              "id": 18,
+              "suit": "H",
+              "rank": 7
+            },
+            {
+              "id": 19,
+              "suit": "H",
+              "rank": 8
+            },
+            {
+              "id": 60,
+              "suit": "S",
+              "rank": 8
+            }
+          ],
+          "size": 6,
+          "keyRank": 8,
+          "length": 3,
+          "pairRanks": [],
+          "mainRank": 8,
+          "wildAs": []
+        },
+        "lastPlayer": 0,
+        "passCount": 1,
+        "finished": [],
+        "moveNo": 3,
+        "tribute": null,
+        "trickPlays": [
+          {
+            "player": 3,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 2,
+                  "suit": "S",
+                  "rank": 4
+                },
+                {
+                  "id": 56,
+                  "suit": "S",
+                  "rank": 4
+                },
+                {
+                  "id": 83,
+                  "suit": "D",
+                  "rank": 5
+                },
+                {
+                  "id": 3,
+                  "suit": "S",
+                  "rank": 5
+                },
+                {
+                  "id": 17,
+                  "suit": "H",
+                  "rank": 6
+                },
+                {
+                  "id": 71,
+                  "suit": "H",
+                  "rank": 6
+                }
+              ],
+              "size": 6,
+              "keyRank": 6,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 6,
+              "wildAs": []
+            }
+          },
+          {
+            "player": 0,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 97,
+                  "suit": "C",
+                  "rank": 6
+                },
+                {
+                  "id": 4,
+                  "suit": "S",
+                  "rank": 6
+                },
+                {
+                  "id": 44,
+                  "suit": "C",
+                  "rank": 7
+                },
+                {
+                  "id": 18,
+                  "suit": "H",
+                  "rank": 7
+                },
+                {
+                  "id": 19,
+                  "suit": "H",
+                  "rank": 8
+                },
+                {
+                  "id": 60,
+                  "suit": "S",
+                  "rank": 8
+                }
+              ],
+              "size": 6,
+              "keyRank": 8,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 8,
+              "wildAs": []
+            }
+          },
+          {
+            "player": 1,
+            "combo": null
+          }
+        ]
+      },
+      "history": [
+        {
+          "events": [
+            {
+              "type": "play",
+              "player": 3,
+              "combo": {
+                "kind": "pair_seq",
+                "cards": [
+                  {
+                    "id": 2,
+                    "suit": "S",
+                    "rank": 4
+                  },
+                  {
+                    "id": 56,
+                    "suit": "S",
+                    "rank": 4
+                  },
+                  {
+                    "id": 83,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 3,
+                    "suit": "S",
+                    "rank": 5
+                  },
+                  {
+                    "id": 17,
+                    "suit": "H",
+                    "rank": 6
+                  },
+                  {
+                    "id": 71,
+                    "suit": "H",
+                    "rank": 6
+                  }
+                ],
+                "size": 6,
+                "keyRank": 6,
+                "length": 3,
+                "pairRanks": [],
+                "mainRank": 6,
+                "wildAs": []
+              }
+            }
+          ],
+          "priorTarget": null
+        },
+        {
+          "events": [
+            {
+              "type": "play",
+              "player": 0,
+              "combo": {
+                "kind": "pair_seq",
+                "cards": [
+                  {
+                    "id": 97,
+                    "suit": "C",
+                    "rank": 6
+                  },
+                  {
+                    "id": 4,
+                    "suit": "S",
+                    "rank": 6
+                  },
+                  {
+                    "id": 44,
+                    "suit": "C",
+                    "rank": 7
+                  },
+                  {
+                    "id": 18,
+                    "suit": "H",
+                    "rank": 7
+                  },
+                  {
+                    "id": 19,
+                    "suit": "H",
+                    "rank": 8
+                  },
+                  {
+                    "id": 60,
+                    "suit": "S",
+                    "rank": 8
+                  }
+                ],
+                "size": 6,
+                "keyRank": 8,
+                "length": 3,
+                "pairRanks": [],
+                "mainRank": 8,
+                "wildAs": []
+              }
+            }
+          ],
+          "priorTarget": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 2,
+                "suit": "S",
+                "rank": 4
+              },
+              {
+                "id": 56,
+                "suit": "S",
+                "rank": 4
+              },
+              {
+                "id": 83,
+                "suit": "D",
+                "rank": 5
+              },
+              {
+                "id": 3,
+                "suit": "S",
+                "rank": 5
+              },
+              {
+                "id": 17,
+                "suit": "H",
+                "rank": 6
+              },
+              {
+                "id": 71,
+                "suit": "H",
+                "rank": 6
+              }
+            ],
+            "size": 6,
+            "keyRank": 6,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 6,
+            "wildAs": []
+          }
+        },
+        {
+          "events": [
+            {
+              "type": "pass",
+              "player": 1
+            }
+          ],
+          "priorTarget": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 97,
+                "suit": "C",
+                "rank": 6
+              },
+              {
+                "id": 4,
+                "suit": "S",
+                "rank": 6
+              },
+              {
+                "id": 44,
+                "suit": "C",
+                "rank": 7
+              },
+              {
+                "id": 18,
+                "suit": "H",
+                "rank": 7
+              },
+              {
+                "id": 19,
+                "suit": "H",
+                "rank": 8
+              },
+              {
+                "id": 60,
+                "suit": "S",
+                "rank": 8
+              }
+            ],
+            "size": 6,
+            "keyRank": 8,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 8,
+            "wildAs": []
+          }
+        }
+      ],
+      "modelState331": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        2,
+        0,
+        1,
+        1,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        2,
+        2,
+        2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        1,
+        2,
+        0,
+        1,
+        0,
+        2,
+        1,
+        2,
+        2,
+        1,
+        1,
+        2,
+        0,
+        2,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        1,
+        2,
+        0,
+        0,
+        0,
+        1,
+        2,
+        1,
+        2,
+        2,
+        1,
+        1,
+        2,
+        1,
+        1,
+        2,
+        1,
+        2,
+        2,
+        1,
+        2,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        2,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0.19512194395065308,
+        0.6000000238418579,
+        0.7777777910232544,
+        0,
+        0,
+        0.7777777910232544,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.19512194395065308,
+        0.6000000238418579,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.1463414579629898,
+        0.6000000238418579,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "representationGaps": [],
+      "observationSHA256": "6805d7a34f83351d57826c41c2a02c3b6f0168dcc6334fb6938c7c89eee93bbc"
+    },
+    "allCandidates": [
+      {
+        "index": 0,
+        "actionId": "action-0000",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[27,28,43,45,45,60],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 76,
+                "suit": "H",
+                "rank": 11
+              },
+              {
+                "id": 63,
+                "suit": "S",
+                "rank": 11
+              },
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 78,
+                "suit": "H",
+                "rank": 13
+              }
+            ],
+            "size": 6,
+            "keyRank": 13,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 13,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.31707316637039185,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 1,
+        "actionId": "action-0001",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[27,28,43,45,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 76,
+                "suit": "H",
+                "rank": 11
+              },
+              {
+                "id": 63,
+                "suit": "S",
+                "rank": 11
+              },
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 50,
+                "suit": "C",
+                "rank": 13
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              }
+            ],
+            "size": 6,
+            "keyRank": 13,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 13,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.31707316637039185,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 2,
+        "actionId": "action-0002",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[27,28,45,45,59,60],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 89,
+                "suit": "D",
+                "rank": 11
+              },
+              {
+                "id": 63,
+                "suit": "S",
+                "rank": 11
+              },
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 78,
+                "suit": "H",
+                "rank": 13
+              }
+            ],
+            "size": 6,
+            "keyRank": 13,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 13,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.31707316637039185,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 3,
+        "actionId": "action-0003",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[27,28,45,59,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 89,
+                "suit": "D",
+                "rank": 11
+              },
+              {
+                "id": 63,
+                "suit": "S",
+                "rank": 11
+              },
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 50,
+                "suit": "C",
+                "rank": 13
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              }
+            ],
+            "size": 6,
+            "keyRank": 13,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 13,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.31707316637039185,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 4,
+        "actionId": "action-0004",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[28,43,45,45,59,60],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 89,
+                "suit": "D",
+                "rank": 11
+              },
+              {
+                "id": 76,
+                "suit": "H",
+                "rank": 11
+              },
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 78,
+                "suit": "H",
+                "rank": 13
+              }
+            ],
+            "size": 6,
+            "keyRank": 13,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 13,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.31707316637039185,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 5,
+        "actionId": "action-0005",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[28,43,45,59,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 89,
+                "suit": "D",
+                "rank": 11
+              },
+              {
+                "id": 76,
+                "suit": "H",
+                "rank": 11
+              },
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 50,
+                "suit": "C",
+                "rank": 13
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              }
+            ],
+            "size": 6,
+            "keyRank": 13,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 13,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.31707316637039185,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 6,
+        "actionId": "action-0006",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,17,28,45,45,60],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 78,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              },
+              {
+                "id": 66,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 7,
+        "actionId": "action-0007",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,28,33,45,45,60],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 78,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 8,
+        "actionId": "action-0008",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[28,33,33,45,45,60],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 78,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 79,
+                "suit": "H",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 9,
+        "actionId": "action-0009",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,28,45,45,49,60],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 78,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 92,
+                "suit": "D",
+                "rank": 14
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 10,
+        "actionId": "action-0010",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[28,33,45,45,49,60],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 78,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 92,
+                "suit": "D",
+                "rank": 14
+              },
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 11,
+        "actionId": "action-0011",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,17,28,45,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 50,
+                "suit": "C",
+                "rank": 13
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              },
+              {
+                "id": 66,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 12,
+        "actionId": "action-0012",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,28,33,45,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 50,
+                "suit": "C",
+                "rank": 13
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 13,
+        "actionId": "action-0013",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[28,33,33,45,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 50,
+                "suit": "C",
+                "rank": 13
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 79,
+                "suit": "H",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 14,
+        "actionId": "action-0014",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,28,45,49,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 50,
+                "suit": "C",
+                "rank": 13
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 92,
+                "suit": "D",
+                "rank": 14
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 15,
+        "actionId": "action-0015",
+        "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[28,33,45,49,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 36,
+                "suit": "D",
+                "rank": 12
+              },
+              {
+                "id": 64,
+                "suit": "S",
+                "rank": 12
+              },
+              {
+                "id": 50,
+                "suit": "C",
+                "rank": 13
+              },
+              {
+                "id": 24,
+                "suit": "H",
+                "rank": 13
+              },
+              {
+                "id": 92,
+                "suit": "D",
+                "rank": 14
+              },
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              }
+            ],
+            "size": 6,
+            "keyRank": 14,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.6000000238418579,
+          0
+        ]
+      },
+      {
+        "index": 16,
+        "actionId": "action-0016",
+        "actionKey": "{\"kind\":\"bomb\",\"mainRank\":14,\"keyRank\":14,\"length\":1,\"size\":4,\"resources\":[17,17,33,33],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "bomb",
+            "cards": [
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 79,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              },
+              {
+                "id": 66,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 4,
+            "keyRank": 14,
+            "length": 1,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.4000000059604645,
+          0
+        ]
+      },
+      {
+        "index": 17,
+        "actionId": "action-0017",
+        "actionKey": "{\"kind\":\"bomb\",\"mainRank\":14,\"keyRank\":14,\"length\":1,\"size\":4,\"resources\":[17,17,33,49],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "bomb",
+            "cards": [
+              {
+                "id": 92,
+                "suit": "D",
+                "rank": 14
+              },
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              },
+              {
+                "id": 66,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 4,
+            "keyRank": 14,
+            "length": 1,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.4000000059604645,
+          0
+        ]
+      },
+      {
+        "index": 18,
+        "actionId": "action-0018",
+        "actionKey": "{\"kind\":\"bomb\",\"mainRank\":14,\"keyRank\":14,\"length\":1,\"size\":4,\"resources\":[17,33,33,49],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "bomb",
+            "cards": [
+              {
+                "id": 92,
+                "suit": "D",
+                "rank": 14
+              },
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 79,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 4,
+            "keyRank": 14,
+            "length": 1,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.4000000059604645,
+          0
+        ]
+      },
+      {
+        "index": 19,
+        "actionId": "action-0019",
+        "actionKey": "{\"kind\":\"bomb\",\"mainRank\":14,\"keyRank\":14,\"length\":1,\"size\":5,\"resources\":[17,17,33,33,49],\"wildAs\":[],\"pairRanks\":[]}",
+        "move": {
+          "pass": false,
+          "combo": {
+            "kind": "bomb",
+            "cards": [
+              {
+                "id": 92,
+                "suit": "D",
+                "rank": 14
+              },
+              {
+                "id": 25,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 79,
+                "suit": "H",
+                "rank": 14
+              },
+              {
+                "id": 12,
+                "suit": "S",
+                "rank": 14
+              },
+              {
+                "id": 66,
+                "suit": "S",
+                "rank": 14
+              }
+            ],
+            "size": 5,
+            "keyRank": 14,
+            "length": 1,
+            "pairRanks": [],
+            "mainRank": 14,
+            "wildAs": []
+          }
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0.3414634168148041,
+          0.5,
+          0
+        ]
+      },
+      {
+        "index": 20,
+        "actionId": "action-0020",
+        "actionKey": "pass",
+        "move": {
+          "pass": true
+        },
+        "features68": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "actualActionId": "action-0020",
+    "sourceActualAction": {
+      "pass": true
+    },
+    "category": "resource_structure",
+    "caseThresholds": {
+      "minimumOpponentCount": 7,
+      "urgentOpponentMaximum": 4
+    },
+    "proposerInput": {
+      "rootId": "C3-pilot-source-001:root-03",
+      "observedBefore": {
+        "schemaVersion": "r6-visible-root-v1",
+        "actor": 2,
+        "ownCards": [
+          {
+            "id": 26,
+            "suit": "D",
+            "rank": 2
+          },
+          {
+            "id": 80,
+            "suit": "D",
+            "rank": 2
+          },
+          {
+            "id": 54,
+            "suit": "S",
+            "rank": 2
+          },
+          {
+            "id": 81,
+            "suit": "D",
+            "rank": 3
+          },
+          {
+            "id": 14,
+            "suit": "H",
+            "rank": 3
+          },
+          {
+            "id": 41,
+            "suit": "C",
+            "rank": 4
+          },
+          {
+            "id": 15,
+            "suit": "H",
+            "rank": 4
+          },
+          {
+            "id": 70,
+            "suit": "H",
+            "rank": 5
+          },
+          {
+            "id": 16,
+            "suit": "H",
+            "rank": 5
+          },
+          {
+            "id": 58,
+            "suit": "S",
+            "rank": 6
+          },
+          {
+            "id": 86,
+            "suit": "D",
+            "rank": 8
+          },
+          {
+            "id": 33,
+            "suit": "D",
+            "rank": 9
+          },
+          {
+            "id": 89,
+            "suit": "D",
+            "rank": 11
+          },
+          {
+            "id": 76,
+            "suit": "H",
+            "rank": 11
+          },
+          {
+            "id": 63,
+            "suit": "S",
+            "rank": 11
+          },
+          {
+            "id": 36,
+            "suit": "D",
+            "rank": 12
+          },
+          {
+            "id": 64,
+            "suit": "S",
+            "rank": 12
+          },
+          {
+            "id": 50,
+            "suit": "C",
+            "rank": 13
+          },
+          {
+            "id": 24,
+            "suit": "H",
+            "rank": 13
+          },
+          {
+            "id": 78,
+            "suit": "H",
+            "rank": 13
+          },
+          {
+            "id": 92,
+            "suit": "D",
+            "rank": 14
+          },
+          {
+            "id": 25,
+            "suit": "H",
+            "rank": 14
+          },
+          {
+            "id": 79,
+            "suit": "H",
+            "rank": 14
+          },
+          {
+            "id": 12,
+            "suit": "S",
+            "rank": 14
+          },
+          {
+            "id": 66,
+            "suit": "S",
+            "rank": 14
+          },
+          {
+            "id": 52,
+            "suit": "J",
+            "rank": 16
+          },
+          {
+            "id": 53,
+            "suit": "J",
+            "rank": 17
+          }
+        ],
+        "counts": [
+          21,
+          27,
+          27,
+          21
+        ],
+        "matchPublic": {
+          "opts": {
+            "levelMode": "stage",
+            "passA": "head3",
+            "pairSeqMin": 3,
+            "pairSeqMax": 3,
+            "trioSeqMin": 2,
+            "trioSeqMax": 2,
+            "flushLen": 5,
+            "straightLen": 5
+          },
+          "levels": [
+            2,
+            2
+          ],
+          "gameNo": 1,
+          "lastHead": null,
+          "lastResult": null
+        },
+        "statePublic": {
+          "levelsBefore": [
+            2,
+            2
+          ],
+          "stageTeam": 0,
+          "turn": 2,
+          "leader": 3,
+          "lastCombo": {
+            "kind": "pair_seq",
+            "cards": [
+              {
+                "id": 97,
+                "suit": "C",
+                "rank": 6
+              },
+              {
+                "id": 4,
+                "suit": "S",
+                "rank": 6
+              },
+              {
+                "id": 44,
+                "suit": "C",
+                "rank": 7
+              },
+              {
+                "id": 18,
+                "suit": "H",
+                "rank": 7
+              },
+              {
+                "id": 19,
+                "suit": "H",
+                "rank": 8
+              },
+              {
+                "id": 60,
+                "suit": "S",
+                "rank": 8
+              }
+            ],
+            "size": 6,
+            "keyRank": 8,
+            "length": 3,
+            "pairRanks": [],
+            "mainRank": 8,
+            "wildAs": []
+          },
+          "lastPlayer": 0,
+          "passCount": 1,
+          "finished": [],
+          "moveNo": 3,
+          "tribute": null,
+          "trickPlays": [
+            {
+              "player": 3,
+              "combo": {
+                "kind": "pair_seq",
+                "cards": [
+                  {
+                    "id": 2,
+                    "suit": "S",
+                    "rank": 4
+                  },
+                  {
+                    "id": 56,
+                    "suit": "S",
+                    "rank": 4
+                  },
+                  {
+                    "id": 83,
+                    "suit": "D",
+                    "rank": 5
+                  },
+                  {
+                    "id": 3,
+                    "suit": "S",
+                    "rank": 5
+                  },
+                  {
+                    "id": 17,
+                    "suit": "H",
+                    "rank": 6
+                  },
+                  {
+                    "id": 71,
+                    "suit": "H",
+                    "rank": 6
+                  }
+                ],
+                "size": 6,
+                "keyRank": 6,
+                "length": 3,
+                "pairRanks": [],
+                "mainRank": 6,
+                "wildAs": []
+              }
+            },
+            {
+              "player": 0,
+              "combo": {
+                "kind": "pair_seq",
+                "cards": [
+                  {
+                    "id": 97,
+                    "suit": "C",
+                    "rank": 6
+                  },
+                  {
+                    "id": 4,
+                    "suit": "S",
+                    "rank": 6
+                  },
+                  {
+                    "id": 44,
+                    "suit": "C",
+                    "rank": 7
+                  },
+                  {
+                    "id": 18,
+                    "suit": "H",
+                    "rank": 7
+                  },
+                  {
+                    "id": 19,
+                    "suit": "H",
+                    "rank": 8
+                  },
+                  {
+                    "id": 60,
+                    "suit": "S",
+                    "rank": 8
+                  }
+                ],
+                "size": 6,
+                "keyRank": 8,
+                "length": 3,
+                "pairRanks": [],
+                "mainRank": 8,
+                "wildAs": []
+              }
+            },
+            {
+              "player": 1,
+              "combo": null
+            }
+          ]
+        },
+        "history": [
+          {
+            "events": [
+              {
+                "type": "play",
+                "player": 3,
+                "combo": {
+                  "kind": "pair_seq",
+                  "cards": [
+                    {
+                      "id": 2,
+                      "suit": "S",
+                      "rank": 4
+                    },
+                    {
+                      "id": 56,
+                      "suit": "S",
+                      "rank": 4
+                    },
+                    {
+                      "id": 83,
+                      "suit": "D",
+                      "rank": 5
+                    },
+                    {
+                      "id": 3,
+                      "suit": "S",
+                      "rank": 5
+                    },
+                    {
+                      "id": 17,
+                      "suit": "H",
+                      "rank": 6
+                    },
+                    {
+                      "id": 71,
+                      "suit": "H",
+                      "rank": 6
+                    }
+                  ],
+                  "size": 6,
+                  "keyRank": 6,
+                  "length": 3,
+                  "pairRanks": [],
+                  "mainRank": 6,
+                  "wildAs": []
+                }
+              }
+            ],
+            "priorTarget": null
+          },
+          {
+            "events": [
+              {
+                "type": "play",
+                "player": 0,
+                "combo": {
+                  "kind": "pair_seq",
+                  "cards": [
+                    {
+                      "id": 97,
+                      "suit": "C",
+                      "rank": 6
+                    },
+                    {
+                      "id": 4,
+                      "suit": "S",
+                      "rank": 6
+                    },
+                    {
+                      "id": 44,
+                      "suit": "C",
+                      "rank": 7
+                    },
+                    {
+                      "id": 18,
+                      "suit": "H",
+                      "rank": 7
+                    },
+                    {
+                      "id": 19,
+                      "suit": "H",
+                      "rank": 8
+                    },
+                    {
+                      "id": 60,
+                      "suit": "S",
+                      "rank": 8
+                    }
+                  ],
+                  "size": 6,
+                  "keyRank": 8,
+                  "length": 3,
+                  "pairRanks": [],
+                  "mainRank": 8,
+                  "wildAs": []
+                }
+              }
+            ],
+            "priorTarget": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 2,
+                  "suit": "S",
+                  "rank": 4
+                },
+                {
+                  "id": 56,
+                  "suit": "S",
+                  "rank": 4
+                },
+                {
+                  "id": 83,
+                  "suit": "D",
+                  "rank": 5
+                },
+                {
+                  "id": 3,
+                  "suit": "S",
+                  "rank": 5
+                },
+                {
+                  "id": 17,
+                  "suit": "H",
+                  "rank": 6
+                },
+                {
+                  "id": 71,
+                  "suit": "H",
+                  "rank": 6
+                }
+              ],
+              "size": 6,
+              "keyRank": 6,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 6,
+              "wildAs": []
+            }
+          },
+          {
+            "events": [
+              {
+                "type": "pass",
+                "player": 1
+              }
+            ],
+            "priorTarget": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 97,
+                  "suit": "C",
+                  "rank": 6
+                },
+                {
+                  "id": 4,
+                  "suit": "S",
+                  "rank": 6
+                },
+                {
+                  "id": 44,
+                  "suit": "C",
+                  "rank": 7
+                },
+                {
+                  "id": 18,
+                  "suit": "H",
+                  "rank": 7
+                },
+                {
+                  "id": 19,
+                  "suit": "H",
+                  "rank": 8
+                },
+                {
+                  "id": 60,
+                  "suit": "S",
+                  "rank": 8
+                }
+              ],
+              "size": 6,
+              "keyRank": 8,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 8,
+              "wildAs": []
+            }
+          }
+        ],
+        "modelState331": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          2,
+          0,
+          1,
+          1,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          2,
+          2,
+          2,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          1,
+          1,
+          2,
+          0,
+          1,
+          0,
+          2,
+          1,
+          2,
+          2,
+          1,
+          1,
+          2,
+          0,
+          2,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          1,
+          2,
+          0,
+          0,
+          0,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          1,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0.19512194395065308,
+          0.6000000238418579,
+          0.7777777910232544,
+          0,
+          0,
+          0.7777777910232544,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.19512194395065308,
+          0.6000000238418579,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.1463414579629898,
+          0.6000000238418579,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        "representationGaps": [],
+        "observationSHA256": "6805d7a34f83351d57826c41c2a02c3b6f0168dcc6334fb6938c7c89eee93bbc"
+      },
+      "allowedFacts": "only current own cards, public context and causal public prefix; source action and completion excluded",
+      "candidates": [
+        {
+          "index": 0,
+          "actionId": "action-0000",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[27,28,43,45,45,60],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 76,
+                  "suit": "H",
+                  "rank": 11
+                },
+                {
+                  "id": 63,
+                  "suit": "S",
+                  "rank": 11
+                },
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 78,
+                  "suit": "H",
+                  "rank": 13
+                }
+              ],
+              "size": 6,
+              "keyRank": 13,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 13,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 1,
+          "actionId": "action-0001",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[27,28,43,45,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 76,
+                  "suit": "H",
+                  "rank": 11
+                },
+                {
+                  "id": 63,
+                  "suit": "S",
+                  "rank": 11
+                },
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 50,
+                  "suit": "C",
+                  "rank": 13
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                }
+              ],
+              "size": 6,
+              "keyRank": 13,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 13,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 2,
+          "actionId": "action-0002",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[27,28,45,45,59,60],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 89,
+                  "suit": "D",
+                  "rank": 11
+                },
+                {
+                  "id": 63,
+                  "suit": "S",
+                  "rank": 11
+                },
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 78,
+                  "suit": "H",
+                  "rank": 13
+                }
+              ],
+              "size": 6,
+              "keyRank": 13,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 13,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 3,
+          "actionId": "action-0003",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[27,28,45,59,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 89,
+                  "suit": "D",
+                  "rank": 11
+                },
+                {
+                  "id": 63,
+                  "suit": "S",
+                  "rank": 11
+                },
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 50,
+                  "suit": "C",
+                  "rank": 13
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                }
+              ],
+              "size": 6,
+              "keyRank": 13,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 13,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 4,
+          "actionId": "action-0004",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[28,43,45,45,59,60],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 89,
+                  "suit": "D",
+                  "rank": 11
+                },
+                {
+                  "id": 76,
+                  "suit": "H",
+                  "rank": 11
+                },
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 78,
+                  "suit": "H",
+                  "rank": 13
+                }
+              ],
+              "size": 6,
+              "keyRank": 13,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 13,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 5,
+          "actionId": "action-0005",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":13,\"keyRank\":13,\"length\":3,\"size\":6,\"resources\":[28,43,45,59,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 89,
+                  "suit": "D",
+                  "rank": 11
+                },
+                {
+                  "id": 76,
+                  "suit": "H",
+                  "rank": 11
+                },
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 50,
+                  "suit": "C",
+                  "rank": 13
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                }
+              ],
+              "size": 6,
+              "keyRank": 13,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 13,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 6,
+          "actionId": "action-0006",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,17,28,45,45,60],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 78,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                },
+                {
+                  "id": 66,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 7,
+          "actionId": "action-0007",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,28,33,45,45,60],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 78,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 8,
+          "actionId": "action-0008",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[28,33,33,45,45,60],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 78,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 79,
+                  "suit": "H",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 9,
+          "actionId": "action-0009",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,28,45,45,49,60],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 78,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 92,
+                  "suit": "D",
+                  "rank": 14
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 10,
+          "actionId": "action-0010",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[28,33,45,45,49,60],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 78,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 92,
+                  "suit": "D",
+                  "rank": 14
+                },
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 11,
+          "actionId": "action-0011",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,17,28,45,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 50,
+                  "suit": "C",
+                  "rank": 13
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                },
+                {
+                  "id": 66,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 12,
+          "actionId": "action-0012",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,28,33,45,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 50,
+                  "suit": "C",
+                  "rank": 13
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 13,
+          "actionId": "action-0013",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[28,33,33,45,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 50,
+                  "suit": "C",
+                  "rank": 13
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 79,
+                  "suit": "H",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 14,
+          "actionId": "action-0014",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[17,28,45,49,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 50,
+                  "suit": "C",
+                  "rank": 13
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 92,
+                  "suit": "D",
+                  "rank": 14
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 15,
+          "actionId": "action-0015",
+          "actionKey": "{\"kind\":\"pair_seq\",\"mainRank\":14,\"keyRank\":14,\"length\":3,\"size\":6,\"resources\":[28,33,45,49,60,77],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "pair_seq",
+              "cards": [
+                {
+                  "id": 36,
+                  "suit": "D",
+                  "rank": 12
+                },
+                {
+                  "id": 64,
+                  "suit": "S",
+                  "rank": 12
+                },
+                {
+                  "id": 50,
+                  "suit": "C",
+                  "rank": 13
+                },
+                {
+                  "id": 24,
+                  "suit": "H",
+                  "rank": 13
+                },
+                {
+                  "id": 92,
+                  "suit": "D",
+                  "rank": 14
+                },
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                }
+              ],
+              "size": 6,
+              "keyRank": 14,
+              "length": 3,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 16,
+          "actionId": "action-0016",
+          "actionKey": "{\"kind\":\"bomb\",\"mainRank\":14,\"keyRank\":14,\"length\":1,\"size\":4,\"resources\":[17,17,33,33],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "bomb",
+              "cards": [
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 79,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                },
+                {
+                  "id": 66,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 4,
+              "keyRank": 14,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 17,
+          "actionId": "action-0017",
+          "actionKey": "{\"kind\":\"bomb\",\"mainRank\":14,\"keyRank\":14,\"length\":1,\"size\":4,\"resources\":[17,17,33,49],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "bomb",
+              "cards": [
+                {
+                  "id": 92,
+                  "suit": "D",
+                  "rank": 14
+                },
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                },
+                {
+                  "id": 66,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 4,
+              "keyRank": 14,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 18,
+          "actionId": "action-0018",
+          "actionKey": "{\"kind\":\"bomb\",\"mainRank\":14,\"keyRank\":14,\"length\":1,\"size\":4,\"resources\":[17,33,33,49],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "bomb",
+              "cards": [
+                {
+                  "id": 92,
+                  "suit": "D",
+                  "rank": 14
+                },
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 79,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 4,
+              "keyRank": 14,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 19,
+          "actionId": "action-0019",
+          "actionKey": "{\"kind\":\"bomb\",\"mainRank\":14,\"keyRank\":14,\"length\":1,\"size\":5,\"resources\":[17,17,33,33,49],\"wildAs\":[],\"pairRanks\":[]}",
+          "move": {
+            "pass": false,
+            "combo": {
+              "kind": "bomb",
+              "cards": [
+                {
+                  "id": 92,
+                  "suit": "D",
+                  "rank": 14
+                },
+                {
+                  "id": 25,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 79,
+                  "suit": "H",
+                  "rank": 14
+                },
+                {
+                  "id": 12,
+                  "suit": "S",
+                  "rank": 14
+                },
+                {
+                  "id": 66,
+                  "suit": "S",
+                  "rank": 14
+                }
+              ],
+              "size": 5,
+              "keyRank": 14,
+              "length": 1,
+              "pairRanks": [],
+              "mainRank": 14,
+              "wildAs": []
+            }
+          }
+        },
+        {
+          "index": 20,
+          "actionId": "action-0020",
+          "actionKey": "pass",
+          "move": {
+            "pass": true
+          }
+        }
+      ],
+      "category": "resource_structure",
+      "caseThresholds": {
+        "minimumOpponentCount": 7,
+        "urgentOpponentMaximum": 4
+      }
+    }
+  },
+  "resultCode": "root_materialized"
+}

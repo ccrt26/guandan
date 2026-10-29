@@ -1,0 +1,142 @@
+{
+  "program": {
+    "schemaVersion": "r6-plan-dsl-v1",
+    "planId": "C3-pilot-source-001:root-14:plan-action-0000",
+    "rootId": "C3-pilot-source-001:root-14",
+    "goal": "conditional_response",
+    "condition": {
+      "op": "and",
+      "args": [
+        {
+          "op": "eq",
+          "field": "myTurn",
+          "value": true
+        },
+        {
+          "op": "eq",
+          "field": "myCount",
+          "value": 3
+        },
+        {
+          "op": "eq",
+          "field": "targetKind",
+          "value": "single"
+        }
+      ]
+    },
+    "trigger": {
+      "op": "eq",
+      "field": "myTurn",
+      "value": true
+    },
+    "invalidateWhen": {
+      "op": "eq",
+      "field": "myTurn",
+      "value": false
+    },
+    "fallback": "frozen_continuation",
+    "maxOwnActions": 4,
+    "steps": [
+      {
+        "trigger": {
+          "op": "eq",
+          "field": "myTurn",
+          "value": true
+        },
+        "invalidateWhen": {
+          "op": "eq",
+          "field": "myTurn",
+          "value": false
+        },
+        "select": {
+          "kind": "exact_action",
+          "actionKey": "{\"kind\":\"single\",\"mainRank\":12,\"keyRank\":12,\"length\":1,\"size\":1,\"resources\":[60],\"wildAs\":[],\"pairRanks\":[]}"
+        }
+      },
+      {
+        "trigger": {
+          "op": "or",
+          "args": [
+            {
+              "op": "eq",
+              "field": "mateControls",
+              "value": false
+            },
+            {
+              "op": "le",
+              "field": "opponentMinCount",
+              "value": 3
+            }
+          ]
+        },
+        "invalidateWhen": {
+          "op": "eq",
+          "field": "myTurn",
+          "value": false
+        },
+        "select": {
+          "kind": "minimum_key",
+          "avoidBombs": true
+        }
+      },
+      {
+        "trigger": {
+          "op": "or",
+          "args": [
+            {
+              "op": "eq",
+              "field": "mateControls",
+              "value": false
+            },
+            {
+              "op": "le",
+              "field": "opponentMinCount",
+              "value": 3
+            }
+          ]
+        },
+        "invalidateWhen": {
+          "op": "eq",
+          "field": "myTurn",
+          "value": false
+        },
+        "select": {
+          "kind": "minimum_key",
+          "avoidBombs": true
+        }
+      },
+      {
+        "trigger": {
+          "op": "or",
+          "args": [
+            {
+              "op": "eq",
+              "field": "mateControls",
+              "value": false
+            },
+            {
+              "op": "le",
+              "field": "opponentMinCount",
+              "value": 3
+            }
+          ]
+        },
+        "invalidateWhen": {
+          "op": "eq",
+          "field": "myTurn",
+          "value": false
+        },
+        "select": {
+          "kind": "minimum_key",
+          "avoidBombs": true
+        }
+      }
+    ]
+  },
+  "caseBasis": {
+    "urgentOpponentMaximum": 3,
+    "passSafetyMinimum": 4,
+    "rootOpponentFinishedCount": 1,
+    "meaning": "case-specific public thresholds; support to be measured, no universal yield rule"
+  }
+}

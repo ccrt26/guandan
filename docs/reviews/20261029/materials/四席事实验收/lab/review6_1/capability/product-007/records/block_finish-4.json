@@ -1,0 +1,3219 @@
+{
+  "record": {
+    "schemaVersion": 2,
+    "id": "r6-dev-block_finish-3",
+    "matchId": "development-r6-dev-block_finish-3",
+    "createdAt": 0,
+    "ruleOpts": {
+      "levelMode": "stage",
+      "passA": "head3",
+      "pairSeqMin": 3,
+      "pairSeqMax": 3,
+      "trioSeqMin": 2,
+      "trioSeqMax": 2,
+      "flushLen": 5,
+      "straightLen": 5
+    },
+    "levelsBefore": [
+      2,
+      2
+    ],
+    "stageTeam": 0,
+    "leader": 0,
+    "humanSeat": 0,
+    "difficulties": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "initialHands": [
+      [
+        {
+          "id": 67,
+          "suit": "H",
+          "rank": 2
+        },
+        {
+          "id": 0,
+          "suit": "S",
+          "rank": 2
+        },
+        {
+          "id": 40,
+          "suit": "C",
+          "rank": 3
+        },
+        {
+          "id": 81,
+          "suit": "D",
+          "rank": 3
+        },
+        {
+          "id": 68,
+          "suit": "H",
+          "rank": 3
+        },
+        {
+          "id": 95,
+          "suit": "C",
+          "rank": 4
+        },
+        {
+          "id": 42,
+          "suit": "C",
+          "rank": 5
+        },
+        {
+          "id": 3,
+          "suit": "S",
+          "rank": 5
+        },
+        {
+          "id": 43,
+          "suit": "C",
+          "rank": 6
+        },
+        {
+          "id": 98,
+          "suit": "C",
+          "rank": 7
+        },
+        {
+          "id": 59,
+          "suit": "S",
+          "rank": 7
+        },
+        {
+          "id": 19,
+          "suit": "H",
+          "rank": 8
+        },
+        {
+          "id": 6,
+          "suit": "S",
+          "rank": 8
+        },
+        {
+          "id": 100,
+          "suit": "C",
+          "rank": 9
+        },
+        {
+          "id": 74,
+          "suit": "H",
+          "rank": 9
+        },
+        {
+          "id": 34,
+          "suit": "D",
+          "rank": 10
+        },
+        {
+          "id": 88,
+          "suit": "D",
+          "rank": 10
+        },
+        {
+          "id": 75,
+          "suit": "H",
+          "rank": 10
+        },
+        {
+          "id": 62,
+          "suit": "S",
+          "rank": 10
+        },
+        {
+          "id": 48,
+          "suit": "C",
+          "rank": 11
+        },
+        {
+          "id": 102,
+          "suit": "C",
+          "rank": 11
+        },
+        {
+          "id": 10,
+          "suit": "S",
+          "rank": 12
+        },
+        {
+          "id": 50,
+          "suit": "C",
+          "rank": 13
+        },
+        {
+          "id": 91,
+          "suit": "D",
+          "rank": 13
+        },
+        {
+          "id": 92,
+          "suit": "D",
+          "rank": 14
+        },
+        {
+          "id": 79,
+          "suit": "H",
+          "rank": 14
+        },
+        {
+          "id": 106,
+          "suit": "J",
+          "rank": 16
+        }
+      ],
+      [
+        {
+          "id": 93,
+          "suit": "C",
+          "rank": 2
+        },
+        {
+          "id": 80,
+          "suit": "D",
+          "rank": 2
+        },
+        {
+          "id": 26,
+          "suit": "D",
+          "rank": 2
+        },
+        {
+          "id": 54,
+          "suit": "S",
+          "rank": 2
+        },
+        {
+          "id": 94,
+          "suit": "C",
+          "rank": 3
+        },
+        {
+          "id": 14,
+          "suit": "H",
+          "rank": 3
+        },
+        {
+          "id": 55,
+          "suit": "S",
+          "rank": 3
+        },
+        {
+          "id": 28,
+          "suit": "D",
+          "rank": 4
+        },
+        {
+          "id": 29,
+          "suit": "D",
+          "rank": 5
+        },
+        {
+          "id": 16,
+          "suit": "H",
+          "rank": 5
+        },
+        {
+          "id": 57,
+          "suit": "S",
+          "rank": 5
+        },
+        {
+          "id": 4,
+          "suit": "S",
+          "rank": 6
+        },
+        {
+          "id": 58,
+          "suit": "S",
+          "rank": 6
+        },
+        {
+          "id": 85,
+          "suit": "D",
+          "rank": 7
+        },
+        {
+          "id": 86,
+          "suit": "D",
+          "rank": 8
+        },
+        {
+          "id": 32,
+          "suit": "D",
+          "rank": 8
+        },
+        {
+          "id": 33,
+          "suit": "D",
+          "rank": 9
+        },
+        {
+          "id": 90,
+          "suit": "D",
+          "rank": 12
+        },
+        {
+          "id": 77,
+          "suit": "H",
+          "rank": 12
+        },
+        {
+          "id": 64,
+          "suit": "S",
+          "rank": 12
+        },
+        {
+          "id": 78,
+          "suit": "H",
+          "rank": 13
+        },
+        {
+          "id": 65,
+          "suit": "S",
+          "rank": 13
+        },
+        {
+          "id": 11,
+          "suit": "S",
+          "rank": 13
+        },
+        {
+          "id": 51,
+          "suit": "C",
+          "rank": 14
+        },
+        {
+          "id": 12,
+          "suit": "S",
+          "rank": 14
+        },
+        {
+          "id": 66,
+          "suit": "S",
+          "rank": 14
+        },
+        {
+          "id": 53,
+          "suit": "J",
+          "rank": 17
+        }
+      ],
+      [
+        {
+          "id": 39,
+          "suit": "C",
+          "rank": 2
+        },
+        {
+          "id": 13,
+          "suit": "H",
+          "rank": 2
+        },
+        {
+          "id": 1,
+          "suit": "S",
+          "rank": 3
+        },
+        {
+          "id": 15,
+          "suit": "H",
+          "rank": 4
+        },
+        {
+          "id": 2,
+          "suit": "S",
+          "rank": 4
+        },
+        {
+          "id": 83,
+          "suit": "D",
+          "rank": 5
+        },
+        {
+          "id": 70,
+          "suit": "H",
+          "rank": 5
+        },
+        {
+          "id": 84,
+          "suit": "D",
+          "rank": 6
+        },
+        {
+          "id": 17,
+          "suit": "H",
+          "rank": 6
+        },
+        {
+          "id": 44,
+          "suit": "C",
+          "rank": 7
+        },
+        {
+          "id": 18,
+          "suit": "H",
+          "rank": 7
+        },
+        {
+          "id": 99,
+          "suit": "C",
+          "rank": 8
+        },
+        {
+          "id": 45,
+          "suit": "C",
+          "rank": 8
+        },
+        {
+          "id": 60,
+          "suit": "S",
+          "rank": 8
+        },
+        {
+          "id": 46,
+          "suit": "C",
+          "rank": 9
+        },
+        {
+          "id": 7,
+          "suit": "S",
+          "rank": 9
+        },
+        {
+          "id": 101,
+          "suit": "C",
+          "rank": 10
+        },
+        {
+          "id": 47,
+          "suit": "C",
+          "rank": 10
+        },
+        {
+          "id": 8,
+          "suit": "S",
+          "rank": 10
+        },
+        {
+          "id": 35,
+          "suit": "D",
+          "rank": 11
+        },
+        {
+          "id": 89,
+          "suit": "D",
+          "rank": 11
+        },
+        {
+          "id": 76,
+          "suit": "H",
+          "rank": 11
+        },
+        {
+          "id": 63,
+          "suit": "S",
+          "rank": 11
+        },
+        {
+          "id": 23,
+          "suit": "H",
+          "rank": 12
+        },
+        {
+          "id": 37,
+          "suit": "D",
+          "rank": 13
+        },
+        {
+          "id": 38,
+          "suit": "D",
+          "rank": 14
+        },
+        {
+          "id": 25,
+          "suit": "H",
+          "rank": 14
+        }
+      ],
+      [
+        {
+          "id": 27,
+          "suit": "D",
+          "rank": 3
+        },
+        {
+          "id": 41,
+          "suit": "C",
+          "rank": 4
+        },
+        {
+          "id": 82,
+          "suit": "D",
+          "rank": 4
+        },
+        {
+          "id": 69,
+          "suit": "H",
+          "rank": 4
+        },
+        {
+          "id": 56,
+          "suit": "S",
+          "rank": 4
+        },
+        {
+          "id": 96,
+          "suit": "C",
+          "rank": 5
+        },
+        {
+          "id": 97,
+          "suit": "C",
+          "rank": 6
+        },
+        {
+          "id": 30,
+          "suit": "D",
+          "rank": 6
+        },
+        {
+          "id": 71,
+          "suit": "H",
+          "rank": 6
+        },
+        {
+          "id": 31,
+          "suit": "D",
+          "rank": 7
+        },
+        {
+          "id": 72,
+          "suit": "H",
+          "rank": 7
+        },
+        {
+          "id": 5,
+          "suit": "S",
+          "rank": 7
+        },
+        {
+          "id": 73,
+          "suit": "H",
+          "rank": 8
+        },
+        {
+          "id": 87,
+          "suit": "D",
+          "rank": 9
+        },
+        {
+          "id": 20,
+          "suit": "H",
+          "rank": 9
+        },
+        {
+          "id": 61,
+          "suit": "S",
+          "rank": 9
+        },
+        {
+          "id": 21,
+          "suit": "H",
+          "rank": 10
+        },
+        {
+          "id": 22,
+          "suit": "H",
+          "rank": 11
+        },
+        {
+          "id": 9,
+          "suit": "S",
+          "rank": 11
+        },
+        {
+          "id": 103,
+          "suit": "C",
+          "rank": 12
+        },
+        {
+          "id": 49,
+          "suit": "C",
+          "rank": 12
+        },
+        {
+          "id": 36,
+          "suit": "D",
+          "rank": 12
+        },
+        {
+          "id": 104,
+          "suit": "C",
+          "rank": 13
+        },
+        {
+          "id": 24,
+          "suit": "H",
+          "rank": 13
+        },
+        {
+          "id": 105,
+          "suit": "C",
+          "rank": 14
+        },
+        {
+          "id": 52,
+          "suit": "J",
+          "rank": 16
+        },
+        {
+          "id": 107,
+          "suit": "J",
+          "rank": 17
+        }
+      ]
+    ],
+    "moves": [
+      {
+        "moveNo": 1,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 40,
+            "suit": "C",
+            "rank": 3
+          },
+          {
+            "id": 67,
+            "suit": "H",
+            "rank": 2
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 3,
+        "handsAfter": [
+          25,
+          27,
+          27,
+          27
+        ]
+      },
+      {
+        "moveNo": 2,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 12,
+            "suit": "S",
+            "rank": 14
+          },
+          {
+            "id": 66,
+            "suit": "S",
+            "rank": 14
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 14,
+        "handsAfter": [
+          25,
+          25,
+          27,
+          27
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 3
+      },
+      {
+        "moveNo": 3,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 15,
+            "suit": "H",
+            "rank": 4
+          },
+          {
+            "id": 70,
+            "suit": "H",
+            "rank": 5
+          },
+          {
+            "id": 17,
+            "suit": "H",
+            "rank": 6
+          },
+          {
+            "id": 18,
+            "suit": "H",
+            "rank": 7
+          },
+          {
+            "id": 13,
+            "suit": "H",
+            "rank": 2
+          }
+        ],
+        "comboKind": "flush",
+        "mainRank": 8,
+        "handsAfter": [
+          25,
+          25,
+          22,
+          27
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 4,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 72,
+            "suit": "H",
+            "rank": 7
+          },
+          {
+            "id": 73,
+            "suit": "H",
+            "rank": 8
+          },
+          {
+            "id": 20,
+            "suit": "H",
+            "rank": 9
+          },
+          {
+            "id": 21,
+            "suit": "H",
+            "rank": 10
+          },
+          {
+            "id": 22,
+            "suit": "H",
+            "rank": 11
+          }
+        ],
+        "comboKind": "flush",
+        "mainRank": 11,
+        "handsAfter": [
+          25,
+          25,
+          22,
+          22
+        ],
+        "toBeatKind": "flush",
+        "toBeatRank": 8
+      },
+      {
+        "moveNo": 5,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          25,
+          25,
+          22,
+          22
+        ],
+        "toBeatKind": "flush",
+        "toBeatRank": 11
+      },
+      {
+        "moveNo": 6,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          25,
+          25,
+          22,
+          22
+        ],
+        "toBeatKind": "flush",
+        "toBeatRank": 11
+      },
+      {
+        "moveNo": 7,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          25,
+          25,
+          22,
+          22
+        ],
+        "toBeatKind": "flush",
+        "toBeatRank": 11
+      },
+      {
+        "moveNo": 8,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 41,
+            "suit": "C",
+            "rank": 4
+          },
+          {
+            "id": 82,
+            "suit": "D",
+            "rank": 4
+          },
+          {
+            "id": 56,
+            "suit": "S",
+            "rank": 4
+          }
+        ],
+        "comboKind": "trio",
+        "mainRank": 4,
+        "handsAfter": [
+          25,
+          25,
+          22,
+          19
+        ]
+      },
+      {
+        "moveNo": 9,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          25,
+          25,
+          22,
+          19
+        ],
+        "toBeatKind": "trio",
+        "toBeatRank": 4
+      },
+      {
+        "moveNo": 10,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 29,
+            "suit": "D",
+            "rank": 5
+          },
+          {
+            "id": 16,
+            "suit": "H",
+            "rank": 5
+          },
+          {
+            "id": 57,
+            "suit": "S",
+            "rank": 5
+          }
+        ],
+        "comboKind": "trio",
+        "mainRank": 5,
+        "handsAfter": [
+          25,
+          22,
+          22,
+          19
+        ],
+        "toBeatKind": "trio",
+        "toBeatRank": 4
+      },
+      {
+        "moveNo": 11,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 35,
+            "suit": "D",
+            "rank": 11
+          },
+          {
+            "id": 89,
+            "suit": "D",
+            "rank": 11
+          },
+          {
+            "id": 76,
+            "suit": "H",
+            "rank": 11
+          },
+          {
+            "id": 63,
+            "suit": "S",
+            "rank": 11
+          }
+        ],
+        "comboKind": "bomb",
+        "mainRank": 11,
+        "handsAfter": [
+          25,
+          22,
+          18,
+          19
+        ],
+        "toBeatKind": "trio",
+        "toBeatRank": 5
+      },
+      {
+        "moveNo": 12,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          25,
+          22,
+          18,
+          19
+        ],
+        "toBeatKind": "bomb",
+        "toBeatRank": 11
+      },
+      {
+        "moveNo": 13,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          25,
+          22,
+          18,
+          19
+        ],
+        "toBeatKind": "bomb",
+        "toBeatRank": 11
+      },
+      {
+        "moveNo": 14,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          25,
+          22,
+          18,
+          19
+        ],
+        "toBeatKind": "bomb",
+        "toBeatRank": 11
+      },
+      {
+        "moveNo": 15,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 1,
+            "suit": "S",
+            "rank": 3
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 3,
+        "handsAfter": [
+          25,
+          22,
+          17,
+          19
+        ]
+      },
+      {
+        "moveNo": 16,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 71,
+            "suit": "H",
+            "rank": 6
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 6,
+        "handsAfter": [
+          25,
+          22,
+          17,
+          18
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 3
+      },
+      {
+        "moveNo": 17,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 19,
+            "suit": "H",
+            "rank": 8
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 8,
+        "handsAfter": [
+          24,
+          22,
+          17,
+          18
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 6
+      },
+      {
+        "moveNo": 18,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 33,
+            "suit": "D",
+            "rank": 9
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 9,
+        "handsAfter": [
+          24,
+          21,
+          17,
+          18
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 8
+      },
+      {
+        "moveNo": 19,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 8,
+            "suit": "S",
+            "rank": 10
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 10,
+        "handsAfter": [
+          24,
+          21,
+          16,
+          18
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 9
+      },
+      {
+        "moveNo": 20,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 104,
+            "suit": "C",
+            "rank": 13
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 13,
+        "handsAfter": [
+          24,
+          21,
+          16,
+          17
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 10
+      },
+      {
+        "moveNo": 21,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 34,
+            "suit": "D",
+            "rank": 10
+          },
+          {
+            "id": 88,
+            "suit": "D",
+            "rank": 10
+          },
+          {
+            "id": 75,
+            "suit": "H",
+            "rank": 10
+          },
+          {
+            "id": 62,
+            "suit": "S",
+            "rank": 10
+          }
+        ],
+        "comboKind": "bomb",
+        "mainRank": 10,
+        "handsAfter": [
+          20,
+          21,
+          16,
+          17
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 22,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          20,
+          21,
+          16,
+          17
+        ],
+        "toBeatKind": "bomb",
+        "toBeatRank": 10
+      },
+      {
+        "moveNo": 23,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          20,
+          21,
+          16,
+          17
+        ],
+        "toBeatKind": "bomb",
+        "toBeatRank": 10
+      },
+      {
+        "moveNo": 24,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          20,
+          21,
+          16,
+          17
+        ],
+        "toBeatKind": "bomb",
+        "toBeatRank": 10
+      },
+      {
+        "moveNo": 25,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 3,
+            "suit": "S",
+            "rank": 5
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 5,
+        "handsAfter": [
+          19,
+          21,
+          16,
+          17
+        ]
+      },
+      {
+        "moveNo": 26,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 90,
+            "suit": "D",
+            "rank": 12
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 12,
+        "handsAfter": [
+          19,
+          20,
+          16,
+          17
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 5
+      },
+      {
+        "moveNo": 27,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 39,
+            "suit": "C",
+            "rank": 2
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 2,
+        "handsAfter": [
+          19,
+          20,
+          15,
+          17
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 12
+      },
+      {
+        "moveNo": 28,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 52,
+            "suit": "J",
+            "rank": 16
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 16,
+        "handsAfter": [
+          19,
+          20,
+          15,
+          16
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 29,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          19,
+          20,
+          15,
+          16
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 16
+      },
+      {
+        "moveNo": 30,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          19,
+          20,
+          15,
+          16
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 16
+      },
+      {
+        "moveNo": 31,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          19,
+          20,
+          15,
+          16
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 16
+      },
+      {
+        "moveNo": 32,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 87,
+            "suit": "D",
+            "rank": 9
+          },
+          {
+            "id": 61,
+            "suit": "S",
+            "rank": 9
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 9,
+        "handsAfter": [
+          19,
+          20,
+          15,
+          14
+        ]
+      },
+      {
+        "moveNo": 33,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 48,
+            "suit": "C",
+            "rank": 11
+          },
+          {
+            "id": 102,
+            "suit": "C",
+            "rank": 11
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 11,
+        "handsAfter": [
+          17,
+          20,
+          15,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 9
+      },
+      {
+        "moveNo": 34,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 77,
+            "suit": "H",
+            "rank": 12
+          },
+          {
+            "id": 64,
+            "suit": "S",
+            "rank": 12
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 12,
+        "handsAfter": [
+          17,
+          18,
+          15,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 11
+      },
+      {
+        "moveNo": 35,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 38,
+            "suit": "D",
+            "rank": 14
+          },
+          {
+            "id": 25,
+            "suit": "H",
+            "rank": 14
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 14,
+        "handsAfter": [
+          17,
+          18,
+          13,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 12
+      },
+      {
+        "moveNo": 36,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          17,
+          18,
+          13,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 37,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          17,
+          18,
+          13,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 38,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 80,
+            "suit": "D",
+            "rank": 2
+          },
+          {
+            "id": 54,
+            "suit": "S",
+            "rank": 2
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 2,
+        "handsAfter": [
+          17,
+          16,
+          13,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 39,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          17,
+          16,
+          13,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 40,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          17,
+          16,
+          13,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 41,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          17,
+          16,
+          13,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 42,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 14,
+            "suit": "H",
+            "rank": 3
+          },
+          {
+            "id": 55,
+            "suit": "S",
+            "rank": 3
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 3,
+        "handsAfter": [
+          17,
+          14,
+          13,
+          14
+        ]
+      },
+      {
+        "moveNo": 43,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 99,
+            "suit": "C",
+            "rank": 8
+          },
+          {
+            "id": 45,
+            "suit": "C",
+            "rank": 8
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 8,
+        "handsAfter": [
+          17,
+          14,
+          11,
+          14
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 3
+      },
+      {
+        "moveNo": 44,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 103,
+            "suit": "C",
+            "rank": 12
+          },
+          {
+            "id": 36,
+            "suit": "D",
+            "rank": 12
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 12,
+        "handsAfter": [
+          17,
+          14,
+          11,
+          12
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 8
+      },
+      {
+        "moveNo": 45,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 50,
+            "suit": "C",
+            "rank": 13
+          },
+          {
+            "id": 91,
+            "suit": "D",
+            "rank": 13
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 13,
+        "handsAfter": [
+          15,
+          14,
+          11,
+          12
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 12
+      },
+      {
+        "moveNo": 46,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          15,
+          14,
+          11,
+          12
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 47,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          15,
+          14,
+          11,
+          12
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 48,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          15,
+          14,
+          11,
+          12
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 49,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 95,
+            "suit": "C",
+            "rank": 4
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 4,
+        "handsAfter": [
+          14,
+          14,
+          11,
+          12
+        ]
+      },
+      {
+        "moveNo": 50,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 26,
+            "suit": "D",
+            "rank": 2
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 2,
+        "handsAfter": [
+          14,
+          13,
+          11,
+          12
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 4
+      },
+      {
+        "moveNo": 51,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          14,
+          13,
+          11,
+          12
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 52,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          14,
+          13,
+          11,
+          12
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 53,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          14,
+          13,
+          11,
+          12
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 54,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 85,
+            "suit": "D",
+            "rank": 7
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 7,
+        "handsAfter": [
+          14,
+          12,
+          11,
+          12
+        ]
+      },
+      {
+        "moveNo": 55,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 60,
+            "suit": "S",
+            "rank": 8
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 8,
+        "handsAfter": [
+          14,
+          12,
+          10,
+          12
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 7
+      },
+      {
+        "moveNo": 56,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 105,
+            "suit": "C",
+            "rank": 14
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 14,
+        "handsAfter": [
+          14,
+          12,
+          10,
+          11
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 8
+      },
+      {
+        "moveNo": 57,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 0,
+            "suit": "S",
+            "rank": 2
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 2,
+        "handsAfter": [
+          13,
+          12,
+          10,
+          11
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 58,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 53,
+            "suit": "J",
+            "rank": 17
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 17,
+        "handsAfter": [
+          13,
+          11,
+          10,
+          11
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 59,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          13,
+          11,
+          10,
+          11
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 17
+      },
+      {
+        "moveNo": 60,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          13,
+          11,
+          10,
+          11
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 17
+      },
+      {
+        "moveNo": 61,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          13,
+          11,
+          10,
+          11
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 17
+      },
+      {
+        "moveNo": 62,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 4,
+            "suit": "S",
+            "rank": 6
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 6,
+        "handsAfter": [
+          13,
+          10,
+          10,
+          11
+        ]
+      },
+      {
+        "moveNo": 63,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 46,
+            "suit": "C",
+            "rank": 9
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 9,
+        "handsAfter": [
+          13,
+          10,
+          9,
+          11
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 6
+      },
+      {
+        "moveNo": 64,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 49,
+            "suit": "C",
+            "rank": 12
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 12,
+        "handsAfter": [
+          13,
+          10,
+          9,
+          10
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 9
+      },
+      {
+        "moveNo": 65,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          13,
+          10,
+          9,
+          10
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 12
+      },
+      {
+        "moveNo": 66,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 51,
+            "suit": "C",
+            "rank": 14
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 14,
+        "handsAfter": [
+          13,
+          9,
+          9,
+          10
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 12
+      },
+      {
+        "moveNo": 67,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          13,
+          9,
+          9,
+          10
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 68,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 107,
+            "suit": "J",
+            "rank": 17
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 17,
+        "handsAfter": [
+          13,
+          9,
+          9,
+          9
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 69,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          13,
+          9,
+          9,
+          9
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 17
+      },
+      {
+        "moveNo": 70,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          13,
+          9,
+          9,
+          9
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 17
+      },
+      {
+        "moveNo": 71,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          13,
+          9,
+          9,
+          9
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 17
+      },
+      {
+        "moveNo": 72,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 69,
+            "suit": "H",
+            "rank": 4
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 4,
+        "handsAfter": [
+          13,
+          9,
+          9,
+          8
+        ]
+      },
+      {
+        "moveNo": 73,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 74,
+            "suit": "H",
+            "rank": 9
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 9,
+        "handsAfter": [
+          12,
+          9,
+          9,
+          8
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 4
+      },
+      {
+        "moveNo": 74,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 65,
+            "suit": "S",
+            "rank": 13
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 13,
+        "handsAfter": [
+          12,
+          8,
+          9,
+          8
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 9
+      },
+      {
+        "moveNo": 75,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          12,
+          8,
+          9,
+          8
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 76,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          12,
+          8,
+          9,
+          8
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 77,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 92,
+            "suit": "D",
+            "rank": 14
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 14,
+        "handsAfter": [
+          11,
+          8,
+          9,
+          8
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 78,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          11,
+          8,
+          9,
+          8
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 79,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          11,
+          8,
+          9,
+          8
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 80,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          11,
+          8,
+          9,
+          8
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 81,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 98,
+            "suit": "C",
+            "rank": 7
+          },
+          {
+            "id": 59,
+            "suit": "S",
+            "rank": 7
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 7,
+        "handsAfter": [
+          9,
+          8,
+          9,
+          8
+        ]
+      },
+      {
+        "moveNo": 82,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 86,
+            "suit": "D",
+            "rank": 8
+          },
+          {
+            "id": 32,
+            "suit": "D",
+            "rank": 8
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 8,
+        "handsAfter": [
+          9,
+          6,
+          9,
+          8
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 7
+      },
+      {
+        "moveNo": 83,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 101,
+            "suit": "C",
+            "rank": 10
+          },
+          {
+            "id": 47,
+            "suit": "C",
+            "rank": 10
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 10,
+        "handsAfter": [
+          9,
+          6,
+          7,
+          8
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 8
+      },
+      {
+        "moveNo": 84,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          9,
+          6,
+          7,
+          8
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 10
+      },
+      {
+        "moveNo": 85,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          9,
+          6,
+          7,
+          8
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 10
+      },
+      {
+        "moveNo": 86,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          9,
+          6,
+          7,
+          8
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 10
+      },
+      {
+        "moveNo": 87,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 83,
+            "suit": "D",
+            "rank": 5
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 5,
+        "handsAfter": [
+          9,
+          6,
+          6,
+          8
+        ]
+      },
+      {
+        "moveNo": 88,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 24,
+            "suit": "H",
+            "rank": 13
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 13,
+        "handsAfter": [
+          9,
+          6,
+          6,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 5
+      },
+      {
+        "moveNo": 89,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 79,
+            "suit": "H",
+            "rank": 14
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 14,
+        "handsAfter": [
+          8,
+          6,
+          6,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 90,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          8,
+          6,
+          6,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 91,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          8,
+          6,
+          6,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 92,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          8,
+          6,
+          6,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 14
+      },
+      {
+        "moveNo": 93,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 68,
+            "suit": "H",
+            "rank": 3
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 3,
+        "handsAfter": [
+          7,
+          6,
+          6,
+          7
+        ]
+      },
+      {
+        "moveNo": 94,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 58,
+            "suit": "S",
+            "rank": 6
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 6,
+        "handsAfter": [
+          7,
+          5,
+          6,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 3
+      },
+      {
+        "moveNo": 95,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 37,
+            "suit": "D",
+            "rank": 13
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 13,
+        "handsAfter": [
+          7,
+          5,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 6
+      },
+      {
+        "moveNo": 96,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          7,
+          5,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 97,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 106,
+            "suit": "J",
+            "rank": 16
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 16,
+        "handsAfter": [
+          6,
+          5,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 98,
+        "player": 1,
+        "pass": true,
+        "handsAfter": [
+          6,
+          5,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 16
+      },
+      {
+        "moveNo": 99,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          6,
+          5,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 16
+      },
+      {
+        "moveNo": 100,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          6,
+          5,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 16
+      },
+      {
+        "moveNo": 101,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 43,
+            "suit": "C",
+            "rank": 6
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 6,
+        "handsAfter": [
+          5,
+          5,
+          5,
+          7
+        ]
+      },
+      {
+        "moveNo": 102,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 78,
+            "suit": "H",
+            "rank": 13
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 13,
+        "handsAfter": [
+          5,
+          4,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 6
+      },
+      {
+        "moveNo": 103,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          5,
+          4,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 104,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          5,
+          4,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 105,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          5,
+          4,
+          5,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 106,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 28,
+            "suit": "D",
+            "rank": 4
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 4,
+        "handsAfter": [
+          5,
+          3,
+          5,
+          7
+        ]
+      },
+      {
+        "moveNo": 107,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 84,
+            "suit": "D",
+            "rank": 6
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 6,
+        "handsAfter": [
+          5,
+          3,
+          4,
+          7
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 4
+      },
+      {
+        "moveNo": 108,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 9,
+            "suit": "S",
+            "rank": 11
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 11,
+        "handsAfter": [
+          5,
+          3,
+          4,
+          6
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 6
+      },
+      {
+        "moveNo": 109,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 10,
+            "suit": "S",
+            "rank": 12
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 12,
+        "handsAfter": [
+          4,
+          3,
+          4,
+          6
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 11
+      },
+      {
+        "moveNo": 110,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 93,
+            "suit": "C",
+            "rank": 2
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 2,
+        "handsAfter": [
+          4,
+          2,
+          4,
+          6
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 12
+      },
+      {
+        "moveNo": 111,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          4,
+          2,
+          4,
+          6
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 112,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          4,
+          2,
+          4,
+          6
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 113,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          4,
+          2,
+          4,
+          6
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 2
+      },
+      {
+        "moveNo": 114,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 94,
+            "suit": "C",
+            "rank": 3
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 3,
+        "handsAfter": [
+          4,
+          1,
+          4,
+          6
+        ]
+      },
+      {
+        "moveNo": 115,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          4,
+          1,
+          4,
+          6
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 3
+      },
+      {
+        "moveNo": 116,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 96,
+            "suit": "C",
+            "rank": 5
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 5,
+        "handsAfter": [
+          4,
+          1,
+          4,
+          5
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 3
+      },
+      {
+        "moveNo": 117,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          4,
+          1,
+          4,
+          5
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 5
+      },
+      {
+        "moveNo": 118,
+        "player": 1,
+        "pass": false,
+        "cards": [
+          {
+            "id": 11,
+            "suit": "S",
+            "rank": 13
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 13,
+        "handsAfter": [
+          4,
+          0,
+          4,
+          5
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 5
+      },
+      {
+        "moveNo": 119,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          4,
+          0,
+          4,
+          5
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 120,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          4,
+          0,
+          4,
+          5
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 121,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          4,
+          0,
+          4,
+          5
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 13
+      },
+      {
+        "moveNo": 122,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 31,
+            "suit": "D",
+            "rank": 7
+          },
+          {
+            "id": 5,
+            "suit": "S",
+            "rank": 7
+          }
+        ],
+        "comboKind": "pair",
+        "mainRank": 7,
+        "handsAfter": [
+          4,
+          0,
+          4,
+          3
+        ]
+      },
+      {
+        "moveNo": 123,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          4,
+          0,
+          4,
+          3
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 7
+      },
+      {
+        "moveNo": 124,
+        "player": 2,
+        "pass": true,
+        "handsAfter": [
+          4,
+          0,
+          4,
+          3
+        ],
+        "toBeatKind": "pair",
+        "toBeatRank": 7
+      },
+      {
+        "moveNo": 125,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 30,
+            "suit": "D",
+            "rank": 6
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 6,
+        "handsAfter": [
+          4,
+          0,
+          4,
+          2
+        ]
+      },
+      {
+        "moveNo": 126,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 6,
+            "suit": "S",
+            "rank": 8
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 8,
+        "handsAfter": [
+          3,
+          0,
+          4,
+          2
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 6
+      },
+      {
+        "moveNo": 127,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 7,
+            "suit": "S",
+            "rank": 9
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 9,
+        "handsAfter": [
+          3,
+          0,
+          3,
+          2
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 8
+      },
+      {
+        "moveNo": 128,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          3,
+          0,
+          3,
+          2
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 9
+      },
+      {
+        "moveNo": 129,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          3,
+          0,
+          3,
+          2
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 9
+      },
+      {
+        "moveNo": 130,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 2,
+            "suit": "S",
+            "rank": 4
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 4,
+        "handsAfter": [
+          3,
+          0,
+          2,
+          2
+        ]
+      },
+      {
+        "moveNo": 131,
+        "player": 3,
+        "pass": false,
+        "cards": [
+          {
+            "id": 97,
+            "suit": "C",
+            "rank": 6
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 6,
+        "handsAfter": [
+          3,
+          0,
+          2,
+          1
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 4
+      },
+      {
+        "moveNo": 132,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 100,
+            "suit": "C",
+            "rank": 9
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 9,
+        "handsAfter": [
+          2,
+          0,
+          2,
+          1
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 6
+      },
+      {
+        "moveNo": 133,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 23,
+            "suit": "H",
+            "rank": 12
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 12,
+        "handsAfter": [
+          2,
+          0,
+          1,
+          1
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 9
+      },
+      {
+        "moveNo": 134,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          2,
+          0,
+          1,
+          1
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 12
+      },
+      {
+        "moveNo": 135,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          2,
+          0,
+          1,
+          1
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 12
+      },
+      {
+        "moveNo": 136,
+        "player": 2,
+        "pass": false,
+        "cards": [
+          {
+            "id": 44,
+            "suit": "C",
+            "rank": 7
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 7,
+        "handsAfter": [
+          2,
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "moveNo": 137,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          2,
+          0,
+          0,
+          1
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 7
+      },
+      {
+        "moveNo": 138,
+        "player": 0,
+        "pass": true,
+        "handsAfter": [
+          2,
+          0,
+          0,
+          1
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 7
+      },
+      {
+        "moveNo": 139,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 81,
+            "suit": "D",
+            "rank": 3
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 3,
+        "handsAfter": [
+          1,
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "moveNo": 140,
+        "player": 3,
+        "pass": true,
+        "handsAfter": [
+          1,
+          0,
+          0,
+          1
+        ],
+        "toBeatKind": "single",
+        "toBeatRank": 3
+      },
+      {
+        "moveNo": 141,
+        "player": 0,
+        "pass": false,
+        "cards": [
+          {
+            "id": 42,
+            "suit": "C",
+            "rank": 5
+          }
+        ],
+        "comboKind": "single",
+        "mainRank": 5,
+        "handsAfter": [
+          0,
+          0,
+          0,
+          1
+        ]
+      }
+    ],
+    "result": {
+      "finishOrder": [
+        1,
+        2,
+        0,
+        3
+      ],
+      "winnerTeam": 1,
+      "doubleUp": false,
+      "levelsAfter": [
+        2,
+        3
+      ],
+      "upgrade": 1,
+      "passedA": false
+    }
+  }
+}

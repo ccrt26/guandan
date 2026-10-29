@@ -1,0 +1,38 @@
+{
+  "selectedActionIds": [
+    "action-0001",
+    "action-0000"
+  ],
+  "proposalReasons": {
+    "action-0001": [
+      "student_preferred",
+      "actual_source_action",
+      "legal_pass",
+      "fixed_score_then_index_fill"
+    ],
+    "action-0000": [
+      "independent_legal_nonbomb_takeover_or_only_bomb",
+      "fixed_score_then_index_fill",
+      "fixed_score_then_index_fill"
+    ]
+  },
+  "unsearchedActionIds": [],
+  "maxComparedCandidates": 6,
+  "priorityOrder": [
+    "student_preferred",
+    "actual_source_action",
+    "legal_pass",
+    "independent_nonbomb_takeover",
+    "four_card_bomb",
+    "five_card_bomb",
+    "finish_hand_if_capacity",
+    "fixed_score_then_index_fill"
+  ],
+  "scope": "bounded exploration only; not global optimality",
+  "preferredActionId": "action-0001",
+  "scores": [
+    0.8681358695030212,
+    1.1773706674575806
+  ],
+  "observedBeforeSHA256": "9a8fb0f14314aa518ee26949fe9328733d7bd2054c84533bebcd5d891e5df9eb"
+}

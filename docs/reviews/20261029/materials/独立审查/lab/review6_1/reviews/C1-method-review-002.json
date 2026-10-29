@@ -1,0 +1,160 @@
+{
+  "reviewId": "C1-method-002",
+  "requestId": "C1-request-002",
+  "scope": "独立只读复审 C1 修订及原 METHOD-P1-001、E01-E05；仅验收有限开发事实与真实网页，不验收 C2-C6 或新牌力。",
+  "reviewedFileHashes": {
+    "C1-request-002.json": "07695216d442dea523f2abd1b4505db4136df86fe8c137228cd657d3fd78e6fa",
+    "C1-002/source-manifest.json": "9bdc9a176d40a5fcbe8e12db50eb82abacc30bf4e6c045eed90c37763f0625ba",
+    "C1-002/diff.patch": "89bdce13eb60f5a6867d1b0ebca7830283c3c4017767e56063f85c400ad07bd5",
+    "C1-002/repair-summary.json": "ab19df18d89ee6a354c81358a320b078d929f518cca176741c5d16f1b1afd0dc",
+    "product-006/input-manifest.lock.json": "205a10ef07a1507428c95606aff34ccee572e371ae3c2b4f17bb83c9c9220b73",
+    "product-006/plan.lock.json": "e4d93f06d90f2bbfe2f19cfffe7819f7014fe7b775a0ef4d98ecdacc3ec0ca3c",
+    "product-006/expected-assertions.lock.json": "28f1d68127fb3304a07a671d3953e88556b8e80a3a9d5557a7e2daf629b9d1ff",
+    "product-006/case-results.json": "ff9927a4765e621ce13efb42a1a4a730c1fb93f9bc26a4c5482dc79b2285d925",
+    "product-006/product-acceptance.json": "30546398256b765ef9cd3aae3c99c6615c1ce004527b23c327e15472607f2c0d",
+    "product-006/development-example-evidence.json": "0d11eb1d93eb6942885a4d702629e7892dcf7dd1d6e89c3d9f87075026aeb4c8",
+    "browser-acceptance-002.json": "4610e2041d0f95efe0c19aa9d760a94a8a1d2db5cf9d57617506fa010213bd65",
+    "c1-real-product-cli-verified-002.json": "efa07339af8775406b67b10b26a631cf2590681659e18e6766a168f810d93c4d",
+    "C1-playing-policy-preservation-002.json": "da0b3c9e4d5a355e904a0070d4659a39f3a129dd2197f9facb20c75683c84ea0",
+    "product-display-002/export-manifest.json": "dabcc6fb4735c506c829830a7047131b131deedb2f0a1e9500757ff30d4cf6a9"
+  },
+  "integrityVerification": {
+    "requestReferencesChecked": 27,
+    "requestReferenceMismatches": 0,
+    "sourceManifestFiles": 35,
+    "currentAndImmutableSourceCopyMismatches": 0,
+    "browserSourceReferencesChecked": 15,
+    "browserEvidenceReferencesChecked": 45,
+    "browserReferenceMismatches": 0,
+    "anchoredProductInputFiles": 68,
+    "anchoredProductInputMismatches": 0,
+    "finalSourceDrift": 0
+  },
+  "closureDecisions": [
+    {
+      "findingId": "C1-METHOD-P1-001",
+      "status": "closed",
+      "evidence": "独立重放四席实际 buildDecisionReviews、renderFactCards、acceptCoachResponse。四席自身均标为你；台上关系分别为我方、对方、我方、对方。正确规则原句均可通过；故意反写关系均被拒绝。真实 SSE 请求12至15的完整输入亦显示对应四席和正确关系。"
+    },
+    {
+      "findingId": "E01",
+      "status": "closed",
+      "evidence": "校验不再把无关合法 actionId 当作新结论授权。独立构造28个带合法引用的战术、因果、来源、身份和可能性措辞负例，实时及缓存入口全部拒绝；正常完整程序句仍可通过。保存的十类实际 SSE 负例均进入事实回退，正例完成后正常显示。"
+    },
+    {
+      "findingId": "E02",
+      "status": "closed",
+      "evidence": "六角色 ID 从原始记录、moveNo、viewerSeat 重建，要求完整且互异。独立重复角色、决策身份、规则正文、可见性和删除炸弹比较五种变异均被拒绝。68份输入由配置中的外部 manifest hash 锚定；实际只读 product CLI 再运行返回 verified。"
+    },
+    {
+      "findingId": "E03",
+      "status": "closed",
+      "evidence": "ReviewPage 向反事实入口传递当前 rec；结果按当前记录与观察席限定，旧异步输出被隔离。独立错误观察席探针抛出 counterfactual actor/viewer seat mismatch。浏览器原始证据保留切席后的反事实清除及流式迟到结果隔离。"
+    },
+    {
+      "findingId": "E04",
+      "status": "closed",
+      "evidence": "与 METHOD-P1-001 同源的相对身份问题已由四席独立探针和四份实际 SSE 输入共同复核，提示版本已升级。"
+    },
+    {
+      "findingId": "E05",
+      "status": "closed",
+      "evidence": "产品导出仅聚合已锚定的既有测量及验证收据，无引擎、模型或测量模块导入。导出文件与 product-006 对应原件逐字节一致；收据记录 newEvaluations=0、externalCalls=0、formalConfirmationsOpened=0。"
+    }
+  ],
+  "findings": [],
+  "rawRecomputation": {
+    "method": "用独立临时脚本和引擎原语重建原始状态，核对合法动作、牌账、断言正文、观察向量和指纹；未调用 buildDecisionFactsV3 或 verifyProductCard 作为复算判定器。",
+    "baseCases": 60,
+    "categories": {
+      "yield": 6,
+      "takeover": 6,
+      "bomb_4_5": 6,
+      "remaining_structure": 6,
+      "block_finish": 6,
+      "known_tribute": 6,
+      "role_rotation": 6,
+      "rule_context": 6,
+      "evidence_insufficient": 6,
+      "plan_invalidated": 6
+    },
+    "rawMovesChecked": 5970,
+    "illegalOrCountInconsistentMoves": 0,
+    "uniqueCaseViewerCards": 240,
+    "fixedDistinctRolesPerCard": 6,
+    "expectedAssertions": 1440,
+    "checkedAssertions": 1440,
+    "missingAssertions": 0,
+    "incorrectAssertions": 0,
+    "applicableAssertions": 1308,
+    "prelockedInapplicableAssertions": {
+      "lead_has_no_target": 92,
+      "pass_has_no_strength_comparison": 40
+    },
+    "rawRecordsAggregateSHA256": "fda9cc59fde5628643ee98937cd304e20b3a4f6016869e01287df9f6d02bd9a0",
+    "aggregateDefinition": "SHA256 of concatenated sorted '<filename> <fileSHA256>\\n' entries",
+    "denominatorDecision": "固定、非空、适用性有原始状态依据的240卡和1440断言契约通过。"
+  },
+  "exampleLineage": {
+    "selectedExamples": 13,
+    "selection": "四类各固定取索引1、2、3，另取 evidence_insufficient-1；无按成功结果筛选。",
+    "perCategory": {
+      "yield": 3,
+      "takeover": 3,
+      "remaining_structure": 3,
+      "plan_invalidated": 3,
+      "evidence_insufficient": 1
+    },
+    "currentProduct006RecordHashMismatches": 0,
+    "independentStoredBaselineRankingOrIdentityMismatches": 0,
+    "candidateActions": "全部为 null",
+    "oldExamples": "product-display-001 保留为旧证据；当前展示明确来自 product-006。"
+  },
+  "browserAndPolicy": {
+    "actualSSERequests": 16,
+    "savedFullPromptHashMismatches": 0,
+    "externalModelCalls": 0,
+    "negativeSSECompletionCasesRejected": 10,
+    "positiveOutputAndCache": "完成后接受、缓存重验和切席失效证据成立。",
+    "fourViewerPromptIdentities": "全部正确。",
+    "playingPolicyFilesComparedToPreC0Inventory": 32,
+    "playingPolicyFileChanges": 0,
+    "weightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+    "previewBuildId": "review6-facts-ui-20261028-02",
+    "originalMove60": "仍为 screenshot_only；未被构造案例或 hub-ui-1 替代。"
+  },
+  "suppliedValidationLogs": {
+    "fullSuite": "43 test files、393 tests passed",
+    "typecheck": "无诊断输出",
+    "build": "100 modules transformed，构建成功",
+    "runtimeBudgetGuards": "16 passed，0 failed",
+    "retainedRedEvidence": "原 E01/E02、四席及反事实来源失败记录均保留，未被绿例覆盖。"
+  },
+  "scopeAssessment": {
+    "finiteFactsAndWeb": "通过",
+    "tacticalCoverage": "十类为开发事实场景覆盖；不把必要接管、成功阻止收尾或计划质量当成已获策略支持的标签。",
+    "fourFiveWitnesses": "合法保留资源用途和立即出完事实成立；不证明团队最优。",
+    "oldFormalMatchGates": "本次未测",
+    "newCollaborationCapabilityLabel": "未测",
+    "teachingAndCandidate": "未测，无候选",
+    "humanCapability": "未验证",
+    "deployment": "旧出牌政策保持；本地复盘网页已修订，无新牌力部署声明。"
+  },
+  "independentProbeArtifacts": {
+    "/private/tmp/c1-method-recheck-002.ts": "9509498b8b5f9cd4f4a431e0d4a43bfbb7b93cb66b409e2c4bfd2cd6823ec19d",
+    "/private/tmp/c1-method-recheck-002.json": "7991b261c87971c2d026ea0449942ead1fbca65c140b1df4bdc2b382aebc9581",
+    "/private/tmp/c1-method-independent-002.ts": "51dcd3e019fc48d4e2c4a7eb7dfb2530500df6dd7c56080601c2e38964be30a7",
+    "/private/tmp/c1-method-independent-002.json": "e08f48bf2c8f9653cd395b52db9c86810fbf03d69f6e2a0b087cdb43cd1f983a",
+    "/private/tmp/c1-method-lineage-002.ts": "fd74c7be0fa197e79cfe2f3177e95b1facee08e177862b966fc92bccab1d9cf6"
+  },
+  "blockedReasons": [],
+  "remainingP0P1": [],
+  "overallDecision": "PASS_C1_FINITE_FACTS_AND_LOCAL_WEB_ONLY",
+  "limitations": [
+    "本结论针对 C1-request-002 锚定版本。",
+    "240张卡是60个开发案例的四席展示，不是240个独立战术样本。",
+    "严格程序句引用契约可能保守拒绝有效改写；拒绝后显示程序事实，未宣称通用自然语言证明器。",
+    "教学、封存技能、严重错误能力门、正式比赛、候选和真人指标均未由本次复审验收。",
+    "未修改业务、证据、协议或账本；未运行正式或封存评测、训练或外部模型调用。"
+  ]
+}

@@ -50,3 +50,7 @@ npm run build
 - `docs`：设计、架构和历史问题记录；历史报告不代表当前模型验收通过。
 
 公开资源中的字体和图片许可见 `packages/web/public/licenses` 及相应资源说明。详细上传范围见 [docs/GITHUB_UPLOAD.md](docs/GITHUB_UPLOAD.md)。
+
+## 执行复查资料
+
+[查看2026年10月29日的详细复查报告、原始证据和完整材料包](docs/reviews/20261029/README.md)。这是研究执行资料，不是新AI通过验收或部署的声明。

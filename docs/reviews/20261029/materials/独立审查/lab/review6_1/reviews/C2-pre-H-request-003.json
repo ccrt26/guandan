@@ -1,0 +1,116 @@
+{
+  "reviewId": "C2-pre-H-request-003",
+  "at": "2026-10-28T13:49:35.292Z",
+  "scope": "Focused closure of pre-H002 two launch/approval blockers against actual frozen source002 and contract002. Data/loss/recipe/quality gates unchanged; reuse prior independent full data/math checks. No H fit or heldout model scores.",
+  "sourceManifest": {
+    "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C2-pre-H-003/source-manifest.json",
+    "sha256": "adbbb485a1e3bd87c742712c6de8fa808a0e9a79f1535bcb30f3b8d17166ebe9"
+  },
+  "evidence": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/C2-plan.lock.json",
+      "sha256": "2c11b7a38fbc7b65bd30a996d3ab1e24b5f5c9a7d113764f30b282bc908c9f55"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/audit-002/source-lock-receipt.json",
+      "sha256": "3745e292e4bd3137f5f49d24b487adad13326a9bc42b6fa683865437e9ac81b7"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/audit-002/split.lock.json",
+      "sha256": "405668363dd72de17a2b128c8a34237333519cd8f60b71d844317db8df40f950"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/replay-005/rule-domain-report.json",
+      "sha256": "b2ab4671bde0a0d3a06dad3411b95787015c2ac9b34a5368b5b5eb0a35f6c7b2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/replay-005/candidate-coverage.json",
+      "sha256": "baf43fb4aff0560a9390f92fe2470a83e2fc42f4d98ad9727efbd58a1da9fc39"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/H-features-001/H-manifest.json",
+      "sha256": "0df3dcc45c4d96a176e77091bbff0c2ee127a8c2fa9157257bf75d89d32a7580"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-pre-H-targeted-002.log",
+      "sha256": "1e75178d0e0b3ae9aa7374b51a124f945c78faef291d2d61f295334c7589a786"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-route-green-001.log",
+      "sha256": "4627124b901c11d2a2e6e73d70cf687fc33889e3eabf8d6db56afdf131bcaeff"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-batched-loss-red-001.log",
+      "sha256": "254657ab805736b546942090dbc1bba930fb14e1480750a24104ed1d1789757d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-batched-loss-green-001.json",
+      "sha256": "7d4c43e1ce0b93863a9d06a8839031dadb6c360e93d42f9d47fc13512efd064d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-gates-red-001.log",
+      "sha256": "a0eadd501258b2ba82c6774ac7a0c2a4b3f1009352b45b00a547364bb2ca7b73"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-gates-green-001.json",
+      "sha256": "88ee7246d4d88e641e7a7976986bdf2dcd1b7afab57785717f5661bd8956dc20"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/H-fit-contract-002.json",
+      "sha256": "28591accaaf9bc4fe44a9c6344f0475106c7ce183eed0200dceccf352f26ba0a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/H-parent-probe-002.json",
+      "sha256": "82eb63cf6229645b8ce7d988860a2fd859cd8b3e535f7684c978490fe6b2a48a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/H-preflight-002.json",
+      "sha256": "6845039cab06be81c008e3d921b517d6c2104d965091fb0e494df31e53b61962"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-approval-identity-red-001.log",
+      "sha256": "6dac98da4910e894813d4f69cb8f703a807b33c9db5dc7e1620873f654db59dd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-approval-identity-green-001.log",
+      "sha256": "eb93f20de4db0d51c84d8742f4e26e29a68c1ad01567b1a7fee651fc6eff3d30"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-approval-live-green-001.log",
+      "sha256": "46961328468162f92c8f4ed258f8822365d8fb63615b326a2b843a44135ab8f5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-direct-worker-red-001.log",
+      "sha256": "a65905772fd02719f86b0e11fe011bca83d79820c87216b1048f319cfa05f472"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c2-H-direct-worker-green-001.json",
+      "sha256": "4a7482116ca1d5f1443c06c91b14026abf1d55933d5b7c26169994d453f2a8c1"
+    }
+  ],
+  "repairs": [
+    "Install complete engine tribute/resistance state, leader/turn/lastPlayer; complete returns and verify source first actor. Actual GD_MATCH_0004/GD_MATCH_0043 and wrong leader negative tests pass.",
+    "Same original source/split fully re-audited: replay005 raw1217604, compatible98473, targetLegal98675, usable97020, A0/B1261/C44; all earlier snapshots retained.",
+    "Actual feature consumer replays6000/8000/8000 fresh source-balanced decisions and requires exact observation/candidate/target hashes from locked audit; historical100 excluded.",
+    "Frozen clean399/action64 parent, once-only3epochs/batch32/RMSprop originalrecipe, correct equivalent-set likelihood and normalized train-only frequency baseline; holdout primary, fixed20000 source-match cluster pooled bootstrap97.5%.",
+    "Review gate rejects duplicate real paths/hashes/IDs and checks each report own role, requestSHA256 and reviewedContractSHA256. Request itself must bind current contract.",
+    "Actual frozen Python fit checks canonical output and guarded launch receipt before model data or output. Frozen Node guard verifies actual current distinct approvals, once-only anchor, live sole original-cycle reservation, fixed config snapshot and argument identities. Python also binds real parent PID. Direct worker calls with no valid launch fail closed.",
+    "Thin run route imports verified frozen guard; worker invokes the same frozen guard/runtime. No active source import fallback. Completed epoch checkpoint protection unchanged."
+  ],
+  "modelActivity": {
+    "HfitOpened": false,
+    "HtrainingUpdates": 0,
+    "heldoutModelScoresOpened": false,
+    "parentNumericProbe": "same fixed8 train rows rechecked for guarded source002; same parent parameters, plus64train backward benchmark0updates; no heldout scoring or H fit",
+    "externalModelCalls": 0,
+    "formalConfirmationsOpened": 0
+  },
+  "reviewFocus": [
+    "Only close guard findings and inspect adjacent real executed launch chain, source002 and contract002. No training or model score opening.",
+    "Verify duplicate/stale/role/request/contract errors reject before anchor/reserve; valid synthetic current identity packet passes and settled reservation replay rejects.",
+    "Verify actual Python fit entry invokes guard before load_inputs/load_network/out.mkdir, requires fixed output, live original reservation and original once-only anchor, current approvals and real parent/argument identity.",
+    "Other source/data/feature/loss/optimizer/statistical gates are byte-identical or semantically unchanged; preserve pre-H002 full independent checks and old BLOCK reports."
+  ],
+  "requiredDecision": "Complete JSON, role engineering or method, unique reviewId, requestSHA256, reviewedContractSHA256=28591accaaf9bc4fe44a9c6344f0475106c7ce183eed0200dceccf352f26ba0a. overallDecision exactly APPROVE_H_FIT only if all P1/P2 for pre-fit scope closed, else BLOCK_H_FIT. Not H quality or C2 overall acceptance.",
+  "reviewBoundary": "Read only; temporary probes allowed; root is sole business/evidence writer. Immutable request002 copies are the review basis."
+}

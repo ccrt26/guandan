@@ -1,0 +1,57 @@
+{
+  "kind": "stepped",
+  "arm": "A",
+  "update": 6,
+  "optimizerStepsThisRequest": 1,
+  "matureGradientSlots": {
+    "self": 512,
+    "frozen_opponent": 256,
+    "other_partner": 256
+  },
+  "anchorRoots": 64,
+  "anchorCandidates": 960,
+  "labelIds": [],
+  "teacherExposureCounts": {
+    "review6-pilot:C3-pilot-source-001:root-03": 0,
+    "review6-pilot:C3-pilot-source-001:root-05": 0,
+    "review6-pilot:C3-pilot-source-001:root-06": 0,
+    "review6-pilot:C3-pilot-source-001:root-20": 0
+  },
+  "losses": {
+    "team": 4.062382221221924,
+    "anchor": 0.2306477576494217,
+    "preference": 0,
+    "total": 4.064688682556152
+  },
+  "teamGradientNorm": 3.5954949855804443,
+  "weightedTeacherGradientNorm": 0,
+  "weightedTeacherToTeamGradientNormRatio": 0,
+  "teacherGapBefore": [],
+  "teacherGapAfter": [],
+  "weightsPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-006-weights.f32",
+  "weightsSHA256": "71836958e22d3c3c9897f345275455debf05d49b78ac2f6a6fdf78a5f09ee3ca",
+  "optimizerCheckpointPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-006-optimizer.pt",
+  "optimizerCheckpointSHA256": "d620eca107b040b2379a0738942c6d222d59de92d21188c4e5c062d9e9095ac1",
+  "seconds": 0.024237499999999912,
+  "maxRSSBytes": 514572288,
+  "matureUpdateDeviceSeconds": 1.0137101669999993,
+  "teamData": {
+    "featuresPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-006-team.f32",
+    "featuresSHA256": "65634280c4c5562e8b76460f3086377b036035a5f8ce29f573874cfaebd33481",
+    "metaPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/mature-results-001/arm-A-update-006-team-metadata.json",
+    "metaSHA256": "2bc69ff08e70c662c2508129eefb41968be83e9bd1031394bf34bddac8c2744e"
+  },
+  "matureConsumed": 2048,
+  "subsamplingDiscarded": 1024,
+  "sourceCursors": {
+    "self": 8,
+    "frozen_opponent": 8,
+    "other_partner": 16
+  },
+  "queueCounts": {
+    "self": 2047,
+    "frozen_opponent": 1147,
+    "other_partner": 490
+  },
+  "sourceWaveCount": 9
+}

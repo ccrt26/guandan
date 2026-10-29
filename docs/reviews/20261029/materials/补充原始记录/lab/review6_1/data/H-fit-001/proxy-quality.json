@@ -1,0 +1,612 @@
+{
+  "fitId": "review6-humanlike-20261028:H-once-001",
+  "contractSHA256": "28591accaaf9bc4fe44a9c6344f0475106c7ce183eed0200dceccf352f26ba0a",
+  "manifestSHA256": "0df3dcc45c4d96a176e77091bbff0c2ee127a8c2fa9157257bf75d89d32a7580",
+  "parentSHA256": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01",
+  "stageStatus": "H_quality_measured",
+  "epochs": 3,
+  "trainingUpdates": 564,
+  "uniqueTrainingDecisions": 6000,
+  "trainingExposures": 18000,
+  "weightsPath": "/Users/ccrt/game/guandan/lab/review6_1/data/H-fit-001/H-epoch3.f32",
+  "weightsSHA256": "66a1d763baf31825cdfb628ec816365cc736c48006c824391686dfae0f0b63d9",
+  "parameterDeltaL2": 3.306941509246826,
+  "totalExecutionSeconds": 3.5535666249999998,
+  "role": "behavior_proxy",
+  "humanSource": "author_reported",
+  "skill": "unknown",
+  "playerDisjointness": "unknown",
+  "samplingMode": "legal_softmax_temperature1",
+  "scope": "fresh legal-prefix, candidate-covered behavior only; no whole-match human compatibility or player skill claim",
+  "dev": {
+    "n": 8000,
+    "sourceMatches": 234,
+    "nll": 1.301773047092618,
+    "uniform": 1.8482967459951476,
+    "frequency": 1.6174124903948575,
+    "correctTop1": 0.600375,
+    "slices": {
+      "pass": {
+        "n": 4432,
+        "sourceMatches": 233,
+        "nll": 0.3002252498728449,
+        "uniform": 1.1889718810914542,
+        "frequency": 0.11390307095506168,
+        "correctTop1": 0.9582581227436823
+      },
+      "nonpass": {
+        "n": 3568,
+        "sourceMatches": 234,
+        "nll": 2.5458481135943094,
+        "uniform": 2.667278753072819,
+        "frequency": 3.4850004239591024,
+        "correctTop1": 0.15582959641255606
+      },
+      "mate_control": {
+        "n": 1752,
+        "sourceMatches": 233,
+        "nll": 0.4301807458033933,
+        "uniform": 1.3621938674661738,
+        "frequency": 0.4162791006973568,
+        "correctTop1": 0.8995433789954338
+      },
+      "bomb": {
+        "n": 480,
+        "sourceMatches": 205,
+        "nll": 2.5914614986705904,
+        "uniform": 1.7317375298633029,
+        "frequency": 3.2529708472495034,
+        "correctTop1": 0.05
+      },
+      "takeover": {
+        "n": 143,
+        "sourceMatches": 108,
+        "nll": 2.121700971328712,
+        "uniform": 2.22616513399169,
+        "frequency": 3.590584065498215,
+        "correctTop1": 0.1258741258741259
+      }
+    },
+    "actionKinds": {
+      "bomb": {
+        "n": 480,
+        "sourceMatches": 205,
+        "nll": 2.5914614986705904,
+        "uniform": 1.7317375298633029,
+        "frequency": 3.2529708472495034,
+        "correctTop1": 0.05
+      },
+      "flush": {
+        "n": 112,
+        "sourceMatches": 88,
+        "nll": 2.23071432146909,
+        "uniform": 1.107087686383976,
+        "frequency": 3.950051328391233,
+        "correctTop1": 0.10714285714285714
+      },
+      "pair": {
+        "n": 565,
+        "sourceMatches": 170,
+        "nll": 2.5278686690119514,
+        "uniform": 2.761036018070672,
+        "frequency": 3.8448831850690395,
+        "correctTop1": 0.09380530973451327
+      },
+      "pair_seq": {
+        "n": 108,
+        "sourceMatches": 70,
+        "nll": 4.361449679842702,
+        "uniform": 3.622609129454066,
+        "frequency": 5.317227478229619,
+        "correctTop1": 0.009259259259259259
+      },
+      "pass": {
+        "n": 4432,
+        "sourceMatches": 233,
+        "nll": 0.3002252498728449,
+        "uniform": 1.1889718810914542,
+        "frequency": 0.11390307095506168,
+        "correctTop1": 0.9582581227436823
+      },
+      "single": {
+        "n": 1750,
+        "sourceMatches": 228,
+        "nll": 2.096400847975697,
+        "uniform": 2.718251630228134,
+        "frequency": 2.793930282870141,
+        "correctTop1": 0.2382857142857143
+      },
+      "straight": {
+        "n": 204,
+        "sourceMatches": 128,
+        "nll": 4.413582810219012,
+        "uniform": 3.8515798316338743,
+        "frequency": 5.903207961233367,
+        "correctTop1": 0.049019607843137254
+      },
+      "trio": {
+        "n": 91,
+        "sourceMatches": 61,
+        "nll": 2.7241754145412655,
+        "uniform": 2.706859574580805,
+        "frequency": 4.9441714741164775,
+        "correctTop1": 0.15384615384615385
+      },
+      "trio_pair": {
+        "n": 221,
+        "sourceMatches": 132,
+        "nll": 3.2748599235828104,
+        "uniform": 3.029811659124106,
+        "frequency": 4.2982332277802815,
+        "correctTop1": 0.09502262443438914
+      },
+      "trio_seq": {
+        "n": 37,
+        "sourceMatches": 33,
+        "nll": 4.049886471516377,
+        "uniform": 4.1032535961517596,
+        "frequency": 5.150503335549464,
+        "correctTop1": 0.10810810810810811
+      }
+    },
+    "intervals": {
+      "uniform": {
+        "point": -0.5465236989025141,
+        "low": -0.5825139322780032,
+        "high": -0.5110104367844479,
+        "sourceMatches": 234,
+        "replicates": 20000,
+        "coverage": 0.975,
+        "method": "percentile_source_match_cluster_pooled_decision_mean"
+      },
+      "frequency": {
+        "point": -0.31563944330225135,
+        "low": -0.3399704430257547,
+        "high": -0.2917054097344233,
+        "sourceMatches": 234,
+        "replicates": 20000,
+        "coverage": 0.975,
+        "method": "percentile_source_match_cluster_pooled_decision_mean"
+      }
+    },
+    "observedPassShare": 0.554,
+    "meanPredictedPassProbability": 0.5646454230174422,
+    "hardTop1PassShare": 0.72625,
+    "hardTop1PassMinusObserved": 0.1722499999999999,
+    "hardTop1ClassAbsent": {
+      "pass": false,
+      "nonpass": false
+    },
+    "calibration": {
+      "passBrier": 0.12370898767923985,
+      "passBins": [
+        {
+          "bin": 0,
+          "n": 1468,
+          "meanProbability": 0.018493567012270725,
+          "observedShare": 0.010899182561307902
+        },
+        {
+          "bin": 1,
+          "n": 582,
+          "meanProbability": 0.15079549365897768,
+          "observedShare": 0.21993127147766323
+        },
+        {
+          "bin": 2,
+          "n": 471,
+          "meanProbability": 0.24796045762971203,
+          "observedShare": 0.3184713375796178
+        },
+        {
+          "bin": 3,
+          "n": 459,
+          "meanProbability": 0.3499782029579927,
+          "observedShare": 0.3790849673202614
+        },
+        {
+          "bin": 4,
+          "n": 415,
+          "meanProbability": 0.4499405177960913,
+          "observedShare": 0.42891566265060244
+        },
+        {
+          "bin": 5,
+          "n": 520,
+          "meanProbability": 0.5503163945216399,
+          "observedShare": 0.5096153846153846
+        },
+        {
+          "bin": 6,
+          "n": 432,
+          "meanProbability": 0.6498312976349283,
+          "observedShare": 0.6296296296296297
+        },
+        {
+          "bin": 7,
+          "n": 498,
+          "meanProbability": 0.752126762785586,
+          "observedShare": 0.7248995983935743
+        },
+        {
+          "bin": 8,
+          "n": 719,
+          "meanProbability": 0.8543462080982033,
+          "observedShare": 0.7941585535465925
+        },
+        {
+          "bin": 9,
+          "n": 2436,
+          "meanProbability": 0.9779850031403681,
+          "observedShare": 0.9511494252873564
+        }
+      ],
+      "top1Bins": [
+        {
+          "bin": 0,
+          "n": 1118,
+          "meanProbability": 0.05861551776421731,
+          "observedShare": 0.049194991055456175
+        },
+        {
+          "bin": 1,
+          "n": 671,
+          "meanProbability": 0.1484415244794105,
+          "observedShare": 0.22801788375558868
+        },
+        {
+          "bin": 2,
+          "n": 505,
+          "meanProbability": 0.24716004947624584,
+          "observedShare": 0.36633663366336633
+        },
+        {
+          "bin": 3,
+          "n": 468,
+          "meanProbability": 0.35241366903751326,
+          "observedShare": 0.46794871794871795
+        },
+        {
+          "bin": 4,
+          "n": 419,
+          "meanProbability": 0.4501111826777174,
+          "observedShare": 0.5632458233890215
+        },
+        {
+          "bin": 5,
+          "n": 636,
+          "meanProbability": 0.548622340619939,
+          "observedShare": 0.5581761006289309
+        },
+        {
+          "bin": 6,
+          "n": 465,
+          "meanProbability": 0.6493899282588753,
+          "observedShare": 0.6365591397849463
+        },
+        {
+          "bin": 7,
+          "n": 517,
+          "meanProbability": 0.751928042627626,
+          "observedShare": 0.7195357833655706
+        },
+        {
+          "bin": 8,
+          "n": 731,
+          "meanProbability": 0.8541132592469984,
+          "observedShare": 0.7948016415868673
+        },
+        {
+          "bin": 9,
+          "n": 2470,
+          "meanProbability": 0.9782103689575967,
+          "observedShare": 0.9518218623481781
+        }
+      ],
+      "top1ECE": 0.045363948522135614
+    },
+    "quality": {
+      "ready": false,
+      "reasons": [
+        "stratum_worse_than_frequency_pass"
+      ],
+      "scope": "behavior proxy on the pinned legal-prefix subset only"
+    }
+  },
+  "holdout": {
+    "n": 8000,
+    "sourceMatches": 235,
+    "nll": 1.3018884899273035,
+    "uniform": 1.852100803591461,
+    "frequency": 1.655106274185565,
+    "correctTop1": 0.592,
+    "slices": {
+      "pass": {
+        "n": 4349,
+        "sourceMatches": 235,
+        "nll": 0.29735511130830583,
+        "uniform": 1.1871400101045895,
+        "frequency": 0.1112870864766397,
+        "correctTop1": 0.9586111749827546
+      },
+      "nonpass": {
+        "n": 3651,
+        "sourceMatches": 235,
+        "nll": 2.4984690606241045,
+        "uniform": 2.644189133055818,
+        "frequency": 3.494073583784614,
+        "correctTop1": 0.1552999178307313
+      },
+      "mate_control": {
+        "n": 1793,
+        "sourceMatches": 235,
+        "nll": 0.42108836159812196,
+        "uniform": 1.3450230112589985,
+        "frequency": 0.4123501759186238,
+        "correctTop1": 0.8923591745677635
+      },
+      "bomb": {
+        "n": 545,
+        "sourceMatches": 213,
+        "nll": 2.4527911148350174,
+        "uniform": 1.7680209331150691,
+        "frequency": 3.2879693984732454,
+        "correctTop1": 0.047706422018348627
+      },
+      "takeover": {
+        "n": 143,
+        "sourceMatches": 105,
+        "nll": 2.172428167626991,
+        "uniform": 2.2942741286776727,
+        "frequency": 3.6650795346152956,
+        "correctTop1": 0.13986013986013987
+      }
+    },
+    "actionKinds": {
+      "bomb": {
+        "n": 545,
+        "sourceMatches": 213,
+        "nll": 2.4527911148350174,
+        "uniform": 1.7680209331150691,
+        "frequency": 3.2879693984732454,
+        "correctTop1": 0.047706422018348627
+      },
+      "flush": {
+        "n": 136,
+        "sourceMatches": 100,
+        "nll": 2.1549927604329935,
+        "uniform": 1.3118734600662014,
+        "frequency": 4.126714040058594,
+        "correctTop1": 0.09558823529411764
+      },
+      "pair": {
+        "n": 624,
+        "sourceMatches": 179,
+        "nll": 2.4702006955272875,
+        "uniform": 2.731030928055816,
+        "frequency": 3.8567959830036225,
+        "correctTop1": 0.09455128205128205
+      },
+      "pair_seq": {
+        "n": 98,
+        "sourceMatches": 73,
+        "nll": 4.7244948890744425,
+        "uniform": 4.018665904405595,
+        "frequency": 5.596828906984929,
+        "correctTop1": 0.02040816326530612
+      },
+      "pass": {
+        "n": 4349,
+        "sourceMatches": 235,
+        "nll": 0.29735511130830583,
+        "uniform": 1.1871400101045895,
+        "frequency": 0.1112870864766397,
+        "correctTop1": 0.9586111749827546
+      },
+      "single": {
+        "n": 1749,
+        "sourceMatches": 229,
+        "nll": 2.092080630866833,
+        "uniform": 2.705903262555495,
+        "frequency": 2.7953797019919477,
+        "correctTop1": 0.24528301886792453
+      },
+      "straight": {
+        "n": 207,
+        "sourceMatches": 116,
+        "nll": 4.443911350147736,
+        "uniform": 3.8456551958929404,
+        "frequency": 5.933273407481823,
+        "correctTop1": 0.03864734299516908
+      },
+      "trio": {
+        "n": 94,
+        "sourceMatches": 59,
+        "nll": 2.6139484004295888,
+        "uniform": 2.550570872651286,
+        "frequency": 5.097125052018307,
+        "correctTop1": 0.09574468085106383
+      },
+      "trio_pair": {
+        "n": 175,
+        "sourceMatches": 108,
+        "nll": 3.2072582308735167,
+        "uniform": 3.151153642824476,
+        "frequency": 4.216197181966751,
+        "correctTop1": 0.11428571428571428
+      },
+      "trio_seq": {
+        "n": 23,
+        "sourceMatches": 20,
+        "nll": 4.4232444037561836,
+        "uniform": 4.090208115154719,
+        "frequency": 4.968927853756335,
+        "correctTop1": 0.043478260869565216
+      }
+    },
+    "intervals": {
+      "uniform": {
+        "point": -0.5502123136641414,
+        "low": -0.5864448771895382,
+        "high": -0.5147351219112182,
+        "sourceMatches": 235,
+        "replicates": 20000,
+        "coverage": 0.975,
+        "method": "percentile_source_match_cluster_pooled_decision_mean"
+      },
+      "frequency": {
+        "point": -0.35321778425826367,
+        "low": -0.3776051810024729,
+        "high": -0.3286185383236878,
+        "sourceMatches": 235,
+        "replicates": 20000,
+        "coverage": 0.975,
+        "method": "percentile_source_match_cluster_pooled_decision_mean"
+      }
+    },
+    "observedPassShare": 0.543625,
+    "meanPredictedPassProbability": 0.5573597703014966,
+    "hardTop1PassShare": 0.724,
+    "hardTop1PassMinusObserved": 0.18037499999999995,
+    "hardTop1ClassAbsent": {
+      "pass": false,
+      "nonpass": false
+    },
+    "calibration": {
+      "passBrier": 0.12063664987857319,
+      "passBins": [
+        {
+          "bin": 0,
+          "n": 1476,
+          "meanProbability": 0.018507231348686343,
+          "observedShare": 0.006775067750677507
+        },
+        {
+          "bin": 1,
+          "n": 603,
+          "meanProbability": 0.14869049132166812,
+          "observedShare": 0.1857379767827529
+        },
+        {
+          "bin": 2,
+          "n": 486,
+          "meanProbability": 0.24703653227277253,
+          "observedShare": 0.3292181069958848
+        },
+        {
+          "bin": 3,
+          "n": 457,
+          "meanProbability": 0.3503876070877134,
+          "observedShare": 0.36542669584245074
+        },
+        {
+          "bin": 4,
+          "n": 469,
+          "meanProbability": 0.4508545697370826,
+          "observedShare": 0.42217484008528783
+        },
+        {
+          "bin": 5,
+          "n": 477,
+          "meanProbability": 0.5483830746114878,
+          "observedShare": 0.46331236897274636
+        },
+        {
+          "bin": 6,
+          "n": 438,
+          "meanProbability": 0.6480401625099792,
+          "observedShare": 0.6255707762557078
+        },
+        {
+          "bin": 7,
+          "n": 508,
+          "meanProbability": 0.7522746493497233,
+          "observedShare": 0.7047244094488189
+        },
+        {
+          "bin": 8,
+          "n": 769,
+          "meanProbability": 0.852306014152125,
+          "observedShare": 0.7919375812743823
+        },
+        {
+          "bin": 9,
+          "n": 2317,
+          "meanProbability": 0.9785344297895155,
+          "observedShare": 0.9667673716012085
+        }
+      ],
+      "top1Bins": [
+        {
+          "bin": 0,
+          "n": 1104,
+          "meanProbability": 0.05880475706425901,
+          "observedShare": 0.059782608695652176
+        },
+        {
+          "bin": 1,
+          "n": 708,
+          "meanProbability": 0.14878058973384106,
+          "observedShare": 0.20903954802259886
+        },
+        {
+          "bin": 2,
+          "n": 496,
+          "meanProbability": 0.24785410099092028,
+          "observedShare": 0.38911290322580644
+        },
+        {
+          "bin": 3,
+          "n": 483,
+          "meanProbability": 0.3531818193061505,
+          "observedShare": 0.4389233954451346
+        },
+        {
+          "bin": 4,
+          "n": 440,
+          "meanProbability": 0.45278436494144525,
+          "observedShare": 0.5204545454545455
+        },
+        {
+          "bin": 5,
+          "n": 620,
+          "meanProbability": 0.5464864039613354,
+          "observedShare": 0.5096774193548387
+        },
+        {
+          "bin": 6,
+          "n": 483,
+          "meanProbability": 0.6472667609929544,
+          "observedShare": 0.6231884057971014
+        },
+        {
+          "bin": 7,
+          "n": 523,
+          "meanProbability": 0.7521659582568401,
+          "observedShare": 0.6998087954110899
+        },
+        {
+          "bin": 8,
+          "n": 781,
+          "meanProbability": 0.852311990477822,
+          "observedShare": 0.793854033290653
+        },
+        {
+          "bin": 9,
+          "n": 2362,
+          "meanProbability": 0.9788072531905647,
+          "observedShare": 0.9674005080440304
+        }
+      ],
+      "top1ECE": 0.03992849075776761
+    },
+    "quality": {
+      "ready": false,
+      "reasons": [
+        "stratum_worse_than_frequency_pass"
+      ],
+      "scope": "behavior proxy on the pinned legal-prefix subset only"
+    }
+  },
+  "ready": false
+}

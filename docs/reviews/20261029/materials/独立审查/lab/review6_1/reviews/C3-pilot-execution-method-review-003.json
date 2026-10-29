@@ -1,0 +1,1634 @@
+{
+  "reviewId": "C3-pilot-execution-method-003",
+  "role": "method",
+  "requestSHA256": "0799debc65d6177de1ee1a077c0ef7b83d56f0963496d424f4b9424b5c4a6a0f",
+  "reviewedSourceManifestSHA256": "f62860d306858b7ee72b943f997a93ea6041cd10289bd445751a227cea1e4c18",
+  "reviewedSnapshotSHA256": "6984b4fede63f084f6c3ccf7d51423e71b431acd9d2b32d1c290b0b0f1fd5b88",
+  "reviewedExecutionContractIndexSHA256": "4a97919d9dc5d0c1b614e4509025061ad43b8538e7263f426778209913e1cf89",
+  "reviewedTeacherSpecificationSHA256": "776fe3dcb1e031bc0b61172c74f28c3c29b0e32af2d0f705ce13c4b5e05ba007",
+  "overallDecision": "CHANGES_REQUIRED",
+  "pilotExecutionApproved": false,
+  "teacherQualityApproved": false,
+  "C3OverallAccepted": false,
+  "mainTrainingApproved": false,
+  "formalApproved": false,
+  "scope": {
+    "kind": "Focused read-only method review of new003 typed statistics admission, fixed-prefix quality stopping, resume context/cache validation, partial statistics recovery, ordinal-only authority and exact updated snapshot/contracts.",
+    "immutableRequest": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-request-003.json",
+    "sourceCopies": 38,
+    "snapshotFiles": 186,
+    "specificExecutionContracts": 41,
+    "strictResumeTemplates": 40,
+    "reviewedExecutionContracts": [
+      {
+        "mode": "speed",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/speed-001.json",
+        "sha256": "4487abb92a2b67e24f50c6acceff4c3ce0fcfcf96ebb3145cf5882bf76848871"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 1,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-01-exec-001.json",
+        "sha256": "266cfa19bb279518eac7438d5850816485821741912c5eeb9bc03a41974ce9c2"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 2,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-02-exec-001.json",
+        "sha256": "723ec3368bcb56d19142a0ff0fe40edb389a8e99eb1c0a9850ae46106ab7e10b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 3,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-03-exec-001.json",
+        "sha256": "233baad2691a3f38f62686838d767992d9d5ede56bcce877b13466aa89400d67"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 4,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-04-exec-001.json",
+        "sha256": "bcf89452f9bcfeb8ed2518583158de961fdc7399b65c086039d5f223444253f8"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 5,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-05-exec-001.json",
+        "sha256": "b693c8ec683017409383c0e180ac875612c4b0e808e696fa81634b043ff55a5a"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 6,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-06-exec-001.json",
+        "sha256": "c23f1fd8103315971bcfed9e1e2b8cfc0454f54e9d374df5848f01107d7fada3"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 7,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-07-exec-001.json",
+        "sha256": "2496c12caf6f467d55898da40272c55f4d87bd72fbbf724f8e9f92da25f606de"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 9,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-09-exec-001.json",
+        "sha256": "6a80f6527a1fe11fe868e48e417b08dc2de068447670053a7a0f49397a6c8a51"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 10,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-10-exec-001.json",
+        "sha256": "714c55c46c859fe2ea7bb33394ac760f5cca71749783f80b2e218adc46d6b07c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 11,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-11-exec-001.json",
+        "sha256": "8a6486b76d06283b5c98b5e400cc7975f97cb2fdac710df126863bb776a741fd"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 12,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-12-exec-001.json",
+        "sha256": "2e22f25e95d7c05b61859cc9ee034d6a32cc99fc9618eaa9f7713abc5be017c4"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 14,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-14-exec-001.json",
+        "sha256": "b99073396a2ba7fd46bd3f19ec42fc01735b93b97fef9c5f6b0452f075fc3a92"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 15,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-15-exec-001.json",
+        "sha256": "80816fce27fe9b5a399f767b1e13e7c7681a671e733e74706d915e60626a4899"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 16,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-16-exec-001.json",
+        "sha256": "e338b8ecbe7c091315c3c7495718028f04eaadd7e73b0cd4217bfda349e5964c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 17,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-17-exec-001.json",
+        "sha256": "bf4273996b59da6c2f74a37a8ffb558746daa336d18204a998b9195a8ee3b416"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 18,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-18-exec-001.json",
+        "sha256": "d1e12b0a9355e07542c3165aebbeed2f6cfde914c37175ebe2a59a6c2b1216c7"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 19,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-19-exec-001.json",
+        "sha256": "ef3a01722e180114924adb9607bcef8b30d20919b76e77e079bc44353c42c702"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 20,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-20-exec-001.json",
+        "sha256": "6df312d26673ec399c8e3cc5a144022ce5086798fbeddd5df66feec3aab870e4"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 21,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-21-exec-001.json",
+        "sha256": "e2f26c51c6aa60025217d93c39bc0337a87a89cbaec689e4e61057394c1e621b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 22,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-22-exec-001.json",
+        "sha256": "11c3b0f2fc94f97fbe7de7498d5540451909b8fe6957b30f6cbe9335ce337037"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 23,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-23-exec-001.json",
+        "sha256": "a893226cc3652929b972c720a3093dfb29fdbad95fba1b47c24685c1699bea4e"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 24,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-24-exec-001.json",
+        "sha256": "dc272ba88d606b34d761d7941eb8d785fa7c424d4070968e71313c2304a9d267"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 25,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-25-exec-001.json",
+        "sha256": "88e0614a7ae62611533f8cb039dea19f60d4373f0eed1d38b549c35629f85ce8"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 26,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-26-exec-001.json",
+        "sha256": "a931861435efd8002a75be87abd6c80342fee87d21be3cff1ccd35d117c0ba4c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 27,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-27-exec-001.json",
+        "sha256": "1b8ea4e7115dd3eaf924499ef87883fd2ff7d035c384496849850ae2ae892951"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 28,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-28-exec-001.json",
+        "sha256": "f6ec9e3be5f7670016536f7e216bfced8e7c3ca14de59c569bcc21c60dcb967b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 29,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-29-exec-001.json",
+        "sha256": "b30d052a8613435e87b1882a37c5d675ed9e771e4469284e43d04cd66542b992"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 30,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-30-exec-001.json",
+        "sha256": "3127af3095493221c29f9f71b2c711d9bc9c9af3cc5e9cfeeb1bb13f24a2415b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 31,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-31-exec-001.json",
+        "sha256": "42fb326a934dc93072fec9f22f40d88d2761ded57a3f36b64deeaf942d6066f7"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 34,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-34-exec-001.json",
+        "sha256": "25da68b9ffdad2c82ab042c43b389f010dae681ec6bb9352f2217038b7c68dde"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 35,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-35-exec-001.json",
+        "sha256": "80ce64defc8173a93d71e76fd3ed0db7c6a1b9e49dd378fc1f08330479624c8e"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 36,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-36-exec-001.json",
+        "sha256": "d9b2966feba6f40c2054975d9c54f0f9b5b2ef8d9a328bc6e54b1d15d67284b1"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 38,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-38-exec-001.json",
+        "sha256": "488c4fabd90d56ee9ae4a8960ea6d208773087593cd593234042f212c31e3c39"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 39,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-39-exec-001.json",
+        "sha256": "888a568965b20c08e819c473a97c94343ad240d5cefd7fe28aa0893442974249"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 40,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-40-exec-001.json",
+        "sha256": "596e0435894ccc6b2f7481598b452dc41b81a693132b35f43159997319cac119"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 42,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-42-exec-001.json",
+        "sha256": "546b782d85ede22aad8cbe87ee0f06b4d1f489bc6343a79daab4dbebaea16e90"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 45,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-45-exec-001.json",
+        "sha256": "fbe77e5710d9b803c41e7577148786d91492c9b881d6b450250790a1ad32a828"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 46,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-46-exec-001.json",
+        "sha256": "6dfe66a3f34ce57125d2a8556423c72afa22b4d41e5e472116c295babdd68115"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 47,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-47-exec-001.json",
+        "sha256": "a530f972928cba5735ac51a25357350be808ab7fe545c31a69f1e0e770670353"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 48,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-48-exec-001.json",
+        "sha256": "46954d5096a7d922c1dcd0f4686c7c2d31ff7dd5c9029392b1540b516dd826ab"
+      }
+    ],
+    "reviewedOrdinalOnlyTemplates": [
+      {
+        "mode": "teacher-root",
+        "slot": 1,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-01-exec-001.json",
+        "sha256": "266cfa19bb279518eac7438d5850816485821741912c5eeb9bc03a41974ce9c2"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 2,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-02-exec-001.json",
+        "sha256": "723ec3368bcb56d19142a0ff0fe40edb389a8e99eb1c0a9850ae46106ab7e10b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 3,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-03-exec-001.json",
+        "sha256": "233baad2691a3f38f62686838d767992d9d5ede56bcce877b13466aa89400d67"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 4,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-04-exec-001.json",
+        "sha256": "bcf89452f9bcfeb8ed2518583158de961fdc7399b65c086039d5f223444253f8"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 5,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-05-exec-001.json",
+        "sha256": "b693c8ec683017409383c0e180ac875612c4b0e808e696fa81634b043ff55a5a"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 6,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-06-exec-001.json",
+        "sha256": "c23f1fd8103315971bcfed9e1e2b8cfc0454f54e9d374df5848f01107d7fada3"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 7,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-07-exec-001.json",
+        "sha256": "2496c12caf6f467d55898da40272c55f4d87bd72fbbf724f8e9f92da25f606de"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 9,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-09-exec-001.json",
+        "sha256": "6a80f6527a1fe11fe868e48e417b08dc2de068447670053a7a0f49397a6c8a51"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 10,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-10-exec-001.json",
+        "sha256": "714c55c46c859fe2ea7bb33394ac760f5cca71749783f80b2e218adc46d6b07c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 11,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-11-exec-001.json",
+        "sha256": "8a6486b76d06283b5c98b5e400cc7975f97cb2fdac710df126863bb776a741fd"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 12,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-12-exec-001.json",
+        "sha256": "2e22f25e95d7c05b61859cc9ee034d6a32cc99fc9618eaa9f7713abc5be017c4"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 14,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-14-exec-001.json",
+        "sha256": "b99073396a2ba7fd46bd3f19ec42fc01735b93b97fef9c5f6b0452f075fc3a92"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 15,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-15-exec-001.json",
+        "sha256": "80816fce27fe9b5a399f767b1e13e7c7681a671e733e74706d915e60626a4899"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 16,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-16-exec-001.json",
+        "sha256": "e338b8ecbe7c091315c3c7495718028f04eaadd7e73b0cd4217bfda349e5964c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 17,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-17-exec-001.json",
+        "sha256": "bf4273996b59da6c2f74a37a8ffb558746daa336d18204a998b9195a8ee3b416"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 18,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-18-exec-001.json",
+        "sha256": "d1e12b0a9355e07542c3165aebbeed2f6cfde914c37175ebe2a59a6c2b1216c7"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 19,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-19-exec-001.json",
+        "sha256": "ef3a01722e180114924adb9607bcef8b30d20919b76e77e079bc44353c42c702"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 20,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-20-exec-001.json",
+        "sha256": "6df312d26673ec399c8e3cc5a144022ce5086798fbeddd5df66feec3aab870e4"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 21,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-21-exec-001.json",
+        "sha256": "e2f26c51c6aa60025217d93c39bc0337a87a89cbaec689e4e61057394c1e621b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 22,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-22-exec-001.json",
+        "sha256": "11c3b0f2fc94f97fbe7de7498d5540451909b8fe6957b30f6cbe9335ce337037"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 23,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-23-exec-001.json",
+        "sha256": "a893226cc3652929b972c720a3093dfb29fdbad95fba1b47c24685c1699bea4e"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 24,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-24-exec-001.json",
+        "sha256": "dc272ba88d606b34d761d7941eb8d785fa7c424d4070968e71313c2304a9d267"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 25,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-25-exec-001.json",
+        "sha256": "88e0614a7ae62611533f8cb039dea19f60d4373f0eed1d38b549c35629f85ce8"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 26,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-26-exec-001.json",
+        "sha256": "a931861435efd8002a75be87abd6c80342fee87d21be3cff1ccd35d117c0ba4c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 27,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-27-exec-001.json",
+        "sha256": "1b8ea4e7115dd3eaf924499ef87883fd2ff7d035c384496849850ae2ae892951"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 28,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-28-exec-001.json",
+        "sha256": "f6ec9e3be5f7670016536f7e216bfced8e7c3ca14de59c569bcc21c60dcb967b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 29,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-29-exec-001.json",
+        "sha256": "b30d052a8613435e87b1882a37c5d675ed9e771e4469284e43d04cd66542b992"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 30,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-30-exec-001.json",
+        "sha256": "3127af3095493221c29f9f71b2c711d9bc9c9af3cc5e9cfeeb1bb13f24a2415b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 31,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-31-exec-001.json",
+        "sha256": "42fb326a934dc93072fec9f22f40d88d2761ded57a3f36b64deeaf942d6066f7"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 34,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-34-exec-001.json",
+        "sha256": "25da68b9ffdad2c82ab042c43b389f010dae681ec6bb9352f2217038b7c68dde"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 35,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-35-exec-001.json",
+        "sha256": "80ce64defc8173a93d71e76fd3ed0db7c6a1b9e49dd378fc1f08330479624c8e"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 36,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-36-exec-001.json",
+        "sha256": "d9b2966feba6f40c2054975d9c54f0f9b5b2ef8d9a328bc6e54b1d15d67284b1"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 38,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-38-exec-001.json",
+        "sha256": "488c4fabd90d56ee9ae4a8960ea6d208773087593cd593234042f212c31e3c39"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 39,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-39-exec-001.json",
+        "sha256": "888a568965b20c08e819c473a97c94343ad240d5cefd7fe28aa0893442974249"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 40,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-40-exec-001.json",
+        "sha256": "596e0435894ccc6b2f7481598b452dc41b81a693132b35f43159997319cac119"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 42,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-42-exec-001.json",
+        "sha256": "546b782d85ede22aad8cbe87ee0f06b4d1f489bc6343a79daab4dbebaea16e90"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 45,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-45-exec-001.json",
+        "sha256": "fbe77e5710d9b803c41e7577148786d91492c9b881d6b450250790a1ad32a828"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 46,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-46-exec-001.json",
+        "sha256": "6dfe66a3f34ce57125d2a8556423c72afa22b4d41e5e472116c295babdd68115"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 47,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-47-exec-001.json",
+        "sha256": "a530f972928cba5735ac51a25357350be808ab7fe545c31a69f1e0e770670353"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 48,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-48-exec-001.json",
+        "sha256": "46954d5096a7d922c1dcd0f4686c7c2d31ff7dd5c9029392b1540b516dd826ab"
+      }
+    ],
+    "noAuthorizationGranted": "The two new recovery/queue P1s block this frozen003 pilot execution. Current live fixes mentioned by root were not substituted for the immutable003 files.",
+    "reused": "002 M01/DSL/role/seed/source/math conclusions retained by unchanged source hashes; no repeated40-source/501-family/16640-seed or8-test exact bootstrap/H recomputation."
+  },
+  "reviewedFileHashes": {
+    "request": {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-request-003.json",
+      "sha256": "0799debc65d6177de1ee1a077c0ef7b83d56f0963496d424f4b9424b5c4a6a0f"
+    },
+    "sourceManifest": {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/source-manifest.json",
+      "sha256": "f62860d306858b7ee72b943f997a93ea6041cd10289bd445751a227cea1e4c18"
+    },
+    "sourceFiles": [
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/frozen-launch-guard.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/frozen-launch-guard.mjs",
+        "sha256": "c5eced40bfd2e73f2a83a1a7348e568565bc665cf2c8ca1a71eff9f5bc2328bc"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/frozen-launch-guard.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/frozen-launch-guard.test.mjs",
+        "sha256": "daa7782559d526b41bc6e3165fe1e63bd98f92742a870e906912685820cfb13b"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/executable-snapshot.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/executable-snapshot.mjs",
+        "sha256": "a0498c5014ecffeec041e177ae8fea038f83e2922f0ca405436b47a9f6de0234"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/executable-snapshot.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/executable-snapshot.test.mjs",
+        "sha256": "5422bd6eb2c3efdc028cfa238c97eabddf030fed89ff2f7d0dd3d9cfd34c741f"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/compute-pool.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/compute-pool.mjs",
+        "sha256": "7b85aa9a02e42644cf3e5cacab7d0a897f6f1ce6d3dfdc5ff3af87087bc8c765"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/compute-pool.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/compute-pool.test.mjs",
+        "sha256": "cf16c63cd04433cac3e459286ad02a93b8272191422243c40c51562dfea5bef5"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/mechanical-pool-worker.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/mechanical-pool-worker.ts",
+        "sha256": "f37fab2071f922400dd2357eec3e8ccf0ea1427f6f8ad65c27dc9d04646e7713"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/source-worker.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/source-worker.ts",
+        "sha256": "8cfccc72a4719c0f254eecf20d6bb2aa11d92a7a9d5dbba9f32aac3ef25485a1"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-source-launch.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-source-launch.mjs",
+        "sha256": "6a7cc362ca1113642b737acbe2ae8c9132aa46e1ad3e17866f1435b57682a798"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-worker.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-worker.ts",
+        "sha256": "a085b4a60f10813fb075b1a5591c5950a816ab7ddc5491f2228b13071a5a522f"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-worker.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-worker.test.mjs",
+        "sha256": "ad0db5ed0cd3eba506a5f61cf3c2da88e611a8021b860208ea3bf5ac940729f7"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-launch.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-launch.mjs",
+        "sha256": "588346498ca814230ffd108a5b4136f7a7e37ebb04331a1b3c1cf424d95eb925"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-ledger.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-ledger.mjs",
+        "sha256": "9cfcd81b1222fab62601f4e6a91feaded24652cc9e379aa36351c781fdc47036"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-ledger.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-ledger.test.mjs",
+        "sha256": "c03d7327f022a3348e081d46e08614c6be35ee33b7c41015b5c994cb95be0b2d"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/branch-worker.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/branch-worker.ts",
+        "sha256": "f85f3f9bb9774fceae0994c298c49407a645c17d0610e536552965493d7d3be1"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/teacher-engine.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/teacher-engine.ts",
+        "sha256": "15df9c00e7055306dc5fc6bb2106192e654b230a5de3b4b54380db4e055e6a63"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/teacher-roots.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/teacher-roots.ts",
+        "sha256": "755634f4e15097b578ed2a64a9e0e3f1e5bc0bfea7cbb38148bc9cbe63eb1b34"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-specs.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-specs.ts",
+        "sha256": "f37680511ea4849495ff09ff77d37a6e10d7686bfd69114f8cc37e2ebdefae02"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/paired_stats.py",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/paired_stats.py",
+        "sha256": "839cef71e9ebdf527a383098700e29b857134e5545d5094e330dbd258d529049"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/test_paired_stats.py",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/test_paired_stats.py",
+        "sha256": "b78d828234dcdc5a06b3e4cea5a99985c4fc362091f8a24cf96b048b82dfbb72"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/visible-world.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/visible-world.ts",
+        "sha256": "3eda3db2aac56d0a33514e18b77405746071cd204799bab3e8b7ec09dfdb7b66"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/visible-schema.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/visible-schema.ts",
+        "sha256": "bc8757519a53419c7ef84d1559a30744fb29256e2c294d4659af14a40bfaeccd"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/match-play.ts",
+        "sha256": "af76eaa21e6a2f438e3cd9503ad0893aa9e3f0a88abbf18117c556effbb721ab"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/plan-dsl.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/plan-dsl.ts",
+        "sha256": "8d6b93e96d62b4e737ed945a84fa405d6bd2b96b1ae131088fc8bf0061c0676f"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/action-effect.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/action-effect.ts",
+        "sha256": "9e2a8eb4841cedc92f3543a82a79bbc87d36ebca254e86736099c2174629f863"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/policy-registry.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/policy-registry.ts",
+        "sha256": "3aaf1e9b7a6e0ce4e4eafa73747b983479efb8b61d7dfd95373e67c8c2e59f2d"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/runtime.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/runtime.mjs",
+        "sha256": "44df2c9dae95dfea538ecd71c50ff9ecf01458863a74124b735b86e7057c8f30"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/tests/review6_teacher_engine.test.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/review6_teacher_engine.test.ts",
+        "sha256": "5350e0f010941875896bf902a895f1197da2a683d9f6ad142c627288111d20b2"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/tests/fixtures/review6_finish_bomb_fixture.ts",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/review6_finish_bomb_fixture.ts",
+        "sha256": "4bfc02907bca43dc89150906c4f37b89f0b2b0f55a203000112141c262886d65"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/stats-admission.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/stats-admission.mjs",
+        "sha256": "c57f598591005b3a80799d5e2910375e23ba57dd4fbb6bd08dc617d1bb9aea9b"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/stats-admission.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/stats-admission.test.mjs",
+        "sha256": "d56b9cbce40f82ee0ccc07c495668028abbf66ce32918b0f60ff29b788a1341f"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-progress.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-progress.mjs",
+        "sha256": "cb02d801d63a0d4ff870bdd0ca77ab68fb15d0b0cc02d2283788ba87966aaf1e"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-progress.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-progress.test.mjs",
+        "sha256": "9f5def54f8a14bb922e523733f36ead2cfdc632033fd3f61b4a7609d1d95a379"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/resume-validation.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/resume-validation.mjs",
+        "sha256": "8f240880ec0fdecf9b2c3208c4ea6da2c434ed278ca2ad34b589e6c9a057ae10"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/resume-validation.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/resume-validation.test.mjs",
+        "sha256": "9cdb7ff10a7dca58d17e4d253285e0e84266becf3b217f15670ad111bddff3af"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/execution-authority.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/execution-authority.mjs",
+        "sha256": "bb67b09acb540591679db49ccd162669c9449a2b4964ef7895fc3cc6e175a727"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/execution-authority.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/execution-authority.test.mjs",
+        "sha256": "7b1b3916deaa2cfd2bebb766f60f5e5c0f5a228c37d1d6e598d025718a347546"
+      },
+      {
+        "originalPath": "/Users/ccrt/game/guandan/lab/review6/pilot-source-launch.test.mjs",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-source-launch.test.mjs",
+        "sha256": "b52c34aebff4f677cc9c2de8437851f6db32dba3414ba15e60f96642cde5fc10"
+      }
+    ],
+    "snapshot": {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/pilot-execution-snapshot-002/snapshot-manifest.json",
+      "sha256": "6984b4fede63f084f6c3ccf7d51423e71b431acd9d2b32d1c290b0b0f1fd5b88"
+    },
+    "all186SnapshotHashesVerified": true,
+    "priorReviews": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-engineering-review-002.json",
+        "sha256": "f58f0824e00f40bc51e0921d5e3d259261c04ddb8a4d5ef3702fbf1016bd0109"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-method-review-002.json",
+        "sha256": "2633f41b30780067f7227551fb17b559595129a5da854747c6ac2c8b572a9364"
+      }
+    ],
+    "evidence": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-pool-deadline-frozen001-red-001.log",
+        "sha256": "e1ee632b058a09fc89c57ebe8287c8f7bef35557bae31185cd0b0e1a157bf9a5"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-canonical-entry-pool-green-001.log",
+        "sha256": "bb38706d81d4a5937ab45d3e087a5bfa03b2b856c84ae2d9c8629e90f5049985"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-snapshot-parent-escape-red-001.log",
+        "sha256": "37feda2d3a4137ec30a9ee50d20f9c5beda89355472a4fc97ab3829257e4cdac"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-snapshot-parent-closure-green-002.log",
+        "sha256": "f76389e96cf99450a30e94fb9a65ef437abf779a760ac352e569d3684a3ca905"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-ambient-preload-red-001.log",
+        "sha256": "5192738947107014daf934828655731a1442e976a4e5dab17d93b4e976af37fe"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-ambient-preload-green-001.log",
+        "sha256": "ea8bb5429b13379ec2b84831223f890c5e2c2bfe15ef5967721e203e1d53a7ef"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-finish-bomb-nonbomb-red-001.log",
+        "sha256": "30ec7941bc28aec7afb2b2b2d6727c51d072ce9060a5eaf443a452c8f921f0fe"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-finish-bomb-nonbomb-green-001.log",
+        "sha256": "0efcd0c1c29c3f73511f69f17ea5f9a0e4f24f31e8ef58a6683471a41aff9b68"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-pilot-runtime-green-003.log",
+        "sha256": "ae55a4b2dd71a65c1d3da158467edf4dec01384c3cd18e2a458c07757c8ea78b"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-source-snapshot-relaunch-block-001.json",
+        "sha256": "5bd4f5e705779c98d91fcc286c40316e45695546a8c3405dc44b00004d093820"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/source-module-load-addendum-001.json",
+        "sha256": "1829159a020da1cd28b636da79a09ea6f22fc5e4cc62c32730ceefc30357ef00"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/teacher-spec-004.lock.json",
+        "sha256": "3cfb9c3f0b96ac9a09d75e62a34e5ef2bc8b4dfb167ca5bfcddb71a417be5c37"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/speed-spec.lock.json",
+        "sha256": "f87f850aeaea518b3dd82048bd3a2a1902faf3c2bd8fb3a0807ac201ea4bf8f1"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contract-index-001.json",
+        "sha256": "109772886fe8499065773fefdafc5a4196d91a34ae9a5f9c07bcedc6ee8f79d6"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-pilot-runtime-green-004.log",
+        "sha256": "c8761293cc53a41e824135185d71a4978faacd3bb13b7c6d00aa388bd3e31f06"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-genesis-red-001.log",
+        "sha256": "cefb80dabdb1e1a0d18f6d43e11cc254f4b5caf717195fc5c713674bcc3258c4"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-genesis-green-001.log",
+        "sha256": "7816f5fec086dac110d2e5166765b2984d0d810ec7b09b16d74a353e72eb9082"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-fixed-queue-red-001.log",
+        "sha256": "d2a34b15dc9e71a6d281b3bdb8ab74e88b47e765d0364032d333527c10582804"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-fixed-queue-green-001.log",
+        "sha256": "eaacaacf202327d3898da1fe7b4d42c1974009d75302ba7c13b8b0750ec89b71"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-resume-context-red-001.log",
+        "sha256": "e5fa77265f8a9fa5651f050929c50d747b273fca689210b9335a4845b010b3fb"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-resume-context-green-001.log",
+        "sha256": "35b55474678b10f3f351f7cb9e835000f95935acc81e2acc0197f02bdf7dffa1"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-resume-authority-red-001.log",
+        "sha256": "5c583246f059b6b5936c824b0695ddadc1f63698fae84b69c91f83248a61fa51"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-resume-authority-green-001.log",
+        "sha256": "291440952adcdc2adaed8b94b125f68fc579c802a1dfcb807f8de58bb8371173"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-stats-admission-red-001.log",
+        "sha256": "4b096dde47458912e369c56a74ffb50b482f24eb258b0acfe309ad07b54f10d2"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-worker-stats-admission-green-001.log",
+        "sha256": "a8458e9c4d327f6b466ba471d27810e914b19d1c91b2a6425942aded9ea99292"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/teacher-spec-005.lock.json",
+        "sha256": "776fe3dcb1e031bc0b61172c74f28c3c29b0e32af2d0f705ce13c4b5e05ba007"
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contract-index-002.json",
+        "sha256": "4a97919d9dc5d0c1b614e4509025061ad43b8538e7263f426778209913e1cf89"
+      }
+    ],
+    "executionContracts": [
+      {
+        "mode": "speed",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/speed-001.json",
+        "sha256": "4487abb92a2b67e24f50c6acceff4c3ce0fcfcf96ebb3145cf5882bf76848871"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 1,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-01-exec-001.json",
+        "sha256": "266cfa19bb279518eac7438d5850816485821741912c5eeb9bc03a41974ce9c2"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 2,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-02-exec-001.json",
+        "sha256": "723ec3368bcb56d19142a0ff0fe40edb389a8e99eb1c0a9850ae46106ab7e10b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 3,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-03-exec-001.json",
+        "sha256": "233baad2691a3f38f62686838d767992d9d5ede56bcce877b13466aa89400d67"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 4,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-04-exec-001.json",
+        "sha256": "bcf89452f9bcfeb8ed2518583158de961fdc7399b65c086039d5f223444253f8"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 5,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-05-exec-001.json",
+        "sha256": "b693c8ec683017409383c0e180ac875612c4b0e808e696fa81634b043ff55a5a"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 6,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-06-exec-001.json",
+        "sha256": "c23f1fd8103315971bcfed9e1e2b8cfc0454f54e9d374df5848f01107d7fada3"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 7,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-07-exec-001.json",
+        "sha256": "2496c12caf6f467d55898da40272c55f4d87bd72fbbf724f8e9f92da25f606de"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 9,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-09-exec-001.json",
+        "sha256": "6a80f6527a1fe11fe868e48e417b08dc2de068447670053a7a0f49397a6c8a51"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 10,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-10-exec-001.json",
+        "sha256": "714c55c46c859fe2ea7bb33394ac760f5cca71749783f80b2e218adc46d6b07c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 11,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-11-exec-001.json",
+        "sha256": "8a6486b76d06283b5c98b5e400cc7975f97cb2fdac710df126863bb776a741fd"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 12,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-12-exec-001.json",
+        "sha256": "2e22f25e95d7c05b61859cc9ee034d6a32cc99fc9618eaa9f7713abc5be017c4"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 14,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-14-exec-001.json",
+        "sha256": "b99073396a2ba7fd46bd3f19ec42fc01735b93b97fef9c5f6b0452f075fc3a92"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 15,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-15-exec-001.json",
+        "sha256": "80816fce27fe9b5a399f767b1e13e7c7681a671e733e74706d915e60626a4899"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 16,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-16-exec-001.json",
+        "sha256": "e338b8ecbe7c091315c3c7495718028f04eaadd7e73b0cd4217bfda349e5964c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 17,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-17-exec-001.json",
+        "sha256": "bf4273996b59da6c2f74a37a8ffb558746daa336d18204a998b9195a8ee3b416"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 18,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-18-exec-001.json",
+        "sha256": "d1e12b0a9355e07542c3165aebbeed2f6cfde914c37175ebe2a59a6c2b1216c7"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 19,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-19-exec-001.json",
+        "sha256": "ef3a01722e180114924adb9607bcef8b30d20919b76e77e079bc44353c42c702"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 20,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-20-exec-001.json",
+        "sha256": "6df312d26673ec399c8e3cc5a144022ce5086798fbeddd5df66feec3aab870e4"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 21,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-21-exec-001.json",
+        "sha256": "e2f26c51c6aa60025217d93c39bc0337a87a89cbaec689e4e61057394c1e621b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 22,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-22-exec-001.json",
+        "sha256": "11c3b0f2fc94f97fbe7de7498d5540451909b8fe6957b30f6cbe9335ce337037"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 23,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-23-exec-001.json",
+        "sha256": "a893226cc3652929b972c720a3093dfb29fdbad95fba1b47c24685c1699bea4e"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 24,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-24-exec-001.json",
+        "sha256": "dc272ba88d606b34d761d7941eb8d785fa7c424d4070968e71313c2304a9d267"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 25,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-25-exec-001.json",
+        "sha256": "88e0614a7ae62611533f8cb039dea19f60d4373f0eed1d38b549c35629f85ce8"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 26,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-26-exec-001.json",
+        "sha256": "a931861435efd8002a75be87abd6c80342fee87d21be3cff1ccd35d117c0ba4c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 27,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-27-exec-001.json",
+        "sha256": "1b8ea4e7115dd3eaf924499ef87883fd2ff7d035c384496849850ae2ae892951"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 28,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-28-exec-001.json",
+        "sha256": "f6ec9e3be5f7670016536f7e216bfced8e7c3ca14de59c569bcc21c60dcb967b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 29,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-29-exec-001.json",
+        "sha256": "b30d052a8613435e87b1882a37c5d675ed9e771e4469284e43d04cd66542b992"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 30,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-30-exec-001.json",
+        "sha256": "3127af3095493221c29f9f71b2c711d9bc9c9af3cc5e9cfeeb1bb13f24a2415b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 31,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-31-exec-001.json",
+        "sha256": "42fb326a934dc93072fec9f22f40d88d2761ded57a3f36b64deeaf942d6066f7"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 34,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-34-exec-001.json",
+        "sha256": "25da68b9ffdad2c82ab042c43b389f010dae681ec6bb9352f2217038b7c68dde"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 35,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-35-exec-001.json",
+        "sha256": "80ce64defc8173a93d71e76fd3ed0db7c6a1b9e49dd378fc1f08330479624c8e"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 36,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-36-exec-001.json",
+        "sha256": "d9b2966feba6f40c2054975d9c54f0f9b5b2ef8d9a328bc6e54b1d15d67284b1"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 38,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-38-exec-001.json",
+        "sha256": "488c4fabd90d56ee9ae4a8960ea6d208773087593cd593234042f212c31e3c39"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 39,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-39-exec-001.json",
+        "sha256": "888a568965b20c08e819c473a97c94343ad240d5cefd7fe28aa0893442974249"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 40,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-40-exec-001.json",
+        "sha256": "596e0435894ccc6b2f7481598b452dc41b81a693132b35f43159997319cac119"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 42,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-42-exec-001.json",
+        "sha256": "546b782d85ede22aad8cbe87ee0f06b4d1f489bc6343a79daab4dbebaea16e90"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 45,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-45-exec-001.json",
+        "sha256": "fbe77e5710d9b803c41e7577148786d91492c9b881d6b450250790a1ad32a828"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 46,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-46-exec-001.json",
+        "sha256": "6dfe66a3f34ce57125d2a8556423c72afa22b4d41e5e472116c295babdd68115"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 47,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-47-exec-001.json",
+        "sha256": "a530f972928cba5735ac51a25357350be808ab7fe545c31a69f1e0e770670353"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 48,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-48-exec-001.json",
+        "sha256": "46954d5096a7d922c1dcd0f4686c7c2d31ff7dd5c9029392b1540b516dd826ab"
+      }
+    ],
+    "executionContractTemplates": [
+      {
+        "mode": "teacher-root",
+        "slot": 1,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-01-exec-001.json",
+        "sha256": "266cfa19bb279518eac7438d5850816485821741912c5eeb9bc03a41974ce9c2"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 2,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-02-exec-001.json",
+        "sha256": "723ec3368bcb56d19142a0ff0fe40edb389a8e99eb1c0a9850ae46106ab7e10b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 3,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-03-exec-001.json",
+        "sha256": "233baad2691a3f38f62686838d767992d9d5ede56bcce877b13466aa89400d67"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 4,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-04-exec-001.json",
+        "sha256": "bcf89452f9bcfeb8ed2518583158de961fdc7399b65c086039d5f223444253f8"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 5,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-05-exec-001.json",
+        "sha256": "b693c8ec683017409383c0e180ac875612c4b0e808e696fa81634b043ff55a5a"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 6,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-06-exec-001.json",
+        "sha256": "c23f1fd8103315971bcfed9e1e2b8cfc0454f54e9d374df5848f01107d7fada3"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 7,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-07-exec-001.json",
+        "sha256": "2496c12caf6f467d55898da40272c55f4d87bd72fbbf724f8e9f92da25f606de"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 9,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-09-exec-001.json",
+        "sha256": "6a80f6527a1fe11fe868e48e417b08dc2de068447670053a7a0f49397a6c8a51"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 10,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-10-exec-001.json",
+        "sha256": "714c55c46c859fe2ea7bb33394ac760f5cca71749783f80b2e218adc46d6b07c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 11,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-11-exec-001.json",
+        "sha256": "8a6486b76d06283b5c98b5e400cc7975f97cb2fdac710df126863bb776a741fd"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 12,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-12-exec-001.json",
+        "sha256": "2e22f25e95d7c05b61859cc9ee034d6a32cc99fc9618eaa9f7713abc5be017c4"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 14,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-14-exec-001.json",
+        "sha256": "b99073396a2ba7fd46bd3f19ec42fc01735b93b97fef9c5f6b0452f075fc3a92"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 15,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-15-exec-001.json",
+        "sha256": "80816fce27fe9b5a399f767b1e13e7c7681a671e733e74706d915e60626a4899"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 16,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-16-exec-001.json",
+        "sha256": "e338b8ecbe7c091315c3c7495718028f04eaadd7e73b0cd4217bfda349e5964c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 17,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-17-exec-001.json",
+        "sha256": "bf4273996b59da6c2f74a37a8ffb558746daa336d18204a998b9195a8ee3b416"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 18,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-18-exec-001.json",
+        "sha256": "d1e12b0a9355e07542c3165aebbeed2f6cfde914c37175ebe2a59a6c2b1216c7"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 19,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-19-exec-001.json",
+        "sha256": "ef3a01722e180114924adb9607bcef8b30d20919b76e77e079bc44353c42c702"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 20,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-20-exec-001.json",
+        "sha256": "6df312d26673ec399c8e3cc5a144022ce5086798fbeddd5df66feec3aab870e4"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 21,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-21-exec-001.json",
+        "sha256": "e2f26c51c6aa60025217d93c39bc0337a87a89cbaec689e4e61057394c1e621b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 22,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-22-exec-001.json",
+        "sha256": "11c3b0f2fc94f97fbe7de7498d5540451909b8fe6957b30f6cbe9335ce337037"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 23,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-23-exec-001.json",
+        "sha256": "a893226cc3652929b972c720a3093dfb29fdbad95fba1b47c24685c1699bea4e"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 24,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-24-exec-001.json",
+        "sha256": "dc272ba88d606b34d761d7941eb8d785fa7c424d4070968e71313c2304a9d267"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 25,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-25-exec-001.json",
+        "sha256": "88e0614a7ae62611533f8cb039dea19f60d4373f0eed1d38b549c35629f85ce8"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 26,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-26-exec-001.json",
+        "sha256": "a931861435efd8002a75be87abd6c80342fee87d21be3cff1ccd35d117c0ba4c"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 27,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-27-exec-001.json",
+        "sha256": "1b8ea4e7115dd3eaf924499ef87883fd2ff7d035c384496849850ae2ae892951"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 28,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-28-exec-001.json",
+        "sha256": "f6ec9e3be5f7670016536f7e216bfced8e7c3ca14de59c569bcc21c60dcb967b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 29,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-29-exec-001.json",
+        "sha256": "b30d052a8613435e87b1882a37c5d675ed9e771e4469284e43d04cd66542b992"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 30,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-30-exec-001.json",
+        "sha256": "3127af3095493221c29f9f71b2c711d9bc9c9af3cc5e9cfeeb1bb13f24a2415b"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 31,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-31-exec-001.json",
+        "sha256": "42fb326a934dc93072fec9f22f40d88d2761ded57a3f36b64deeaf942d6066f7"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 34,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-34-exec-001.json",
+        "sha256": "25da68b9ffdad2c82ab042c43b389f010dae681ec6bb9352f2217038b7c68dde"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 35,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-35-exec-001.json",
+        "sha256": "80ce64defc8173a93d71e76fd3ed0db7c6a1b9e49dd378fc1f08330479624c8e"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 36,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-36-exec-001.json",
+        "sha256": "d9b2966feba6f40c2054975d9c54f0f9b5b2ef8d9a328bc6e54b1d15d67284b1"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 38,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-38-exec-001.json",
+        "sha256": "488c4fabd90d56ee9ae4a8960ea6d208773087593cd593234042f212c31e3c39"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 39,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-39-exec-001.json",
+        "sha256": "888a568965b20c08e819c473a97c94343ad240d5cefd7fe28aa0893442974249"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 40,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-40-exec-001.json",
+        "sha256": "596e0435894ccc6b2f7481598b452dc41b81a693132b35f43159997319cac119"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 42,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-42-exec-001.json",
+        "sha256": "546b782d85ede22aad8cbe87ee0f06b4d1f489bc6343a79daab4dbebaea16e90"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 45,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-45-exec-001.json",
+        "sha256": "fbe77e5710d9b803c41e7577148786d91492c9b881d6b450250790a1ad32a828"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 46,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-46-exec-001.json",
+        "sha256": "6dfe66a3f34ce57125d2a8556423c72afa22b4d41e5e472116c295babdd68115"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 47,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-47-exec-001.json",
+        "sha256": "a530f972928cba5735ac51a25357350be808ab7fe545c31a69f1e0e770670353"
+      },
+      {
+        "mode": "teacher-root",
+        "slot": 48,
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/execution-contracts-002/root-48-exec-001.json",
+        "sha256": "46954d5096a7d922c1dcd0f4686c7c2d31ff7dd5c9029392b1540b516dd826ab"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "C3-EXECUTION-M01",
+      "priority": "P1",
+      "status": "OPEN_ON_IMMUTABLE_003",
+      "title": "A permanently incomplete explored branch traps the fixed queue without a terminal rejection receipt.",
+      "locations": [
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-worker.ts",
+          "line": 22,
+          "function": "exploration mean/completeness loop"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-progress.mjs",
+          "function": "readPilotStatuses / assertPilotMayOpen"
+        }
+      ],
+      "minimalReproduction": {
+        "completeTaskReceipts": 32,
+        "onePermanentIncompleteBranch": true,
+        "resumeValidatorAcceptsTypedIncomplete": true,
+        "firstMean": {
+          "rejected": true,
+          "error": "exploration branch incomplete: root rejected"
+        },
+        "rootReportWritten": false,
+        "queueNextSlot": 1,
+        "laterSlot": {
+          "rejected": true,
+          "error": "only next fixed pilot root may open or resume"
+        },
+        "pendingWorldsOnResume": 0,
+        "nextMean": {
+          "rejected": true,
+          "error": "exploration branch incomplete: root rejected"
+        }
+      },
+      "actualControlFlow": "A legitimate complete=false branch (for example a deterministic match/round cap) is returned normally by the branch worker and stored in the completed task journal. After all32exploration task receipts arrive, the mean loop throws \"exploration branch incomplete: root rejected\". It writes no root-report/terminal rejection. On resume the fixed phase sees all32keys, so has zero pending worlds and reaches the same throw. readPilotStatuses sees no terminal report, and the queue allows only this first root forever.",
+      "impact": "The branch correctly cannot teach a strong label, but a nonfatal rejected pilot root cannot be accounted for and the prelocked source queue cannot advance. Repeated ordinal windows merely consume budget on the same irreparable frontier. This defeats the advertised bounded rejection/progress path; it is not a demand to reroll or remove a failed world.",
+      "requiredClosure": "Distinguish an interrupted/missing result that may resume the same world from a permanently incomplete cap result. Persist an identity-bound terminal rejection/evidence receipt that advances the fixed prefix while fullyAdjudicated=false and supported=false. Never count it toward12complete or4supported and never replace its source or world."
+    },
+    {
+      "id": "C3-EXECUTION-M02",
+      "priority": "P1",
+      "status": "OPEN_ON_IMMUTABLE_003",
+      "title": "Partial-statistics recovery changes the immutable validated-proof path on a later resume.",
+      "locations": [
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-worker.ts",
+          "line": 26,
+          "function": "existing stats/partial-output recovery"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-003/pilot-worker.ts",
+          "line": 28,
+          "function": "statistics:validated append"
+        }
+      ],
+      "minimalReproduction": {
+        "originalPartialPreserved": true,
+        "newRecomputationsIdenticalSHA": true,
+        "firstValidatedProofSaved": true,
+        "fullyTypedSyntheticStatisticsAdmitted": true,
+        "interruptionPoint": "after statistics:validated append, before label/root-report",
+        "nextResumeProofAppend": {
+          "rejected": true,
+          "error": "completed branch identity changed"
+        }
+      },
+      "actualControlFlow": "Leave an unparseable original stats-result.json. Exec2 correctly recomputes the same fixed raw/seed/kernel into stats-recompute-exec-2-T.json, admits it, and appends statistics:validated with that path. If interrupted after this proof but before the root report, exec3 again begins with the still-unparseable original, recomputes identical bytes into a new exec3 timestamped path, and appends the same proof key with a different statsPath. appendBranch rejects it as \"completed branch identity changed\" even though the statistics hashes agree.",
+      "impact": "This is a legitimate repeated-interruption state. The newly advertised recovery is not idempotent and cannot finish the root without changing protected journal evidence. The reduced probe uses fully typed, admitted synthetic all-zero raw g+W statistics; it does not depend on a fake positive label or any NN score.",
+      "requiredClosure": "When a validated proof already exists, first reuse/verify its bound statsPath and root/input/kernel/pair/output digests, and compare any deterministic recomputation to those bytes. Alternatively use a stable canonical recovery artifact and preserve the original partial file. Do not create a new proof address on every resume, delete the proof, alter worlds, or overwrite evidence."
+    }
+  ],
+  "openP0": [],
+  "openP1": [
+    "C3-EXECUTION-M01",
+    "C3-EXECUTION-M02"
+  ],
+  "blockedReasons": [
+    "Permanent incomplete exploration has no terminal queue outcome.",
+    "A second interruption after partial-statistics recovery causes an immutable proof-path conflict."
+  ],
+  "positiveAffectedConclusions": {
+    "originalGenesisAndRetiredSource": {
+      "genesis": "The exact original66d45add...initialEntryHash is pinned independently in anchor and first ledger entry before reserve and in the frozen child. Synthetic fresh-same-cycle anchor/entry mutations reject.",
+      "historicalSourceRoute": "Current official source route throws immediately without reading config, ledger or snapshot. Existing accepted48source/40root receipts remain historical; no source rerun is needed."
+    },
+    "typedStatisticsGate": {
+      "currentKernelUnchangedSHA256": "839cef71e9ebdf527a383098700e29b857134e5545d5094e330dbd258d529049",
+      "checks": "Input/source digests, exact implementation/method/type7/20k/seeds/unit IDs/shared-index metadata, finite ordered quantiles, raw g+W typed targets, all4primary+2secondary completeness, original means, root/shared-column consistency, strict supported boolean, primary lower>.02 and secondary lower>0, root-action scope and separate plan flags.",
+      "entryConsumer": "Labels now use admission.supported rather than truthiness of a cached stats.supported field.",
+      "syntheticResults": "Zero and positive constant complete raw fixtures pass their proper admissions; supported strings/inconsistent flags, plan claims, source digest and raw-target mutations reject.",
+      "recomputation": "The worker recomputes exactly the same raw data/seeds/current kernel when prior stats exist, rejecting differing valid output. First unparseable-file recovery preserves the original and records both hashes; M02 concerns subsequent idempotence only.",
+      "notAClaim": "No new actual teacher statistics or labels were measured. The semantic gate is not an independent second bootstrap implementation."
+    },
+    "fixedPrefixAndQualityGate": {
+      "order": "Only the earliest unfinished materialized source slot is allowed, and statuses must form the original source prefix.",
+      "stop": "QualityReady requires at least12fullyAdjudicated roots,4supported,3supported families and both pass_over_takeover/takeover_over_pass directions. No missing threshold can be substituted; exhaustion does not add sources.",
+      "evidence": "Parent reads actual source/pair files and hash-chained stats/input/kernel/pair digests and typed admission before counting a completed root. Synthetic gate/skip/prefix/readiness cases pass.",
+      "remainingDefect": "M01 prevents a rejected exploration frontier from entering this terminal-status accounting."
+    },
+    "resumeContextAndRows": {
+      "root": "Source/spec/snapshot/actual-entry/rootId/slot/family context is compared before reuse.",
+      "cache": "Every cached non-statistics row must match phase/world/seed/exact required arms, profileName/profileSHA, boolean complete, shared64hex initial-world hash and typed complete g+W (or absent incomplete target). Hash integrity alone no longer admits mismatched rows.",
+      "independentNegativeCases": "Wrong spec, phase, world, seed, profile, arms and target type reject.",
+      "mainCheckpointClaim": false
+    },
+    "ordinalOnlyAuthority": {
+      "specificContracts": 41,
+      "templates": 40,
+      "derivativeRule": "Only executionOrdinal2..999 and matching canonical root-xx-exec-NNN filename may differ from the reviewed teacher-root template. All science/source/spec/snapshot/worker/output fields remain identical.",
+      "independentProbes": "All40ordinal2derivatives pass template identity with a settled original001prefix.160nonordinal worker/spec/source/snapshot mutations reject; skipping an unsettled001 rejects.",
+      "originalAccounting": "Original settled canonical task IDs select the next ordinal. This adds no source/root/world or scientific attempt and does not reset the72h budget."
+    },
+    "snapshotClosure": {
+      "sourceCopiesVerified": 38,
+      "snapshotFilesVerified": 186,
+      "contractInputReferencesVerified": 122,
+      "scope": "Actual verifier confirms complete listed file/directory/link tree and package closure; copied sources match the reviewed manifest. Full-tree code and supplied unlisted-package negative receipts were inspected. No live-source mutation test or scored job was run."
+    }
+  },
+  "rawIndependentRecomputation": {
+    "references": {
+      "sourceCopiesVerified": 38,
+      "snapshotFilesVerified": 186,
+      "executionContractsVerified": 41,
+      "contractInputReferencesVerified": 122,
+      "strictResumeTemplates": 40,
+      "ordinalOnlyDerivativesAccepted": 40,
+      "nonOrdinalDerivativeMutationsRejected": 160,
+      "skippedOrdinalRejected": true,
+      "scientificFieldsUnchanged": 31,
+      "unchangedPreviouslyReviewedComponents": [
+        "teacher-engine.ts",
+        "teacher-roots.ts",
+        "paired_stats.py",
+        "match-play.ts",
+        "plan-dsl.ts",
+        "visible-world.ts"
+      ],
+      "actualSnapshotSHA256": "6984b4fede63f084f6c3ccf7d51423e71b431acd9d2b32d1c290b0b0f1fd5b88",
+      "teacherSpecSHA256": "776fe3dcb1e031bc0b61172c74f28c3c29b0e32af2d0f705ce13c4b5e05ba007",
+      "executionIndexSHA256": "4a97919d9dc5d0c1b614e4509025061ad43b8538e7263f426778209913e1cf89",
+      "newNNCalls": 0,
+      "productionTeacherLabels": 0,
+      "realBudgetOrLeaseWrites": 0
+    },
+    "recoveryAndQueueCounterexamples": {
+      "syntheticOnly": true,
+      "statsRecovery": {
+        "originalPartialPreserved": true,
+        "newRecomputationsIdenticalSHA": true,
+        "firstValidatedProofSaved": true,
+        "fullyTypedSyntheticStatisticsAdmitted": true,
+        "interruptionPoint": "after statistics:validated append, before label/root-report",
+        "nextResumeProofAppend": {
+          "rejected": true,
+          "error": "completed branch identity changed"
+        }
+      },
+      "incompleteExploration": {
+        "completeTaskReceipts": 32,
+        "onePermanentIncompleteBranch": true,
+        "resumeValidatorAcceptsTypedIncomplete": true,
+        "firstMean": {
+          "rejected": true,
+          "error": "exploration branch incomplete: root rejected"
+        },
+        "rootReportWritten": false,
+        "queueNextSlot": 1,
+        "laterSlot": {
+          "rejected": true,
+          "error": "only next fixed pilot root may open or resume"
+        },
+        "pendingWorldsOnResume": 0,
+        "nextMean": {
+          "rejected": true,
+          "error": "exploration branch incomplete: root rejected"
+        }
+      },
+      "NNCalls": 0,
+      "productionTeacherLabels": 0,
+      "realBudgetOrLeaseWrites": 0
+    },
+    "affectedAuthoredRegressions": {
+      "passed": 10,
+      "failed": 0,
+      "log": "/private/tmp/c3-pilot-execution-method-003/affected-tests.log",
+      "scope": [
+        "canonical source shapes",
+        "original genesis pin",
+        "retired official source route",
+        "strict ordinal authority",
+        "fixed prefix/minimum gate",
+        "resume context/cache schema",
+        "typed statistics admission with synthetic current kernel"
+      ],
+      "NNGuard": "Python Module/functional linear calls hard-disabled; tested Node helpers do not load NN policies.",
+      "oldExactMathTestsRepeated": false
+    },
+    "suppliedRuntimeSuite": {
+      "reportedPassed": 21,
+      "independentlyRerunAsWholeSuite": false,
+      "receipt": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-pilot-runtime-green-004.log"
+    },
+    "newCounterexampleQuality": "The statistics counterexample first passes the new semantic admission on a fully typed synthetic constant-zero data set. Two recomputed files have identical content SHA, so only path instability causes the journal conflict. The queue counterexample is accepted by the actual new resume validator, and all32fixed task keys remain present."
+  },
+  "preservedPriorConclusions": {
+    "priorMethodReport": {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-pilot-execution-method-review-002.json",
+      "sha256": "2633f41b30780067f7227551fb17b559595129a5da854747c6ac2c8b572a9364"
+    },
+    "M01NonbombFix": "Unchanged teacher-engine hash from002; five-nines nonbomb reserve remains closed.",
+    "sourceAndWorlds": "No changes to the40root rows/48source bound, profiles/rules/reward,6proposal priorities,32explore→one pair→256/128, world/future namespaces or31compared scientific fields.",
+    "math": "Current single float64 Torch20k/type7 kernel, original y=g+W/evidence d=(yA-yB)/8 and primary/secondary gates are unchanged; previously exact recomputations and H synthetic numeric comparisons remain applicable.",
+    "plans": "Own-only4decision/root-round DSL and four-seat role behavior remain as previously reviewed.",
+    "sourceData": "The40source/501family/16640seed positive evidence was not rerun or reselected."
+  },
+  "rootReportedLiveRepairs": {
+    "received": true,
+    "incorporatedIntoThisDecision": false,
+    "status": "Root reports live fixes and6red/green tests for both new findings; these are not part of immutable003 and await a new frozen004 request. The003findings remain open on their reviewed bytes."
+  },
+  "preservedConstraints": {
+    "cycle": "review6-humanlike-20261028",
+    "originalBudgetSeconds": 259200,
+    "midnightResetPermitted": false,
+    "HFitCountAsPreviouslyVerified": 1,
+    "HQualified": false,
+    "experimentBranch": "direct_teacher_no_h",
+    "teacherRootsAdjudicatedAtReview": 0,
+    "strongTeacherLabelsAtReview": 0,
+    "mainUpdates": 0,
+    "formalOpens": 0,
+    "typecheckPassed": false
+  },
+  "executionSafety": {
+    "newNNForwardCalls": 0,
+    "newNeuralDeciderDecideCalls": 0,
+    "actualTeacherBranchScores": 0,
+    "productionTeacherLabels": 0,
+    "sourceHOrBaselineReruns": 0,
+    "trainingUpdates": 0,
+    "realBudgetWrites": 0,
+    "realLeaseWrites": 0,
+    "repositorySourceOrEvidenceWrites": 0,
+    "externalModelCalls": 0,
+    "writes": "Personal temporary probes and this report only; all positive supported flags are synthetic test fixtures, not production labels."
+  },
+  "reproductionArtifacts": [
+    {
+      "path": "/private/tmp/c3-pilot-execution-method-003/recovery-probe.mjs",
+      "sha256": "0d1604645a2f0b4662f9d505cbad0f2d86319b03a4e1131d580a1dda32d3b3a5",
+      "sizeBytes": 5111
+    },
+    {
+      "path": "/private/tmp/c3-pilot-execution-method-003/recovery-probe.json",
+      "sha256": "9a2abfaab3a49481bd0aded6d9429e5599ae33033a8668f4d4a67efc6d073296",
+      "sizeBytes": 1086
+    },
+    {
+      "path": "/private/tmp/c3-pilot-execution-method-003/recovery-probe.log",
+      "sha256": "9a2abfaab3a49481bd0aded6d9429e5599ae33033a8668f4d4a67efc6d073296",
+      "sizeBytes": 1086
+    },
+    {
+      "path": "/private/tmp/c3-pilot-execution-method-003/references-probe.mjs",
+      "sha256": "397c786d4131e0c4578ee60405de7d9827d4a4f0e1f83cd94725bfc1297cabaa",
+      "sizeBytes": 4934
+    },
+    {
+      "path": "/private/tmp/c3-pilot-execution-method-003/references-probe.json",
+      "sha256": "1476309d6e864247b8658a8ccb81a59d823cdfa7671fe0a75fefdff705408f91",
+      "sizeBytes": 878
+    },
+    {
+      "path": "/private/tmp/c3-pilot-execution-method-003/references-probe.log",
+      "sha256": "1476309d6e864247b8658a8ccb81a59d823cdfa7671fe0a75fefdff705408f91",
+      "sizeBytes": 878
+    },
+    {
+      "path": "/private/tmp/c3-pilot-execution-method-003/affected-tests.log",
+      "sha256": "47c90a2d23af09240bf158da73e1be675b30d96b0c2b9764b1070698c8c174f2",
+      "sizeBytes": 1146
+    },
+    {
+      "path": "/private/tmp/c3-pilot-execution-method-003/python-no-nn.py",
+      "sha256": "12294ab7f2e019410a7231bbdfe43870f8e7867589b750b8be6b2b222f45dfb8",
+      "sizeBytes": 343
+    },
+    {
+      "path": "/private/tmp/c3-pilot-execution-method-003/guarded-python",
+      "sha256": "dc7274e189737a00d830235c147fc0d6f8a637db1d5abc4d157afb302e7a4407",
+      "sizeBytes": 125
+    }
+  ],
+  "limitations": [
+    "This report reviews immutable003 only and deliberately preserves its CHANGES_REQUIRED despite later live edits. It does not overwrite or reinterpret the002report.",
+    "The two new P1s concern legitimate rejection/repeated-interruption progress. Neither probe claims an observed real NN/teacher failure, a false strong label, or a change to exact bootstrap mathematics.",
+    "Actual399model invariance, teacher rewards/labels, actual pilot cost/yield and quality remain unmeasured by this read-only reviewer. The real job and real ledger/lease were not launched or mutated.",
+    "Only affected regressions were rerun. Source matches, H, prior exact math/fullfamily/seed proofs, M01 and DSL were reused through immutable hash identity.",
+    "Ad hoc lab typecheck remains unpassed. Approval of teacher quality,C3overall,tail curriculum,main training,capability or formal/skill attempts is outside scope and not granted."
+  ]
+}

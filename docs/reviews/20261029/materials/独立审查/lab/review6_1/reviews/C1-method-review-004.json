@@ -1,0 +1,45 @@
+{
+  "reviewId": "C1-method-004",
+  "requestId": "C1-request-004",
+  "scope": "仅复核静态规则文案 E07 修正及当前证据身份；不重跑全量。",
+  "reviewedFileHashes": {
+    "request": "7f341e24225ea46047011a8f9b5e16230b92a3b6e78aa0bf53bc962a28986692",
+    "knowledge.ts": "d216bd4422eb5ab22bc8e9954b5e0190074f31d955c22c77a89c75d73fc4de2f",
+    "diff.patch": "9fe4824aaf75c0ad7b7f905575bed5986e9baf6f28b5accc430159d45d1e8aa7",
+    "browser-acceptance-004.json": "62bd8e06d124c1c836d7f9d6e2f395a63383576a3bfee521f1c3fc35b7a10d52",
+    "c1-real-product-cli-verified-004.json": "e6427118c51d156e1fc78bde927bee31d64e594111a7905e0e71bbcebb76bb54",
+    "product-display-004/export-manifest.json": "cd121a782904e4bfd47bc0bac42860ac55cf9de02d112a7789a0e8f3ed59bc66"
+  },
+  "verification": {
+    "requestLinkedHashMismatches": 0,
+    "sourceMatchesImmutableCopy": true,
+    "businessSourceChange": "仅一行：删除固定排除2与级牌的说法，改为按实际规则上下文核验序列。",
+    "activeAnalyzerEmitsStraightShape": false,
+    "otherChanges": "cycle.draft.json 仅更新 browser/product 验证收据路径及对应 hash。",
+    "browserLinkedHashes": "16份源文件、49份证据全部匹配。",
+    "browserRerun": false,
+    "browserReuse": "004收据明确沿用既有实际浏览器证据，未伪称重新运行。",
+    "exportPayloadHashesMatch": true,
+    "newExportEvaluations": 0
+  },
+  "closureDecisions": {
+    "E07": "P2已关闭；原003中的固定排除规则确有错误，本次追加确认修正。",
+    "E01-E06": "既有P1关闭结论保持。"
+  },
+  "retainedMeasurements": {
+    "developmentCases": 60,
+    "cards": 240,
+    "checkedAssertions": 1440,
+    "missingAssertions": 0,
+    "incorrectAssertions": 0
+  },
+  "findings": [],
+  "remainingP0P1": [],
+  "blockedReasons": [],
+  "overallDecision": "PASS_C1_FINITE_FACTS_AND_LOCAL_WEB_ONLY",
+  "limitations": [
+    "原003报告保留，本报告为追加确认。",
+    "不宣称新牌力；教学、封存技能、正式比赛、候选及真人指标仍未验收。",
+    "只读核查，未修改文件或运行训练、正式评测、外部模型调用。"
+  ]
+}

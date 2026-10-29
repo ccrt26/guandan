@@ -1,0 +1,21 @@
+import type{GameState,Combo}from'@gd/engine';
+import{rootCandidates}from'./teacher-roots';
+import{necessaryDeclarationKey}from'./action-effect';
+import{finalizeCurrentSamples,type CurrentDecision,type NoHBucket}from'./training-samples';
+import type{PublicStep}from'./match-play';
+interface RecorderOptions{matchId:string;bucket:NoHBucket;currentPolicyId:string;currentSeats:number[];policyIds:string[];behaviorWeightsSHA256:string;anchorLimit:number;}
+/** Hooks deliberately retain the round/physical owner BEFORE applyMove. Nothing
+ * receives a mature team target until the entire match has actually completed. */
+export class CurrentMatchRecorder{
+ private rows:CurrentDecision[]=[];private rounds=new Map<number,{gameNo:number;winnerTeam:number;upgrade:number}>();private ordinals=new Map<string,number>();
+ private pending:{gameNo:number;seat:number;ordinal:number;candidates:ReturnType<typeof rootCandidates>|null;ctx:GameState['ctx']}|null=null;
+ private anchors:any[]=[];private closed=false;frozenFeatureRowsIgnored=0;
+ constructor(private options:RecorderOptions){const o=options;if(!o.matchId||!o.currentPolicyId||!/^[0-9a-f]{64}$/.test(o.behaviorWeightsSHA256)||!Number.isSafeInteger(o.anchorLimit)||o.anchorLimit<0||o.anchorLimit>64||o.policyIds.length!==4||new Set(o.currentSeats).size!==o.currentSeats.length||!o.currentSeats.length||o.currentSeats.some(s=>!Number.isInteger(s)||s<0||s>3)||o.policyIds.some((id,s)=>(id===o.currentPolicyId)!==o.currentSeats.includes(s)))throw Error('current physical-seat policy identity invalid');}
+ before(state:GameState,seat:number,_history:PublicStep[]){if(this.closed||this.pending||!Number.isSafeInteger(state.match.gameNo)||state.match.gameNo<1||!Number.isInteger(seat)||seat<0||seat>3)throw Error('current recorder before hook invalid');const gameNo=state.match.gameNo,key=gameNo+':'+seat,ordinal=(this.ordinals.get(key)??0)+1;this.ordinals.set(key,ordinal);this.pending={gameNo,seat,ordinal,ctx:state.ctx,candidates:this.options.currentSeats.includes(seat)&&this.anchors.length<this.options.anchorLimit?rootCandidates(state):null};}
+ after(state:GameState,seat:number,move:{pass:boolean;combo?:Combo},feat:Float32Array|undefined){const p=this.pending;if(this.closed||!p||p.seat!==seat)throw Error('current recorder hook owner mismatch');if(state.result){const r={gameNo:p.gameNo,winnerTeam:state.result.winnerTeam,upgrade:state.result.upgrade},old=this.rounds.get(p.gameNo);if(old&&JSON.stringify(old)!==JSON.stringify(r))throw Error('round result changed');this.rounds.set(p.gameNo,r);}
+  if(this.options.currentSeats.includes(seat)){if(!(feat instanceof Float32Array)||feat.length!==399||!feat.every(Number.isFinite))throw Error('current399 selected feature missing or invalid');const decisionId=`${this.options.matchId}:g${p.gameNo}:p${seat}:d${p.ordinal}`;this.rows.push({decisionId,matchId:this.options.matchId,gameNo:p.gameNo,seat,policyId:this.options.currentPolicyId,features399:new Float32Array(feat),behaviorWeightsSHA256:this.options.behaviorWeightsSHA256,bucket:this.options.bucket});
+   if(p.candidates){const key=necessaryDeclarationKey(move.pass?null:move.combo!,p.ctx),chosen=p.candidates.find(c=>c.actionKey===key);if(!chosen||chosen.features68.some((x,i)=>!Object.is(x,feat[331+i])))throw Error('actual selected feature/action candidates differ');const inputs=p.candidates.map(c=>{const x=new Float32Array(399);x.set(feat.subarray(0,331));x.set(c.features68,331);return Array.from(x);});this.anchors.push({rootId:decisionId,matchId:this.options.matchId,gameNo:p.gameNo,seat,candidateActionKeys:p.candidates.map(c=>c.actionKey),features399:inputs,sourceBehaviorWeightsSHA256:this.options.behaviorWeightsSHA256});}
+  }else if(feat!==undefined)this.frozenFeatureRowsIgnored++;this.pending=null;
+ }
+ finish(result:{complete:boolean;winner:number|null}){if(this.closed||this.pending)throw Error('current recorder cannot finish pending or closed hooks');this.closed=true;const finalized=finalizeCurrentSamples(this.rows,{...result,rounds:[...this.rounds.values()],currentPolicyId:this.options.currentPolicyId,currentSeats:this.options.currentSeats});return{...finalized,anchors:result.complete?this.anchors:[],rounds:[...this.rounds.values()],frozenFeatureRowsIgnored:this.frozenFeatureRowsIgnored,currentDecisionsSeen:this.rows.length};}
+}

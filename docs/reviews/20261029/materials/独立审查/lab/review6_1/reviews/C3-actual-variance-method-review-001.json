@@ -1,0 +1,2477 @@
+{
+  "schemaVersion": "r6-independent-method-actual-result-review-v1",
+  "role": "method",
+  "reviewId": "C3-actual-variance-method-review-001",
+  "at": "2026-10-28T23:03:05.353733+00:00",
+  "requestSHA256": "5d092cf94b6ee924b85e273fc7698a69d6d178e2880045bc17603365551331b0",
+  "requestBinding": "Actual-result followup to execution request004; not a new execution authorization.",
+  "reviewedActualReportPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/variance-report.json",
+  "reviewedActualReportSHA256": "302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431",
+  "executedContractSHA256": "c9fd1f76aa17cae2cfb085c293be32f02df4dcbdd8a8678e8a3095360d2de519",
+  "executedSnapshotSHA256": "a1eede035856027fb7386168083abdcdc1b631d90a58decfc2e91e07561707dc",
+  "overallDecision": "MEASURED_VARIANCE_AND_COST_VERIFIED",
+  "futureExecutionApproval": false,
+  "P1": [],
+  "P2": [],
+  "blockers": [],
+  "scope": "Mechanical actual64-base variance/cost readback only. Original design/teacher/proof not rerun. No actual NN, action decide, complete match, rollout, Torch or real budget/lease write. This report does not authorize future mature or main execution.",
+  "findings": [
+    {
+      "id": "AV01-complete-blocks-and-mapping",
+      "status": "VERIFIED",
+      "evidence": "64 raw block hashes match; ordinals1..64 exactly once,16 distinct expected layouts each.1024 typed complete results,0 incomplete; cooperation768/M1128/M2128, actor0/1 each512. Declared/actual policy ID vectors, fixed probe/development partners, actor parity, side, original M2 RNG and all original source descriptors match approved contract. Root signed g/finalW/target identities also match, while variance uses complete-match teamWin."
+    },
+    {
+      "id": "AV02-independent-paired-statistics",
+      "status": "VERIFIED",
+      "evidence": "Recomputed every group U0 two-side mean minus heuristic-probe two-side mean, then macro average within same base. M1/M2 each use64 separate two-side block values. All saved raw vectors and block outputs agree; all sample SD use n-1=63 and match report with maximum absolute difference0. Group covariance retained; macro sample variance equals sum of3x3 sample covariance/9.",
+      "means": {
+        "primary": 0.4401041666666665,
+        "groups": [
+          0.453125,
+          0.4140625,
+          0.453125
+        ],
+        "groupU0Win": [
+          0.4609375,
+          0.4296875,
+          0.4609375
+        ],
+        "groupProbeWin": [
+          0.0078125,
+          0.015625,
+          0.0078125
+        ],
+        "M1": 0.3828125,
+        "M2": 0.5546875
+      },
+      "SD": {
+        "primary": 0.18867211534189088,
+        "groups": [
+          0.3049687727964166,
+          0.33987261269061214,
+          0.34178279095132363
+        ],
+        "M1": 0.29198537009447295,
+        "M2": 0.3347255153628427
+      },
+      "floor": "All primary/groups/M1/M2 design SD remain.5; boundedSensitivity1. No final N selected.",
+      "interpretation": "Large cooperation difference is U0-versus-fixed weak training heuristic0 qualification data, not a trained candidate, teacher gain or future design alternative. M1.3828125/M2.5546875 are pilot measurements, not protection-gate acceptance."
+    },
+    {
+      "id": "AV03-common-indexed-deals-and-ancestry",
+      "status": "VERIFIED",
+      "evidence": "All10794 physical round records have correct original metric namespace/master/game-index derived seeds, sequential gameNo and matching canonical round-family metadata. Cooperation12 share indexed raw decks within base, while M1/M2 use independent metric streams.192 initial source families match spec;2697 unique actual pre-exchange families independently reconstructed by pure known-seed dealing,0 mismatches or prior3062-exclusion collisions. No policy action or round/match replay used.",
+      "limit": "Post-exchange fingerprints may differ with preceding results/public tribute. Shared indexed pre-exchange deck/family is the coupling check;2697 round families are not2697 independent variance units."
+    },
+    {
+      "id": "AV04-timing-and-resource",
+      "status": "VERIFIED_WITH_PRECISE_SCOPES",
+      "evidence": "Type7 median/P90 recomputed from raw match/block timers. Cooperation summary n384 is U0 variant with4NN seats; all raw cooperation outcomes total768 and include heuristic probe. M1/M2 summaries each128. Full block timer is16-match bundle, with first warm blocks retained. Pool reports4 thread IDs and task counts16/15/16/17 summing64.",
+      "matchTaskSeconds": {
+        "cooperation": {
+          "n": 384,
+          "median": 0.8086228960000008,
+          "p90": 1.0986461921000013
+        },
+        "M1": {
+          "n": 128,
+          "median": 0.7719020829999863,
+          "p90": 1.0539742624000137
+        },
+        "M2": {
+          "n": 128,
+          "median": 0.5563639369999964,
+          "p90": 0.7213973372999979
+        }
+      },
+      "bundle16Seconds": {
+        "median": 10.500478541499998,
+        "p90": 11.865651216300002
+      },
+      "cooperation12ActualRawSumSeconds": {
+        "median": 7.867001894499996,
+        "p90": 8.826926042599952,
+        "includesDispatchStartup": false
+      },
+      "canonicalParentDeviceWallSeconds": 175.713037,
+      "chargedWorkerSeconds": 702.852148,
+      "priorFailureChargeRetained": 0.363005,
+      "limits": "Use settlement175.713037*4=702.852148 for ledger accounting. A later outer completion-time print around175.722 is a different stop point, not the settlement value. Do not use16-bundle cost as12 formal cooperation cost; even raw12 includes weak heuristic probe and is not a full12-NN future-policy measurement. Worker startup and IPC belong to pool/parent windows, not each match timer."
+    },
+    {
+      "id": "AV05-actual-identity-and-accounting",
+      "status": "VERIFIED_AFFECTED_READBACK",
+      "evidence": "Current request/contract/spec/registry/authorization/two current role review hashes match.184 snapshot files rehashed unchanged. ChildPID37185 source readback yields55 observed file paths (54fileURL+5explicitCJS, one CJS-only), all listed in snapshot; no mature/RPC/training-collector import.64 progress messages complete. Actual execution002 exits0, no signal/error; canonical ledger has exactly one original reserve/settle for001 and one for002 with matching amounts/entry hashes/head. Old001 bootstrap failure0.363005 retained."
+    }
+  ],
+  "rawRecomputation": {
+    "reportSHA256": "302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431",
+    "rawBlockCount": 64,
+    "rawMatchCount": 1024,
+    "typedCompleteMatches": 1024,
+    "incompleteMatches": 0,
+    "metricPhysicalCounts": {
+      "cooperation": 768,
+      "M1": 128,
+      "M2": 128
+    },
+    "actorCounts": {
+      "0": 512,
+      "1": 512
+    },
+    "sourceFirstFamilies": 192,
+    "actualRoundDealReferences": 10794,
+    "uniqueActualDealSeeds": 2697,
+    "uniqueActualCanonicalFamilies": 2697,
+    "roleRNGPolicyAndGPlusWAllChecked": true,
+    "pairedStatistics": {
+      "observationUnit": "64 independent base vectors; separate64 two-side blocks each forM1/M2",
+      "means": {
+        "primary": 0.4401041666666665,
+        "groups": [
+          0.453125,
+          0.4140625,
+          0.453125
+        ],
+        "groupU0Win": [
+          0.4609375,
+          0.4296875,
+          0.4609375
+        ],
+        "groupProbeWin": [
+          0.0078125,
+          0.015625,
+          0.0078125
+        ],
+        "M1": 0.3828125,
+        "M2": 0.5546875
+      },
+      "sampleSD_ddof1": {
+        "primary": 0.18867211534189088,
+        "groups": [
+          0.3049687727964166,
+          0.33987261269061214,
+          0.34178279095132363
+        ],
+        "M1": 0.29198537009447295,
+        "M2": 0.3347255153628427
+      },
+      "designSD": {
+        "primary": 0.5,
+        "groups": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      "boundedSensitivitySD": 1,
+      "maxAbsoluteSDDifferenceFromReport": 0.0
+    },
+    "perBlockRecomputedVectors": [
+      {
+        "ordinal": 1,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 2,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 3,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 4,
+        "groupU0Win": [
+          0.0,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 5,
+        "groupU0Win": [
+          0.5,
+          1.0,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          1.0,
+          1.0
+        ],
+        "macroDifference": 0.8333333333333334,
+        "M1": 0.5,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 6,
+        "groupU0Win": [
+          1.0,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          1.0,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.6666666666666666,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 7,
+        "groupU0Win": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 8,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          1.0
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 9,
+        "groupU0Win": [
+          0.5,
+          1.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          1.0,
+          0.5
+        ],
+        "macroDifference": 0.6666666666666666,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 10,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 11,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.0
+        ],
+        "macroDifference": 0.16666666666666666,
+        "M1": 0.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 12,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 13,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 14,
+        "groupU0Win": [
+          0.5,
+          1.0,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          1.0,
+          1.0
+        ],
+        "macroDifference": 0.8333333333333334,
+        "M1": 0.5,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 15,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 1.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 16,
+        "groupU0Win": [
+          0.0,
+          1.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          1.0,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.0,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 17,
+        "groupU0Win": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.16666666666666666,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 18,
+        "groupU0Win": [
+          0.5,
+          1.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          1.0,
+          0.5
+        ],
+        "macroDifference": 0.6666666666666666,
+        "M1": 1.0,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 19,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 20,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 21,
+        "groupU0Win": [
+          1.0,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          1.0,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.6666666666666666,
+        "M1": 0.5,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 22,
+        "groupU0Win": [
+          0.5,
+          1.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          1.0,
+          0.5
+        ],
+        "macroDifference": 0.6666666666666666,
+        "M1": 0.0,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 23,
+        "groupU0Win": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "macroDifference": 0.16666666666666666,
+        "M1": 0.0,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 24,
+        "groupU0Win": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "macroDifference": 0.0,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 25,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 26,
+        "groupU0Win": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "macroDifference": 0.16666666666666666,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 27,
+        "groupU0Win": [
+          1.0,
+          0.0,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          1.0,
+          0.0,
+          1.0
+        ],
+        "macroDifference": 0.6666666666666666,
+        "M1": 0.5,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 28,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.5,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 29,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 30,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 31,
+        "groupU0Win": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.16666666666666666,
+        "M1": 0.0,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 32,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 33,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 34,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 35,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.0,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 36,
+        "groupU0Win": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "macroDifference": 0.16666666666666666,
+        "M1": 1.0,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 37,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 38,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          1.0
+        ],
+        "macroDifference": 0.6666666666666666,
+        "M1": 0.5,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 39,
+        "groupU0Win": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.0,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 40,
+        "groupU0Win": [
+          1.0,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          1.0,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.6666666666666666,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 41,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 1.0,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 42,
+        "groupU0Win": [
+          0.0,
+          1.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          1.0,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 43,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 44,
+        "groupU0Win": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "groupDifferences": [
+          0.0,
+          1.0,
+          -0.5
+        ],
+        "macroDifference": 0.16666666666666666,
+        "M1": 0.0,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 45,
+        "groupU0Win": [
+          0.0,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.0,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 46,
+        "groupU0Win": [
+          1.0,
+          0.0,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          1.0,
+          0.0,
+          1.0
+        ],
+        "macroDifference": 0.6666666666666666,
+        "M1": 0.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 47,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.0
+        ],
+        "macroDifference": 0.16666666666666666,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 48,
+        "groupU0Win": [
+          0.5,
+          1.0,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          1.0,
+          0.0
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 49,
+        "groupU0Win": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "groupDifferences": [
+          1.0,
+          0.5,
+          1.0
+        ],
+        "macroDifference": 0.8333333333333334,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 50,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 51,
+        "groupU0Win": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.0,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 52,
+        "groupU0Win": [
+          1.0,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          1.0,
+          0.5,
+          0.0
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 53,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 54,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 55,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 56,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 57,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.0,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 58,
+        "groupU0Win": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.0,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.16666666666666666,
+        "M1": 0.0,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 59,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.0,
+        "M2": 1.0
+      },
+      {
+        "ordinal": 60,
+        "groupU0Win": [
+          1.0,
+          0.5,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          1.0,
+          0.5,
+          1.0
+        ],
+        "macroDifference": 0.8333333333333334,
+        "M1": 0.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 61,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          1.0
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          1.0
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.0
+      },
+      {
+        "ordinal": 62,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 1.0,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 63,
+        "groupU0Win": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "macroDifference": 0.5,
+        "M1": 0.5,
+        "M2": 0.5
+      },
+      {
+        "ordinal": 64,
+        "groupU0Win": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "groupProbeWin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "groupDifferences": [
+          0.5,
+          0.0,
+          0.5
+        ],
+        "macroDifference": 0.3333333333333333,
+        "M1": 0.5,
+        "M2": 0.5
+      }
+    ],
+    "matchTaskSeconds": {
+      "cooperation": {
+        "n": 384,
+        "median": 0.8086228960000008,
+        "p90": 1.0986461921000013
+      },
+      "M1": {
+        "n": 128,
+        "median": 0.7719020829999863,
+        "p90": 1.0539742624000137
+      },
+      "M2": {
+        "n": 128,
+        "median": 0.5563639369999964,
+        "p90": 0.7213973372999979
+      }
+    },
+    "bundle16BlockTaskSeconds": {
+      "median": 10.500478541499998,
+      "p90": 11.865651216300002
+    },
+    "cooperation12RawMatchSumPerBaseSeconds": {
+      "median": 7.867001894499996,
+      "p90": 8.826926042599952,
+      "includesDispatchStartup": false
+    },
+    "sumAllMatchActiveSeconds": 679.6839168459986,
+    "sumChild16BundleActiveSeconds": 679.706575666,
+    "poolWorkerTaskSeconds": 679.7453645449999,
+    "poolWorkerLifetimeSeconds": 681.129202709,
+    "poolDeviceWallSeconds": 175.42863225,
+    "workerDeviceWallSeconds": 175.451535792,
+    "canonicalParentSettlementDeviceWallSeconds": 175.713037,
+    "canonicalChargedWorkerSeconds": 702.852148,
+    "priorFailureChargedSecondsRetained": 0.363005,
+    "fourThreadTaskCounts": {
+      "2": 16,
+      "3": 15,
+      "4": 16,
+      "5": 17
+    },
+    "moduleAudit": {
+      "ESMFileURLPaths": 54,
+      "CJSExplicitPaths": 5,
+      "unionCount": 55,
+      "CJSOnly": [
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/client-XItNFmsq.cjs"
+      ],
+      "outsideSnapshot": [],
+      "matureOrTrainingCollectorImported": [],
+      "allObservedModulePaths": [
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/boot.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/action-effect.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/capability-lineage.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/compute-pool.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/data-provenance.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/data-replay.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/exact-inference.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/executable-snapshot.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/frozen-launch-guard.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/match-play.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/plan-dsl.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/policy-registry.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/product-artifacts.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/runtime.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/training-ancestry.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/variance-layout.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/variance-task.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/variance-worker.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/src/review5_tuning/kscbReplay.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/esbuild/lib/main.js",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/cjs/index.cjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/client-XItNFmsq.cjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/esm/index.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/index-Bqjv9TxC.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/index-DE3OBZuV.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/lexer-CGfpMDSb.cjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/lexer-CanA6ArK.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/loader.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/register-B1c7OH6V.cjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/register-nyXW-TH3.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/require-CBjy4Foe.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/temporary-directory-Du7LpLp9.mjs",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/heuristic.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/index.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/legal.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/memory.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/mlp.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/neuralSeat.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/nnplayer.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/observationAudit.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/schema.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/tiered.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/nn/wave.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/planner.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/player.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/sim.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/ai/src/types.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/combo.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/deck.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/game.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/index.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/rank.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/record.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/rng.ts",
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/packages/engine/src/types.ts"
+      ],
+      "actualPIDs": [
+        37185
+      ]
+    },
+    "canonicalLedgerTaskEvents": [
+      {
+        "kind": "reserve",
+        "cycleId": "review6-humanlike-20261028",
+        "taskId": "C3-variance-pilot-execution-001",
+        "seconds": 3000,
+        "at": "2026-10-28T22:38:08.949Z",
+        "previousHash": "07a4459955011d2807cd2de5519825276aaed638b03a733407cee8454c0aa56c",
+        "entryHash": "8f0af9ea30fa121754383a380fcc1b944022336a9b0508e2366d1f6715dc2713"
+      },
+      {
+        "kind": "settle",
+        "cycleId": "review6-humanlike-20261028",
+        "taskId": "C3-variance-pilot-execution-001",
+        "actualSeconds": 0.363005,
+        "at": "2026-10-28T22:38:09.039Z",
+        "previousHash": "8f0af9ea30fa121754383a380fcc1b944022336a9b0508e2366d1f6715dc2713",
+        "entryHash": "28646539600488c4cabc31cc01df3b88a5f4f157472c80171c03a51f7106e808"
+      },
+      {
+        "kind": "reserve",
+        "cycleId": "review6-humanlike-20261028",
+        "taskId": "C3-variance-pilot-execution-002",
+        "seconds": 3000,
+        "at": "2026-10-28T22:51:56.899Z",
+        "previousHash": "1225ff9f92a09a2824f20a892c8e3a894433753bdad1ba9ea1284f1128803c31",
+        "entryHash": "9eb4419d17d2b609f2b241217da2539637c74aed3a99d6a81d4c9a43c3d7b91e"
+      },
+      {
+        "kind": "settle",
+        "cycleId": "review6-humanlike-20261028",
+        "taskId": "C3-variance-pilot-execution-002",
+        "actualSeconds": 702.852148,
+        "at": "2026-10-28T22:54:52.613Z",
+        "previousHash": "9eb4419d17d2b609f2b241217da2539637c74aed3a99d6a81d4c9a43c3d7b91e",
+        "entryHash": "4b38aba7737561a63812fde34f9fa579f0a58d6aa4cfdd29524475c6982f6975"
+      }
+    ],
+    "rawBlockHashes": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-001.json",
+        "sha256": "034bff0ed132aa3ba3bdd4b2eaba3ce41a2399bcaa26b3ee0a0f2cebe8f7f33d",
+        "bytes": 92845
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-002.json",
+        "sha256": "925945d121af415c6be37174f8d88b3e7bc7cda70f4696bbe76d1cb3593dfba1",
+        "bytes": 91245
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-003.json",
+        "sha256": "60a2584844fd9f3908a4cca5d03b3581d8d2f2f9649b96f8d9daccafe9e84a6f",
+        "bytes": 91211
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-004.json",
+        "sha256": "22d1a5b9e5bb660356959012f4e8ea6783833d36bd01bbb40513a17701849cf3",
+        "bytes": 87978
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-005.json",
+        "sha256": "4ec7b153e0930d8dd0c1ffd602dbe2bf71d9d234feaeea2f2e0575fe52f04110",
+        "bytes": 94066
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-006.json",
+        "sha256": "638be29506be89dfde0d59861e2a4cb0802a94364831dfaa91035469bbf15c54",
+        "bytes": 90019
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-007.json",
+        "sha256": "9b221544bf508fd9ad1ba2abbd2649683e1ed86e3647482dc566da48f3907e88",
+        "bytes": 93261
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-008.json",
+        "sha256": "7b976ed7f62b68715d5b444a8105fc87b930bab936b21549e6ecd8457fcc99e2",
+        "bytes": 91243
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-009.json",
+        "sha256": "777522c4491b8d29816e5b7348a6da65bb3f57b2330911f99754476de8a21fbf",
+        "bytes": 91260
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-010.json",
+        "sha256": "0e0b1e73339d36d2eeed8eeb02614dc787efea3f852602dd198f681bfefe454e",
+        "bytes": 98963
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-011.json",
+        "sha256": "ebce857d22b8a79558b1539f4cf3b8f522fdb6b770b5f754dfaca64f86664f14",
+        "bytes": 92465
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-012.json",
+        "sha256": "55ff0c02ae56a1dbf3b0ccaefa6c453e89b44b86bdd76e182125029a50781c02",
+        "bytes": 100505
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-013.json",
+        "sha256": "69ed9bd3b30f0f42c7dce45ddd75686e36ec30755c8ff76674e64abffc1f5315",
+        "bytes": 92450
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-014.json",
+        "sha256": "7b0ce1ad9d1fe5469548762685f92660513d4d1a3c3028c44d2e651874b50d4d",
+        "bytes": 95272
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-015.json",
+        "sha256": "c89921cffd754fd59e3681af6d917b3cec7683f7c845465ca68e1749af5684e6",
+        "bytes": 92077
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-016.json",
+        "sha256": "183b3f27ca96e3f81df5c56b43c111a53266213b905fc550f19313d296f868b6",
+        "bytes": 102182
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-017.json",
+        "sha256": "c1ad97683f3e6fec9b0353585b0580e2706869549ae1faa10cfe8ceec22c3c00",
+        "bytes": 90045
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-018.json",
+        "sha256": "cddee269c0957a3b508ea16cf52360eb3f70355593b5538e21594135714c7cf2",
+        "bytes": 104205
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-019.json",
+        "sha256": "3b24f633e7f2ac29e5774ede6299d8a19c05b0390558512edc4504361d934483",
+        "bytes": 92067
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-020.json",
+        "sha256": "fa1f4ecee4e1982f97d1a23a9a62911113d971451923a5ba1b1d9c30b57200dc",
+        "bytes": 103402
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-021.json",
+        "sha256": "022fd14c4312e4134cacb8323d11483055e53605efbe462df1d4877ea820cdd5",
+        "bytes": 90042
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-022.json",
+        "sha256": "911fdafbd3cfb71ccc1bba86c8a24231d47773d93e9e57cf031520ca34734fbf",
+        "bytes": 87184
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-023.json",
+        "sha256": "d2de52036ab6f7a16a51fc95e65cc6388e131c38029d8ac115008d21daadfb31",
+        "bytes": 101410
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-024.json",
+        "sha256": "f67ff56069465995ea306296dc6cdd035540df5b0be22958e60445a77f377d6b",
+        "bytes": 92857
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-025.json",
+        "sha256": "f5d8c51e71a81454c8b5e7c84aba1d1112920ff4c231652cfb9e9f80e025e9bb",
+        "bytes": 93682
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-026.json",
+        "sha256": "83cac00bc84193598822df27538232431692dcaf6414e3881da243ce79a96d89",
+        "bytes": 93716
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-027.json",
+        "sha256": "fa0fe21cbd56ce6e22cc1b24850a6861ea92be62fda2e8fa7613dfa7e7688838",
+        "bytes": 92499
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-028.json",
+        "sha256": "4bb731246586fe20f303a2e96c971d0894d202728c04a696fbc431da27d5c2f9",
+        "bytes": 93663
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-029.json",
+        "sha256": "e95423ba0659e8dbeba5d1cb3604b68c5e86108cc7f228528b02bb54c7f7eb4b",
+        "bytes": 91271
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-030.json",
+        "sha256": "78aff2af06f74e564f0f9980b6fe919921aa65a79de18c7bd811375a42456b49",
+        "bytes": 91230
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-031.json",
+        "sha256": "f79048d5039db53477bb6566fd7a27ab4b80122fd3db304033e779780aa48978",
+        "bytes": 103853
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-032.json",
+        "sha256": "4527a30c73e4066fff739ecd5a69ac9416564618f4196549d7601e702a7ec1f0",
+        "bytes": 99379
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-033.json",
+        "sha256": "d693a963b8699300a601d8a62db3a44fe6d3b8b32bc82f9ebee4af5fa3080685",
+        "bytes": 83997
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-034.json",
+        "sha256": "e326027ad6d4410854be90f539cb1c241716dd17afc2928607e28ca80a4ce7c0",
+        "bytes": 94911
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-035.json",
+        "sha256": "e2e9bdc1c23e27af58a8508e0223903a2a7cfdb4b82b3247d6dbac0a950f9ccb",
+        "bytes": 92044
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-036.json",
+        "sha256": "09151c1de1d7d57a75eb680de29856416ba5105d979cc9b1c48e0abe9cd8fc89",
+        "bytes": 90022
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-037.json",
+        "sha256": "58e367772a423f3812bb3dd225fd9c4e9cc7e8f64673e983b9dc46b6bc3c464b",
+        "bytes": 91235
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-038.json",
+        "sha256": "a8cc3ce407d4a6987da697b1ac84a686ef7bf020f820d0da3b35632240cab997",
+        "bytes": 98148
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-039.json",
+        "sha256": "23471fd2ee12efcab40975843cae8b02798be3003a413eacbada8f3c29cceea5",
+        "bytes": 104675
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-040.json",
+        "sha256": "6397f081c2b02ac58f64a6874b048f81d03f4d23d127087af7f70e4e79d58a6d",
+        "bytes": 88855
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-041.json",
+        "sha256": "403fd2d6203c8f749333b1752552246f437c1d6b8da7a36d557ef06e0ea07035",
+        "bytes": 99797
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-042.json",
+        "sha256": "9598c1bd0370ac0c04f001e506bd01f8994b5f7d9f67571c25225b6bbf821569",
+        "bytes": 92843
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-043.json",
+        "sha256": "1f772d798864abdd031a66a47b7e4b1cb87dfb3f62daf5736ce43c87f0efc3cf",
+        "bytes": 101017
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-044.json",
+        "sha256": "9a8a3d057f83212a755de047ccb124ab109fae1f1b6e0ca5de17fb5ad74ae634",
+        "bytes": 101025
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-045.json",
+        "sha256": "9e2fe83048e492f467b9aa70c8921d19105be4fea8f9f4397c932d6bade5e8fa",
+        "bytes": 90847
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-046.json",
+        "sha256": "807f2f1abb175f565ede040ba938c3dbaac3749793fb5f54a1c82d9534bd50fd",
+        "bytes": 96947
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-047.json",
+        "sha256": "5c5fa52194dc0c6429cbb93105b3e8fce20d8bc272cbe2f05dd5e4f1ff14e7e9",
+        "bytes": 97356
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-048.json",
+        "sha256": "8606aa9fd316a5d2e0e348c9666abfe776d8ba945a717ccd44e04ca785517590",
+        "bytes": 89603
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-049.json",
+        "sha256": "36014cc739ef01b6d99b3833ac34f85136a6b1755e526e102d5afc74ff14c341",
+        "bytes": 93291
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-050.json",
+        "sha256": "492976d174c0789fd74823d422815727b4c5f91c8925a1a2328c245c710035e1",
+        "bytes": 90413
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-051.json",
+        "sha256": "277593fa3ef236afb3edc187d22539a9174999e0327caf014b524648059663e4",
+        "bytes": 99399
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-052.json",
+        "sha256": "56c333a628f50e531615ece59afd03ba7a041b38160b425cf37085202d29cf2c",
+        "bytes": 99773
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-053.json",
+        "sha256": "2c84ebc77745cb510d3e59ca32b7d847906776dfbb3f9c93aca0b2cbf874d0bc",
+        "bytes": 92069
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-054.json",
+        "sha256": "8c4b081c7efbb58a2bafc1ea7c7964108bbfd17af2ec4a8a61ee91fb3f12441e",
+        "bytes": 86011
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-055.json",
+        "sha256": "a46c87a28eea284504600f34eb27b9203890484d0876496058abc5b147bc6123",
+        "bytes": 86811
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-056.json",
+        "sha256": "33c5a1f313c1402a0a9e2d95315ac68f09f35929edeff578d5595e91abe59dd5",
+        "bytes": 91247
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-057.json",
+        "sha256": "ef83a6ae2dbfa356ddb49198e8dbc3b945f1dbf6c08fd4921ffa46b7de4ecb88",
+        "bytes": 89633
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-058.json",
+        "sha256": "0050b50911fd29afb876e05862405dfd385bcce178724cc0fa4900a0e7c3c879",
+        "bytes": 89643
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-059.json",
+        "sha256": "86e7f2f9bab0662648a7a20092f361a30548f359ec72df9db6c1ae53849c2755",
+        "bytes": 91228
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-060.json",
+        "sha256": "d6c6d1e7b6eb8029dc6eed5e7727272bc38653dfb59f8c7e85772981c13d93c5",
+        "bytes": 94928
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-061.json",
+        "sha256": "569dde09dd7e7af37837483d31dbc740428b7c0cd162af0b088225552dafd22d",
+        "bytes": 94481
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-062.json",
+        "sha256": "392b1ad4a0c0ddd7f556e5ae1e4ec5dc792340a81fdcc71bcfdeb953033a98d4",
+        "bytes": 95702
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-063.json",
+        "sha256": "c438cbb89aaa57b3be78c86ce0a698beb65e6b682d878104714a23eeb5e99575",
+        "bytes": 96933
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-064.json",
+        "sha256": "e0551af09057440169a6fa569d58d30a76b52224c10229e9f495a2c5fbdbc3f3",
+        "bytes": 90445
+      }
+    ],
+    "errors": [],
+    "allChecksPassed": true,
+    "newNN": 0,
+    "newDecide": 0,
+    "newPlayedMatchesOrRollouts": 0,
+    "newTorch": 0,
+    "realBudgetOrLeaseActions": 0
+  },
+  "independentCanonicalFamilyCheck": {
+    "method": "Reconstruct only each already-recorded pre-exchange shuffled deck using frozen engine from its saved dealSeed; no action/policy/match replay.",
+    "uniqueRecordedDealSeedsChecked": 2697,
+    "canonicalFamilyMismatches": 0,
+    "normalLevelFirstDealCanonicalHashEquivalentToPreExchangeRoundOwnership": true,
+    "newNNForwards": 0,
+    "newDecideCalls": 0,
+    "newPlayedMatchesOrRollouts": 0,
+    "newTorch": 0,
+    "realBudgetOrLeaseActions": 0
+  },
+  "sampleGroupCovariance_ddof1": [
+    [
+      0.09300595238095238,
+      -0.008060515873015874,
+      0.02554563492063492
+    ],
+    [
+      -0.008060515873015874,
+      0.11551339285714286,
+      -0.019965277777777776
+    ],
+    [
+      0.02554563492063492,
+      -0.019965277777777776,
+      0.11681547619047619
+    ]
+  ],
+  "macroVarianceFromJointCovariance": 0.035597167107583774,
+  "acceptanceLimits": {
+    "actualVarianceAndLocalCostMeasurements": true,
+    "formalNSelected": false,
+    "formalAttemptOpened": false,
+    "mainUpdates": 0,
+    "teacherAccuracyOrPlansLearned": false,
+    "strongerCandidateOrPolicy": false,
+    "C3Overall": false,
+    "matureExecutionApproved": false,
+    "mainOrFormalExecutionApproved": false
+  },
+  "rawHashes": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/variance-report.json",
+      "sha256": "302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431",
+      "bytes": 20850
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-002.json",
+      "sha256": "3b8876dcca9b1145b7ca324f191a34fdd2f1f0a62ae347e7a7c0691c6cd60ce6",
+      "bytes": 2677
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-002-settlement.json",
+      "sha256": "df7eac7b03a5d76ffba9aa59a0ae48bc7eac3a5935610496532ea49d1057e80d",
+      "bytes": 614
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/opened.json",
+      "sha256": "c31e7d2e7884540d08cfc8376206cfd432b77a3520dada0a81fb77d7bfb2ee2e",
+      "bytes": 487
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-contract-002.json",
+      "sha256": "c9fd1f76aa17cae2cfb085c293be32f02df4dcbdd8a8678e8a3095360d2de519",
+      "bytes": 2094
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-authorization-001.json",
+      "sha256": "730aadd21e4b02e9249f62d953ffb4a414cd788616d602d07bd6498110a8f238",
+      "bytes": 1020
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/snapshot-manifest.json",
+      "sha256": "a1eede035856027fb7386168083abdcdc1b631d90a58decfc2e91e07561707dc",
+      "bytes": 66496
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/variance-spec.json",
+      "sha256": "e1bf9af7a5155e037f0b395226eafe38620f126ab2602b0aad7d9231315a7a84",
+      "bytes": 338293
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/policy-registry.json",
+      "sha256": "a32b5ea6875257c6f12ddd96d31eb2c67702b589e4a4ebe12690b70edab40168",
+      "bytes": 7611
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-request-004.json",
+      "sha256": "5d092cf94b6ee924b85e273fc7698a69d6d178e2880045bc17603365551331b0",
+      "bytes": 7829
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-001.json",
+      "sha256": "7febd89fb1bdbe363b16177adcb301c526d20cb570134d48b869b6e8b53dac3b",
+      "bytes": 2677
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-001-settlement.json",
+      "sha256": "c87df49c9d9e22986c44097dda8889deae34def2f673869406102ad66f28d11f",
+      "bytes": 612
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-002.stdout",
+      "sha256": "eb9cbb65a07f988ac4063ae09a9aa7e2f517a720616a963e05983074d5e08bb9",
+      "bytes": 2871
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-002.stderr",
+      "sha256": "515cb95b446d1024519930b86bab6ade48b495568e556c15d9ba346dda72ff49",
+      "bytes": 18357366
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-engineering-review-004.json",
+      "sha256": "2603dfda2ff81aa2b9e5e9948ea37c1b9e8323ee176fec7c3bc326e3df583d9f",
+      "bytes": 44820
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-method-review-004.json",
+      "sha256": "4a5e97c31882a2d0595d5af02943a6079e6308fd1781faab0a658124fc707754",
+      "bytes": 24625
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-001.json",
+      "sha256": "034bff0ed132aa3ba3bdd4b2eaba3ce41a2399bcaa26b3ee0a0f2cebe8f7f33d",
+      "bytes": 92845
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-002.json",
+      "sha256": "925945d121af415c6be37174f8d88b3e7bc7cda70f4696bbe76d1cb3593dfba1",
+      "bytes": 91245
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-003.json",
+      "sha256": "60a2584844fd9f3908a4cca5d03b3581d8d2f2f9649b96f8d9daccafe9e84a6f",
+      "bytes": 91211
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-004.json",
+      "sha256": "22d1a5b9e5bb660356959012f4e8ea6783833d36bd01bbb40513a17701849cf3",
+      "bytes": 87978
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-005.json",
+      "sha256": "4ec7b153e0930d8dd0c1ffd602dbe2bf71d9d234feaeea2f2e0575fe52f04110",
+      "bytes": 94066
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-006.json",
+      "sha256": "638be29506be89dfde0d59861e2a4cb0802a94364831dfaa91035469bbf15c54",
+      "bytes": 90019
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-007.json",
+      "sha256": "9b221544bf508fd9ad1ba2abbd2649683e1ed86e3647482dc566da48f3907e88",
+      "bytes": 93261
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-008.json",
+      "sha256": "7b976ed7f62b68715d5b444a8105fc87b930bab936b21549e6ecd8457fcc99e2",
+      "bytes": 91243
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-009.json",
+      "sha256": "777522c4491b8d29816e5b7348a6da65bb3f57b2330911f99754476de8a21fbf",
+      "bytes": 91260
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-010.json",
+      "sha256": "0e0b1e73339d36d2eeed8eeb02614dc787efea3f852602dd198f681bfefe454e",
+      "bytes": 98963
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-011.json",
+      "sha256": "ebce857d22b8a79558b1539f4cf3b8f522fdb6b770b5f754dfaca64f86664f14",
+      "bytes": 92465
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-012.json",
+      "sha256": "55ff0c02ae56a1dbf3b0ccaefa6c453e89b44b86bdd76e182125029a50781c02",
+      "bytes": 100505
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-013.json",
+      "sha256": "69ed9bd3b30f0f42c7dce45ddd75686e36ec30755c8ff76674e64abffc1f5315",
+      "bytes": 92450
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-014.json",
+      "sha256": "7b0ce1ad9d1fe5469548762685f92660513d4d1a3c3028c44d2e651874b50d4d",
+      "bytes": 95272
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-015.json",
+      "sha256": "c89921cffd754fd59e3681af6d917b3cec7683f7c845465ca68e1749af5684e6",
+      "bytes": 92077
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-016.json",
+      "sha256": "183b3f27ca96e3f81df5c56b43c111a53266213b905fc550f19313d296f868b6",
+      "bytes": 102182
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-017.json",
+      "sha256": "c1ad97683f3e6fec9b0353585b0580e2706869549ae1faa10cfe8ceec22c3c00",
+      "bytes": 90045
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-018.json",
+      "sha256": "cddee269c0957a3b508ea16cf52360eb3f70355593b5538e21594135714c7cf2",
+      "bytes": 104205
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-019.json",
+      "sha256": "3b24f633e7f2ac29e5774ede6299d8a19c05b0390558512edc4504361d934483",
+      "bytes": 92067
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-020.json",
+      "sha256": "fa1f4ecee4e1982f97d1a23a9a62911113d971451923a5ba1b1d9c30b57200dc",
+      "bytes": 103402
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-021.json",
+      "sha256": "022fd14c4312e4134cacb8323d11483055e53605efbe462df1d4877ea820cdd5",
+      "bytes": 90042
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-022.json",
+      "sha256": "911fdafbd3cfb71ccc1bba86c8a24231d47773d93e9e57cf031520ca34734fbf",
+      "bytes": 87184
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-023.json",
+      "sha256": "d2de52036ab6f7a16a51fc95e65cc6388e131c38029d8ac115008d21daadfb31",
+      "bytes": 101410
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-024.json",
+      "sha256": "f67ff56069465995ea306296dc6cdd035540df5b0be22958e60445a77f377d6b",
+      "bytes": 92857
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-025.json",
+      "sha256": "f5d8c51e71a81454c8b5e7c84aba1d1112920ff4c231652cfb9e9f80e025e9bb",
+      "bytes": 93682
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-026.json",
+      "sha256": "83cac00bc84193598822df27538232431692dcaf6414e3881da243ce79a96d89",
+      "bytes": 93716
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-027.json",
+      "sha256": "fa0fe21cbd56ce6e22cc1b24850a6861ea92be62fda2e8fa7613dfa7e7688838",
+      "bytes": 92499
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-028.json",
+      "sha256": "4bb731246586fe20f303a2e96c971d0894d202728c04a696fbc431da27d5c2f9",
+      "bytes": 93663
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-029.json",
+      "sha256": "e95423ba0659e8dbeba5d1cb3604b68c5e86108cc7f228528b02bb54c7f7eb4b",
+      "bytes": 91271
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-030.json",
+      "sha256": "78aff2af06f74e564f0f9980b6fe919921aa65a79de18c7bd811375a42456b49",
+      "bytes": 91230
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-031.json",
+      "sha256": "f79048d5039db53477bb6566fd7a27ab4b80122fd3db304033e779780aa48978",
+      "bytes": 103853
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-032.json",
+      "sha256": "4527a30c73e4066fff739ecd5a69ac9416564618f4196549d7601e702a7ec1f0",
+      "bytes": 99379
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-033.json",
+      "sha256": "d693a963b8699300a601d8a62db3a44fe6d3b8b32bc82f9ebee4af5fa3080685",
+      "bytes": 83997
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-034.json",
+      "sha256": "e326027ad6d4410854be90f539cb1c241716dd17afc2928607e28ca80a4ce7c0",
+      "bytes": 94911
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-035.json",
+      "sha256": "e2e9bdc1c23e27af58a8508e0223903a2a7cfdb4b82b3247d6dbac0a950f9ccb",
+      "bytes": 92044
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-036.json",
+      "sha256": "09151c1de1d7d57a75eb680de29856416ba5105d979cc9b1c48e0abe9cd8fc89",
+      "bytes": 90022
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-037.json",
+      "sha256": "58e367772a423f3812bb3dd225fd9c4e9cc7e8f64673e983b9dc46b6bc3c464b",
+      "bytes": 91235
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-038.json",
+      "sha256": "a8cc3ce407d4a6987da697b1ac84a686ef7bf020f820d0da3b35632240cab997",
+      "bytes": 98148
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-039.json",
+      "sha256": "23471fd2ee12efcab40975843cae8b02798be3003a413eacbada8f3c29cceea5",
+      "bytes": 104675
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-040.json",
+      "sha256": "6397f081c2b02ac58f64a6874b048f81d03f4d23d127087af7f70e4e79d58a6d",
+      "bytes": 88855
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-041.json",
+      "sha256": "403fd2d6203c8f749333b1752552246f437c1d6b8da7a36d557ef06e0ea07035",
+      "bytes": 99797
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-042.json",
+      "sha256": "9598c1bd0370ac0c04f001e506bd01f8994b5f7d9f67571c25225b6bbf821569",
+      "bytes": 92843
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-043.json",
+      "sha256": "1f772d798864abdd031a66a47b7e4b1cb87dfb3f62daf5736ce43c87f0efc3cf",
+      "bytes": 101017
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-044.json",
+      "sha256": "9a8a3d057f83212a755de047ccb124ab109fae1f1b6e0ca5de17fb5ad74ae634",
+      "bytes": 101025
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-045.json",
+      "sha256": "9e2fe83048e492f467b9aa70c8921d19105be4fea8f9f4397c932d6bade5e8fa",
+      "bytes": 90847
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-046.json",
+      "sha256": "807f2f1abb175f565ede040ba938c3dbaac3749793fb5f54a1c82d9534bd50fd",
+      "bytes": 96947
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-047.json",
+      "sha256": "5c5fa52194dc0c6429cbb93105b3e8fce20d8bc272cbe2f05dd5e4f1ff14e7e9",
+      "bytes": 97356
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-048.json",
+      "sha256": "8606aa9fd316a5d2e0e348c9666abfe776d8ba945a717ccd44e04ca785517590",
+      "bytes": 89603
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-049.json",
+      "sha256": "36014cc739ef01b6d99b3833ac34f85136a6b1755e526e102d5afc74ff14c341",
+      "bytes": 93291
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-050.json",
+      "sha256": "492976d174c0789fd74823d422815727b4c5f91c8925a1a2328c245c710035e1",
+      "bytes": 90413
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-051.json",
+      "sha256": "277593fa3ef236afb3edc187d22539a9174999e0327caf014b524648059663e4",
+      "bytes": 99399
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-052.json",
+      "sha256": "56c333a628f50e531615ece59afd03ba7a041b38160b425cf37085202d29cf2c",
+      "bytes": 99773
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-053.json",
+      "sha256": "2c84ebc77745cb510d3e59ca32b7d847906776dfbb3f9c93aca0b2cbf874d0bc",
+      "bytes": 92069
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-054.json",
+      "sha256": "8c4b081c7efbb58a2bafc1ea7c7964108bbfd17af2ec4a8a61ee91fb3f12441e",
+      "bytes": 86011
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-055.json",
+      "sha256": "a46c87a28eea284504600f34eb27b9203890484d0876496058abc5b147bc6123",
+      "bytes": 86811
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-056.json",
+      "sha256": "33c5a1f313c1402a0a9e2d95315ac68f09f35929edeff578d5595e91abe59dd5",
+      "bytes": 91247
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-057.json",
+      "sha256": "ef83a6ae2dbfa356ddb49198e8dbc3b945f1dbf6c08fd4921ffa46b7de4ecb88",
+      "bytes": 89633
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-058.json",
+      "sha256": "0050b50911fd29afb876e05862405dfd385bcce178724cc0fa4900a0e7c3c879",
+      "bytes": 89643
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-059.json",
+      "sha256": "86e7f2f9bab0662648a7a20092f361a30548f359ec72df9db6c1ae53849c2755",
+      "bytes": 91228
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-060.json",
+      "sha256": "d6c6d1e7b6eb8029dc6eed5e7727272bc38653dfb59f8c7e85772981c13d93c5",
+      "bytes": 94928
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-061.json",
+      "sha256": "569dde09dd7e7af37837483d31dbc740428b7c0cd162af0b088225552dafd22d",
+      "bytes": 94481
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-062.json",
+      "sha256": "392b1ad4a0c0ddd7f556e5ae1e4ec5dc792340a81fdcc71bcfdeb953033a98d4",
+      "bytes": 95702
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-063.json",
+      "sha256": "c438cbb89aaa57b3be78c86ce0a698beb65e6b682d878104714a23eeb5e99575",
+      "bytes": 96933
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-064.json",
+      "sha256": "e0551af09057440169a6fa569d58d30a76b52224c10229e9f495a2c5fbdbc3f3",
+      "bytes": 90445
+    }
+  ],
+  "probes": [
+    {
+      "path": "/private/tmp/c3-actual-variance-method-001/recompute.py",
+      "sha256": "3f8c752388455e300f6e16ddaa88771958ef8148bd5491d2b3a609dc5874727c"
+    },
+    {
+      "path": "/private/tmp/c3-actual-variance-method-001/recomputation.json",
+      "sha256": "2603c22a14cc7a91a0b4c939988dafc77d0c799197e986cf56072b8e8e2783e8"
+    },
+    {
+      "path": "/private/tmp/c3-actual-variance-method-001/recomputation.log",
+      "sha256": "38ac8bc6fbbf5d4d4a2a41164933252b7bb777b0b3de88701e14237fc1f2c834"
+    },
+    {
+      "path": "/private/tmp/c3-actual-variance-method-001/unique-deal-families.json",
+      "sha256": "ed186c3e1661d7b943d4f2e1e800d04b796aed7bbbbb0c37c68ecc7a8dd8717a"
+    },
+    {
+      "path": "/private/tmp/c3-actual-variance-method-001/families.mts",
+      "sha256": "889a12871989e2fd3cef180bec9544bc61f61cd28181e5a522aa41d64b3a8bb2"
+    },
+    {
+      "path": "/private/tmp/c3-actual-variance-method-001/families.json",
+      "sha256": "1643611dea278004b3a5359392bc3eeaf0783da783c1249712431ccac7d3ea19"
+    },
+    {
+      "path": "/private/tmp/c3-actual-variance-method-001/families.log",
+      "sha256": "b897f07c2cf9d7034b4496c6f113ce1acda1f4136362594349d32943e027fe63"
+    }
+  ],
+  "limits": [
+    "Stored trace digests were checked for identity/shape, not rebuilt by policy replay. New reviewer NN/decide/played matches/rollouts/Torch/real budget or lease actions are0.",
+    "The statistical denominator is64 paired cooperation base vectors, plus separate64 M1 and64 M2 blocks. Physical768/128/128 counts do not replace these independent units.",
+    "No bootstrap CI, final N, joint power, candidate or main budget was selected by this actual-results review. Conservative floors and premeasurement alternatives remain unchanged.",
+    "Measurements use fixed training-pool U0/heuristic0 and development partners. They do not establish teaching correctness, learned plans, human compatibility, game strength or future candidate throughput.",
+    "Subsequent mature20 exact package requires its own independent execution review; this actual readback is not execution authorization."
+  ]
+}

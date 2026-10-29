@@ -1,0 +1,472 @@
+{
+  "role": "engineering",
+  "reviewId": "C3-exact-inference-actual-engineering-review-001",
+  "at": "2026-10-28T22:19:05.422828+00:00",
+  "overallDecision": "ACCEPT_SCOPED_ACTUAL_EQUIVALENCE_PROOF",
+  "futureExecutionApproval": false,
+  "scope": "Actual executed48-match proof only:16fixed speed families,original/verify/fast on the reviewed primary four-seat profile. No general optimizedteacher/learner/eval/main/formal authorization,teacher-strength claim or whole-program budget approval.",
+  "proofReportPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/proof-report.json",
+  "proofReportSHA256": "3d9e87b37aba80f54f69488a8736cc63cf83f1d9a975caa9fc86a15d7145bc19",
+  "approvedExecutionRequestSHA256": "67e9bb83eb62e0b777df590a0e94d694988052868ecc6a12a48acf68843f5b52",
+  "executedContractSHA256": "e49fab97ac026226a94015fe4654ed9703610ae614eaa1cfca7c25fc91be38d4",
+  "executedSnapshotSHA256": "93feb76f61f020b9d89e972e02fb8b637addc166a38a81ba7cc724e56c00dd10",
+  "executedSpecSHA256": "4f99a2cacc849e9eaa17bc401892ce3ef4e6aaa04ad8f77de370d45a894b48d2",
+  "findings": [],
+  "findingCounts": {
+    "openP1": 0,
+    "openP2": 0
+  },
+  "actualResult": {
+    "completeMatches": 48,
+    "matchesPerMode": {
+      "original": 16,
+      "exact-prefix-verify": 16,
+      "exact-prefix-v1": 16
+    },
+    "distinctFixedFamilies": 16,
+    "allCompleteResultFieldsEqualAcross3Modes": true,
+    "allNewOriginalTracesGamesDecisionsEqualBothPrior2and4WorkerSamples": true,
+    "typedOriginalGPlusWValidAll48": true,
+    "verifiedNeuralBatches": 11428,
+    "verifiedCandidateVectors": 69768,
+    "verifiedReferenceCalls": 11428,
+    "allVerifiedBatchesComparedBeforeSelection": true,
+    "sixDistinctWeightDimensionModeDiagnostics": true,
+    "medianWholeMatchSpeedupObserved": 1.3898530733333634,
+    "p90WholeMatchSpeedupObserved": 1.4010736399481063,
+    "workerDeviceWallSeconds": 31.908872083,
+    "parentDeviceWallSeconds": 32.184081750000004,
+    "conservativeChargedWorkerSeconds": 64.36816350000001,
+    "canonicalReservationSeconds": 600,
+    "originalBudgetTaskClosed": true,
+    "canonicalLeaseAbsent": true
+  },
+  "independentChecks": [
+    "Enumerated and hashed all48case files; joined filename/ordinal/mode/seed to the fixed spec with exactly16permode and no missing/extra case. All are complete withnull incompleteReason; winner,game/decision counts,rootG,finalW androotTeamTarget are correctly typed andg+W consistent.",
+    "Compared each entire result object,includingrootRoundResult,trace,physical policyIDorder,all indexed deals andownPlanSummary,acrossoriginal/verify/fast. New originals also match BOTH archived2-worker and4-worker speed samples on trace/games/decisions for each seed. First deal seeds match the prelocked spec.",
+    "Summed all per-case batch/candidate/reference/bitwise counters independently and reconciled with the six final weight+dimension+mode diagnostics. Every mode has11428logical NNbatch requests and69768candidate vectors. Verify has11428bitwise-comparison batches and11428extra original references. Cross-mode counts agree per seed as well as in aggregate.",
+    "Actualstdout has48consecutive completion rows in the prelocked odd/even mode order. The first match of each mode is excluded exactly once; recomputed15-steady medians,p90s,sums andspeed ratios match report values within1e-12.",
+    "Parsed both raw ESM fileURLs and CJS explicit loads:49ESM paths plus5CJS load paths overlap to50distinct observed file modules,including theCJS-only tsxclient. Every observed file is in the156-file copied snapshot and hashes/realpaths validate; required proof/guard/match/exact/MLP/decider/schema modules are actually observed. No live-source or unlisted module path appears.",
+    "Raw modulePID is35246 and matches settlement childPID. Opened receipt andproof point to the exact frozen worker/contract/spec/snapshot. Actual authorization file has two distinct current body-role/request execution approvals with matching hashes. The prior approved source with fresh mode-specific models/one-time installation is unchanged,so the runtime original baseline is the independent audited implementation.",
+    "Reconstructed the exact canonical lease bytes from task,parentPID35244,launchSHA,contract,snapshot,original anchor andstart time; itsSHA matches705ef10b... in settlement. Canonical lease is absent after execution. The cleaned recorded runtime environment has noNODE_OPTIONS/NODE_PATH/PYTHONPATH/LD_PRELOAD override.",
+    "Read the original canonical ledger through frozen readBudget and verified its pinned66d45a genesis/full chain. Exactly one reserve600 and one settle64.36816350000001 event exist for this task; settlement entry hash matches94092f06... receipt head. The task is settled,its reservation absent,normal exit0/no signal/error,and charge is exactly2*32.184081750000004seconds below600."
+  ],
+  "auditResults": {
+    "caseRows": 48,
+    "casesPerMode": {
+      "original": 16,
+      "exact-prefix-verify": 16,
+      "exact-prefix-v1": 16
+    },
+    "allFullResultsEqual": true,
+    "allNewOriginalEqualsBothOldSpeedConfigs": true,
+    "counterTotals": {
+      "original": {
+        "batches": 11428,
+        "candidateVectors": 69768,
+        "bitwiseComparedBatches": 0,
+        "referenceForwardCalls": 0
+      },
+      "exact-prefix-verify": {
+        "batches": 11428,
+        "candidateVectors": 69768,
+        "bitwiseComparedBatches": 11428,
+        "referenceForwardCalls": 11428
+      },
+      "exact-prefix-v1": {
+        "batches": 11428,
+        "candidateVectors": 69768,
+        "bitwiseComparedBatches": 0,
+        "referenceForwardCalls": 0
+      }
+    },
+    "logicalNeuralBatchRequests": 34284,
+    "arithmeticEvaluationsFromRequestsPlusExtraVerifyReference": 45712,
+    "timingsComputed": {
+      "original": {
+        "matches": 16,
+        "warmMatches": 1,
+        "steadyMatches": 15,
+        "steadyMedianSeconds": 0.5509013329999998,
+        "steadyP90Seconds": 0.7428049001999992,
+        "sumMatchActiveSeconds": 9.502706956999997
+      },
+      "exact-prefix-verify": {
+        "matches": 16,
+        "warmMatches": 1,
+        "steadyMatches": 15,
+        "steadyMedianSeconds": 0.8994771249999994,
+        "steadyP90Seconds": 1.2058003749999988,
+        "sumMatchActiveSeconds": 15.399924373000001
+      },
+      "exact-prefix-v1": {
+        "matches": 16,
+        "warmMatches": 1,
+        "steadyMatches": 15,
+        "steadyMedianSeconds": 0.39637379200000034,
+        "steadyP90Seconds": 0.5301683502000021,
+        "sumMatchActiveSeconds": 6.76253462500001
+      }
+    },
+    "medianSpeedupComputed": 1.3898530733333634,
+    "p90SpeedupComputed": 1.4010736399481063,
+    "stdoutProgressRows": 48,
+    "observedModuleFiles": 50,
+    "modulePIDs": [
+      35246
+    ],
+    "requiredModulesObserved": true,
+    "snapshotFilesHashVerified": 156,
+    "loadedOutsideSnapshot": [],
+    "loadedNotInManifest": [],
+    "parentPID": 35244,
+    "childPID": 35246,
+    "leaseReconstructionMatches": true,
+    "canonicalLeaseAbsent": true,
+    "workerDeviceSeconds": 31.908872083,
+    "parentDeviceSeconds": 32.184081750000004,
+    "chargedWorkerSeconds": 64.36816350000001,
+    "errors": [],
+    "reviewerNNCalls": 0,
+    "reviewerRollouts": 0,
+    "reviewerTorchRuns": 0
+  },
+  "budgetAudit": {
+    "originalCycle": "review6-humanlike-20261028",
+    "originalLimitSeconds": 259200,
+    "originalGenesisMatches": true,
+    "taskEvents": [
+      {
+        "kind": "reserve",
+        "seconds": 600,
+        "actualSeconds": null,
+        "entryHash": "f3972b68194d0088bbe9792d720fab2a4d745d25c9db6871cc9b89da2795dae7"
+      },
+      {
+        "kind": "settle",
+        "seconds": null,
+        "actualSeconds": 64.36816350000001,
+        "entryHash": "94092f06e9bdfa24669f215b0bb38a5b3034765ca67831604981ed99155c409d"
+      }
+    ],
+    "exactlyOneReservationAndSettlement": true,
+    "settlementHeadMatches": true,
+    "proofTaskSettled": true,
+    "proofTaskReservationAbsent": true,
+    "canonicalLeaseAbsent": true,
+    "realBudgetOrLeaseWrites": 0
+  },
+  "authorizationAudit": {
+    "authorizationSHA256": "a780d76f906ad4da9d3fff9a5e1362993f1b88c4c36553ebbde84d64db760df2",
+    "requestPath": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-exact-inference-execution-request-001.json",
+    "requestSHA256": "67e9bb83eb62e0b777df590a0e94d694988052868ecc6a12a48acf68843f5b52",
+    "reviews": [
+      {
+        "role": "engineering",
+        "reviewId": "C3-exact-inference-execution-engineering-review-001",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-exact-inference-execution-engineering-review-001.json",
+        "sha256": "d4de1dbe0886eb46a327ae3c0c2d5dc147fa1a0a0340d7775fd7021f483e0a74",
+        "requestSHA256": "67e9bb83eb62e0b777df590a0e94d694988052868ecc6a12a48acf68843f5b52",
+        "decision": "APPROVE_PILOT_EXECUTION"
+      },
+      {
+        "role": "method",
+        "reviewId": "C3-exact-inference-execution-method-review-001",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-exact-inference-execution-method-review-001.json",
+        "sha256": "75f6cd0e5a529b8a351e0e9a10b5fdccd05fbe99528c4bc4e1eef4c3e918d9b0",
+        "requestSHA256": "67e9bb83eb62e0b777df590a0e94d694988052868ecc6a12a48acf68843f5b52",
+        "decision": "APPROVE_PILOT_EXECUTION"
+      }
+    ],
+    "distinctReviewIds": true,
+    "distinctPaths": true
+  },
+  "probesAndReadbacks": [
+    {
+      "path": "/private/tmp/C3-exact-inference-actual-engineering-001/actual-proof-audit-output.json",
+      "sha256": "2bc8041c35fbc16b7554b4b5aceb62c443df9193577ff4e1dc23ef6bcc7ba743"
+    },
+    {
+      "path": "/private/tmp/C3-exact-inference-actual-engineering-001/case-file-hashes.json",
+      "sha256": "3d0ad5f1caf8abd91c9de8cefbda0ce5a011bbe75b304e95257ac2327962c3c3"
+    },
+    {
+      "path": "/private/tmp/C3-exact-inference-actual-engineering-001/per-seed-result-joins.json",
+      "sha256": "265d5789791293e14cc68a9614e8572fb8d4ebba870b60efdf1da035b187dc29"
+    },
+    {
+      "path": "/private/tmp/C3-exact-inference-actual-engineering-001/loaded-module-paths.json",
+      "sha256": "5659d64b033092e24e6a66f69b91545ad801cdfbedfc62c6999813ecbd9ff180"
+    },
+    {
+      "path": "/private/tmp/C3-exact-inference-actual-engineering-001/budget-audit-output.json",
+      "sha256": "fe00fcf2d85da9382452a50e1ebafc77a75b969fc6060cfeeb6a0d3a15102af7"
+    },
+    {
+      "path": "/private/tmp/C3-exact-inference-actual-engineering-001/actual-authorization-audit.json",
+      "sha256": "be650ffbdfdbdfdd55c00aa3d792cbde3fc749d68eea82ae1d82183632330488"
+    },
+    {
+      "path": "/private/tmp/C3-exact-inference-actual-engineering-001/actual-proof-audit.py",
+      "sha256": "3dc6b7f158bb309758462e7c68d3917469d3c226396f5c92d6871d985aa830ef"
+    }
+  ],
+  "primaryArtifactHashes": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/proof-report.json",
+      "sha256": "3d9e87b37aba80f54f69488a8736cc63cf83f1d9a975caa9fc86a15d7145bc19"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-exact-inference-proof-execution-001.json",
+      "sha256": "8b5f4c27b57a056d6df8e6e6f01cb9d1186efe7c2e88d77351b4b6bf68f2f3a5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-exact-inference-proof-execution-001-settlement.json",
+      "sha256": "fdffe0c75c0ffd9336074c1b26416d9c26f4bb5e89c15ee2a5925a1837dd76e5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-exact-inference-proof-execution-001.stdout",
+      "sha256": "01fedc7a7499b38474d7f6a2c753dc6469308990492da1f9ac0333ac6dcc6343"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-exact-inference-proof-execution-001.stderr",
+      "sha256": "62e16e20738e960858a974942a95cd5e0128ff79d3d1ee54201d1b73fe58707d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/opened.json",
+      "sha256": "ab051e601e073753f5f1c010314a3374665f9987c2b4ccf990da80b882ef45d3"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-authorization-001.json",
+      "sha256": "a780d76f906ad4da9d3fff9a5e1362993f1b88c4c36553ebbde84d64db760df2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-contract-001.json",
+      "sha256": "e49fab97ac026226a94015fe4654ed9703610ae614eaa1cfca7c25fc91be38d4"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/inputs/proof-spec.json",
+      "sha256": "4f99a2cacc849e9eaa17bc401892ce3ef4e6aaa04ad8f77de370d45a894b48d2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/snapshot-manifest.json",
+      "sha256": "93feb76f61f020b9d89e972e02fb8b637addc166a38a81ba7cc724e56c00dd10"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/inference-proof-001/execution-snapshot-001/inputs/reference-speed-report.json",
+      "sha256": "797f03325193b9b27880303d41125c20532b168adb472821beff3522c13459b3"
+    }
+  ],
+  "caseFileHashes": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-001-exact-prefix-v1.json",
+      "sha256": "edf163d9429cffe110108f7f35a546b5f98f5ef7bb3aeda5caf3618be3afc21c"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-001-exact-prefix-verify.json",
+      "sha256": "d43182914d9937d6c5a4a89f21143c07e342c29e7726923164fcd4f299c25544"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-001-original.json",
+      "sha256": "0fe46459eb38beb9176ef8cf040052ad9e65afa037cb0255aadb79f4e953e4de"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-002-exact-prefix-v1.json",
+      "sha256": "d81764e914841a52aba2dd67e1f31ed3993b69e6e8391fae03f32e2df593a2a0"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-002-exact-prefix-verify.json",
+      "sha256": "e0eb4b5df03f64fe071b5e7a3f076aca6f831d6f5bc5ccad5f29243c76e3ce02"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-002-original.json",
+      "sha256": "753f87d8082cc07e459aaa064abf5d06137f2e647b7a5ae4c37bde83351513c3"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-003-exact-prefix-v1.json",
+      "sha256": "9b06e5fb793b6a4ea29e03056e1e6183f83f0e1c3cff8e65a692898eae65315f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-003-exact-prefix-verify.json",
+      "sha256": "cdad0a1313abf3830e73222a34169fb41c7440a3d1e385c5940dd9e54b3af95a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-003-original.json",
+      "sha256": "8bdfd5ed1a0374ddb089c6e81f7081ab7580928f68c69956fb57b38be86e166a"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-004-exact-prefix-v1.json",
+      "sha256": "8fffc80776af6da0043d2f122a75f57cc06177cddbee6e371cbc1d8dbf993732"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-004-exact-prefix-verify.json",
+      "sha256": "92caa26d2d45f504320a23c90bac5a6bde60431696305e5cb7b54ca36dacecf4"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-004-original.json",
+      "sha256": "f3385b235f9d5306bbb4f3d8a641800c9dfdda2e18c057d56328b24dbfd24957"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-005-exact-prefix-v1.json",
+      "sha256": "f97f82f02b84353273262efc0ddb86f164f20a593348eea5d0f60ebb50001035"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-005-exact-prefix-verify.json",
+      "sha256": "3d03afa969af46fac9d0a17ffb6aa4f7650d4a80d9c10f76ebe4e29b682f7198"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-005-original.json",
+      "sha256": "86c2968ebd405d8d5d471c1b56bf4343f3d661c3cc50ea7d4d2c3f81e8cc37e2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-006-exact-prefix-v1.json",
+      "sha256": "a95b9347505b976efdfea58ba2d1c0b1ef63c506facb2ab6322db3f81b4452bd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-006-exact-prefix-verify.json",
+      "sha256": "f5373f46624b84c3c79ec2f0355de21b6ba34d8b8604a7945fff4a7d24a7d6ab"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-006-original.json",
+      "sha256": "dc9d6bba2a7801e522a29afa8424d8e20327ac7ff3f094efce5af5e319753392"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-007-exact-prefix-v1.json",
+      "sha256": "b3f7cf55d70705e1b30f3aad44dff981b555c8a08c4584b6bac0ae023f9eca1e"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-007-exact-prefix-verify.json",
+      "sha256": "085432963f4affff3b27ac5d5cfc3a6bda14767857d7a75444c601be11406cfe"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-007-original.json",
+      "sha256": "306e14bf908fa477aee26f34e51c38f48efa1dcceb7102b2d707413f188896bd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-008-exact-prefix-v1.json",
+      "sha256": "2021d8b65d9484326325b2e714b56f4aceae64465e2364f91e841918e32ca061"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-008-exact-prefix-verify.json",
+      "sha256": "b727a5ef14921098275dc23a040cc2ba529790b8ccc2cf920e0eb23e9052d577"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-008-original.json",
+      "sha256": "2f0b68b6535cba528563400bd2e900ce4eebe282fc09861542ebea354e865ccd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-009-exact-prefix-v1.json",
+      "sha256": "e1142919938c637a05873d52d92c6324026d3a1f8e27dc530beb23c6adb4bd60"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-009-exact-prefix-verify.json",
+      "sha256": "19d2ebf1ffc8727e80f172c713b27a696a3726a8c43a1543fb256a0a2a2bb3e2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-009-original.json",
+      "sha256": "2b8391564b87d404e60f7a013adb42dca7d92d0ffe0f10cb9dd23be52d889d32"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-010-exact-prefix-v1.json",
+      "sha256": "72e188a3e382de1a50c16a736befd703f1e88a95d9de645f0daa48cdde3a3c78"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-010-exact-prefix-verify.json",
+      "sha256": "d7c1d69227d516dbbd6eb8e51bb578fcc5751aad2c8a2284c73538e5ef3fe3b9"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-010-original.json",
+      "sha256": "09b424f9650a2277e3a7647d16daaedc0790db75e80075b9263237ee74016827"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-011-exact-prefix-v1.json",
+      "sha256": "22e80f0d30afbed4d0906ac9934df67b029b0688d504bcd6f0490177385d22a0"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-011-exact-prefix-verify.json",
+      "sha256": "20028073459c9f6bb343ccaa4e3bd49317c9d0e5a7c0e1b346ef5bf3c605e6a3"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-011-original.json",
+      "sha256": "1c99cca7ea7bb9584af4f0eab634a9a45679244e08f98e47272fc7ab8b0b288c"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-012-exact-prefix-v1.json",
+      "sha256": "c91ea00f5dcd4c3c08c718ad63b1bb46cda98926c50f20ca812a45e465e75943"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-012-exact-prefix-verify.json",
+      "sha256": "2bd74482b58a3c4a81d964c97d74ff083921a7c09c1a23f8db601cac31fbcdcc"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-012-original.json",
+      "sha256": "6451b00c62094ffa0c26edd0fe6711721d64fa1fc07cb5174def60664c3db372"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-013-exact-prefix-v1.json",
+      "sha256": "fc00677cb612eed29e6d6e77ca8322385ccca81a6bfb4156fb867715c8c321f8"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-013-exact-prefix-verify.json",
+      "sha256": "04e4be0405fc3691a9f13bb96f8ddbccecae7c6748c62e79b8ac7a80b4fa0cb2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-013-original.json",
+      "sha256": "ea76df1b829052c717cc6169598f3897de8ff245645ad6522d868a681934380b"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-014-exact-prefix-v1.json",
+      "sha256": "f2691d2a032a7ef8e627a07e3d48c2d9920d4668ec2d91c09eb0a46677568ba4"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-014-exact-prefix-verify.json",
+      "sha256": "0142eb208289bc7996abef068698aef15db9edfa9ea6ab182a77036b84db2f44"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-014-original.json",
+      "sha256": "377c7d5117e091e237c9f3de597f89325c5441ae3a0738275899a35a54d3bad2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-015-exact-prefix-v1.json",
+      "sha256": "d589c6fe17cf3c21474af9afd910facddf8ef377d5d5e053509128c256979777"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-015-exact-prefix-verify.json",
+      "sha256": "7bad6f352e8a396757a872a0ca7416499874e5c74dd4bf60910cf10aacfb324d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-015-original.json",
+      "sha256": "ff6a943e9dda686fe4c8e6331c3433d62364c7548e5b212acfcd78dc61d4b7d4"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-016-exact-prefix-v1.json",
+      "sha256": "87f9972a5c0222e513d751741d9200dd8bba5d39415657f1b878dbf5d74a35e2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-016-exact-prefix-verify.json",
+      "sha256": "e96f9f315e79a9dc5965dd833568aac605a5e392eeac2ba10629ac37dce41aba"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/inference-proof-results-001/case-016-original.json",
+      "sha256": "091b09c0e9e9d6a070707c3529ade5d00c774ae1ee56cfd15d596c14a3e3c3b1"
+    }
+  ],
+  "reviewerActivity": {
+    "newProductionOrSyntheticNNCalls": 0,
+    "newRollouts": 0,
+    "torchRuns": 0,
+    "trainingUpdates": 0,
+    "newTeacherLabels": 0,
+    "realLedgerOrLeaseWrites": 0,
+    "externalCalls": 0
+  },
+  "limits": [
+    "No NN,rollout,match,Torch or performance work was repeated. Score equality is supported by the actually loaded audited Uint32 comparison implementation,successful execution and reconciled per-case counters; the reviewer did not regenerate score vectors. Full event traces are compared through their frozenSHA digests plus complete result/deal/policy data,not by replaying games.",
+    "The six diagnostic identities and independent original capture are supported by the unchanged approved loaded source and actual counters,not a post-exit heap inspection. Parent/child identity is bound by receipts,guarded entry,raw stderrPID and reconstructable lease; the past process is no longer live.",
+    "The50-module count is this proof execution. It does not replace the prior source-generation51-module addendum. Observed module paths are raw-log evidence; Node builtins/data loader wrappers and pinned transpiler behavior are inherited runtime assumptions.",
+    "The reported1.389853/1.401074 ratios are observed mode-median/p90 ratios on the fixed15steady matches per mode after the single prelocked warm case. No performance confidence bound,general workload speedup,teacher quality improvement or conclusion that all72-hour C3work now fits is inferred.",
+    "This run covers the fixed primary actor0 four-seat profile and16speed families. It is not a new proof for every secondary/forced-root/own-plan workload. Other unchanged foundation results retain their prior scope.",
+    "Acceptance of this actual proof does not authorize any new scientific execution,optimizedteacher/learner/evaluation use,policy/data/threshold change,main training or formal opening. Such use remains subject to its own exact contract/snapshot/current reviews and original budget.",
+    "Teacher snapshot003 and its accepted original quality evidence remain untouched; this review does not re-adjudicate or enlarge those claims."
+  ]
+}

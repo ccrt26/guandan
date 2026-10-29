@@ -1,0 +1,340 @@
+{
+  "schemaVersion": "targeted-engineering-review-v1",
+  "role": "engineering",
+  "reviewId": "C2-complete-match-foundation-engineering-001",
+  "reviewedAt": "2026-10-28T14:48:13.499737+00:00",
+  "overallDecision": "CHANGES_REQUIRED",
+  "findingCounts": {
+    "P1": 3,
+    "P2": 1
+  },
+  "c2OverallApproval": false,
+  "businessTrainingAuthorization": false,
+  "request": {
+    "scope": "Targeted read-only complete-match foundation incident and main engineering boundaries; not overall C2 acceptance.",
+    "incidentPath": "/Users/ccrt/game/guandan/lab/review6_1/data/baseline-single-wildcard-incident-001.json",
+    "incidentSHA256": "e76e546e972e180d7ddcced979b85aa824aeebb8b098f2e83b877292062d3a5f",
+    "incidentSHA256Verified": true
+  },
+  "reviewedSource": {
+    "path": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+    "sha256": "b34546ad5a5f91cfd85943851d3a8a5507ef7a8e68e40b331385c8ed8f9ebb36",
+    "immutablePersonalCopy": "/private/tmp/baseline-foundation-engineering-001/lab__review6__match-play.ts",
+    "binding": "Findings bind the captured b34546... version. Parent edits made afterwards are not implicitly approved. The executable personal copy changes dependency import paths only. The raw resourceEffectKey body was separately frozen because the parent edited other data-replay code during this review."
+  },
+  "findings": [
+    {
+      "id": "C2-MATCH-E01",
+      "severity": "P1",
+      "status": "OPEN_ON_REVIEWED_SNAPSHOT",
+      "title": "Legal frozen-policy declarations are rejected by raw wildcard annotation identity; classifier replacement must not reselect policy output.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+        "line": 25
+      },
+      "evidence": {
+        "originalEntry": "original-dev:M1:b3:side0",
+        "matchSeed": 256893286,
+        "gameNo": 10,
+        "moveNo": 63,
+        "actingSeat": 0,
+        "physicalCard": {
+          "id": 25,
+          "suit": "H",
+          "rank": 14
+        },
+        "publicLevels": [
+          11,
+          14
+        ],
+        "stageTeam": 1,
+        "selectedEffect": {
+          "kind": "single",
+          "mainRank": 14,
+          "keyRank": 34,
+          "size": 1,
+          "wildAs": [
+            {
+              "cardId": 25,
+              "asRank": 14,
+              "asSuit": "S"
+            }
+          ]
+        },
+        "classifiedSamePhysicalEffect": {
+          "kind": "single",
+          "mainRank": 14,
+          "keyRank": 34,
+          "size": 1,
+          "wildAs": []
+        },
+        "legalEnumeratorMatchingPhysicalMoveCount": 1,
+        "classifiedEffectBeatsCurrentTarget": true,
+        "observedError": "declared legal action identity mismatch"
+      },
+      "reproduction": [
+        "Restore ctx from the saved public levels, rule levelMode and stageTeam with makeLevelCtx; do not treat JSON-serialized Set={} as live engine state.",
+        "Run the preserved selected move through the frozen resolver. classify accepts the same physical card and beats D7; legalCombos contains the exact selected declaration; resolveLegalMove throws.",
+        "Construct a level-A pair with S9+HA: changing only the wildcard non-flush asSuit from S to C is also wrongly rejected. Necessary alternate rank changes and flush assignment suit changes remain rejected by the old raw comparator."
+      ],
+      "relatedBoundary": "A constructed flush with correct wildcard assignment S but Combo.suit changed to C is accepted by the old comparator and silently returned as classifier suit S, because resourceEffectKey omits Combo.suit. Once preserving selected output, a forged flush declaration suit must be explicitly rejected.",
+      "impact": "A real previously selected frozenChampion action aborts a valid match. Silently selecting a different classifier interpretation would also alter the declared NN action and its encoded wildcard-count feature.",
+      "fixRecommendation": [
+        "Use a separate versioned necessary-declaration comparator; do not globally weaken the frozen data identity key without separately reviewing affected H artifacts.",
+        "Retain complete physical resource multiplicities and kind/mainRank/keyRank/size/length/pairRanks; ignore non-flush wildcard suit and natural-rank self-substitution redundancy only. Preserve required alternate ranks and required flush suit, including Combo.suit.",
+        "Validate every wildcard annotation refers to an owned actual wildcard, reject duplicate/unbound annotations, and reject foreign/duplicate resources. Validate the selected effect against legal classification and beats, then return the original selected move/combo unchanged; do not rank, choose an alternative effect, or normalize it into a new playing policy."
+      ],
+      "evidenceFile": "/private/tmp/baseline-foundation-engineering-001/probe-output.json"
+    },
+    {
+      "id": "C2-MATCH-E02",
+      "severity": "P1",
+      "status": "OPEN_ON_REVIEWED_SNAPSHOT",
+      "title": "Accepted neural profiles can use a feature schema incompatible with the frozen network dimension.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+        "line": 32
+      },
+      "reproduction": "Use temporary fresh MLP weights with the correct SHA and parameter count, declare inputDim=399 but omit encoder.schema, then create NeuralDecider as driverFor does. The runner accepts the descriptor even with maxGames=0; the decider packs 385 features while MLP reads 399. Repeat with inputDim=385 and schema=v2: 399 features are packed while MLP reads 385.",
+      "independentResults": [
+        {
+          "modelDim": 399,
+          "encoder": {},
+          "packedDim": 385,
+          "candidates": 70,
+          "nonFiniteScores": 3,
+          "acceptedByRunner": true
+        },
+        {
+          "modelDim": 385,
+          "encoder": {
+            "schema": "v2",
+            "ctxFill": "rule-context",
+            "passEncoding": "action64"
+          },
+          "packedDim": 399,
+          "candidates": 70,
+          "nonFiniteScores": 0,
+          "acceptedByRunner": true
+        }
+      ],
+      "impact": "The policy remains labelled as the frozen 399/385 policy but reads misaligned features. In the 399 case 3/70 synthetic candidate scores are NaN; the reverse mismatch produces finite but incorrectly aligned scores. Either can silently generate legal actions from the wrong effective policy. The current explicit old O385+v2-candidate-compat+legacy pass baseline descriptor is correctly paired and is not implicated.",
+      "fixRecommendation": [
+        "Before any model use, require the explicit encoder schema to agree with model inputDim: v2 for 399, v1/authorized historical v1 default for 385.",
+        "Require explicit valid passEncoding and 399 ctxFill appropriate to the frozen policy identity, and finite valid exploration settings; reject ambiguous profiles instead of relying on decider defaults.",
+        "Keep weight SHA/parameter-count checks and add positive matched 385/399 plus both mismatch regression cases."
+      ],
+      "evidenceFile": "/private/tmp/baseline-foundation-engineering-001/probe-output.json"
+    },
+    {
+      "id": "C2-MATCH-E03",
+      "severity": "P1",
+      "status": "OPEN_ON_REVIEWED_SNAPSHOT",
+      "title": "Mid-round continuation silently accepts missing or truncated causal history and resets per-seat decision ordinals/public memory.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+        "line": 65
+      },
+      "reproduction": "Use seed88 and the four counter-heur0 test policies. Capture the actual state and 12-step history at moveNo12, then force the original move13. Resume 13 actions from the same captured state with all 12 history steps, with rootHistory omitted, and with the first history step removed.",
+      "independentResults": {
+        "rootMoveNo": 12,
+        "prefixLength": 12,
+        "perSeatActionCounts": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "fullPrefixAccepted": true,
+        "fullPrefixSuffixIdentical": true,
+        "missingPrefixAccepted": true,
+        "missingPrefixSuffixIdentical": false,
+        "missingPrefixFirstDivergenceGlobalMove": 14,
+        "truncatedPrefixAccepted": true,
+        "truncatedPrefixSuffixIdentical": false,
+        "truncatedPrefixFirstDivergenceGlobalMove": 21
+      },
+      "impact": "A caller can request the same root, world seed, fixed profiles and forced root action yet get a different continuation because historical policy action counts and public trackers were silently reset. That changes teacher targets and paired continuation interpretation; it is not a future-deal RNG difference.",
+      "fixRecommendation": [
+        "Require a complete current-round causal prefix for every mid-round root; an empty prefix is valid only for a fresh moveNo0 root.",
+        "Check prefix action count and seat ordinals against the root, reject truncated/future/mismatched prefixes, and bind or replay public prefix state sufficiently to establish that it belongs to this root. Do not infer an empty history by default.",
+        "Retain the positive exact-suffix forced-root test and add omission, truncation and wrong-root prefix rejection tests before any compute."
+      ],
+      "evidenceFile": "/private/tmp/baseline-foundation-engineering-001/probe-output.json"
+    },
+    {
+      "id": "C2-MATCH-E04",
+      "severity": "P2",
+      "status": "OPEN_ON_REVIEWED_SNAPSHOT",
+      "title": "A round move-cap stop is misreported as a match game-cap stop when the started-round count also reaches maxGames.",
+      "location": {
+        "path": "/Users/ccrt/game/guandan/lab/review6/match-play.ts",
+        "line": 88
+      },
+      "reproduction": "Run synthetic fixture policies with maxGames=1,maxMovesPerGame=0. No decision executes and rootRoundResult is null, but games is incremented to1 and incompleteReason is match_game_cap.",
+      "impact": "Winner and rootTeamTarget remain correctly null, so no incomplete match is turned into a loss. The recorded reason nevertheless obscures the actual first termination condition.",
+      "fixRecommendation": "Capture the termination reason at the loop exit; distinguish an unfinished round move cap from a completed-round match game cap instead of inferring priority from the final games count.",
+      "evidenceFile": "/private/tmp/baseline-foundation-engineering-001/cap-output.json"
+    }
+  ],
+  "independentVerification": {
+    "frozenTargetTests": {
+      "passedOriginalFoundationTests": 7,
+      "failedAddedRealIncidentRegression": 1,
+      "total": 8,
+      "exitCode": 1,
+      "log": "/private/tmp/baseline-foundation-engineering-001/frozen-tests.log",
+      "tested": [
+        "Incomplete outcome is null rather than a loss or fabricated g+W.",
+        "Indexed seed function stability.",
+        "Four seat drivers retain identity; illegal output throws without fallback.",
+        "Declared effect rejection and legal pass boundary.",
+        "Actual constructed root match ends at engine match winner and uses signed root-round upgrade plus final +/-1.",
+        "Forced root requires the explicit matching actor before compute.",
+        "Full causal prefix plus forced root exactly reproduces counter-policy suffix."
+      ]
+    },
+    "ownershipNegativeProbes": {
+      "foreignPhysicalIdRejected": true,
+      "duplicatePhysicalIdRejected": true
+    },
+    "baselinePlanIndependentRecalculation": {
+      "originalRows": 128,
+      "independentlyRecomputedSeedMismatches": [],
+      "retainedRows": 6,
+      "completeRows": 6,
+      "selfControlSamePolicyAndTrace": true,
+      "sidesComplement": true
+    },
+    "baselineProfileInspection": {
+      "M1": [
+        "O",
+        "O",
+        "O",
+        "O"
+      ],
+      "M2": [
+        "O",
+        "O",
+        "mid1",
+        "mid1"
+      ],
+      "source": "Original review5eval arm/champion seat predicates with O on both sides reduce to these maps; M2 neural seats0/1 and mid partners2/3 give one neural+mid per team.",
+      "seedRows": 128,
+      "sourceSeedGames": 64,
+      "sidePairsAreComplementarySelfControlViews": true,
+      "strengthInferenceFromSelfControl": false,
+      "legacyHeuristicSeedInspection": "gameNo starts at1, so 0x5eed+gameNo-1 matches the original evaluator games counter; per-seat RNG draws preserve original order.",
+      "mode": "legacy-engine-chain / legacy-per-game"
+    },
+    "indexedFutureDealTrajectoryProbe": {
+      "syntheticFixturePoliciesOnly": true,
+      "businessBaselineExecuted": false,
+      "firstTrajectoryDecisions": 285,
+      "reverseTrajectoryDecisions": 252,
+      "differentTraces": true,
+      "sameFutureDealSeedList": true,
+      "dealSeeds": [
+        2314176784,
+        2194208863
+      ],
+      "incompleteTargetsRemainNull": true,
+      "interpretation": "The second post-tribute hand fingerprints differ because earlier finish order changes transfer destinations. Same indexed shuffle seed is preserved; a post-transfer fingerprint is not a pre-transfer common-deal fingerprint.",
+      "evidenceFile": "/private/tmp/baseline-foundation-engineering-001/indexed-world-output.json"
+    },
+    "hiddenInformationInspection": {
+      "result": "No new hidden/future input read found in the shipped neural or level1 heuristic decision paths inspected.",
+      "basis": "Neural state encoding reads actor hand and public fields/counts/events; heuristic scoring reads own hand and other seats counts, and memory is fed public events. Indexed dealing is outside policy RNG.",
+      "scopeLimit": "SeatDriver receives the full engine GameState by design. This conclusion covers the inspected shipped drivers, not arbitrary caller-provided seatFactory implementations; no broad new anti-cheat suite was run."
+    }
+  },
+  "executionSafety": {
+    "repositoryOrEvidenceWritesByReviewer": 0,
+    "businessBaselineRuns": 0,
+    "businessTrainingOrFitRuns": 0,
+    "formalOrSealedEvaluations": 0,
+    "externalModelCalls": 0,
+    "heldoutModelScoreReads": 0,
+    "temporaryWritesOnly": "/private/tmp/baseline-foundation-engineering-001",
+    "syntheticNeuralInference": "Fresh temporary seed71 MLP weights only, solely to show dimensional mispacking; no trained H or heldout scores used."
+  },
+  "sourceHashes": {
+    "lab/review6/match-play.ts": "b34546ad5a5f91cfd85943851d3a8a5507ef7a8e68e40b331385c8ed8f9ebb36",
+    "lab/review6/development-baseline.ts": "6ec52391c3e4f058845c40d08d7d630bf3d1896fc2aee3ca1f2ae7cd6947a706",
+    "lab/tests/review6_match_play.test.ts": "2a118e7fd2600d06bf33c1879c793d7cf12fea8875cfe37758b5735ec3153405",
+    "packages/engine/src/combo.ts": "9619a3912f757fce8a7e4842559789dbafe54aa1f71763057ae44b6a78035bb2",
+    "packages/ai/src/nn/neuralSeat.ts": "cb9d0aa9dbfbd66a44c444e8531abf7b633d1c293e9ec6292d1192e9b9d2eb50",
+    "lab/src/review5eval.ts": "1747e1ea7fba711d39b37a5d1788a1228ccaf8bcfae58741a15eb637986ea6ca",
+    "lab/review6_1/data/baseline-single-wildcard-incident-001.json": "e76e546e972e180d7ddcced979b85aa824aeebb8b098f2e83b877292062d3a5f",
+    "lab/review6_1/data/development-baseline-001/baseline-plan.lock.json": "9b0b616be0420d064222d852c718e1f0ec17aa8b921378d18cffff04ea931fae",
+    "lab/review6_1/data/development-baseline-001/baseline-opened.json": "9306f955e75d9c8778518607b53b9fc6ac411b84c7d40dc57db507ed6ea300ec",
+    "lab/review6_1/data/development-baseline-001/match-results.jsonl": "884524359991b8c49466a3a7d19d665a4e8be4b888bc5388c27dd186bd934642",
+    "lab/review6/data-replay.ts": "4805ee2ee63a9fac9944f47809b88d36e53b5820b5e1b4b87d71bf7e63c65d63",
+    "lab/review6/product-artifacts.ts": "1c87788643c9277cff858daca1a23f4237fd6b33ee5e0f492f90ddab47c4652b",
+    "packages/engine/src/game.ts": "dc99988cdf82e3ed73782aa5c0d0050221f50b5291b7e767a3cc79d4db3df763",
+    "packages/ai/src/nn/mlp.ts": "404326a8665e82bf071c1dc655a0e714dab913ff79e8ce9882c580fef7070521",
+    "packages/ai/src/nn/schema.ts": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8",
+    "packages/ai/src/player.ts": "5a3107e641d680979f13338ac92d732dd969d9d439976c2b1b01da63096e55d1",
+    "packages/ai/src/nn/wave.ts": "3e90ca6520477384d407f6f4b6e82165c0ed8bd0a385d5ad8f8b7676ac85090a"
+  },
+  "artifactHashes": {
+    "probe.ts": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/probe.ts",
+      "sha256": "d293a0f7e36de75b9cf8c476808d699d40d3ddf635cfdfcf7a958c08c22b883e"
+    },
+    "probe-output.json": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/probe-output.json",
+      "sha256": "e22e98a8e66e379c22f734a377dd47a6527d5d3c935a6323c1b9974edc36bbeb"
+    },
+    "indexed-world-probe.ts": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/indexed-world-probe.ts",
+      "sha256": "67f9a6608560199eaac03280874d0dd3bd4558b9c869e25eab73cac999a87dcf"
+    },
+    "indexed-world-output.json": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/indexed-world-output.json",
+      "sha256": "374f309d00cd5955b93c67d8fc700e288033fe5fd9454a15bc6f8a9d00b5bb99"
+    },
+    "cap-probe.ts": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/cap-probe.ts",
+      "sha256": "f7c866362962304ecfc3ed441baab4ece10839e57d9f2b4f148a3b5025e52ecf"
+    },
+    "cap-output.json": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/cap-output.json",
+      "sha256": "fb7b5c235ca20a6a87e8d1a193b570e1a9f308e666be12c22584bfa6c16787f8"
+    },
+    "frozen-tests.log": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/frozen-tests.log",
+      "sha256": "8ea5be4204e58d3f9b8850c13dc83bee3d3bc105b0316cf2e543563d54405a15"
+    },
+    "baseline-plan-independent-check.json": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/baseline-plan-independent-check.json",
+      "sha256": "a17558317883fbbf4b0bd2674494a3157cd474668ada8f0519827235eddfd194"
+    },
+    "source-hashes.json": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/source-hashes.json",
+      "sha256": "9510b132d0d936c0204fa17bfd6dfb693e340c56d75af46f2d6d5270eebda23d"
+    },
+    "raw-resource-key-frozen.ts": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/raw-resource-key-frozen.ts",
+      "sha256": "3174e21a06f3ee7e63677302308081fdf98b01940e3da90f506d77bdac500f64"
+    },
+    "dependency-freeze-note.json": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/dependency-freeze-note.json",
+      "sha256": "1bf55c2cefb910813f828728355012c73fc0fcbac473c5dc13cb01b08e59c14e"
+    },
+    "match-play-frozen.ts": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/match-play-frozen.ts",
+      "sha256": "203869279b0cd968cc24f04ac2cb4369ede68a6e69d0e24ae57ec29ffe865f65"
+    },
+    "foundation.test.ts": {
+      "path": "/private/tmp/baseline-foundation-engineering-001/foundation.test.ts",
+      "sha256": "5eaef1956eef2cde954002f38a620bdf1f0d9d988cb655da63df45626641bd96"
+    }
+  },
+  "limitations": [
+    "This report is a targeted foundation review, not overall C2 acceptance, model quality approval, baseline completion approval, or permission to train.",
+    "The source was captured before parent repairs. Later root-authored fixes require focused closure verification; they are not marked closed here.",
+    "Only the retained six completed dev001 records, its original immutable plan/opening record, and the saved incident were read. The interrupted baseline was not resumed or replaced. Global training/formal counters were not independently re-audited in this narrow review.",
+    "No whole-repository suite, unrelated C1 review, H fit, heldout score inspection, formal evaluation or external inference was run."
+  ]
+}

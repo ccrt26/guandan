@@ -1,0 +1,246 @@
+{
+  "role": "engineering",
+  "reviewId": "C3-exact-inference-design-engineering-review-001",
+  "at": "2026-10-28T21:43:41.061931+00:00",
+  "overallDecision": "ACCEPT_CORRECTED_PREFIX_DESIGN_FOR_FOCUSED_TDD_ONLY",
+  "executionApproval": false,
+  "scope": "Read-only numerical/interface/design review. No implementation by reviewer, no actual NN or rollout execution, no Torch work. The prefix factory and later verification helper appeared during review and were inspected statically at the exact copied revision; no optimized scientific run or current frozen snapshot modification is approved.",
+  "reviewedProposal": {
+    "path": "/Users/ccrt/game/guandan/lab/review6_1/data/performance-preserving-option-001.json",
+    "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/performance-preserving-option-001.json",
+    "sha256": "09f95be049c5de65613913a37777f02d1b230ca6422531e55704a60056fad662"
+  },
+  "reviewedAdapter": {
+    "path": "/Users/ccrt/game/guandan/lab/review6/exact-inference.ts",
+    "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/exact-inference.ts",
+    "sha256": "32883379f68c8ae15c5c262251ed8a7df097bc2409cfbcb2077016c1d1b1eba1"
+  },
+  "reviewedSources": [
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/mlp.ts",
+      "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/mlp.ts",
+      "sha256": "404326a8665e82bf071c1dc655a0e714dab913ff79e8ce9882c580fef7070521"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/neuralSeat.ts",
+      "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/neuralSeat.ts",
+      "sha256": "cb9d0aa9dbfbd66a44c444e8531abf7b633d1c293e9ec6292d1192e9b9d2eb50"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/schema.ts",
+      "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/schema.ts",
+      "sha256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/exact-inference.ts",
+      "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/exact-inference.ts",
+      "sha256": "32883379f68c8ae15c5c262251ed8a7df097bc2409cfbcb2077016c1d1b1eba1"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/exact-inference.test.ts",
+      "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/exact-inference.test.ts",
+      "sha256": "c82677e45c3d2232d18fea635d9c4f161af625735f5ccbecec9c932b0f518afd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/exact-inference-preflight.ts",
+      "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/exact-inference-preflight.ts",
+      "sha256": "a828c338438b6bf0539faf962958d926c0c130c15ee37a87868852197d6c94aa"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/performance-preserving-option-001.json",
+      "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/performance-preserving-option-001.json",
+      "sha256": "09f95be049c5de65613913a37777f02d1b230ca6422531e55704a60056fad662"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/data/exact-inference-preflight-001.json",
+      "copyPath": "/private/tmp/C3-exact-inference-design-engineering-001/exact-inference-preflight-001.json",
+      "sha256": "4422a7039ead11bc4489a16c854d33424c39411d2ab11578c6bf68ff1f5b81b1"
+    }
+  ],
+  "mainConclusion": "The first-layer split can preserve every output Float32 bit on the stated eligible synchronous domain by reusing the exact binary64 accumulator, including bias, and resuming the unchanged suffix/later loops. Use385->317+68 and399->331+68. First validate the prefix-only integration and complete trajectories; optional forward-score memo is mathematically feasible but adds mutable state and must not be assumed faster or necessary.",
+  "findingsAndCorrections": [
+    {
+      "id": "EXACT-D01",
+      "severity": "P2",
+      "status": "ADDRESSED_IN_REVIEWED_ADAPTER",
+      "finding": "Original proposal metadata incorrectly calls both385/399 a shared331-state input.",
+      "evidence": [
+        "schema.ts STATE_DIM317, ACTION_DIM68, INPUT_DIM385; STATE_DIM_V2=331 and INPUT_DIM_V2=399",
+        "NeuralDecider copies317 for v1 and331 for v2 before68 action values."
+      ],
+      "implication": "P331 on385 can be safe only when those actual331 values compare equal; it includes14 action features and will needlessly fall back on many legacy batches. Corrected factory usesP317/P331."
+    },
+    {
+      "id": "EXACT-D02",
+      "severity": "P2",
+      "status": "GUARD_GAP_ADDRESSED_DURING_REVIEW_REQUIRES_NEW_VALIDATION",
+      "finding": "The initially supplied factory revision100556a3 did not check standard weight shapes/local buffer ownership before its alias scan.",
+      "resolution": "Reviewed later32883379 revision adds standard three-layer shapes, local nonresizable ArrayBuffer-backed Float32 views and finite prefix-accumulator fallback. This fixes the reported extra-undefined-layer/SAB domain gap for ordinary owned MLPs. It does not make arbitrary Proxy/getter/custom-runtime objects part of the equivalence promise."
+    }
+  ],
+  "numericEquivalenceContract": {
+    "domain": [
+      "Normal lab-owned MLP with sizes385/399->256->256->1 and correctly shaped local Float32 weight/bias arrays; ordinary synchronous same-runtime calls.",
+      "Actual input rows have identical prefix values bit-for-bit, including signed zero; comparison completes before writing any external output.",
+      "Input/out and weights are not shared/resizable buffers; out does not share a backing buffer withX or anyW/b array. Unsupported cases delegate to the captured original with unchanged arguments.",
+      "Use the same native Math.tanh/runtime and retain source multiplication/addition expression order. No SIMD/BLAS/float32-prefix/vector reduction/fast-math substitution is covered."
+    ],
+    "proof": "For each hidden unitj defineA0=b1[j], A(i+1)=A(i)+X[i]*W1[j*D+i] in the original Number order. Identical prefixes makeA(P) equal across rows. A finite Number is already binary64; storing/reloading it inFloat64Array adds no rounding. Resume at i=P throughD-1 in order, call the same Math.tanh and assign toFloat32h1. Leave second layer,Float32h2 and linearFloat32out unchanged. Equal inputs at every later step give the original output bits. Nonfinite prefix accumulators delegate rather than adding a NaN-storage assumption.",
+    "forbiddenReassociation": [
+      "Do not compute a separately summed suffix and add it once to the prefix.",
+      "Do not start a state dot product at0 and addb1 afterward.",
+      "Do not store the prefix accumulator inFloat32Array or applytanh early.",
+      "Do not reuse prefix values across calls without current weight/input validation."
+    ],
+    "currentStaticAssessment": "Reviewed factory follows the corrected recurrence, later-layer loops andFloat32 boundaries. It reads currentW/b each call and has no cross-call cache. This is a conditional proof plus static review, not an independently executed all-trajectory proof."
+  },
+  "callAndPolicySemantics": [
+    "forward(X,n,out) returns the identical supplied out object, writes only indices0..n-1 and leaves a longer tail unchanged. Preserve nonzero view offsets. The original accepts unusual short/non-Float32 outputs at runtime; delegate these rather than replacing writes withTypedArray.set that can throw differently.",
+    "For input/output or parameter/output shared backing buffers, original row-by-row writes can modify later inputs or weights. Delegate the whole call before any optimized external write, even when ranges appear harmless; conservative whole-buffer rejection is sufficient.",
+    "Preserve n0/n1, malformed/unsupported shapes and default-output behavior via original fallback. Do not reinterpret or repair invalid inputs/encoders as an optimization.",
+    "The factory returns a net-bound callable. Do not claim that it preserves arbitrary borrowed MLP.prototype.forward receiver behavior; use it only at the explicit lab-owned instance boundary.",
+    "Capture the unwrapped authoritative original once before installing an instance override. Recreating original=net.forward.bind(net) after an earlier override can make a verifier compare against an adapter. Use separate model instances for original/optimized complete-match runs or a private immutable original reference; prohibit accidental repeated installation.",
+    "Apply lab integration consistently to both match-play network loading and the separate teacher-visible scorer only under a newly reviewed execution mode. Do not edit productAI sources,globalMLP.prototype or current approved frozen snapshot003.",
+    "Keep candidate enumeration/order,compatibility encoder,pass layout,feature construction,ranking,tie rule andcollectFeat unchanged. NeuralDecider scores before epsilon-greedy and picks the first strict maximum; adapter must not change RNG calls,skip decision work,cache selected moves or return stale candidate objects."
+  ],
+  "optionalMemoReview": {
+    "recommendation": "DEFER_FIRST_RELEASE_UNLESS_PREFIX_PIPELINE_MEASUREMENT_STILL_REQUIRES_IT",
+    "conditionalCorrectness": "The proposed per-call exact weight-byte comparison can make a bounded full-forward-score memo valid despite publicW/b mutation, provided the following constraints are implemented and separately tested. This is design acceptance for isolated TDD only; no memo implementation was executed or approved.",
+    "minimumConstraints": [
+      "Before any eligible cache lookup, validate sizes and all layer/bias types,lengths and ordinary buffer domain; compare EVERY currentW/b byte against owned snapshots. Include ordering/lengths/sizes. Clear entries and copy fresh snapshots when anything differs. A weight-fileSHA orsetWeights hook alone is insufficient.",
+      "Snapshots must be copies. Buffer.from(array.buffer,array.byteOffset,array.byteLength) creates a shared view and cannot serve as an immutable weight snapshot; direct public writes would mutate both sides and hide the change.",
+      "Use full effective input-view bytes,n andsizes as the key domain, then exact compare against an owned input-byte copy on each hash hit. Handle collisions as misses/replacement. Never trust only a hash,state prefix,rootId,worldId or candidate count.",
+      "Store scores in owned memory. On a hit copy onlyn outputs into the provided/new caller output and return that output; never expose cached storage. Caller mutation of a previous input/output must not poison later hits.",
+      "Alias,short,nonfinite or unsupported calls bypass both cache lookup and insertion and run the unchanged original. Revalidate current weights before the next eligible lookup so mutation caused by an effectful fallback orsetWeights failure cannot leave stale entries.",
+      "Keep it per worker/per owned model. Clear on every observed weight change and optionally at a fixed world boundary. Bound retained input+score payload bytes; account for snapshot/key/Map overhead or add a small entry bound. Oversized entries are computed but not retained. A logical byte bound is not an instantaneous RSS guarantee.",
+      "Memo only complete neural forward score vectors. Do not cache rollout rewards,teacher labels,selected actions,program decisions or future/private game state. An uncached original reference must remain independent in verification mode.",
+      "Expose evaluation-request/computed-forward/cache-hit counts honestly and charge actual whole-window resources. Measure byte-comparison,hashing/copying/eviction overhead; correctness alone does not establish throughput benefit."
+    ],
+    "minimalAdditionalNegativesIfChosen": [
+      "Force hash collisions with distinct inputs and confirm misses/true original outputs.",
+      "ModifypublicW andb directly,replace a layer andcallsetWeights between identical input requests; no stale hit.",
+      "Mutate a prior caller input and returned output after insertion; stored snapshots/scores remain intact.",
+      "Exercise alias fallbacks that mutate weights, then request a previously cached input.",
+      "Test tiny byte budgets,oversized entries and eviction without numerical/output-reference changes."
+    ]
+  },
+  "minimalPrefixTDDPlan": [
+    {
+      "case": "Both layouts and exact score vectors",
+      "assert": "Original versus candidateUint32 bytes for385/P317 and399/P331,nonzero biases, n0/1/2 and a nontrivial batch. Include a late-prefix row mismatch and+0/-0 mismatch; mismatches delegate before output writes."
+    },
+    {
+      "case": "Rounding/order counterexamples",
+      "assert": "Craft b1=1, a prefix product2^-25 and suffix product-1, with one-unit propagation through later layers: aFloat32 prefix mutant loses the nonzero result. Also b1=2^53, prefix products1 then-2^53 detects movingbias/reassociation. Compare actual original full scores, not adapter scratch internals."
+    },
+    {
+      "case": "Output/alias contract",
+      "assert": "Supplied out identity,unchanged long tail,nonzero view offset,short output and unsupported output type. ForX/out andW1/b1/out aliases, compare cloned original/adapter calls INCLUDING resulting input/weight bytes."
+    },
+    {
+      "case": "Current mutable model and fallback domain",
+      "assert": "setWeights plus directW1/b1 changes must affect the next call exactly. Abnormal layer arrays,unsupported dimensions,nonfinite data/prefix andshared/resizable buffers delegate. Stay within ordinary owned objects; do not add a generic hostile-Proxy framework."
+    },
+    {
+      "case": "Actual decider semantics",
+      "assert": "Future approved tests compare full ordered scores,first-tie pick,ranking,collectFeat and RNG-call trace for both encoder/pass/compat modes. Keep the original model reference independent; reject a poisoned candidate score BEFORE action selection."
+    },
+    {
+      "case": "Release acceptance, after unit TDD",
+      "assert": "Under a new bounded reviewed contract, run independent original/optimized complete trajectories with pinned weights/rules/seeds/actor/profile and ample non-triggered test deadlines. Compare every candidate score byte,move/resource declaration and whole event/result trace. Exercise all four seats,forced roots,own plan and future-deal/RNG continuity. No scientific rollout or such test was run by this reviewer."
+    }
+  ],
+  "performanceAndEvidence": {
+    "arithmeticOnly": {
+      "macPerRow385": 164352,
+      "macPerRow399": 167936,
+      "macPerRowAfterPrefixAmortized": 83200,
+      "maxAsymptoticMacRatio385": 1.9753846153846153,
+      "maxAsymptoticMacRatio399": 2.0184615384615383,
+      "retrospective100StrongWorkerHoursFromProvidedTotals": 76.85500694444444
+    },
+    "interpretation": "The roughly1.98/2.02 asymptotic MAC-count ratios are arithmetic accounting, not wall-clock speed promises; engine work,tanh,checks,allocations and other tasks remain. The76.855h retrospective estimate is a planning extrapolation from4 supported roots, not a guaranteed future qualification rate.",
+    "providedPreflightSHA256": "4422a7039ead11bc4489a16c854d33424c39411d2ab11578c6bf68ff1f5b81b1",
+    "providedPreflightSummary": {
+      "actualNetworkForwards": 648,
+      "rollouts": 0,
+      "teacherLabelsGenerated": 0,
+      "results": [
+        {
+          "policyId": "review6-clean-U0-399-action64-candv3",
+          "inputDim": 399,
+          "stateDim": 331,
+          "actionDim": 68,
+          "cases": 18,
+          "bitwiseClaim": true,
+          "reportedMedianInferenceSpeedup": 1.389244423746328
+        },
+        {
+          "policyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "inputDim": 385,
+          "stateDim": 317,
+          "actionDim": 68,
+          "cases": 18,
+          "bitwiseClaim": true,
+          "reportedMedianInferenceSpeedup": 1.4787477631970545
+        }
+      ]
+    },
+    "preflightSourceCoverage": [
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6/exact-inference.ts",
+        "preflightSourceSHA256": "100556a35bc11a8860d1bde5904e7df700235fe7b9bc68a939d068eff78915f8",
+        "reviewedCopySHA256": "32883379f68c8ae15c5c262251ed8a7df097bc2409cfbcb2077016c1d1b1eba1",
+        "sameRevision": false
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/lab/review6/exact-inference-preflight.ts",
+        "preflightSourceSHA256": "a828c338438b6bf0539faf962958d926c0c130c15ee37a87868852197d6c94aa",
+        "reviewedCopySHA256": "a828c338438b6bf0539faf962958d926c0c130c15ee37a87868852197d6c94aa",
+        "sameRevision": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/mlp.ts",
+        "preflightSourceSHA256": "404326a8665e82bf071c1dc655a0e714dab913ff79e8ce9882c580fef7070521",
+        "reviewedCopySHA256": "404326a8665e82bf071c1dc655a0e714dab913ff79e8ce9882c580fef7070521",
+        "sameRevision": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/schema.ts",
+        "preflightSourceSHA256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8",
+        "reviewedCopySHA256": "cac5442c7d8a0f2ebf5880a93ec5c063885b8e596d3904f91c42c366f27a15d8",
+        "sameRevision": true
+      },
+      {
+        "path": "/Users/ccrt/game/guandan/packages/ai/src/nn/neuralSeat.ts",
+        "preflightSourceSHA256": "cb9d0aa9dbfbd66a44c444e8531abf7b633d1c293e9ec6292d1192e9b9d2eb50",
+        "reviewedCopySHA256": "cb9d0aa9dbfbd66a44c444e8531abf7b633d1c293e9ec6292d1192e9b9d2eb50",
+        "sameRevision": true
+      }
+    ],
+    "assessment": "The provided preflight reports36 real decision batches/648 network forwards and1.389x/1.479x median inference speedups for its100556a3 adapter revision, with no rollout or label. It does not cover the later32883379 revision or a complete match. Its real-case comparator hashes score bytes; subsequent strict equality gates should directly compareUint32/Buffer bytes as well as retain hashes for lineage. The reviewer only read the artifact/code and did not reproduce measurements.",
+    "releaseConditions": [
+      "Preserve old failed/successful preflight evidence; create a new source-hashed proof for the actual final adapter revision.",
+      "Validate full trajectories/all scores/actions and measure end-to-end matched workload speed under guarded original budget before using an optimized scientific backend.",
+      "Measure cache only if chosen; no threshold/root/world/CI/policy/target reductions to claim affordability.",
+      "Create new source snapshot,explicit inference execution contract and two current independent reviews. Current frozen approved execution remains unchanged."
+    ]
+  },
+  "reviewerActivity": {
+    "implementationWrites": 0,
+    "NNForwardOrDecideCalls": 0,
+    "rollouts": 0,
+    "torchRuns": 0,
+    "trainingUpdates": 0,
+    "newTeacherLabels": 0,
+    "realBudgetOrLeaseWrites": 0,
+    "externalCalls": 0
+  },
+  "limits": [
+    "This report concerns design and exact copied source revisions only. Live code changed during the review; original preflight coverage is explicitly separated from later static code inspection.",
+    "No unit/model/performance test was run. Proposed TDD cases are future acceptance requirements, not passing evidence. Existing source tests were inspected only.",
+    "The report grants no optimized scientific execution,quality/C3/main/formal approval and no claim that the72-hour whole program now fits. Source/label counts,CI gates,rules,weights,RNG and reward targets remain unchanged.",
+    "Full equivalence is within the normal supported synchronous domain and pinned runtime/math. Arbitrary side-effectful getters/proxies,concurrent shared-memory mutation and mutated math intrinsics are outside the optimized domain and must not be silently accepted as frozen inference.",
+    "Deadline/completion timing may improve by design; compare policy trajectories where test deadlines do not fire, and retain the already-reviewed same-world retry/physical-cap semantics in actual bounded execution."
+  ]
+}

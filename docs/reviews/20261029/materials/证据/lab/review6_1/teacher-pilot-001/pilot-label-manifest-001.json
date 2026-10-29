@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "r6-qualified-pilot-label-manifest-v1",
+  "at": "2026-10-28T21:19:55.331Z",
+  "cycleId": "review6-humanlike-20261028",
+  "selectedExperiment": "direct_teacher_no_h",
+  "cleanParentWeightsSHA256": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01",
+  "actualQualifiedRoots": 4,
+  "uniqueSourceFamilies": 4,
+  "labels": [
+    {
+      "labelId": "review6-pilot:C3-pilot-source-001:root-03",
+      "rootId": "C3-pilot-source-001:root-03",
+      "sourceFamilyId": "first-deal-family:176f7f6cbc4d3cd46cb1d8c12ea553d6f4cffe19e13fb6bf07b4a65f9818b3f3",
+      "slot": 3,
+      "category": "resource_structure",
+      "actingSeat": 2,
+      "direction": "pass_over_takeover",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-03/teacher-label.json",
+      "sha256": "a329437a23dcf915d0506bce9a3d711dfc61efe19d22ae609c4a36d9bd1c1ac8",
+      "statsPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-03/stats-result.json",
+      "statsSHA256": "d8bff2af386de6987647769a2d7608c89e18bdd3ba8849fa8ef94a4f88a5cf8e",
+      "datasetPurpose": "pilot_training_only_not_main_or_sealed"
+    },
+    {
+      "labelId": "review6-pilot:C3-pilot-source-001:root-05",
+      "rootId": "C3-pilot-source-001:root-05",
+      "sourceFamilyId": "first-deal-family:2635c29064ba467728c374095f4db4430fd8e79abb802bdab8e92fa5afefb979",
+      "slot": 5,
+      "category": "cooperation_open",
+      "actingSeat": 1,
+      "direction": "pass_over_takeover",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-05/teacher-label.json",
+      "sha256": "f12f4602b50ff44f1bbc5636970bdf74c6ad50c220e45a52bdf93ad2ff15e1d9",
+      "statsPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-05/stats-result.json",
+      "statsSHA256": "926173b0238e562d4db5e50a6065ccfa34b6f133ae6a32d313f8975b2d653b79",
+      "datasetPurpose": "pilot_training_only_not_main_or_sealed"
+    },
+    {
+      "labelId": "review6-pilot:C3-pilot-source-001:root-06",
+      "rootId": "C3-pilot-source-001:root-06",
+      "sourceFamilyId": "first-deal-family:2b5a33ba20cf0d102a4984a99e1743a0edb72ba0a9c262ab66480ea4c08410b6",
+      "slot": 6,
+      "category": "cooperation_urgent",
+      "actingSeat": 2,
+      "direction": "takeover_over_pass",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-06/teacher-label.json",
+      "sha256": "cea444d09e3c48f5349f39f4bb30e313d84dc702323790853fb15bd93be72729",
+      "statsPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-06/stats-result.json",
+      "statsSHA256": "d63fe45e6fb2eadd97c746a195bd658c10efbfbc720740676ef512446003cd34",
+      "datasetPurpose": "pilot_training_only_not_main_or_sealed"
+    },
+    {
+      "labelId": "review6-pilot:C3-pilot-source-001:root-20",
+      "rootId": "C3-pilot-source-001:root-20",
+      "sourceFamilyId": "first-deal-family:dc6698b86ae1061acc6c50bd2e06e358b86015b14d752cc468ad9d3d6e121916",
+      "slot": 20,
+      "category": "context_sensitive_candidate",
+      "actingSeat": 3,
+      "direction": "pass_over_takeover",
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-20/teacher-label.json",
+      "sha256": "655dd8c62de919d4a79996a3bfcf1e09a037d750c3dd21d3cc3b1ac51d9ae66d",
+      "statsPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/root-results/root-20/stats-result.json",
+      "statsSHA256": "540fad5213bf1d70ad7e532d2db16e752932058fdf085427324f22d23b926f33",
+      "datasetPurpose": "pilot_training_only_not_main_or_sealed"
+    }
+  ],
+  "usage": "B20mature-update resource pilot; max64different roots/update so use all4without duplication, record reuse across updates; pilotweights never productionparent",
+  "mainTrainingUpdates": 0,
+  "formalOpened": 0
+}

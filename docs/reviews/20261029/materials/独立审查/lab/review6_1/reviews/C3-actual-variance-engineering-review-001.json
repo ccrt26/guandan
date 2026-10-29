@@ -1,0 +1,745 @@
+{
+  "schemaVersion": "r6-independent-actual-execution-engineering-review-v1",
+  "role": "engineering",
+  "reviewId": "C3-actual-variance-engineering-review-001",
+  "at": "2026-10-28T23:03:28.696192+00:00",
+  "requestPath": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-request-004.json",
+  "requestSHA256": "5d092cf94b6ee924b85e273fc7698a69d6d178e2880045bc17603365551331b0",
+  "reviewedContractPath": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-contract-002.json",
+  "reviewedContractSHA256": "c9fd1f76aa17cae2cfb085c293be32f02df4dcbdd8a8678e8a3095360d2de519",
+  "reviewedSnapshotSHA256": "a1eede035856027fb7386168083abdcdc1b631d90a58decfc2e91e07561707dc",
+  "reviewedActualReportPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/variance-report.json",
+  "reviewedActualReportSHA256": "302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431",
+  "overallDecision": "ACCEPT_SCOPED_ACTUAL_VARIANCE_RESULTS",
+  "findings": [],
+  "P1OpenCount": 0,
+  "P2OpenCount": 0,
+  "futureExecutionApproval": false,
+  "matureOrMainAuthorized": false,
+  "decisionSummary": "Accept the actual fixed64-block variance/cost pilot evidence within its approved scope. All64 raw file hashes,1024 strictly complete physical matches, four actual thread task counts, policy/source identities,55 observed module-file paths including the CJS-only path,184-file snapshot and five copied weight identities match. Independently checked10794 indexed round references and mechanically reconstructed2697 raw deals/canonical families all match metadata, with no excluded or cross-source family collision. Original budget settlement702.852148 equals4*175.713037, lease hash reconstructs and lease is absent, and originalfailed001 charge.363005 remains. This is neither a new execution approval nor mature/teacher/main/formal acceptance.",
+  "scope": "Read-only audit of actual variance execution002 under approved004 package: raw results, actual identity/module/input readback, completed counts, arithmetic metadata/variance/timing consistency, full preexchange ancestry from existing deal seeds, official budget/lease closure. No old source/science re-review or new model/play/productionTorch execution.",
+  "actualIdentity": {
+    "taskId": "C3-variance-pilot-execution-002",
+    "executionOrdinal": 2,
+    "parentPID": 37184,
+    "childPID": 37185,
+    "actualEntry": "file:///Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/variance-worker.ts",
+    "openedIdentityMatches": true,
+    "snapshotFilesVerified": 184,
+    "currentExactContractMatches": true,
+    "currentSpecMatches": true,
+    "currentRegistryMatches": true,
+    "authorization": {
+      "requestSHA256": "5d092cf94b6ee924b85e273fc7698a69d6d178e2880045bc17603365551331b0",
+      "authorizationPath": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-authorization-001.json",
+      "authorizationSHA256": "730aadd21e4b02e9249f62d953ffb4a414cd788616d602d07bd6498110a8f238",
+      "reviews": [
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-engineering-review-004.json",
+          "sha256": "2603dfda2ff81aa2b9e5e9948ea37c1b9e8323ee176fec7c3bc326e3df583d9f",
+          "role": "engineering",
+          "reviewId": "C3-variance-execution-engineering-review-004",
+          "requestSHA256": "5d092cf94b6ee924b85e273fc7698a69d6d178e2880045bc17603365551331b0",
+          "overallDecision": "APPROVE_PILOT_EXECUTION"
+        },
+        {
+          "path": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C3-variance-execution-method-review-004.json",
+          "sha256": "4a5e97c31882a2d0595d5af02943a6079e6308fd1781faab0a658124fc707754",
+          "role": "method",
+          "reviewId": "C3-variance-execution-method-review-004",
+          "requestSHA256": "5d092cf94b6ee924b85e273fc7698a69d6d178e2880045bc17603365551331b0",
+          "overallDecision": "APPROVE_PILOT_EXECUTION"
+        }
+      ],
+      "copiedParent": {
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/lab/review6/pilot-launch.mjs",
+        "sha256": "f2b9da46669b48f997b71fcb3b7628579a118603f47f055337f3ba8326b0e480",
+        "starterReadbackPath": "/private/tmp/r6-start-variance-004.mjs",
+        "starterSHA256": "0c476a3ee0d51e38b0c0105f1790fa6ed0b072780e254c8bcdd096d40ed0458f",
+        "authorizationPathAgrees": true,
+        "separatelyTracedParentRuntimeModules": false
+      }
+    },
+    "actualThreadTaskCounts": {
+      "2": 16,
+      "3": 15,
+      "4": 16,
+      "5": 17
+    },
+    "actualThreads": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "loadedModuleCounts": {
+      "ESMFileURLPaths": 54,
+      "explicitCJSLoadPaths": 5,
+      "distinctUnionPaths": 55,
+      "CJSOnlyPaths": [
+        "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/client-XItNFmsq.cjs"
+      ],
+      "allInsideSnapshotAndManifest": true,
+      "modulePIDs": [
+        37185
+      ]
+    },
+    "physicalWeightInputs": [
+      {
+        "policyId": "review6-clean-U0-399-action64-candv3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01.f32",
+        "sha256": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01"
+      },
+      {
+        "policyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55.f32",
+        "sha256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+      },
+      {
+        "policyId": "legacy-review5-control-p1-ck400-encv4-candv3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-825c33aa8861939efee8f0291f49bcabb3bb335d4854d6c6329a0fb8ece3a331.f32",
+        "sha256": "825c33aa8861939efee8f0291f49bcabb3bb335d4854d6c6329a0fb8ece3a331"
+      },
+      {
+        "policyId": "legacy-review5-control-p2-ck400-encv4-candv3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-ebc8097fcb61f13c878bce050960bdbdd93b43d6ea78642b4b62320bacaec6ee.f32",
+        "sha256": "ebc8097fcb61f13c878bce050960bdbdd93b43d6ea78642b4b62320bacaec6ee"
+      },
+      {
+        "policyId": "legacy-review5-control-p3-ck400-encv4-candv3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-2ca0564b5323da231f3b41bd1cbe12bd0941aa9957e8de4d361203254bd5b846.f32",
+        "sha256": "2ca0564b5323da231f3b41bd1cbe12bd0941aa9957e8de4d361203254bd5b846"
+      }
+    ],
+    "confirmationWeightPathsAbsent": [
+      "legacy-review5-treatment-p1-ck400-encv4-candv3",
+      "legacy-review5-treatment-p2-ck400-encv4-candv3",
+      "legacy-review5-treatment-p3-ck400-encv4-candv3"
+    ]
+  },
+  "independentChecks": [
+    {
+      "area": "64 raw hashes,1024 outcomes and complete physical roles",
+      "status": "pass",
+      "details": [
+        "The actual report hashes to302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431. Its64 referenced block files equal exactly block001..064 and everySHA matches. No missing, duplicate or extra block file exists. Ordinals and each sources object equal the frozen spec.",
+        "Each block has exactly16 layouts in the frozen order:12 cooperation (3groups*U0/probe*2physical sides),2M1 and2M2. Every actor/side/partner/opponent,policyId/probe/variant/group and RNGmode matches the predeclared layout. Result policy IDs match their row.",
+        "All1024 row and result complete fields are strictly true; winners are numeric0/1, incompleteReason null, games/moves positive and within guards, trace hashes valid and no own plan injected. Totals are768cooperation/128M1/128M2,10794rounds and1065068 decisions.",
+        "For every match, first-round signed upgradeg is independently derived relative to the physicalactor team, finalW agrees with winner, and stored rootTeamTarget=g+W. No incomplete result is converted into loss.",
+        "All1024 first deal seeds and family identities match the exact192 source descriptors; no source/seed/role replacement is observed."
+      ]
+    },
+    {
+      "area": "Actual10794-round preexchange ancestry",
+      "status": "pass",
+      "details": [
+        "Enumerated and joined every stored result.deals entry with roundBaseFamilies, requiring consecutive gameNo1..games and equal lengths in all1024matches.",
+        "Every one of10794 recorded deal seeds equals indexedDealSeed(fixednamespace,fixedsourceSeed,gameNo-1). Mechanically initialized only the2697 unique raw deals and computed the canonical raw preexchange family; every recorded family matches. No action or complete game/match was played.",
+        "All1024 first-round physical card-ID fingerprints equal raw reconstructed hands. Later-round fingerprints can include actual tribute/return changes and are not falsely compared to raw hands; their preexchange family metadata is checked against actual stored dealSeed as requested.",
+        "All2697 unique source-round identities have2697 distinct raw seeds and2697 distinct canonical families. Shared cooperation rounds at a common block/metric/gameNo have identical raw identity across policy/side variants; no cross-source family overlap is observed.",
+        "Zero of these actual round families collide with the3062 exclusions. The192 initial identities and all remaining future-round identities therefore satisfy the declared consumed-source exclusion test in this actual run."
+      ]
+    },
+    {
+      "area": "Paired64-unit variance and timing arithmetic",
+      "status": "pass",
+      "details": [
+        "Recomputed every group U0-minus-probe two-side win difference, all64 macro differences and M1/M2 two-side wins directly from raw complete winners relative to actor teams. All stored vectors match. No12-match pseudoreplication is introduced.",
+        "Independently recomputed N-1 sampleSD: primary.18867211534189088, groups[.3049687727964166,.33987261269061214,.34178279095132363],M1.29198537009447295,M2.3347255153628427. Stored values agree. All designSD floors remain.5, bounded sensitivity1, finalNPrimarynull and main/formal counters0.",
+        "Median/p90 block time and permetric U0match time are recomputed from raw seconds and agree. These include the predeclared retained warm blocks, with no measured case deleted for speed.",
+        "Block elapsed time covers its16 match times. Four actual thread task counts are2:16,3:15,4:16,5:17; their sum is64. Every raw thread appears in the pool records, parent dispatch time covers worker task time, lifetime/resource sums match and64 stdout progress rows count1..64.",
+        "Observed peakRSS1193066496 bytes is above reported worker peaks and below the frozen12025908428 byte guard. Parent/report/pool wall containment is consistent."
+      ]
+    },
+    {
+      "area": "Actual ESM+CJS module and copied weight identity",
+      "status": "pass",
+      "details": [
+        "Parsed the entire18,357,366-byte childstderr using file-module URLs plus explicit CommonJS MODULEload records, rather than only Translating lines. Union includes54 ESM-URL paths and5 CJS-load paths with4overlap=55file paths.",
+        "The CJS-only path is copied node_modules/tsx/dist/client-XItNFmsq.cjs. All55 observed file paths are inside the approved snapshot and manifest, and file hashes/realpaths match. PID in all ESM/MODULE records is actual child37185. No observed source module is outside the snapshot.",
+        "Observed required modules include actual boot,variance-worker,variance-task,compute-pool,training-ancestry,frozen-launch-guard,match-play,exact-prefix adapter and original MLP/NeuralDecider/schema. No mature/Python-RPC/service module is observed.",
+        "Full copied verifier and independent hashes/realpaths cover all184 snapshot files. Exactlyfive copied model inputs U0/O/dev3 exist and hash to registry identities; three confirmation paths remain nonexistent. No confirmation bytes are read by this review.",
+        "Parent identity is supported by parentPID37184 in the official receipt, copied-parent path in the hashed authorization and saved starter readback importing the exact copied004 pilot-launch module. The separate runtime module trace is child-side; no independent parent module-loader trace is claimed."
+      ]
+    },
+    {
+      "area": "Current authorization and official frozen entry",
+      "status": "pass",
+      "details": [
+        "Official receipt matches approved004 exactrequest, executionOrdinal2 contract, snapshot and authorization hashes. Opened record and finalreport independently agree on actual copied variance entry/contract/spec/snapshot identity.",
+        "Archived engineering and method review file hashes match actual authorization references, actual report roles are distinct, reviewIds are unique, both bind the exact currentrequestSHA and both decide APPROVE_PILOT_EXECUTION.",
+        "The current parent import is the approved004 copied module and starter only archives current approvals/reconciles engineering/routes the exactcontract. Its source/readback is hashed for traceability; the reviewer does not run the starter.",
+        "Runtime environment has no NODE_OPTIONS,NODE_PATH,PYTHONPATH or LD_PRELOAD override. Copied loader/esbuild paths and original canonical cycle are preserved."
+      ]
+    },
+    {
+      "area": "Original72hour budget and canonical lease closed",
+      "status": "pass",
+      "details": [
+        "The original genesis66d45addaf0531a072e76b807e19a7e8bb7a681aa7dd3e809cf25fef8b72b337 and full current original ledger chain verify, with259200second cycle limit.",
+        "Actual task002 has exactly one reserve3000 followed by settle702.852148. Settlement head4b38aba7737561a63812fde34f9fa579f0a58d6aa4cfdd29524475c6982f6975 matches the actual canonical ledger entry and is retained in the later chain.",
+        "Whole parent device window175.713037seconds is charged exactly4times=702.852148, including bootstrap/startup/parent/statistics/cleanup. Exit0,signalnull,errornull; parent/report/pool walls are175.713037/175.451535792/175.42863225. Charge is below3000reservation and wall below660hard cap.",
+        "Reconstructed the original canonical lease bytes from actual receipt/PID/contract/snapshot/anchor/starttime. SHA equals settled ccd3089e9f92d28a23e5a571f325add1f4c45e21769743eedb859b3caabfe1a4. Canonical active compute lease is absent and actual task002 reservation is closed.",
+        "Replayed reservation membership across the actual task interval: no other task reservation overlaps task002. A later C3-mature-cost-engineering-window-035 reservation is outside this completed interval; no claim that the entire current ledger has zero engineering reservations is made.",
+        "Original failed task001 still has its original reserve/settle and.363005 charge. Combined scientific variance charges are703.215153 seconds; no cycle,attempt or budget reset is inferred or permitted."
+      ]
+    }
+  ],
+  "recomputedSummary": {
+    "reportPath": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/variance-report.json",
+    "reportSHA256": "302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431",
+    "rawBlocks": 64,
+    "completeTypedPhysicalMatches": 1024,
+    "cooperationMatches": 768,
+    "M1Matches": 128,
+    "M2Matches": 128,
+    "roundReferences": 10794,
+    "uniqueRecordedDealSeeds": 2697,
+    "decisions": 1065068,
+    "sampleSDIndependentlyRecomputed": {
+      "primary": 0.18867211534189088,
+      "groups": [
+        0.3049687727964166,
+        0.33987261269061214,
+        0.34178279095132363
+      ],
+      "M1": 0.29198537009447295,
+      "M2": 0.3347255153628427
+    },
+    "designFloorsUnchanged": true,
+    "matchTaskTimesIndependentlyRecomputed": {
+      "cooperation": {
+        "n": 384,
+        "median": 0.8086228960000008,
+        "p90": 1.0986461921000013
+      },
+      "M1": {
+        "n": 128,
+        "median": 0.7719020829999863,
+        "p90": 1.0539742624000137
+      },
+      "M2": {
+        "n": 128,
+        "median": 0.5563639369999964,
+        "p90": 0.7213973372999979
+      }
+    },
+    "actualThreadTaskCounts": {
+      "2": 16,
+      "3": 15,
+      "4": 16,
+      "5": 17
+    },
+    "actualThreadWorkerSeconds": {
+      "2": 172.13857566700003,
+      "3": 165.333111293,
+      "4": 167.18041033299997,
+      "5": 175.05447837299997
+    },
+    "observedModuleUnionFiles": 55,
+    "CJSOnlyFiles": [
+      "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/node_modules/tsx/dist/client-XItNFmsq.cjs"
+    ],
+    "childPID": 37185,
+    "parentPID": 37184,
+    "snapshotFilesHashVerified": 184,
+    "modulePathsOutsideSnapshot": [],
+    "modulePathsUnlisted": [],
+    "leaseReconstructionMatches": true,
+    "canonicalLeaseAbsent": true,
+    "physicalModelInputFiles": [
+      {
+        "policyId": "review6-clean-U0-399-action64-candv3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01.f32",
+        "sha256": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01"
+      },
+      {
+        "policyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55.f32",
+        "sha256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55"
+      },
+      {
+        "policyId": "legacy-review5-control-p1-ck400-encv4-candv3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-825c33aa8861939efee8f0291f49bcabb3bb335d4854d6c6329a0fb8ece3a331.f32",
+        "sha256": "825c33aa8861939efee8f0291f49bcabb3bb335d4854d6c6329a0fb8ece3a331"
+      },
+      {
+        "policyId": "legacy-review5-control-p2-ck400-encv4-candv3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-ebc8097fcb61f13c878bce050960bdbdd93b43d6ea78642b4b62320bacaec6ee.f32",
+        "sha256": "ebc8097fcb61f13c878bce050960bdbdd93b43d6ea78642b4b62320bacaec6ee"
+      },
+      {
+        "policyId": "legacy-review5-control-p3-ck400-encv4-candv3",
+        "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/weights-2ca0564b5323da231f3b41bd1cbe12bd0941aa9957e8de4d361203254bd5b846.f32",
+        "sha256": "2ca0564b5323da231f3b41bd1cbe12bd0941aa9957e8de4d361203254bd5b846"
+      }
+    ],
+    "confirmationModelInputFilesAbsent": [
+      "legacy-review5-treatment-p1-ck400-encv4-candv3",
+      "legacy-review5-treatment-p2-ck400-encv4-candv3",
+      "legacy-review5-treatment-p3-ck400-encv4-candv3"
+    ],
+    "wholeWindowSeconds": 175.713037,
+    "chargedWorkerSeconds": 702.852148,
+    "stdoutProgressRows": 64,
+    "errors": [],
+    "reviewerNNCalls": 0,
+    "reviewerRollouts": 0,
+    "reviewerTorchCalls": 0
+  },
+  "ancestryAndBudgetSummary": {
+    "status": "passed",
+    "actualRoundReferencesChecked": 10794,
+    "uniqueRawDealSeedsMechanicallyReconstructed": 2697,
+    "uniqueCanonicalRawRoundFamilies": 2697,
+    "uniqueBlockMetricRoundIdentities": 2697,
+    "allRecordedPreExchangeFamiliesEqualRawSeedReconstruction": true,
+    "all10794IndexedDealSeedsCorrect": true,
+    "all1024InitialFingerprintsEqualRawDeal": true,
+    "excludedAncestryCollisions": 0,
+    "sharedCooperationRoundIdentityConsistent": true,
+    "crossSourceRoundFamilyOverlap": 0,
+    "fullSnapshot184Verified": true,
+    "originalLedgerGenesis": "66d45addaf0531a072e76b807e19a7e8bb7a681aa7dd3e809cf25fef8b72b337",
+    "originalBudgetLimitSeconds": 259200,
+    "actualTaskReservationSeconds": 3000,
+    "actualTaskSettledCharge": 702.852148,
+    "actualSettlementHead": "4b38aba7737561a63812fde34f9fa579f0a58d6aa4cfdd29524475c6982f6975",
+    "actualTaskStillReserved": false,
+    "concurrentReservationsDuringActualTask": [],
+    "canonicalComputeLeaseExists": false,
+    "originalFailed001ChargePreserved": 0.363005,
+    "totalScientificVarianceCharges": 703.2151530000001,
+    "currentBudgetHead": "a854764c3544df8af978c36686f02e47287cfcad1401e31f1bf6ebf358447942",
+    "currentReservations": [
+      "C3-mature-cost-engineering-window-035"
+    ],
+    "reviewerActivity": {
+      "NNCalls": 0,
+      "decideCalls": 0,
+      "completeMatches": 0,
+      "rollouts": 0,
+      "Torch": 0,
+      "training": 0,
+      "realBudgetWrites": 0,
+      "realLeaseWrites": 0
+    }
+  },
+  "proofArtifacts": [
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/audit-results.py",
+      "sha256": "7fcae1b25539670086917953f6a8a6245659780408603a0707f4e0c7d30b56c7",
+      "bytes": 15195
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/audit-results.stdout",
+      "sha256": "2906acbd214eedc4d4c9f776093e690345848e543b0fd74437f16f15db193f5b",
+      "bytes": 3437
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/audit-results.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/actual-result-audit-output.json",
+      "sha256": "9cda9668cf3a26888f4cff9d60f413378eaa385b10e3e92871628b197a79fc2a",
+      "bytes": 3845
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/loaded-module-paths.json",
+      "sha256": "2c92673f43df4cc65158ecb8cc1ecc0ee54cf910c82b29c55074b66cb03447e7",
+      "bytes": 15863
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/block-file-hashes.json",
+      "sha256": "4cd6face872d26ab84b32d1395974caad5720decd01e0b635e1b516a886ddc08",
+      "bytes": 12675
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/round-deal-metadata.json",
+      "sha256": "1eeaa8012f72ee8fe6751c1e1eacf1da85c347c27ff48e869bdc4e2b8385e6f8",
+      "bytes": 5364149
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/actual-authorization-audit.json",
+      "sha256": "064831f5510bf9856aefc34865cfda63d51be2b5eddf7803ea5a4a3ca224691a",
+      "bytes": 1677
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/ancestry-budget-probe.ts",
+      "sha256": "7fb5018b69a8b661c1f8f44c91118fe97b8e9023ce08821667d0c49f0cf0e97f",
+      "bytes": 5615
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/ancestry-budget-probe.stdout",
+      "sha256": "bdae413ebe1f60624e1982c976a3fc4b90d8a5ff99b696e8c2097a2c3ff4a827",
+      "bytes": 1274
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/ancestry-budget-probe.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/ancestry-budget-probe-output.json",
+      "sha256": "f703eb55ab090e1377ec6ea2996fc7a724057c6f4b151303823ef8bcb1708142",
+      "bytes": 1434
+    },
+    {
+      "path": "/private/tmp/C3-actual-variance-engineering-001/unique-raw-round-families.json",
+      "sha256": "9b4ae380c6a96830806bb9164ceb9558e31996f40636bda5db6ac34044ba5c95",
+      "bytes": 627724
+    }
+  ],
+  "verifiedActualArtifacts": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/variance-report.json",
+      "sha256": "302d7c7a10a5674fa28df7c1c6ebdc7f2317feb4badbf23c01c826003b30f431",
+      "bytes": 20850
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-002.json",
+      "sha256": "3b8876dcca9b1145b7ca324f191a34fdd2f1f0a62ae347e7a7c0691c6cd60ce6",
+      "bytes": 2677
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-002-settlement.json",
+      "sha256": "df7eac7b03a5d76ffba9aa59a0ae48bc7eac3a5935610496532ea49d1057e80d",
+      "bytes": 614
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-002.stdout",
+      "sha256": "eb9cbb65a07f988ac4063ae09a9aa7e2f517a720616a963e05983074d5e08bb9",
+      "bytes": 2871
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c3-variance-pilot-execution-002.stderr",
+      "sha256": "515cb95b446d1024519930b86bab6ade48b495568e556c15d9ba346dda72ff49",
+      "bytes": 18357366
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-authorization-001.json",
+      "sha256": "730aadd21e4b02e9249f62d953ffb4a414cd788616d602d07bd6498110a8f238",
+      "bytes": 1020
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-contract-002.json",
+      "sha256": "c9fd1f76aa17cae2cfb085c293be32f02df4dcbdd8a8678e8a3095360d2de519",
+      "bytes": 2094
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/snapshot-manifest.json",
+      "sha256": "a1eede035856027fb7386168083abdcdc1b631d90a58decfc2e91e07561707dc",
+      "bytes": 66496
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/variance-spec.json",
+      "sha256": "e1bf9af7a5155e037f0b395226eafe38620f126ab2602b0aad7d9231315a7a84",
+      "bytes": 338293
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/variance-pilot-004/execution-snapshot-001/inputs/policy-registry.json",
+      "sha256": "a32b5ea6875257c6f12ddd96d31eb2c67702b589e4a4ebe12690b70edab40168",
+      "bytes": 7611
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/opened.json",
+      "sha256": "c31e7d2e7884540d08cfc8376206cfd432b77a3520dada0a81fb77d7bfb2ee2e",
+      "bytes": 487
+    },
+    {
+      "path": "/private/tmp/r6-start-variance-004.mjs",
+      "sha256": "0c476a3ee0d51e38b0c0105f1790fa6ed0b072780e254c8bcdd096d40ed0458f",
+      "bytes": 2331
+    }
+  ],
+  "all64RawFileHashes": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-001.json",
+      "sha256": "034bff0ed132aa3ba3bdd4b2eaba3ce41a2399bcaa26b3ee0a0f2cebe8f7f33d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-002.json",
+      "sha256": "925945d121af415c6be37174f8d88b3e7bc7cda70f4696bbe76d1cb3593dfba1"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-003.json",
+      "sha256": "60a2584844fd9f3908a4cca5d03b3581d8d2f2f9649b96f8d9daccafe9e84a6f"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-004.json",
+      "sha256": "22d1a5b9e5bb660356959012f4e8ea6783833d36bd01bbb40513a17701849cf3"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-005.json",
+      "sha256": "4ec7b153e0930d8dd0c1ffd602dbe2bf71d9d234feaeea2f2e0575fe52f04110"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-006.json",
+      "sha256": "638be29506be89dfde0d59861e2a4cb0802a94364831dfaa91035469bbf15c54"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-007.json",
+      "sha256": "9b221544bf508fd9ad1ba2abbd2649683e1ed86e3647482dc566da48f3907e88"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-008.json",
+      "sha256": "7b976ed7f62b68715d5b444a8105fc87b930bab936b21549e6ecd8457fcc99e2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-009.json",
+      "sha256": "777522c4491b8d29816e5b7348a6da65bb3f57b2330911f99754476de8a21fbf"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-010.json",
+      "sha256": "0e0b1e73339d36d2eeed8eeb02614dc787efea3f852602dd198f681bfefe454e"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-011.json",
+      "sha256": "ebce857d22b8a79558b1539f4cf3b8f522fdb6b770b5f754dfaca64f86664f14"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-012.json",
+      "sha256": "55ff0c02ae56a1dbf3b0ccaefa6c453e89b44b86bdd76e182125029a50781c02"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-013.json",
+      "sha256": "69ed9bd3b30f0f42c7dce45ddd75686e36ec30755c8ff76674e64abffc1f5315"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-014.json",
+      "sha256": "7b0ce1ad9d1fe5469548762685f92660513d4d1a3c3028c44d2e651874b50d4d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-015.json",
+      "sha256": "c89921cffd754fd59e3681af6d917b3cec7683f7c845465ca68e1749af5684e6"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-016.json",
+      "sha256": "183b3f27ca96e3f81df5c56b43c111a53266213b905fc550f19313d296f868b6"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-017.json",
+      "sha256": "c1ad97683f3e6fec9b0353585b0580e2706869549ae1faa10cfe8ceec22c3c00"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-018.json",
+      "sha256": "cddee269c0957a3b508ea16cf52360eb3f70355593b5538e21594135714c7cf2"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-019.json",
+      "sha256": "3b24f633e7f2ac29e5774ede6299d8a19c05b0390558512edc4504361d934483"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-020.json",
+      "sha256": "fa1f4ecee4e1982f97d1a23a9a62911113d971451923a5ba1b1d9c30b57200dc"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-021.json",
+      "sha256": "022fd14c4312e4134cacb8323d11483055e53605efbe462df1d4877ea820cdd5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-022.json",
+      "sha256": "911fdafbd3cfb71ccc1bba86c8a24231d47773d93e9e57cf031520ca34734fbf"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-023.json",
+      "sha256": "d2de52036ab6f7a16a51fc95e65cc6388e131c38029d8ac115008d21daadfb31"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-024.json",
+      "sha256": "f67ff56069465995ea306296dc6cdd035540df5b0be22958e60445a77f377d6b"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-025.json",
+      "sha256": "f5d8c51e71a81454c8b5e7c84aba1d1112920ff4c231652cfb9e9f80e025e9bb"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-026.json",
+      "sha256": "83cac00bc84193598822df27538232431692dcaf6414e3881da243ce79a96d89"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-027.json",
+      "sha256": "fa0fe21cbd56ce6e22cc1b24850a6861ea92be62fda2e8fa7613dfa7e7688838"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-028.json",
+      "sha256": "4bb731246586fe20f303a2e96c971d0894d202728c04a696fbc431da27d5c2f9"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-029.json",
+      "sha256": "e95423ba0659e8dbeba5d1cb3604b68c5e86108cc7f228528b02bb54c7f7eb4b"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-030.json",
+      "sha256": "78aff2af06f74e564f0f9980b6fe919921aa65a79de18c7bd811375a42456b49"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-031.json",
+      "sha256": "f79048d5039db53477bb6566fd7a27ab4b80122fd3db304033e779780aa48978"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-032.json",
+      "sha256": "4527a30c73e4066fff739ecd5a69ac9416564618f4196549d7601e702a7ec1f0"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-033.json",
+      "sha256": "d693a963b8699300a601d8a62db3a44fe6d3b8b32bc82f9ebee4af5fa3080685"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-034.json",
+      "sha256": "e326027ad6d4410854be90f539cb1c241716dd17afc2928607e28ca80a4ce7c0"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-035.json",
+      "sha256": "e2e9bdc1c23e27af58a8508e0223903a2a7cfdb4b82b3247d6dbac0a950f9ccb"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-036.json",
+      "sha256": "09151c1de1d7d57a75eb680de29856416ba5105d979cc9b1c48e0abe9cd8fc89"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-037.json",
+      "sha256": "58e367772a423f3812bb3dd225fd9c4e9cc7e8f64673e983b9dc46b6bc3c464b"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-038.json",
+      "sha256": "a8cc3ce407d4a6987da697b1ac84a686ef7bf020f820d0da3b35632240cab997"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-039.json",
+      "sha256": "23471fd2ee12efcab40975843cae8b02798be3003a413eacbada8f3c29cceea5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-040.json",
+      "sha256": "6397f081c2b02ac58f64a6874b048f81d03f4d23d127087af7f70e4e79d58a6d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-041.json",
+      "sha256": "403fd2d6203c8f749333b1752552246f437c1d6b8da7a36d557ef06e0ea07035"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-042.json",
+      "sha256": "9598c1bd0370ac0c04f001e506bd01f8994b5f7d9f67571c25225b6bbf821569"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-043.json",
+      "sha256": "1f772d798864abdd031a66a47b7e4b1cb87dfb3f62daf5736ce43c87f0efc3cf"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-044.json",
+      "sha256": "9a8a3d057f83212a755de047ccb124ab109fae1f1b6e0ca5de17fb5ad74ae634"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-045.json",
+      "sha256": "9e2fe83048e492f467b9aa70c8921d19105be4fea8f9f4397c932d6bade5e8fa"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-046.json",
+      "sha256": "807f2f1abb175f565ede040ba938c3dbaac3749793fb5f54a1c82d9534bd50fd"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-047.json",
+      "sha256": "5c5fa52194dc0c6429cbb93105b3e8fce20d8bc272cbe2f05dd5e4f1ff14e7e9"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-048.json",
+      "sha256": "8606aa9fd316a5d2e0e348c9666abfe776d8ba945a717ccd44e04ca785517590"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-049.json",
+      "sha256": "36014cc739ef01b6d99b3833ac34f85136a6b1755e526e102d5afc74ff14c341"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-050.json",
+      "sha256": "492976d174c0789fd74823d422815727b4c5f91c8925a1a2328c245c710035e1"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-051.json",
+      "sha256": "277593fa3ef236afb3edc187d22539a9174999e0327caf014b524648059663e4"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-052.json",
+      "sha256": "56c333a628f50e531615ece59afd03ba7a041b38160b425cf37085202d29cf2c"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-053.json",
+      "sha256": "2c84ebc77745cb510d3e59ca32b7d847906776dfbb3f9c93aca0b2cbf874d0bc"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-054.json",
+      "sha256": "8c4b081c7efbb58a2bafc1ea7c7964108bbfd17af2ec4a8a61ee91fb3f12441e"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-055.json",
+      "sha256": "a46c87a28eea284504600f34eb27b9203890484d0876496058abc5b147bc6123"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-056.json",
+      "sha256": "33c5a1f313c1402a0a9e2d95315ac68f09f35929edeff578d5595e91abe59dd5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-057.json",
+      "sha256": "ef83a6ae2dbfa356ddb49198e8dbc3b945f1dbf6c08fd4921ffa46b7de4ecb88"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-058.json",
+      "sha256": "0050b50911fd29afb876e05862405dfd385bcce178724cc0fa4900a0e7c3c879"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-059.json",
+      "sha256": "86e7f2f9bab0662648a7a20092f361a30548f359ec72df9db6c1ae53849c2755"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-060.json",
+      "sha256": "d6c6d1e7b6eb8029dc6eed5e7727272bc38653dfb59f8c7e85772981c13d93c5"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-061.json",
+      "sha256": "569dde09dd7e7af37837483d31dbc740428b7c0cd162af0b088225552dafd22d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-062.json",
+      "sha256": "392b1ad4a0c0ddd7f556e5ae1e4ec5dc792340a81fdcc71bcfdeb953033a98d4"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-063.json",
+      "sha256": "c438cbb89aaa57b3be78c86ce0a698beb65e6b682d878104714a23eeb5e99575"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6_1/teacher-pilot-001/variance-results-001/block-064.json",
+      "sha256": "e0551af09057440169a6fa569d58d30a76b52224c10229e9f495a2c5fbdbc3f3"
+    }
+  ],
+  "priorApprovalReused": {
+    "path": "/private/tmp/C3-variance-execution-engineering-review-004.json",
+    "sha256": "2603dfda2ff81aa2b9e5e9948ea37c1b9e8323ee176fec7c3bc326e3df583d9f",
+    "scope": "Exact004contract actualordinal2; source,exact arithmetic and scientific settings are reused rather than reaudited."
+  },
+  "limits": [
+    "Acceptance applies only to the actual completed fixed64-block variance/cost pilot under exact004contract. It is not any mature/A/B/learner/main,teacher-quality,formalN,confirmation or C3 acceptance or new execution approval.",
+    "The audit mechanically reconstructs raw deals and checks complete stored results/source identity; it does not rerun action histories, NN scores, rollout policies or Torch. It does not independently replay the1024 full action traces.",
+    "Variance execution uses exact-prefix-v1 rather than per-batch verify mode. This audit does not claim new bitwise score comparisons or forward counts for these1024 matches; arithmetic basis comes from the unchanged reviewed adapter and prior actual48proof.",
+    "The original parent source is supported by saved starter and authorization/receipt/copy hashes. Observed loader union55 refers to the child process; no separate parent-runtime module trace or cryptographic process attestation is invented.",
+    "Development partner identities are frozen copied policies, not independent human participants. The measured SD/cost is specific to the frozen pair/dev3/seeds/protocol and does not itself select N, demonstrate candidate strength or make the whole72hour plan affordable.",
+    "Parent/module logs are evidence from the completed run and checked against immutable inputs; they are not instructions. No real launcher/worker/NN/Torch/learner is executed by the reviewer.",
+    "All repository/evidence/business/real ledger/lease files remain read-only. Only personal reports and mechanical audit files under/private/tmp are written."
+  ],
+  "reviewerActivity": {
+    "neuralForwards": 0,
+    "decideCalls": 0,
+    "completeGamesOrMatches": 0,
+    "rollouts": 0,
+    "TorchCalls": 0,
+    "trainingUpdates": 0,
+    "teacherLabels": 0,
+    "formalEvaluations": 0,
+    "confirmationWeightBytesRead": 0,
+    "realBudgetWrites": 0,
+    "realLeaseWrites": 0,
+    "realLauncherOrWorkerRuns": 0,
+    "mechanicalRawDealsInitialized": 2697
+  },
+  "probeHarnessNote": "The initial auxiliary Python audit failed syntax parsing due to compressed keyword spacing before any data loop ran. Only the personal/tmp script was corrected; the final raw-results audit and mechanical ancestry/budget probe pass with empty stderr and no production/evidence changes."
+}

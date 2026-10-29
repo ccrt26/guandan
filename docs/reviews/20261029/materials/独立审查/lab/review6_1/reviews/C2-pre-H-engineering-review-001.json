@@ -1,0 +1,171 @@
+{
+  "reviewId": "C2-pre-H-engineering-001",
+  "requestId": "C2-pre-H-request-001",
+  "overallDecision": "BLOCK_H_FIT_PENDING_P1_REPAIR",
+  "scope": "Pre-fit source provenance, family splits, strict legal prefixes, candidate separation and observation boundaries. This is not C2 overall acceptance or H-quality approval.",
+  "requestSHA256": "515370b6cb6f9bb1613bad51b235b7b61cb1ed9e7d435dc8c5b5af6d7c0b3f0f",
+  "sourceManifestSHA256": "1a72b34bcf2581edd59a14eb941ffdcb004fd77e6ab6a2c6201a5471e1ecd687",
+  "integrity": {
+    "requestReferences": "All declared artifact and raw-source hashes matched.",
+    "sourcesAtReviewStart": "All 11 actual source files matched immutable copies and declared hashes.",
+    "subsequentActivity": "The parent began authorized repairs to data-replay.ts and data-audit.ts during review. This decision concerns immutable pre-H-001 copies, not those subsequent edits.",
+    "rawLedgerFiles": "Both ledger/result file hashes matched the anchored rule-domain report."
+  },
+  "findings": [
+    {
+      "id": "C2-PREH-E01",
+      "severity": "P1",
+      "path": "/Users/ccrt/game/guandan/lab/review6/data-replay.ts",
+      "immutablePath": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C2-pre-H-001/source/lab/review6/data-replay.ts",
+      "startLine": 35,
+      "endLine": 43,
+      "problem": "buildSourceRound calls applyTribute without assigning its returned object to state.tribute or completing the corresponding leader/turn initialization. Normal returns then throw because completeReturn requires state.tribute. Resistance rounds can pass through with state.tribute still null, producing incorrect public observation features in rows marked usableForH.",
+      "reproduction": [
+        {
+          "sourceMatchId": "GD_MATCH_0004",
+          "steps": "Replay its first round through the actual strict inspection/applyMove path, then call buildSourceRound(secondRound,1,firstState.result).",
+          "actualResult": "Throws 当前没有待还的贡牌.",
+          "corpusImpact": "240 match results terminate at second-round initialization with this same implementation exception. These cannot be characterized as source-rule incompatibilities."
+        },
+        {
+          "sourceMatchId": "GD_MATCH_0043",
+          "roundIndex": 1,
+          "actualResult": {
+            "usableForH": true,
+            "stateTribute": null,
+            "encodedStateFeature315": 0
+          },
+          "independentEngineWitness": {
+            "resist": true,
+            "tributes": [],
+            "returns": [],
+            "leader": 2,
+            "correctEncodedStateFeature315": 1
+          },
+          "impact": "At least one actually consumable H example has an incorrect public resistance feature. All 811 currently usable second-round rows require re-audit."
+        }
+      ],
+      "fixNeeded": "Install the full tribute state returned by the engine, initialize its leader/turn/lastPlayer consistently, complete source returns through the actual return path, and verify final ownership and first actor. Re-audit the same pinned source and split into new outputs before any H fit. Preserve replay-001/002/003 and do not change denominators or thresholds.",
+      "requiredRegression": "Retain real-source tests for a normal tribute/return transition and a resistance transition, including the encoded public feature. Treat implementation exceptions separately from established source-rule differences."
+    }
+  ],
+  "independentChecks": {
+    "rawActionConservation": {
+      "method": "Streaming positional join of every original action to every ledger row, checking decision identity, source match/round/event, actor, raw cards, source pattern and locked split/family.",
+      "sourceMatches": 1305,
+      "sourceRounds": 14823,
+      "rawActionsAndLedgerRows": 1217604,
+      "joinErrors": 0,
+      "usableAfterFirstBreak": 0,
+      "usableClassCRows": 0
+    },
+    "recomputedLedgerCounts": {
+      "targetLegalActions": 83396,
+      "usableBehaviorActions": 82023,
+      "usableHistoricalDiagnostic": 5820,
+      "usableTrain": 44490,
+      "usableDev": 15460,
+      "usableHoldout": 16253,
+      "usableRound0": 81212,
+      "usableRound1": 811,
+      "explainedOnlyEnumeratorOmissions": 1194,
+      "outsideVerifiedPrefix": 1133681,
+      "qualification": "These accurately recount pre-H-001 artifacts; they are not approval to consume their erroneous observations."
+    },
+    "splitIsolation": {
+      "historicalDiagnosticMatches": 100,
+      "trainMatches": 723,
+      "devMatches": 241,
+      "holdoutMatches": 241,
+      "families": 1305,
+      "familiesCrossingSplits": 0,
+      "historicallyConsumedMatchesAssignedFresh": 0,
+      "boundary": "Family grouping is conservative first-deal equivalence, not verified player independence."
+    },
+    "patternMapping": {
+      "independentRawExamplesChecked": 18,
+      "classificationErrors": 0,
+      "coverage": "Twelve saved structural examples plus all six saved four-joker examples were joined to actual source events and classified from their actual cards under public rule context.",
+      "supportedMapping": "3=pair_seq, 5=trio_seq, 7=trio_pair, 8 includes bomb/flush/joker_bomb.",
+      "limitation": "I did not independently reproduce all 1136 historical mismatch classifications."
+    },
+    "legalVersusProposalSupport": "Rule classification is independent of policy candidates. Missing proposal targets remain unconsumable. Resource/effect keys include suit/rank multiplicity, declaration effect and wildcard assignment; physical duplicate copies may match only under that complete key. No target-dependent candidate injection was found.",
+    "observationBoundaries": {
+      "actualRawProbe": "GD_MATCH_0001 first decision",
+      "futureWinIndexHandLevelupPerturbation": "Observation hash and state features unchanged.",
+      "HiddenOtherHandSwap": "Observation hash, state features and candidate keys unchanged.",
+      "IllegalTargetPerturbation": "Candidate keys unchanged; target rejected for H consumption.",
+      "publicEventOrdering": "Across all 14823 rounds, no start/deal/exchange event was found after the first action.",
+      "knownTransferRepresentation": "Missing known-transfer ownership encoding is explicitly flagged as a representation gap; its treatment must remain explicit in the eventual H contract."
+    },
+    "publicBankerAndLevelProvenance": "Using current-round banker partnership for context is consistent with the source schema. Current constructors do not read terminal win_index, terminal hands or levelup to build current observations. Cross-round context checks use the preceding strictly reconstructed engine result.",
+    "historicalDiagnostic": "The retained diagnostic reports 94778 original actions, 94450 traced, 91762 matched, 2688 unmatched and 328 untraced. The code correctly labels the old verifier as diagnostic rather than strict legality truth.",
+    "preFitState": "No H-fitting or model-scoring path was invoked by this review. The reviewed provenance/audit paths use structural rules, candidates and encoders without model scores. An actual H consumer and H-quality gate are not implemented or approved by this review."
+  },
+  "sourceSchema": {
+    "reference": "[KSCB schema](https://github.com/Calix-L/CardKS/tree/main/KSCB)",
+    "use": "The documentation describes is_banker as the round's banker-side partnership.",
+    "versionBoundary": "The current documentation's dataset count differs from the pinned historical bytes. It was used for schema meaning only; the local source hash and 1305-match denominator remain authoritative."
+  },
+  "preFitConditions": [
+    "Close C2-PREH-E01 and re-audit the same source/split before the once-only H fit.",
+    "Select training, development and holdout rows through both usableForH and the locked split. The 5820 historical-diagnostic usable rows are not fresh H data.",
+    "Verify the actual H consumer reproduces audited observations, candidate order and target equivalence without target injection or incompatible future rewards.",
+    "Retain H quality, baselines, representation limitations and skill-queue work as incomplete; this review grants no C2 overall acceptance."
+  ],
+  "probes": [
+    {
+      "path": "/private/tmp/c2-ledger-independent-001.py",
+      "output": "/private/tmp/c2-ledger-independent-001.json",
+      "outputSHA256": "097916dff7ad60a7afa6c9e37091ae911be38363df12db13b491eb615b8c2d58",
+      "exitCode": 0
+    },
+    {
+      "path": "/private/tmp/c2-tribute-independent-001.mts",
+      "output": "/private/tmp/c2-tribute-independent-001.json",
+      "outputSHA256": "c7cf6561bf847a7abba6abbbebb12a6ac8b923a1c4ec01d85b5c04a2db16cba4",
+      "exitCode": 0
+    },
+    {
+      "path": "/private/tmp/c2-resist-feature-independent-001.mts",
+      "output": "/private/tmp/c2-resist-feature-independent-001.json",
+      "outputSHA256": "866242b280ff78e6057fc431d119c2d504bb1f406be538511568f2b4933fa6c6",
+      "exitCode": 0,
+      "qualification": "Runs the immutable original data-replay copy with import paths redirected to unchanged real dependencies."
+    },
+    {
+      "path": "/private/tmp/c2-boundary-independent-001.mts",
+      "output": "/private/tmp/c2-boundary-independent-001.json",
+      "outputSHA256": "b9922269e5091104b16c689ea659681d233f898e39a9fe5c2b8b1f4d04c220ea",
+      "exitCode": 0
+    },
+    {
+      "output": "/private/tmp/c2-pattern-independent-001.json",
+      "outputSHA256": "ab9f1d74e70b79713e73046050f3502652e3149d07eab328172f153735b3f142",
+      "exitCode": 0
+    }
+  ],
+  "reviewedFileHashes": {
+    "/Users/ccrt/game/guandan/lab/review6/data-provenance.ts": "2bdb2ab61b02ff3a41a9d00495659edd3104a56d872916bced29a554c6a576b9",
+    "/Users/ccrt/game/guandan/lab/review6/data-source.ts": "e56911d95294e2b7d427d3f923cc661483992b32e8492b14f302399b42261a42",
+    "/Users/ccrt/game/guandan/lab/review6/data-source-cli.ts": "367e421ca6b8060ad6ac84cb383b9a3e647013cc816799101b0a34e88dfe2ead",
+    "/Users/ccrt/game/guandan/lab/review6/data-replay.ts": "1e564c34401f6ae070feb24e3deb43b6f48b3e7d39020b5767d79abc3482222c",
+    "/Users/ccrt/game/guandan/lab/review6/data-audit.ts": "7dad5d7da104fe15fbc251002792f44f7a56aa61175e42ef6ee90ac5da37600c",
+    "/Users/ccrt/game/guandan/lab/review6/data-cli.ts": "08e26d3fdd4b8cfdcb61fb3ff7dba96dc72885a1362ac86f93d80089e92dc3c5",
+    "/Users/ccrt/game/guandan/lab/review6/data-historical-diagnostic.ts": "ea90dfbfe3c86165b192f93a58aa52fbcd9a2b272e61100f27848383de402449",
+    "/Users/ccrt/game/guandan/lab/review6/run.mjs": "2f5cd7a29e44cfd8fae3b42d21cecb161a6a60511e4c786919d1247be67d3c41",
+    "/Users/ccrt/game/guandan/lab/review6/runtime.test.mjs": "de3584e903d0380a71d98dcf283c09b00d933349f0e03bd94f4f3247237c207a",
+    "/Users/ccrt/game/guandan/lab/tests/review6_data.test.ts": "36f09535c285755ae6812ef3179502a1d0d6d50c102e0fd8dc2c209866cf807d",
+    "/Users/ccrt/game/guandan/lab/tests/review6_data_replay.test.ts": "46df9c43d608299be1c8535fa970143d7d5d3ff55d54456972e42bec0b0c6435"
+  },
+  "blockedReasons": [
+    "A real state-reconstruction bug both truncates valid later data and produces incorrect public features in H-usable rows."
+  ],
+  "limitations": [
+    "No business source, evidence, protocol or ledger files were modified.",
+    "No training, model-score inspection, formal/sealed evaluation or external-model calls were performed.",
+    "The primary dataset author's human provenance is reported, not independently verified; skill and cross-match person identities remain unknown.",
+    "No full historical verifier or full strict replay audit was rerun; raw ledger conservation, selected structural evidence and focused actual failures were independently checked.",
+    "This decision applies to immutable pre-H-001. Subsequent parent repairs require a fresh affected-scope review."
+  ]
+}

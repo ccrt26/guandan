@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "r6-existing-cpu-torch-runtime-lock-v1",
+  "at": "2026-10-28T23:26:00.307509+00:00",
+  "torchVersion": "2.8.0",
+  "torchGitVersion": "a1cb3cc05d46d198467bebbb6e8fba50a325d4e7",
+  "packageInitPath": "/Users/ccrt/game/guandan/lab/.venv/lib/python3.9/site-packages/torch/__init__.py",
+  "files": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/.venv/lib/python3.9/site-packages/torch/__init__.py",
+      "sha256": "2f0deb66d5dff6b9c02a62832c3bf3824c2ee031c462a3afeb9ca170466da5bf",
+      "bytes": 102960
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/.venv/lib/python3.9/site-packages/torch/optim/rmsprop.py",
+      "sha256": "e40c58be6b30bdf353c6f30cdbda42adcaa5c052ab12cac2c942adb20f038670",
+      "bytes": 20436
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/.venv/lib/python3.9/site-packages/torch/_C.cpython-39-darwin.so",
+      "sha256": "43351e5b18e50742485ec679aa3569f592d6fba1a88ef98caf06479c0458ddd6",
+      "bytes": 49944
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/.venv/lib/python3.9/site-packages/torch/lib/libtorch_cpu.dylib",
+      "sha256": "5630bd318812b8d11d5eaad407930cd1486586fc4155b6ce16449380a9c03565",
+      "bytes": 213290816
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/.venv/lib/python3.9/site-packages/torch/lib/libtorch_python.dylib",
+      "sha256": "1dac1275731da0250a7e52ba3ee7609bf102f3cba28e65be37c75955bef70bcd",
+      "bytes": 26313752
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/.venv/lib/python3.9/site-packages/torch/lib/libc10.dylib",
+      "sha256": "f1950c7193efef69dd5a3115c3e885142d9a7fe3723290905e12bf02781cce6f",
+      "bytes": 1063472
+    }
+  ],
+  "scope": "Externalexistinginstalledruntimecriticalfingerprints; notwholeTorchpackagecopy. No modelconstructed/forward/backward/optimizerupdate.",
+  "actualNeuralForwards": 0,
+  "optimizerSteps": 0
+}

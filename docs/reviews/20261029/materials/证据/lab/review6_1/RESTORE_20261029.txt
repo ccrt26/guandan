@@ -1,0 +1,24 @@
+REVIEW6.1 恢复与复核说明
+
+1. 原始用户工作区恢复点
+/Users/ccrt/REVIEW6-assets-20261028-01/initial-workspace
+其同级 backup-manifest.json 是原始1601文件的逐字节清单。旧的用户脏工作区、研究结果和权重未被reset或覆盖；恢复操作不要直接覆盖当前目录。
+
+2. 本轮交付检查点
+/Users/ccrt/REVIEW6-assets-20261028-01/delivery-workspace-20261029-001
+同级 delivery-backup-manifest-001.json 给出逐文件SHA、字节数、相对路径、链接和排除项。仅当该清单实际存在且allFilesReadBackVerified=true，才表示复制核验完成。实时根目录与恢复目录中的文件均按实际字节保留，不修改历史收据的原路径或SHA；移到其他路径不能冒称原快照执行身份。
+
+3. 未复制的内容
+活动 .git、根node_modules、lab/.venv、原始input解压副本、私有配置/凭据和临时缓存不在本轮备份内。已执行快照内部锁定的Node依赖和相对别名链接会保留。原始输入ZIP仍在用户Downloads，SHA见input清单与C0接管收据。外部Python/Torch运行库不冒称已整库复制；若将来复跑，必须核对解释器和已有Torch2.8.0的6个关键文件SHA与版本/git/path指纹，并建立新的路径映射及准入记录。
+
+4. 原账恢复尾记录
+交付目录是备份时刻的静态快照，可能包含最后整理工程窗口的有效预留。备份结束后会另写不可变 post-backup/final-budget-tail-001.jsonl 和 post-backup/final-recovery-index-001.json。核对复制账本末行entryHash等于恢复索引声明的snapshotBudgetHead后，才能顺序追加tail，使完整hashchain到达finalBudgetHead；不重新initialize，不退还已发生失败的花费。最终本地规范账是 /Users/ccrt/game/guandan/lab/review6/budget-ledger.jsonl。
+
+5. 不应自动恢复的工作
+本轮已按原成本门停在主训练前，不自动新增窗口或启动C4/C5/C6、确认或部署。A/B20次pilot权重及optimizer文件只用于成本/接线测量，不是正式父模型或候选。H拟合、18教师根、测速、48等价对局、64方差块和20A/B均已有完整历史结果，不重跑以覆盖原件。曾失败的bootstrap和技术试验仍保留并计费。
+
+6. 结果阅读顺序
+先读 RESULT_20261029.txt、CAPABILITY_CARD.json 与 stages/C3-cost-stop-001.json；再看 budget-plan-001.json、optional-world-sensitivity及startup修正、两路预算审核。reviews/probe-recovery-map-002.json 将审查原件中引用的临时机械探针映射到项目内的不可变副本。C1真实浏览器收据、源数据原分母、失败H/no_h锁、原始教师与成熟更新/方差raw文件均可沿SHA查验。
+
+7. 当前网页
+本地预览 http://localhost:5180，事实面板构建 review6-facts-ui-20261028-03；出牌仍为 frozenChampion-clean2-ck7051-encv1-candv2。保留旧权重SHA b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55。没有正式候选、胜率升级或人类兼容性验收。
