@@ -1,0 +1,8 @@
+/** Reuse the actual exam condition-pair checker on a labelled training prototype. */
+import{join}from'node:path';import{HOME,json,atomicJson,fileHash}from'./protocol';import{createAnswerManifest,scoreExamFixture}from'./exam';import{policyForRun}from'./evaluate';
+const config=json(join(HOME,'config.json')),labelsRef=join(HOME,'data/explicit-resource-book-001/labels.json'),labels=json(labelsRef),family=labels[0].sourceFamilyId;
+if(labels.length!==2||labels.some((l:any)=>l.sourceFamilyId!==family))throw Error('exactly one same-deal training condition pair required');
+const spec={kind:'fixture',fixtureSplit:'train',labelsRef,labelsSHA256:fileHash(labelsRef),sourceIndexRef:config.sourceIndexRef,families:[{sourceFamilyId:family,category:'context_sensitive_candidate',rootKeys:labels.map((l:any)=>l.rootKey)}]},manifest=createAnswerManifest(spec,json(config.sourceIndexRef));
+if(manifest.readiness.ready)throw Error('prototype must not become a formal bank');
+const output=join(HOME,'data/explicit-resource-condition-fixture-001.json');atomicJson(output,manifest);
+const scores=['O','U0','r62-p8-control','r62-p8-neural-peers'].map(id=>scoreExamFixture(policyForRun(config,id),manifest));atomicJson(join(HOME,'receipts/T5-declared-condition-fixture.json'),{scope:'one train-only family; no formal or generalization claim',manifestRef:output,manifestSHA256:fileHash(output),conditionPairCheckerAccepted:true,newMatches:0,scores});console.log(JSON.stringify({output,conditionPairCheckerAccepted:true,formalReady:false,scores:scores.map(s=>({policy:s.policyId,passedFamilies:s.passedFamilies,decisions:s.decisions.map((d:any)=>d.status)}))}));

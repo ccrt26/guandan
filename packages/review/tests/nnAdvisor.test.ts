@@ -311,7 +311,7 @@ describe('D5 定点案例：神经复盘建议排名（CLEAN1-REVIEW-1.0 D）', 
     }
     const game = rec2.finish(st2.result!);
     const here = (import.meta as unknown as { dirname: string }).dirname;
-    const w = readFileSync(join(here, '..', '..', '..', 'lab', 'clean1', 'clean1-2026102609500', 'ck180', 'weights.f32'));
+    const w = readFileSync(join(here, '..', '..', '..', 'lab', 'archive', 'legacy-through-20261030', 'clean1', 'clean1-2026102609500', 'ck180', 'weights.f32'));
     const mlp = new MLP(1);
     mlp.setWeights(new Float32Array(w.buffer.slice(w.byteOffset, w.byteOffset + w.byteLength) as ArrayBuffer));
     const s = analyzeWithModel(game, mlp, 'clean1-ck180-20261026');

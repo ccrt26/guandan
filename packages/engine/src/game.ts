@@ -1,6 +1,6 @@
 import type { Card, Combo, EngineEvent, GameResult, RuleOptions, TrickPlay } from './types';
 import { BIG_JOKER, RANK_A } from './types';
-import { deal } from './deck';
+import { deal, dealInitialHands } from './deck';
 import { RNG, randomSeed } from './rng';
 import { beats, enumerateCombos, removeCards } from './combo';
 import { makeLevelCtx, rankOrder, type LevelCtx } from './rank';
@@ -81,9 +81,9 @@ export function stageTeamOf(match: MatchState): 0 | 1 {
   return match.lastResult ? teamOf(match.lastResult.finishOrder[0]) : 0;
 }
 
-export function startGame(match: MatchState, interactiveSeats: readonly number[] = []): GameState {
+export function startGame(match: MatchState, interactiveSeats: readonly number[] = [], initialIds?: readonly (readonly number[])[]): GameState {
   const rng = new RNG(match.rngState);
-  const hands = deal(rng);
+  const hands = initialIds === undefined ? deal(rng) : dealInitialHands(initialIds);
   match.rngState = rng.state;
   const leader = match.lastHead ?? rng.int(4);
   match.gameNo += 1;

@@ -1,6 +1,0 @@
-import{fileURLToPath}from'node:url';
-const wait=ms=>new Promise(r=>setTimeout(r,ms));
-/** Target only the PID returned by our own detached spawn, which is its PGID.
- * Await group disappearance after TERM/KILL before accounting can settle. */
-export async function terminateOwnedGroup(pgid,{graceMs=250,killWaitMs=5000}={}){if(!Number.isSafeInteger(pgid)||pgid<=1||pgid===process.pid||pgid===process.ppid)throw Error('valid distinct ownedchild PGID required');const alive=()=>{try{process.kill(-pgid,0);return true;}catch(e){if(e.code==='ESRCH')return false;throw e;}},signal=name=>{try{process.kill(-pgid,name);return true;}catch(e){if(e.code==='ESRCH')return false;throw e;}},start=performance.now();let termSent=false,killSent=false;if(alive()){termSent=signal('SIGTERM');const until=performance.now()+graceMs;while(alive()&&performance.now()<until)await wait(10);if(alive())killSent=signal('SIGKILL');const killUntil=performance.now()+killWaitMs;while(alive()&&performance.now()<killUntil)await wait(10);}const remaining=alive();if(remaining)throw Error('ownedprocessgroup didnot disappear afterhardkill');return{pgid,termSent,killSent,remaining,seconds:(performance.now()-start)/1000};}
-if(process.argv[1]===fileURLToPath(import.meta.url)){const result=await terminateOwnedGroup(Number(process.argv[2]));console.log(JSON.stringify(result));}

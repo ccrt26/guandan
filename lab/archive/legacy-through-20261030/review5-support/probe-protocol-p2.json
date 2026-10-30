@@ -1,0 +1,29 @@
+{
+ "protocolVersion": "review5-t04-probe",
+ "frozenAt": "2026-10-28T00:00:00.000Z",
+ "sourceSnapshot": {},
+ "trainer": {
+  "workers": 8,
+  "waveSize": 8,
+  "maxUpdates": 4,
+  "epsilon": 0.05,
+  "checkpointUpdates": [],
+  "matchGameCap": 60
+ },
+ "seeds": {
+  "namespaces": {
+   "main-init": 2026102801,
+   "main-train": 2026102802
+  }
+ },
+ "effectiveRunConfig": {
+  "r5-resume-probe": {
+   "newMaxUpdates": 4,
+   "newMaxActiveMs": 600000
+  }
+ },
+ "referenceWeights": {
+  "sha256": "probe-no-ref",
+  "policyId": "probe"
+ }
+}

@@ -1,0 +1,12 @@
+{
+  "version": "llm-acceptance-cases-1.1",
+  "note": "REVIEW3-EXEC §3.3：LLM 端到端验收。R3 管线就绪，四例改为『真实执行的对局』（离线确定性生成：学生=初级 vs 对手中级，种子固定可复现；provenance=generated），覆盖 普通/万能牌/意见冲突/不可评 四语义；第五例为最危险一例的复生成（同证据、不同表述，调用计入 6 次总额）。原始第 25 手/4A 事故谱仍 unavailable，不以生成局冒充。",
+  "budget": { "maxApiCalls": 6 },
+  "cases": [
+    { "id": "acc-incident-like", "provenance": "generated", "generate": { "seed": 81003, "student": 0, "others": 1 }, "kind": "普通分歧局（含条件续打证据）", "expect": "claimLevel 如实呈现分歧/条件支持；引用的牌张/数值全部来自证据卡" },
+    { "id": "acc-wildcard", "provenance": "generated", "generate": { "seed": 81002, "student": 0, "others": 1 }, "kind": "万能牌代入局（第4手实际动作含万能牌）", "expect": "万能牌代入标注与证据卡一致，不编造代入" },
+    { "id": "acc-disagreement", "provenance": "generated", "generate": { "seed": 81004, "student": 0, "others": 1 }, "kind": "意见冲突局（启发式与模型首选不同）", "expect": "同屏呈现两种偏好，不裁决对错" },
+    { "id": "acc-uncovered", "provenance": "generated", "generate": { "seed": 81038, "student": 0, "others": 1 }, "kind": "不可评局（实际动作未入模型候选）", "expect": "不比较打分，只讲规则层结构事实" },
+    { "id": "acc-regen-most-dangerous", "provenance": "derived", "from": "acc-incident-like", "expect": "不同措辞仍守事实边界（复生成验收）" }
+  ]
+}

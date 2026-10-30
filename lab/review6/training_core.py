@@ -22,12 +22,17 @@ class Net(nn.Module):
 def make_optimizer(model):
     return torch.optim.RMSprop(model.parameters(),lr=.001,alpha=.9,eps=1e-5,momentum=0,centered=False,weight_decay=0)
 
-def preference_root_mean(model,roots):
+def preference_root_mean(model,roots,weights=None,mode='softplus'):
     if not roots: raise ValueError('actual nonempty teacher roots required for B')
+    if mode not in ('softplus','squared_hinge'):raise ValueError('unknown preference mode')
+    weights=[1.]*len(roots) if weights is None else weights
+    if len(weights)!=len(roots) or any(type(w)not in(int,float) or not 0<w<=1 for w in weights): raise ValueError('finite positive root weights required')
     losses=[]
-    for plus,minus in roots:
+    for (plus,minus),weight in zip(roots,weights):
         if plus.ndim!=2 or plus.shape!=minus.shape or plus.shape[0]<1 or not torch.isfinite(plus).all() or not torch.isfinite(minus).all(): raise ValueError('teacher pair features invalid')
-        losses.append(F.softplus(.16-(model(plus).reshape(-1)-model(minus).reshape(-1))).mean())
+        residual=.16-(model(plus).reshape(-1)-model(minus).reshape(-1))
+        pairs=F.softplus(residual) if mode=='softplus' else F.relu(residual).square()
+        losses.append(weight*pairs.mean())
     return torch.stack(losses).mean()
 
 def anchor_root_mean(model,roots,parent_scores):
@@ -38,10 +43,10 @@ def anchor_root_mean(model,roots,parent_scores):
         losses.append((model(x).reshape(-1)-target.detach().reshape(-1)).square().mean())
     return torch.stack(losses).mean()
 
-def combined_loss(model,x,y,anchor_roots,parent_scores,teacher_roots,arm):
+def combined_loss(model,x,y,anchor_roots,parent_scores,teacher_roots,arm,teacher_weights=None,preference_mode='softplus'):
     if arm not in ('A','B'): raise ValueError('unknown arm')
     if x.ndim!=2 or x.shape[0]<1 or y.numel()!=x.shape[0] or not torch.isfinite(x).all() or not torch.isfinite(y).all(): raise ValueError('finite mature team batch required')
     team=(model(x).reshape(-1)-y.reshape(-1)).square().mean()
     anchor=anchor_root_mean(model,anchor_roots,parent_scores)
-    preference=preference_root_mean(model,teacher_roots) if arm=='B' else team.new_zeros(())
+    preference=preference_root_mean(model,teacher_roots,teacher_weights,mode=preference_mode) if arm=='B' else team.new_zeros(())
     return {'team':team,'anchor':anchor,'preference':preference,'total':team+.01*anchor+( .1*preference if arm=='B' else 0)}

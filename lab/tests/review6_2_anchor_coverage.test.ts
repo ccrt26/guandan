@@ -1,0 +1,4 @@
+import{it,expect}from'vitest';import{mkdtempSync,writeFileSync,rmSync}from'node:fs';import{tmpdir}from'node:os';import{join}from'node:path';
+import{anchorRounds}from'../review6_2/anchor-coverage';import{assertBoundContinuationInputs}from'../review6_2/curriculum';
+it('locks four distinct completed rounds for each existing native source',()=>{expect([12,9,5,14].map(anchorRounds)).toEqual([[1,4,8,12],[1,3,6,9],[1,2,3,5],[1,5,9,14]]);expect(()=>anchorRounds(3)).toThrow();});
+it('rejects anchor references absent from the bound experiment and retains the default no-override path',()=>{const dir=mkdtempSync(join(tmpdir(),'gd-anchor-bind-')),experimentRef=join(dir,'e.json');writeFileSync(experimentRef,'{}');try{expect(()=>assertBoundContinuationInputs({experimentRef})).not.toThrow();expect(()=>assertBoundContinuationInputs({experimentRef,anchorSetRef:'unbound',anchorSetSHA256:'0'.repeat(64)})).toThrow(/anchor/);}finally{rmSync(dir,{recursive:true});}});

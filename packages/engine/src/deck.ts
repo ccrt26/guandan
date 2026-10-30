@@ -27,6 +27,21 @@ export function deal(rng: RNG): Card[][] {
   return hands;
 }
 
+/** Complete declared initial deal, before tribute; canonical physical IDs only. */
+export function dealInitialHands(initialIds: readonly (readonly number[])[]): Card[][] {
+  const canonical = new Map(buildDeck().map(card => [card.id, card]));
+  if (!Array.isArray(initialIds) || initialIds.length !== 4 || initialIds.some(hand => !Array.isArray(hand) || hand.length !== 27)) {
+    throw new Error('Declared initial deal requires four hands of 27 canonical IDs');
+  }
+  const ids = initialIds.flat();
+  if (new Set(ids).size !== 108 || ids.some(id => !Number.isSafeInteger(id) || !canonical.has(id))) {
+    throw new Error('Declared initial deal must contain every canonical physical card exactly once');
+  }
+  const hands = initialIds.map((hand: readonly number[]) => hand.map((id: number) => canonical.get(id)!));
+  for (const hand of hands) sortHand(hand);
+  return hands;
+}
+
 /** 手牌排序：按牌点升序（需要级牌上下文时用 sortHandCtx） */
 export function sortHand(hand: Card[]): void {
   hand.sort((a, b) => a.rank - b.rank || a.suit.localeCompare(b.suit));

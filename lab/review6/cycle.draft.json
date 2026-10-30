@@ -1,0 +1,461 @@
+{
+  "schemaVersion": "review6-cycle-draft-v1",
+  "draft": true,
+  "cycleId": "review6-humanlike-20261028",
+  "createdForDate": "2026-10-28",
+  "repo": "/Users/ccrt/game/guandan",
+  "packageRoot": "/Users/ccrt/game/guandan/lab/review6_1/input",
+  "artifactRoot": "/Users/ccrt/REVIEW6-assets-20261028-01",
+  "runtime": {
+    "nodeAbsolutePath": "/usr/local/bin/node",
+    "pythonAbsolutePath": "/Users/ccrt/game/guandan/lab/.venv/bin/python",
+    "workers": null,
+    "torchThreads": 2,
+    "device": "cpu",
+    "environmentManifestHash": null
+  },
+  "identity": {
+    "sourceSnapshotHash": null,
+    "rulesHash": null,
+    "candidateHash": null,
+    "encoderHash": null,
+    "rewardFunctionHash": null,
+    "cleanParentPolicyId": null,
+    "cleanParentWeightsHash": null,
+    "frozenChampionBundleHash": null,
+    "currentWebBuildId": null
+  },
+  "budget": {
+    "cycleActiveSeconds": 259200,
+    "windowMaxSeconds": 14400,
+    "checkpointShutdownReserveSeconds": 120,
+    "planningOverheadFraction": 0.25,
+    "defaultHeavyTasksSerial": true,
+    "softRamFraction": 0.7,
+    "plannedCostsReceipt": null,
+    "spentBeforeFreezeReceipt": null,
+    "llm": {
+      "enabled": false,
+      "provider": null,
+      "model": null,
+      "authorizedCurrency": null,
+      "authorizedCycleCostLimit": null,
+      "priceVersion": null,
+      "authorizationReference": null
+    },
+    "reserveAtomicallyBeforeSpawnOrApi": true,
+    "shutdownReserveWithinLimits": true
+  },
+  "data": {
+    "rawSourceManifestHash": null,
+    "ruleDomainReceipt": null,
+    "splitManifestHash": null,
+    "candidateCoverageReceipt": null,
+    "humanProxyPolicyId": null,
+    "humanProxyQualityReceipt": "/Users/ccrt/game/guandan/lab/review6_1/data/H-evaluation-001.json",
+    "skillLevelDefault": "unknown",
+    "legalPrefixUse": "human_behavior_only_no_incompatible_future_outcomes",
+    "splitUnit": "whole_source_match_or_constructed_family",
+    "humanProxyQualityGates": {
+      "bootstrapUnit": "source_match",
+      "bootstrapReplicates": 20000,
+      "twoSidedCoverage": 0.975,
+      "differenceUpperMustBelow": 0,
+      "stratumMinimumDecisions": 30,
+      "stratumMinimumSourceMatches": 5,
+      "stratumMaximumNllWorseThanFrequencyBaselineNats": 0.1,
+      "observedClassShareTrigger": 0.05,
+      "minimumMeanProbabilityForTriggeredClass": 0.01,
+      "mustReportHardTop1ClassShare": true
+    },
+    "sourcePath": "/Users/ccrt/game/guandan/lab/review2/assets/kscb-guandan/1e5c5d1b7634a4eb973ad3364a46ef494074e205/guandan_matches.jsonl.gz",
+    "sourceSHA256": "72377a12553c85c2f3ecdc7fede553ef1382ac5465179606a623bc61f9648cfa",
+    "auditDirectory": "/Users/ccrt/game/guandan/lab/review6_1/data/audit-002",
+    "planLock": "/Users/ccrt/game/guandan/lab/review6_1/data/C2-plan.lock.json",
+    "planLockHash": "2c11b7a38fbc7b65bd30a996d3ab1e24b5f5c9a7d113764f30b282bc908c9f55",
+    "historicalConsumptionManifest": "/Users/ccrt/game/guandan/lab/review5/artifacts/t3-match-manifest.json",
+    "historicalConsumptionManifestHash": "7c54f64c2c880ec690841654b284fbf3e9e525f9416a9324ba60985b9d9bf2fa",
+    "sourceLockReceipt": "/Users/ccrt/game/guandan/lab/review6_1/data/audit-002/source-lock-receipt.json",
+    "sourceLockReceiptHash": "3745e292e4bd3137f5f49d24b487adad13326a9bc42b6fa683865437e9ac81b7",
+    "replayDirectory": "/Users/ccrt/game/guandan/lab/review6_1/data/replay-006",
+    "replayReportHash": "3fc63d9ad33336e5eae233ad8ba13657ff51263cec6d5b30e543cc00b91be322",
+    "humanFeatureDirectory": "/Users/ccrt/game/guandan/lab/review6_1/data/H-features-001",
+    "humanFit": {
+      "contractPath": "/Users/ccrt/game/guandan/lab/review6_1/data/H-fit-contract-002.json",
+      "contractSHA256": "28591accaaf9bc4fe44a9c6344f0475106c7ce183eed0200dceccf352f26ba0a",
+      "preflightPath": "/Users/ccrt/game/guandan/lab/review6_1/data/H-preflight-002.json",
+      "preflightSHA256": "6845039cab06be81c008e3d921b517d6c2104d965091fb0e494df31e53b61962",
+      "reviewAuthorizationPath": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C2-H-fit-authorization-001.json",
+      "reviewAuthorizationSHA256": "bdf2a05da6ccf0130d939e64586d0715cd4ab986ebdd69c2a3f34c8770466a71",
+      "frozenTrainer": "/Users/ccrt/game/guandan/lab/review6_1/data/H-fit-source-002/human_proxy.py",
+      "frozenNetwork": "/Users/ccrt/game/guandan/lab/review6_1/data/H-fit-source-002/network.py",
+      "frozenGuard": "/Users/ccrt/game/guandan/lab/review6_1/data/H-fit-source-002/human-fit.mjs",
+      "guardSHA256": "7da53f6c285cc64dbdde95eb41ee2ee210adf7290986eeb16fe29915d327905f",
+      "featureManifest": "/Users/ccrt/game/guandan/lab/review6_1/data/H-features-001/H-manifest.json",
+      "outputDirectory": "/Users/ccrt/game/guandan/lab/review6_1/data/H-fit-001"
+    },
+    "humanProxyQualityReceiptHash": "46a2f9fc31395129998a0f5f00dfdd46898a402b80cb2650ea3a78a421b6e0c0",
+    "humanProxyReady": false,
+    "branchLockPath": "/Users/ccrt/game/guandan/lab/review6_1/data/experiment-branch.lock.json",
+    "branchLockHash": "e9d578996e4dd23537a3e89a9320ebe65712a57d0bb6485b0254b66c16ffec1f",
+    "developmentBaseline": {
+      "planPath": "/Users/ccrt/game/guandan/lab/review6_1/data/development-baseline-004/baseline-plan.lock.json",
+      "planSHA256": "93d2e702fe09f03b64b04e75fde934b4489e738efa34b54ca263b2315eaaf705",
+      "outputDirectory": "/Users/ccrt/game/guandan/lab/review6_1/data/development-baseline-004",
+      "maxActiveSeconds": 1660,
+      "priorIncompleteEvidence": "/Users/ccrt/game/guandan/lab/review6_1/data/development-baseline-001",
+      "unexecutedPriorSourceRevisions": [
+        2,
+        3
+      ],
+      "authorizationPath": "/Users/ccrt/game/guandan/lab/review6_1/reviews/C2-baseline-measurement-authorization-001.json",
+      "authorizationSHA256": "727887fda4f6f6f3368a64a86c970d2ebe82292e91a862377b6b6ec6099b22bf"
+    },
+    "humanProxyScopeAddendum": "/Users/ccrt/game/guandan/lab/review6_1/data/H-evaluation-scope-addendum-001.json",
+    "humanProxyScopeAddendumHash": "268092f16f23d3247bcc8614cc57ccb4b30f73c88471706bbeae12b41ab25d27"
+  },
+  "teacher": {
+    "providerDefault": "local_information_set_rollout",
+    "pilotRoots": 12,
+    "maxComparedCandidates": 6,
+    "explorationWorlds": 32,
+    "verificationWorlds": 256,
+    "allowedVerificationWorldChoicesBeforeFreeze": [
+      128,
+      256,
+      512
+    ],
+    "secondaryVerificationWorlds": 128,
+    "validatedPairsPerRoot": 1,
+    "bootstrapReplicates": 20000,
+    "bootstrapTwoSidedCoverage": 0.975,
+    "primaryNormalizedLowerMustExceed": 0.02,
+    "secondaryNormalizedLowerMustExceed": 0,
+    "reward": "y=g_root_deal+W_complete_match",
+    "normalizedEvidenceTarget": "z=(y+4)/8",
+    "strongLabelRequiredScope": "root_action",
+    "maxMissingBranchesForStrongLabel": 0,
+    "trainingRootLadder": [
+      100,
+      500,
+      2000
+    ],
+    "chosenTrainingRoots": null,
+    "teacherQualityReceipt": null,
+    "allowGroundTruthHiddenCardsInPolicyInput": false,
+    "allowPostDecisionEventsInPolicyInput": false,
+    "continuationProfiles": {
+      "primary": {
+        "actingSeatPolicyId": null,
+        "partnerSeatPolicyId": null,
+        "opponentSeatPolicyIds": [
+          null,
+          null
+        ],
+        "planControlledRelativeSeats": [
+          "actingSeat"
+        ],
+        "allPolicySourcesMustBeTrainingOrStudentSnapshots": true
+      },
+      "secondary": {
+        "actingSeatPolicyId": null,
+        "partnerSeatPolicyId": null,
+        "opponentSeatPolicyIds": [
+          null,
+          null
+        ],
+        "planControlledRelativeSeats": [
+          "actingSeat"
+        ],
+        "allPolicySourcesMustBeTrainingOrStudentSnapshots": true
+      }
+    },
+    "maxAttemptedRoots": null,
+    "acceptanceRatePilotReceipt": null,
+    "sourceFractionsApplyBeforeTeacherFiltering": true,
+    "bootstrapMethod": "percentile",
+    "quantileInterpolation": "R_type_7_linear",
+    "planCurriculum": "verified_tail_roots_then_freeze_student_then_new_worlds_reverify_earlier_roots",
+    "teacherTrainingSplitManifestHash": null,
+    "teacherProductionResultReceiptAfterFreeze": null,
+    "pilotMaximumPreregisteredRootAttempts": 48,
+    "pilotMinimumSupportedRootActions": 4,
+    "pilotMinimumSupportedSourceFamilies": 3,
+    "pilotMustIncludeBothYieldAndTakeoverPreference": true,
+    "planDslMaximumOwnActions": 4,
+    "labelAudit": {
+      "sampleFraction": 0.1,
+      "minimumIfAvailable": 10,
+      "maximum": 50,
+      "mustUseNewWorlds": true,
+      "auditFailureHandling": "rule_or_information_error_quarantines_batch_statistical_unsupported_excludes_label_no_resampling"
+    },
+    "policyRegistryPath": "/Users/ccrt/game/guandan/lab/review6_1/data/no-H-policy-registry-001.json",
+    "policyRegistryHash": "d34a08fbc5db833ca5580670ef87e11cda03bd215eb1de2c318e04dd1e236202"
+  },
+  "training": {
+    "pairs": 3,
+    "arms": [
+      "team_control",
+      "teacher_preference"
+    ],
+    "network": [
+      399,
+      256,
+      256,
+      1
+    ],
+    "hiddenActivation": "tanh",
+    "head": "linear_Q",
+    "epsilon": 0.05,
+    "optimizer": {
+      "name": "RMSprop",
+      "learningRate": 0.001,
+      "alpha": 0.9,
+      "epsilon": 0.00001,
+      "momentum": 0,
+      "centered": false,
+      "weightDecay": 0
+    },
+    "groupSize": 2048,
+    "teamSamplesPerUpdate": 1024,
+    "baseLoss": "MSE_Q_team_target",
+    "anchorCoefficient": 0.01,
+    "anchorRootsPerUpdate": 64,
+    "teacherCoefficient": 0.1,
+    "teacherRootsPerUpdate": 64,
+    "teacherLoss": "root_mean(softplus(0.16-(Q_preferred-Q_other)))",
+    "optimizerStepsPerTeamUpdate": 1,
+    "commonCheckpointLadder": [
+      0,
+      400,
+      1200,
+      3600
+    ],
+    "chosenCommonTargetUpdates": null,
+    "resetOptimizerEquallyAtRoundOne": true,
+    "continueOwnOptimizerAndWeightsLaterRounds": true,
+    "trainingPartnerRegistryHash": null,
+    "seedManifestHash": null,
+    "developmentSplitManifestHash": null,
+    "checkpointResumeReceipt": null,
+    "learningConnectionReceipt": null,
+    "bucketSettingsFrom": "experimentChoices[selectedExperiment]",
+    "mustExecuteFromImmutableSnapshot": true,
+    "receiptRegistryMutableLockFileImmutable": true
+  },
+  "rounds": {
+    "maxDataAggregationRounds": 3,
+    "laterStudentSource": "equal_arm_union",
+    "maxRootsPerSourceMatch": null,
+    "futilityConsecutiveDevChecks": 2,
+    "engineeringProgressTeamPointDifference": 0.01,
+    "engineeringProgressRelativeCooperationErrorReduction": 0.1,
+    "roundOneManifestHash": null,
+    "rootSourcesFrom": "experimentChoices[selectedExperiment].rootSourceFractionsBeforeTeacherFiltering",
+    "absoluteUpdateFieldsRequired": [
+      "startAbsoluteUpdate",
+      "additionalUpdates",
+      "endAbsoluteUpdate",
+      "inheritedCheckpointHash"
+    ],
+    "devProgressDefinition": "D_i=mean_pairs(primaryDev_B-primaryDev_A); gain=D_i-D_prev; E_i=fixed_labeled_cooperation_error_B",
+    "futilityOnlyWhenCandidateNotEligible": true,
+    "teacherProfileRefresh": {
+      "topLevelProfilesApplyToRound": 1,
+      "primaryActor": "previous_round_B_pair2_common_endpoint",
+      "secondaryActor": "previous_round_B_pair1_common_endpoint",
+      "otherSeatsUnchanged": true,
+      "mustWriteFullProfileHashInRoundLock": true,
+      "oldLabelsRetainGeneratingRoundAndProfile": true,
+      "conflictingOldNewPreferences": "quarantine_continuation_dependent"
+    }
+  },
+  "evaluation": {
+    "primary": "complete_match_teamWin_candidate_minus_frozenChampion",
+    "groups": 3,
+    "groupWeighting": "equal_macro_average",
+    "blockDefinition": "one_base_seed_three_groups_two_policies_two_seat_rotations",
+    "pilotBlocks": 64,
+    "maxCandidateConfirmations": 3,
+    "familyAlphaNominal": 0.05,
+    "alphaPerConfirmation": 0.016666666666666666,
+    "primaryLowerMustExceed": 0,
+    "primaryPointMustAtLeast": 0.03,
+    "perGroupNoninferiorityLowerMustExceed": -0.03,
+    "designDetectableDifference": 0.05,
+    "designApproxPower": 0.8,
+    "sampleSizeExtraFraction": 0.1,
+    "bootstrapReplicates": 20000,
+    "intervalUnit": "complete_base_block",
+    "oldM1": {
+      "seating": "N+N_vs_O+O",
+      "minimumBlocks": 128,
+      "pointAtLeast": 0.55,
+      "twoSidedCoverage": 0.975,
+      "lowerMustExceed": 0.5,
+      "fixedN": null
+    },
+    "oldM2": {
+      "seating": "N+H_vs_O+H",
+      "minimumBlocks": 256,
+      "twoSidedCoverage": 0.975,
+      "lowerMustExceed": 0.45,
+      "fixedHPolicyId": null,
+      "fixedN": null
+    },
+    "JPolicyId": null,
+    "developmentPartnerRegistryHash": null,
+    "confirmationPartnerRegistryHash": null,
+    "statsPlanHash": null,
+    "confirmationSeedManifestHash": null,
+    "severeCaseHoldoutManifestHash": null,
+    "keepIncompleteBlocksInLedger": true,
+    "canPromoteWithIncompleteBlocks": false,
+    "peekAggregateResultsBeforeFixedNComplete": false,
+    "automaticDeployment": false,
+    "primaryFixedN": null,
+    "probePolicyPair": null,
+    "designStandardDeviationFloorPrimaryAndGroups": 0.5,
+    "worstCaseStandardDeviationSensitivity": 1,
+    "designStandardDeviationM1M2": 0.5,
+    "designAlternatives": {
+      "M1": 0.6,
+      "M2": 0.5,
+      "cooperationGroupDifferences": [
+        [
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.15,
+          0,
+          0
+        ]
+      ],
+      "mustReportJointPromotionProbability": true
+    },
+    "developmentBlocksPerM1M2J": 32,
+    "developmentCooperationBaseBlocks": 32,
+    "allowedDevBlocksBeforeAnyMainDevResults": [
+      16,
+      32
+    ],
+    "bootstrapMethod": "percentile",
+    "quantileInterpolation": "R_type_7_linear",
+    "shareResamplingIndexAcrossGroups": true,
+    "confirmationNamespaces": [
+      "confirm-1",
+      "confirm-2",
+      "confirm-3"
+    ],
+    "confirmationAttemptSharedAcrossAllExperiments": true,
+    "semanticFixDuringConfirmation": "invalid_attempt_consumed_new_manifest_required",
+    "causalConclusionScope": "B_vs_O_candidate_confirmation_only_B_vs_A_development_is_preliminary",
+    "severeCaseHoldoutCount": 24,
+    "developmentSDefinition": "0.5*M1_win_rate+0.5*M2_win_rate",
+    "confirmationOpenedLedgerBeforeFirstBlock": true,
+    "candidateLockConsumesAttempt": false
+  },
+  "conditionalResearch": {
+    "gruEnabled": false,
+    "gruRequiresMemoryGapReceipt": true,
+    "eventEmbedding": 64,
+    "gruHidden": 128,
+    "onlineSearchEnabled": false,
+    "onlineSearchP95Seconds": 1.5,
+    "onlineSearchHardTimeoutSeconds": 3,
+    "transformerEnabled": false,
+    "humanPriorRegularizationEnabled": false,
+    "humanPriorRegularizationRequires": "qualified_H_and_teacher_new_separate_ablation_with_team_protection"
+  },
+  "selectedExperiment": "direct_teacher_no_h",
+  "experimentChoices": {
+    "direct_teacher_with_h": {
+      "humanClaimScope": "behavior_proxy_and_explicit_heldout_partners_only",
+      "requiresH": true,
+      "bucketNames": [
+        "self",
+        "frozen_opponents",
+        "human_partner",
+        "other_partner"
+      ],
+      "matureGroupBuckets": [
+        1024,
+        512,
+        256,
+        256
+      ],
+      "gradientBuckets": [
+        512,
+        256,
+        128,
+        128
+      ],
+      "rootSourceFractionsBeforeTeacherFiltering": {
+        "studentTrajectories": 0.5,
+        "humanTrajectories": 0.3,
+        "constructedTrainingFamilies": 0.2
+      }
+    },
+    "direct_teacher_no_h": {
+      "humanClaimScope": "not_verified_nonhuman_direct_teaching_only",
+      "requiresH": false,
+      "bucketNames": [
+        "self",
+        "frozen_opponents",
+        "other_partner"
+      ],
+      "matureGroupBuckets": [
+        1024,
+        512,
+        512
+      ],
+      "gradientBuckets": [
+        512,
+        256,
+        256
+      ],
+      "rootSourceFractionsBeforeTeacherFiltering": {
+        "studentTrajectories": 0.7,
+        "humanTrajectories": 0,
+        "constructedTrainingFamilies": 0.3
+      }
+    }
+  },
+  "handoff": {
+    "baselinePath": "/Users/ccrt/game/guandan/lab/review6_1/baseline-identity.json",
+    "budgetLedgerPath": "/Users/ccrt/game/guandan/lab/review6/budget-ledger.jsonl",
+    "cycleAbsenceReceipt": "/Users/ccrt/game/guandan/lab/review6_1/receipts/cycle-absence-001.json",
+    "initialConservativeSeconds": 445.891214,
+    "initialChargeBasis": "conservative full wall duration since current session start; upper bound including initial inventory, extraction, backup and agent reasoning; not a claimed measured CPU duration",
+    "baseProtocolHash": null,
+    "observedExecutor": {
+      "model": "gpt-6.1-sol",
+      "effort": "xhigh",
+      "cwd": "/Users/ccrt/game/guandan",
+      "source": "/Users/ccrt/.codex/sessions/2026/10/28/rollout-2026-10-28T17-46-09-01a181e7-1afb-7be2-af70-ad7824868ed6.jsonl",
+      "recordSha256": "8ccf0be9492ee02dfbf53012b4b4cce381fc271bb4368b0c24bbeecda86a27a7",
+      "evidenceType": "actual_turn_context"
+    },
+    "inheritedRunState": {
+      "round": 0,
+      "absoluteUpdate": 0,
+      "confirmationAttemptsOpened": 0,
+      "checkpointManifestPath": null,
+      "status": "not_started",
+      "historicalReview5LedgerRetained": "/Users/ccrt/game/guandan/lab/review5_tuning/budget-ledger.jsonl"
+    },
+    "singleWriterReceipt": "/Users/ccrt/game/guandan/lab/review6_1/receipts/process-inventory-001.json",
+    "backupManifestPath": "/Users/ccrt/REVIEW6-assets-20261028-01/backup-manifest.json",
+    "backupDirectory": "/Users/ccrt/REVIEW6-assets-20261028-01/initial-workspace"
+  },
+  "product": {
+    "resultDirectory": "/Users/ccrt/game/guandan/lab/review6_1/capability/product-007",
+    "resultManifestHash": "ba4854c2774e2e0b57d43ca891501ee648c5cf97def41578542c7b474522dfb2",
+    "browserReceipt": "/Users/ccrt/game/guandan/lab/review6_1/receipts/browser-acceptance-004.json",
+    "verificationReceipt": "/Users/ccrt/game/guandan/lab/review6_1/receipts/c1-real-product-cli-verified-004.json",
+    "verificationReceiptHash": "e6427118c51d156e1fc78bde927bee31d64e594111a7905e0e71bbcebb76bb54"
+  }
+}

@@ -1,12 +1,19 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { taskOutput, assertBuildOutput } from '../../scripts/project-paths.mjs';
 import { fileURLToPath } from 'node:url';
 
 const r = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 
 export default defineConfig({
   root: r('.'),
-  plugins: [react()],
+  plugins: [react(), {
+    name: 'task-build-output',
+    configResolved(config) {
+      if (config.command === 'build') assertBuildOutput(config.root, config.build);
+    },
+  }],
+  build: { outDir: taskOutput('web-build', 'web-build'), emptyOutDir: false },
   resolve: {
     alias: {
       '@gd/engine': r('../../packages/engine/src/index.ts'),

@@ -1,4 +1,0 @@
-/** A separate process in the same ownedPGID outlives the controller's eventloop.
- * Killing that group includes this watchdog. The outer live launcher separately
- * awaits disappearance; ifouterdied, reservation remainsheld forreconciliation. */
-const[rawGroup,rawOuter,rawDeadline]=process.argv.slice(2),group=Number(rawGroup),outer=Number(rawOuter),deadline=BigInt(rawDeadline);if(!Number.isSafeInteger(group)||group<=1||!Number.isSafeInteger(outer)||outer<=1||group===process.pid)throw Error('ownedwatchdog identity required');const alive=pid=>{try{process.kill(pid,0);return true;}catch(e){if(e.code==='ESRCH')return false;throw e;}};const stop=()=>{try{process.kill(-group,'SIGKILL');}catch(e){if(e.code!=='ESRCH')throw e;}process.exit(124);};const check=()=>{if(process.ppid!==group||!alive(outer)||process.hrtime.bigint()>=deadline)stop();};check();setInterval(check,25);

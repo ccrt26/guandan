@@ -1,7 +1,7 @@
 import type { StatsVM } from './viewmodel';
 
 /**
- * data.json 截图快照的冻结 view model（results_ui_handoff/data.json）。
+ * data.json 截图快照的冻结 view model（deliverables/ui/reference-20261030/results_ui_handoff/data.json）。
  * 仅用于 DEV + ?spfixture=1 的确定性截图对比与数据断言，不进生产构建。
  * 时间为原记录字符串原样呈现（原包注明时区来源未知，不做 UTC 换算）。
  */

@@ -1,0 +1,19 @@
+/** Fixed P8 continuation metadata only; no simulations or new hyperparameters. */
+import{join}from'node:path';import{readFileSync}from'node:fs';import{HOME,ROOT,json,fileHash,atomicJson,readCheckpoint,codeIdentity}from'./protocol';import{NUMERICAL_FILES}from'./curriculum';
+const planRef=join(ROOT,'docs/superpowers/plans/2026-10-30-guandan-review6-2-p8-continuation.md'),reviewRef=join(HOME,'receipts/T4-P8C-plan-review.txt');
+if(!readFileSync(reviewRef,'utf8').includes('APPROVE_P8'))throw Error('P8C independent plan approval required');
+const apiReview=join(HOME,'receipts/T5-explicit-deal-implementation-review.txt'),consumerReview=join(HOME,'receipts/T5-declared-proof-consumer-review.txt');
+if(!readFileSync(apiReview,'utf8').includes('APPROVE')||!readFileSync(consumerReview,'utf8').includes('APPROVE'))throw Error('new API and consumer must be reviewed before source freeze');
+const parents:Record<string,string>={control:'930b525166250b9bce2d23ebcca4a4902f8a63376a991ea985be051115d76c7f','neural-peers':'75dad61d41ae5d89dbae1e0206519bd2b27e4753921fe68935b02f7873e1a129'};
+for(const suffix of ['control','neural-peers']){
+ const fromRun='r62-p8-'+suffix,old=json(join(HOME,'runs',fromRun,'manifest.json')),cp=readCheckpoint(join(HOME,'runs',fromRun));if(cp.state.absoluteUpdate!==1000||fileHash(join(cp.path,'manifest.json'))!==parents[suffix])throw Error('fixed reviewed actual1000 parent required');
+ const former=json(old.config.runtimeMigrationRef).unchangedNumericalSemantics,changed=former.filter((r:any)=>fileHash(join(ROOT,r.path))!==r.sha256);
+ if(changed.length!==2||changed.some((r:any)=>!['packages/engine/src/game.ts','packages/engine/src/deck.ts'].includes(r.path)))throw Error('unexpected core source changed');
+ const equivalenceRef=join(HOME,'receipts/T4-P8C-'+suffix+'-runtime-preflight.json');
+ atomicJson(equivalenceRef,{scope:'default semantic equivalence only; two core files changed bytes, actual zero-step state comparison still required',changedNumericalFiles:changed.map((r:any)=>({...r,currentSHA256:fileHash(join(ROOT,r.path))})),unchangedFileBytes:former.length-changed.length,defaultRegressionInputs:4,engineRegressionTests:25,apiReviewRef:apiReview,apiReviewSHA256:fileHash(apiReview),consumerReviewRef:consumerReview,consumerReviewSHA256:fileHash(consumerReview),newDeclaredCardsEnterGradient:false});
+ const runtimeMigrationRef=join(HOME,'data/p8c-'+suffix+'-runtime-migration.json');atomicJson(runtimeMigrationRef,{fromRun,oldCodeIdentity:old.codeIdentity,newCodeIdentity:codeIdentity(),unchangedNumericalSemantics:NUMERICAL_FILES.map(path=>({path,sha256:fileHash(join(ROOT,path))})),equivalenceRef,equivalenceSHA256:fileHash(equivalenceRef),planRef,planSHA256:fileHash(planRef)});
+ const runId='r62-p8c-'+suffix,experimentRef=join(HOME,'data/p8c-'+suffix+'-experiment.json');
+ const e={approvalMarker:'APPROVE_P8',experimentId:'P8-fixed-continuation-'+suffix,learningRate:.0001,preferenceMode:'squared_hinge',seed:old.seed,updateTargets:[1000,1400],bootstrapOnlyUpdate:1000,primaryEndpoint:1400,teacherSetSHA256:fileHash(old.config.teacherSetRef),registrySHA256:fileHash(old.config.registryPath),planRef,planSHA256:fileHash(planRef),reviewRef,reviewSHA256:fileHash(reviewRef),fromRun,teacherSchedule:old.config.teacherSchedule,runtimeMigrationRef,runtimeMigrationSHA256:fileHash(runtimeMigrationRef)};
+ atomicJson(experimentRef,e);atomicJson(join(HOME,'p8c-'+suffix+'-config.json'),{...old.config,runId,fromRun,updateTarget:1000,experimentRef,experimentSHA256:fileHash(experimentRef),runtimeMigrationRef,runtimeMigrationSHA256:fileHash(runtimeMigrationRef),curriculumUpgradeRef:null,curriculumUpgradeSHA256:null,partnerReplacementRef:null,partnerReplacementSHA256:null});
+}
+console.log(JSON.stringify({newCodeIdentity:codeIdentity(),parentUpdate:1000,endpoint:1400,newUpdatesPerArm:400,newCardsConsumed:false}));

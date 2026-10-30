@@ -1,0 +1,118 @@
+[
+  {
+    "file": "single-pending.json",
+    "seed": 1,
+    "rules": {
+      "levelMode": "stage",
+      "passA": "head3",
+      "pairSeqMin": 3,
+      "pairSeqMax": 3,
+      "trioSeqMin": 2,
+      "trioSeqMax": 2,
+      "flushLen": 5,
+      "straightLen": 5
+    },
+    "firstGamePolicy": "At each turn: legalCombos(state)[0], otherwise pass",
+    "firstGameMoves": 142,
+    "firstFinishOrder": [
+      3,
+      0,
+      2,
+      1
+    ],
+    "returnPolicy": "Engine automatic returns; pending human return uses pickReturnCard",
+    "currentGameNo": 2,
+    "leader": 1,
+    "pairs": [
+      {
+        "tribute": {
+          "from": 1,
+          "to": 3,
+          "card": {
+            "id": 81,
+            "suit": "D",
+            "rank": 3
+          }
+        },
+        "ret": {
+          "from": 3,
+          "to": 1,
+          "card": {
+            "id": 28,
+            "suit": "D",
+            "rank": 4
+          }
+        }
+      }
+    ],
+    "source": "Real engine completed first game, then MatchController.startGame and submitReturn. No hands invented."
+  },
+  {
+    "file": "double-pending.json",
+    "seed": 2,
+    "rules": {
+      "levelMode": "stage",
+      "passA": "head3",
+      "pairSeqMin": 3,
+      "pairSeqMax": 3,
+      "trioSeqMin": 2,
+      "trioSeqMax": 2,
+      "flushLen": 5,
+      "straightLen": 5
+    },
+    "firstGamePolicy": "At each turn: legalCombos(state)[0], otherwise pass",
+    "firstGameMoves": 146,
+    "firstFinishOrder": [
+      1,
+      3,
+      2,
+      0
+    ],
+    "returnPolicy": "Engine automatic returns; pending human return uses pickReturnCard",
+    "currentGameNo": 2,
+    "leader": 0,
+    "pairs": [
+      {
+        "tribute": {
+          "from": 2,
+          "to": 3,
+          "card": {
+            "id": 96,
+            "suit": "C",
+            "rank": 5
+          }
+        },
+        "ret": {
+          "from": 3,
+          "to": 2,
+          "card": {
+            "id": 26,
+            "suit": "D",
+            "rank": 2
+          }
+        }
+      },
+      {
+        "tribute": {
+          "from": 0,
+          "to": 1,
+          "card": {
+            "id": 52,
+            "suit": "J",
+            "rank": 16
+          }
+        },
+        "ret": {
+          "from": 1,
+          "to": 0,
+          "card": {
+            "id": 80,
+            "suit": "D",
+            "rank": 2
+          }
+        }
+      }
+    ],
+    "source": "Real engine completed first game, then MatchController.startGame and submitReturn. No hands invented."
+  }
+]

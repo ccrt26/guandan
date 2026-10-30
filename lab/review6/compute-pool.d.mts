@@ -1,0 +1,2 @@
+/** Types for the unchanged bounded worker implementation. */
+export function runFrozenPool(options:{entryPath:string;workers:number;workerData:any;tasks:any[];deadlineMonotonicMs:number;onResult(task:any,message:any):void;execArgv?:string[]}):Promise<{complete:boolean;completedTasks:number;plannedTasks:number;deviceWallSeconds:number;workerTaskSeconds:number;workerLifetimeSeconds:number;workerRecords:any[]}>;

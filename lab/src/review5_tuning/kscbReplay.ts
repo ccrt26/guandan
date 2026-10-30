@@ -15,7 +15,7 @@ import { gunzipSync } from 'node:zlib';
 import { readFileSync } from 'node:fs';
 import {
   applyMove, beats, buildDeck, canPass, classify, createMatch, DEFAULT_RULES, legalCombos,
-  rankOrder, startGame, teamOf, type Card, type RuleOptions,
+  rankOrder, startGame, teamOf, type Card, type RuleOptions, type GameState, type Combo,
 } from '@gd/engine';
 import { dedupCandidates as dedupCandidatesX0, encodeAction, encodeStateV2, PublicTracker, STATE_DIM_V2 } from '@gd/ai';
 

@@ -1,0 +1,3 @@
+import{it,expect}from'vitest';import{assertAppendBook}from'../review6_2/curriculum';
+const old=[{labelId:'old',sourceFamilyId:'f1',scope:'main',split:'train',evidenceTier:'strong',weight:1}],fresh=[...old,{labelId:'new',sourceFamilyId:'f2',scope:'main',split:'train',evidenceTier:'weak',weight:.25}];
+it('admits only explicit weak appended roots while preserving old rows exactly',()=>{expect(()=>assertAppendBook(old,fresh,['new'])).not.toThrow();for(const change of[{weight:1,evidenceTier:'strong'},{split:'dev'},{sourceFamilyId:'f1'}])expect(()=>assertAppendBook(old,[old[0],{...fresh[1],...change}],['new'])).toThrow();expect(()=>assertAppendBook(old,[{...old[0],weight:.25},fresh[1]],['new'])).toThrow();expect(()=>assertAppendBook(old,fresh,['different'])).toThrow();});

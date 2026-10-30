@@ -28,12 +28,13 @@ function matchesCategory(state:GameState,row:ReturnType<typeof pilotSourceRows>[
 }
 /** Source generation only. It never supplies the actual hidden source layout
  * to the proposer or derives a world seed from the source family/trace. */
-export function collectPilotSourceRoot(row:ReturnType<typeof pilotSourceRows>[number],sourcePolicy:PolicySpec,options:{seatFactory?:(spec:PolicySpec,seat:number)=>SeatDriver;deadlineMonotonicMs?:number}={}){
+export function collectPilotSourceRoot(row:ReturnType<typeof pilotSourceRows>[number],sourcePolicy:PolicySpec,options:{seatFactory?:(spec:PolicySpec,seat:number)=>SeatDriver;deadlineMonotonicMs?:number;publicStage?:{minOwnCards:number;maxOwnCards:number;minMoveNo:number}}={}){
  let chosen:any=null,trials=0;const rejections:any[]=[],roundFamilies=new Map<number,string>();
  const result=runCompleteMatch({seed:row.sourceSeed,policies:Array.from({length:4},()=>sourcePolicy),dealMode:'indexed-deal-v1',dealNamespace:PILOT_SOURCE_DEAL_NAMESPACE,rngMode:'counter-per-decision',maxGames:80,maxMovesPerGame:2500,deadlineMonotonicMs:options.deadlineMonotonicMs,seatFactory:options.seatFactory,
  onBeforeDecision({state,seat,history}){
   if(!roundFamilies.has(state.match.gameNo)){const raw=startGame(createMatch({...DEFAULT_RULES},indexedDealSeed(PILOT_SOURCE_DEAL_NAMESPACE,row.sourceSeed,state.match.gameNo-1)));roundFamilies.set(state.match.gameNo,engineDealFamily(raw.hands));}
   if(chosen||seat!==row.requestedActor||trials>=row.maxEligiblePositionTrials)return;
+  if(options.publicStage&&(state.hands[seat].length<options.publicStage.minOwnCards||state.hands[seat].length>options.publicStage.maxOwnCards||state.moveNo<options.publicStage.minMoveNo))return;
   const candidates=rootCandidates(state);if(!matchesCategory(state,row,candidates))return;trials++;
   const observedBefore=toVisibleRoot(state,history);if(observedBefore.representationGaps.length){rejections.push({gameNo:state.match.gameNo,moveNo:state.moveNo,observationSHA256:observedBefore.observationSHA256,reasons:observedBefore.representationGaps});return;}
   chosen={schemaVersion:'r6-causal-teacher-root-v1',rootId:row.rootId,sourceMatchId:row.sourceMatchId,sourceFamilyId:row.familyId,sourceRootRoundFamilyId:roundFamilies.get(state.match.gameNo),sourceKind:row.sourceKind,actingSeat:seat,sourceState:structuredClone(state),sourceHistory:structuredClone(history),observedBefore,allCandidates:candidates,actualActionId:null,sourceActualAction:null,category:row.category,caseThresholds:{minimumOpponentCount:row.minimumOpponentCount,urgentOpponentMaximum:row.urgentOpponentMaximum},proposerInput:{rootId:row.rootId,observedBefore,allowedFacts:'only current own cards, public context and causal public prefix; source action and completion excluded',candidates:candidates.map(({features68,...c})=>c),category:row.category,caseThresholds:{minimumOpponentCount:row.minimumOpponentCount,urgentOpponentMaximum:row.urgentOpponentMaximum}}};

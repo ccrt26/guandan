@@ -313,7 +313,7 @@ export class MatchController {
   }
 
   /**
-   * 贡还结果确认门（04_状态机与验收 → 本地引擎映射，详见 docs/UI-TRIBUTE-GATE-MAPPING.md）。
+   * 贡还结果确认门（04_状态机与验收 → 本地引擎映射，详见 docs/ui/UI-TRIBUTE-GATE-MAPPING.md）。
    * 进贡+还贡交换由引擎完成且只完成一次；此门只冻结「AI 推进/轮次启动」，
    * acknowledgeExchange() 仅解除门控——不换牌、不发牌、不扣牌、不初始化、不出牌。
    * 抗贡（resist）与无贡（tribute=null）没有交换，不设门（是否强制人工继续属待确认建议，本轮不启用）。

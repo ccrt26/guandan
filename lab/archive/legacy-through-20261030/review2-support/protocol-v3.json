@@ -1,0 +1,146 @@
+{
+ "protocolVersion": "REVIEW3-EXEC-1.0",
+ "draft": false,
+ "frozenAt": "2026-10-27T10:26:43.986Z",
+ "rules": {
+  "levelMode": "stage",
+  "hash": "c5fe3ed501880613e774d8342fa865e24b724186418afeb244b9696a64922436:ee87280ec5bdc13bbff84e4cae810ac49a640ab292cd3e1791aefec169b59dc3"
+ },
+ "candidate": {
+  "version": "cand-dedup-v2",
+  "hash": "ee87280ec5bdc13bbff84e4cae810ac49a640ab292cd3e1791aefec169b59dc3"
+ },
+ "encoder": {
+  "version": "gd-lab-schema-v1",
+  "dims": {
+   "input": 385,
+   "state": 317,
+   "action": 68
+  },
+  "hash": "66cceb7cbc33ad3c07c06f5cd541628f1ac69b1ccec7d8f310111621146fae58"
+ },
+ "reward": {
+  "definition": "y = g + W；g=本副本队名次分 ±升级数(1/2/3)，W=完整 match 胜负 ±1",
+  "hash": "e2f1cc44bf398f62f4be1bf9a6396a0a0822840df4950ea6455f04ba92ff4ca0"
+ },
+ "trainer": {
+  "kind": "synchronous-wave-dmc",
+  "workers": 8,
+  "waveSize": 8,
+  "groupSize": 2048,
+  "trainSub": 1024,
+  "epsilon": 0.05,
+  "maxUpdates": 7051,
+  "maxActiveMs": 13680000,
+  "shutdownMarginMs": 90000,
+  "checkpointUpdates": [
+   500,
+   1800,
+   3600,
+   5400,
+   7051
+  ],
+  "matchGameCap": 60,
+  "torchThreads": 2,
+  "lagAccounting": "per-update 块内 waveId 构成 → 行为版本年龄 p50/p95/max（含跨波尾部）",
+  "fallback": "serial-dmc（正确性优先：并行契约失败时回退 clean1 串行路径完成 T1）"
+ },
+ "network": {
+  "arch": "385→256→256→1 tanh×2 线性头",
+  "params": 164865,
+  "init": "He/LeCun 1/sqrt(fan_in) + Box-Muller"
+ },
+ "referenceWeights": {
+  "deployed": "packages/web/public/ai/clean1.f32",
+  "sha256": "576e0c88680fc01b42f7521b7081e1be65e48c3b8fc39b2a667777a67f4fdc76",
+  "policyId": "clean1-ck180-20261026"
+ },
+ "budgets": {
+  "parallelProbeActiveMs": 1800000,
+  "t1EvalMs": 2700000,
+  "t2EvalMs": 2700000,
+  "externalEvalMs": 1800000,
+  "humanProbeComputeMs": 1800000,
+  "maxNewLlmCalls": 6
+ },
+ "selection": {
+  "dev": "M1=N+N vs O+O、M2=N+H vs O+H 各 32 块（块=种子，两场换边）；S=0.5p(M1)+0.5p(M2)；同分先 M2，再较早检查点；init 不参加",
+  "confirm": "M1 128 块 + M2 256 块；97.5% 双侧块区间：M1 点估计≥55% 且下界>50%，M2 下界>45%；最多两次晋级尝试（第二次全新种子）",
+  "stopping": "T1=7051 updates 或 228 active 分钟先到即停；90s 退出余量；未完成场不赋 W"
+ },
+ "seeds": {
+  "namespaces": {
+   "main-init": 2026102805,
+   "main-train": 2026102806,
+   "replica-init": 2026102905,
+   "replica-train": 2026102906,
+   "probe": 2026110001,
+   "dev": 2026110002,
+   "confirm-attempt1": 2026110003,
+   "confirm-attempt2": 2026110004,
+   "external-dev": 2026110005,
+   "external-confirm": 2026110006,
+   "human-split": 2026110007
+  },
+  "derivation": "deriveSeed(namespace, master, matchId, purpose)；stepSeed=deriveStepSeed(namespace, master, updateId)；见 packages/ai/src/nn/wave.ts"
+ },
+ "effectiveRunConfig": {
+  "clean2-main": {
+   "newMaxUpdates": 7051,
+   "newMaxActiveMs": 13680000,
+   "parents": "随机初始化(main-init)"
+  },
+  "clean2-replica": {
+   "newMaxUpdates": 7051,
+   "newMaxActiveMs": 13680000,
+   "parents": "随机初始化(replica-init)"
+  },
+  "pool-control": {
+   "newMaxUpdates": 1800,
+   "newMaxActiveMs": 3600000,
+   "parents": "T1 candidate.json"
+  },
+  "pool-mixture": {
+   "newMaxUpdates": 1800,
+   "newMaxActiveMs": 3600000,
+   "parents": "T1 candidate.json"
+  },
+  "bc-control": {
+   "newMaxUpdates": 1800,
+   "newMaxActiveMs": 3600000,
+   "parents": "T1 candidate.json"
+  },
+  "bc-assisted": {
+   "dmcMaxUpdates": 1800,
+   "newMaxActiveMs": 3600000,
+   "maxBcActiveMs": 900000,
+   "maxBcStates": 50000,
+   "maxBcEpochs": 1,
+   "parents": "T1 candidate.json"
+  }
+ },
+ "sourceSnapshot": {
+  "packages/engine/src/combo.ts": "ee87280ec5bdc13bbff84e4cae810ac49a640ab292cd3e1791aefec169b59dc3",
+  "packages/engine/src/game.ts": "c5fe3ed501880613e774d8342fa865e24b724186418afeb244b9696a64922436",
+  "packages/engine/src/rank.ts": "030bd2bf0dec2c2847c7d459874ad16677374f7628ac5c69883bde9ffa1f795f",
+  "packages/engine/src/deck.ts": "083c547bdb3203908dbc3a29f8b8e2378fafd9a42b06ac9691a93b1209f26888",
+  "packages/engine/src/record.ts": "19f0333c3d25a5f00d8dd6ffeb5d2c1708f2033d5a35d4e94c43289624076026",
+  "packages/ai/src/heuristic.ts": "448a70c764bad9ceefc67da485b823796ec276b8a557043295fa3ec6256e4332",
+  "packages/ai/src/legal.ts": "adfdb04186b188e42b511cdbcafb1196762627318d34de52a84d5ea94406ec33",
+  "packages/ai/src/sim.ts": "5ebbf481fb7b024ba71d3999b00d6f0f71e3be720d4b96dcf2909486e49d767c",
+  "packages/ai/src/nn/schema.ts": "66cceb7cbc33ad3c07c06f5cd541628f1ac69b1ccec7d8f310111621146fae58",
+  "packages/ai/src/nn/mlp.ts": "3f4762ad0139048a880735a4e3835c5c68f049bca288c28c78257d420e766f19",
+  "packages/ai/src/nn/neuralSeat.ts": "6df17493fb7bb706895b68aa46f5445975dfabc71f30c1fa1c859e2e3a606a8f",
+  "packages/ai/src/nn/nnplayer.ts": "9d428450eb5235ce2e9c3aaf004f039d13208c60d08610a6f86841abbffb07e2",
+  "packages/ai/src/nn/wave.ts": "3e90ca6520477384d407f6f4b6e82165c0ed8bd0a385d5ad8f8b7676ac85090a",
+  "lab/src/clean1.ts": "e2f1cc44bf398f62f4be1bf9a6396a0a0822840df4950ea6455f04ba92ff4ca0",
+  "lab/src/wave_worker.ts": "0b7b4df888304faa74cb4eef838d0d64a9383afd402681e7852f4b560a34ad99",
+  "lab/src/review2train.ts": "9cc1b92a968460005e89f2c8b600673fa6ee87319bcaf7115c9522316c803d55",
+  "lab/learner.py": "53d6f93cf2ce7c2ac36d261cbb0491ae4505a5d8604cdf052123c5d0b7692a68"
+ },
+ "artifacts": {
+  "candidateProfile": "lab/review2/candidate_profile_v2.json",
+  "observationAudit": "lab/review2/observation_audit.json",
+  "parallelProbe": "lab/review2/parallel_probe/（探针后补 decision）"
+ }
+}

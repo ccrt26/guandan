@@ -7,7 +7,7 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
 
 const PY = new URL('../.venv/bin/python', import.meta.url).pathname;
-const SCRIPT = new URL('../learner.py', import.meta.url).pathname;
+const SCRIPT = new URL('./legacy_learner.py', import.meta.url).pathname;
 
 const T_INIT = 1, T_TRAIN = 2, T_GETW = 3, T_SAVE = 4, T_SHUT = 5, T_EVAL = 6, T_LOADOPT = 7;
 const R_ACK = 129, R_TRAIN = 130, R_WEIGHTS = 131, R_SAVE = 132, R_EVAL = 136, R_LOADOPT = 137;

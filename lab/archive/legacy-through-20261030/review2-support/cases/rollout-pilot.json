@@ -1,0 +1,51 @@
+{
+  "version": "rollout-pilot-cases-1.1",
+  "note": "REVIEW2-EXEC §六 R4 的根动作比较试点。≤3 决策 × ≤3 根动作 × 64 暗牌抽样。provenance 如实标注；第 25 手原谱 unavailable，试点用构造/真实新局。",
+  "config": {
+    "samples": 64,
+    "maxMoves": 3,
+    "maxActions": 3,
+    "sensitivity": {
+      "policy": "heuristic",
+      "maxExtraRollouts": 384
+    }
+  },
+  "cases": [
+    {
+      "id": "pilot-25-structural",
+      "provenance": "generated",
+      "kind": "JJJ+99 vs JJJ+33 同构局面（级牌/手牌公开标注为构造）",
+      "expect": "两分支剩牌差异经规则验证；信息集均值 d_i 与区间",
+      "generate": {
+        "seed": 81003,
+        "student": 0,
+        "others": 1
+      },
+      "note": "原事故/构造谱 unavailable；改用真实执行生成局（种子固定），来源分开不冒充"
+    },
+    {
+      "id": "pilot-disagreement",
+      "provenance": "generated",
+      "kind": "NN 与启发式分歧的跟牌决策",
+      "expect": "B=NN 首选、C=启发式首选与 A=实际 的配对比较",
+      "generate": {
+        "seed": 81004,
+        "student": 0,
+        "others": 1
+      },
+      "note": "原事故/构造谱 unavailable；改用真实执行生成局（种子固定），来源分开不冒充"
+    },
+    {
+      "id": "pilot-resource",
+      "provenance": "generated",
+      "kind": "对8保留♥8同花顺的资源取舍局面（B3 示例同构）",
+      "expect": "结构事实（可组合同花顺与否）可证明层输出",
+      "generate": {
+        "seed": 81005,
+        "student": 0,
+        "others": 1
+      },
+      "note": "原事故/构造谱 unavailable；改用真实执行生成局（种子固定），来源分开不冒充"
+    }
+  ]
+}

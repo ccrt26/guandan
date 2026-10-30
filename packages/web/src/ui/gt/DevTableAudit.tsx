@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { MatchController } from '../../game/controller';
 import { clearCurrentMatch, loadCurrentMatch, saveCurrentMatch, type MatchSave } from '../../game/storage';
 import { TablePage } from '../TablePage';
-import single from '../../../../../lab/layout-fix-20261028/fixtures/single-pending.json';
-import double from '../../../../../lab/layout-fix-20261028/fixtures/double-pending.json';
+import single from '../../dev/fixtures/tribute/single-pending.json';
+import double from '../../dev/fixtures/tribute/double-pending.json';
 
 export default function DevTableAudit() {
   const [controller,setController]=useState<MatchController|null>(null);

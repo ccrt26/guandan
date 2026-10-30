@@ -1,0 +1,44 @@
+{
+  "runId": "clean1-2026102609500",
+  "createdAt": "2026-10-26T09:50:04.093Z",
+  "cfg": {
+    "eps": 0.05,
+    "groupSize": 2048,
+    "trainSub": 1024,
+    "optimizer": "RMSprop(lr=1e-3,alpha=0.9,eps=1e-5,momentum=0,centered=false,weight_decay=0)",
+    "loss": "MSE",
+    "clipNorm": 1000000,
+    "clipNote": "clip_norm=1e6 事实不构成常规裁剪；如实保留沿用已知配置",
+    "device": "cpu",
+    "torchThreads": 2,
+    "matchGameCap": 60,
+    "budgetTrainActiveMin": 228,
+    "budgetEvalMin": 45,
+    "checkpointsActiveMin": [
+      20,
+      60,
+      120,
+      180
+    ],
+    "finalActiveMin": 228,
+    "devBlocks": 32,
+    "holdoutBlocks": 128,
+    "ablationBlocks": 64,
+    "selectionRule": "对中级dev胜率最高；平手比较对初级dev胜率；仍平手取较晚检查点。init不作候选。"
+  },
+  "master": {
+    "initSeed": 2026102705,
+    "matchRand": 2026102706,
+    "shuffleRand": 2026102707,
+    "seatRand": 2026102709,
+    "stepSeed": 2026102708,
+    "nnDevBase": 2026102711,
+    "nnHoldoutBase": 2026102712,
+    "bootSeed": 20261027
+  },
+  "labelSpec": "y = g + W；g=±1/±2/±3 本副本队名次分；W=±1 完整整场胜负，仅整场结束赋值",
+  "cleanStart": "新 MLP(固定种子) 随机初始化；不读取 lab/out、round2、bugregime；空样本池；计数器制随机流（matchSeed=hash(master,i)，shuffle/seat 记调用数，learner 显式 stepSeed）",
+  "stopConditions": "illegal_intent/fallback/semantic_rewrite/encoding_mismatch/label_mismatch 任一非零 → 保存最小复现并标记 failed 停止；非有限梯度/参数/输出立即停止",
+  "budgetLedger": "trainActiveMs=采样+学习墙钟（评测暂停不计）；evalMs 计入 45 分钟；active 硬顶 228 分钟，到点不追批、尾部完成标签只计数不训练",
+  "interruption": "检查点记录权重/优化器/步数/RNG调用计数；中断不自动续跑，如实标 partial"
+}

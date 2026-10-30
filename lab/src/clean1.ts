@@ -1,7 +1,7 @@
 /**
  * lab/src/clean1.ts — CLEAN1 干净重训主控（方案第六节，2026-10-26 采纳执行）。
  *
- * 干净起点（§6.2）：新 run 目录 lab/clean1/<run_id>/；不读取 lab/out、round2、
+ * 干净起点（§6.2）：新 run 目录 lab/archive/legacy-through-20261030/clean1/<run_id>/；不读取 lab/out、round2、
  * bugregime 任何旧权重/优化器状态/缓存；随机初始化（固定种子）、空样本池、
  * 独立固定随机流（matchSeed=hash(master,i) 计数器制、shuffle/seat/learner 显式
  * 种子+调用计数，检查点记录可复算状态；中断不自动续跑、如实标 partial/failed）。
@@ -26,7 +26,7 @@
  * 用法：npx tsx lab/src/clean1.ts prep|train|select|holdout|partner|ablation
  */
 import { createHash } from 'node:crypto';
-import { mkdirSync, readFileSync, readdirSync, writeFileSync, appendFileSync, existsSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, writeFileSync, appendFileSync, existsSync, legacyWritePath } from './legacy-files';
 import { EOL } from 'node:os';
 import { join } from 'node:path';
 import {
@@ -42,7 +42,7 @@ import { blockStats, pairedBlockStats } from './stats';
 import { NeuralSeat } from './seat';
 
 // ---------- 协议常量（事前固定） ----------
-const CLEAN1_ROOT = join(import.meta.dirname, '..', 'clean1');
+const CLEAN1_ROOT = join(import.meta.dirname, '..', 'archive', 'legacy-through-20261030', 'clean1');
 const MASTER = {
   initSeed: 2026102705,      // 随机初始化种子（记录公式：MLP(seed) Box-Muller×He）
   matchRand: 2026102706,     // 采样场次流（计数器制 matchSeed=hash32(this, matchIdx)）
@@ -95,7 +95,10 @@ class CountingRng {
 function runDir(): string {
   const idx = join(CLEAN1_ROOT, 'CURRENT');
   if (!existsSync(idx)) throw new Error('未 prep：先运行 `clean1.ts prep`');
-  return readFileSync(idx, 'utf8').trim();
+  const stored = readFileSync(idx, 'utf8').trim();
+  const originalRoot = join(import.meta.dirname, '..', 'clean1');
+  return stored === originalRoot || stored.startsWith(`${originalRoot}/`)
+    ? CLEAN1_ROOT + stored.slice(originalRoot.length) : stored;
 }
 function loadJson<T>(p: string): T { return JSON.parse(readFileSync(p, 'utf8')) as T; }
 function appendJson(p: string, obj: unknown): void { appendFileSync(p, `${JSON.stringify(obj)}${EOL}`); }
@@ -567,7 +570,7 @@ function prep(): void {
   const run = join(CLEAN1_ROOT, runId);
   mkdirSync(run, { recursive: true });
   writeFileSync(join(CLEAN1_ROOT, 'CURRENT'), run);
-  const tiersSeeds = loadJson<{ seeds: Record<string, number[]> }>(join(import.meta.dirname, '..', 'tiers', 'seeds.json'));
+  const tiersSeeds = loadJson<{ seeds: Record<string, number[]> }>(join(import.meta.dirname, '..', 'archive', 'legacy-through-20261030', 'tiers', 'seeds.json'));
   const gen = (n: number, base: number): number[] => {
     const r = mulberry32(base);
     return Array.from({ length: n }, () => 1_000_000 + Math.floor(r() * 9_000_000));
@@ -583,7 +586,7 @@ function prep(): void {
     variantNote: VARIANT === 'e1'
       ? 'E1 独立复制（CLEAN1-REVIEW-1.0）：更换初始化与全部训练随机流；网络/标签/候选/编码/优化器/利用率/预算全部与原 run 相同。本 run 不是修正基线。'
       : '原 CLEAN1 run',
-    baseRun: VARIANT === 'e1' ? 'lab/clean1/clean1-2026102609500' : undefined,
+    baseRun: VARIANT === 'e1' ? 'lab/archive/legacy-through-20261030/clean1/clean1-2026102609500' : undefined,
     labelSpec: 'y = g + W；g=±1/±2/±3 本副本队名次分；W=±1 完整整场胜负，仅整场结束赋值',
     archSpec: 'tanh 隐层×2、线性输出头（A1 复核）；train_y = raw_y = g+W，无归一化/缩放/裁剪',
     cleanStart: '新 MLP(固定种子) 随机初始化；不读取 lab/out、round2、bugregime 及原 CLEAN1 run；空样本池；计数器制随机流（matchSeed=hash(master,i)，shuffle/seat 记调用数，learner 显式 stepSeed）',
@@ -710,7 +713,7 @@ async function train(): Promise<void> {
         shuffleCalls: shuffleRand.calls, seatCalls: seatRand.calls,
         counters: { ...counters }, rngState: '计数器制：matchSeed=hash(master,matchIdx)；shuffle/seat 调用数如上可复算',
       });
-      await bridge.save(join(run, tag));
+      await bridge.save(legacyWritePath(join(run, tag)));
       // 机制检查（20 分钟门=只判机制不判胜负）
       const wNow = model.getWeights();
       let maxDelta = 0;
@@ -749,7 +752,7 @@ async function train(): Promise<void> {
     atActiveMin, updates, matches, matchIdx, collected,
     shuffleCalls: shuffleRand.calls, seatCalls: seatRand.calls, counters: { ...counters },
   });
-  await bridge.save(join(run, 'ck228'));
+  await bridge.save(legacyWritePath(join(run, 'ck228')));
   devResults.ck228 = {
     vs0: evalNNSet(run, model, 0, seeds.nnDev, 'ck228', 'dev_ck228_vs0').xs,
     vs1: evalNNSet(run, model, 1, seeds.nnDev, 'ck228', 'dev_ck228_vs1').xs,
@@ -891,7 +894,7 @@ function partner(): void {
   const est = blockStats(xs, 0.95);
   // 三档代理同种子逐块 X_s（初级 D / 中级 D），配对比较
   // 注意：tiers 侧记录字段为 base_seed（TierMatchRec），NN 侧为 seed（NNMatchRec）
-  const tierRecs = readFileSync(join(import.meta.dirname, '..', 'tiers', 'partner_perseed.jsonl'))
+  const tierRecs = readFileSync(join(import.meta.dirname, '..', 'archive', 'legacy-through-20261030', 'tiers', 'partner_perseed.jsonl'))
     .toString().split('\n').filter((l) => l.trim()).map((l) => JSON.parse(l) as {
       base_seed: number; tier: number; win: number; dSeat: number; unfinished: boolean; aTeam: number;
     });

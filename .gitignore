@@ -1,15 +1,11 @@
-# Dependencies, build output and local caches
 node_modules/
 dist/
-coverage/
-__pycache__/
-*.pyc
 .DS_Store
+lab/.venv/
+lab/out/
 *.log
-*.stdout
-*.stderr
 
-# Secrets and machine-specific configuration
+# Private configuration (GitHub publication protection)
 .env
 .env.*
 .env_*
@@ -31,35 +27,44 @@ credentials.json
 credentials
 id_rsa
 id_ed25519
-
-# Large/local experiment state (source is kept)
-/lab/.venv/
-/lab/out/
-/lab/**/runs/
-/lab/**/artifacts/
-/lab/**/frozen/
-/lab/**/execution-snapshot*/
-/lab/**/source-snapshot*/
-/lab/**/receipts/
-/lab/**/checkpoints/
-/lab/**/budget-ledger.jsonl
-/lab/**/cycle.draft.json
-/lab/**/state-index.json
-/lab/**/cycle-anchor.json
-/lab/**/H-fit.anchor.json
-/lab/**/development-opened.jsonl
-/lab/gt_shots/
-/lab/sp_shots/
-/lab/ui_gp/
 /lab/github-publish*/
-/lab/review6_1/**
-!/lab/review6_1/data/
-/lab/review6_1/data/*
-!/lab/review6_1/data/baseline-single-wildcard-incident-001.json
-!/lab/review6_1/data/H-features-001/
-/lab/review6_1/data/H-features-001/*
-!/lab/review6_1/data/H-features-001/clean-parent.f32
-/lab/clean1/**
-!/lab/clean1/clean1-2026102609500/
-!/lab/clean1/clean1-2026102609500/ck180/
-!/lab/clean1/clean1-2026102609500/ck180/weights.f32
+
+# Local review documents and evidence packages
+/deliverables/
+
+# Local research assets/results; source remains versioned
+__pycache__/
+*.py[cod]
+/lab/review2/assets/
+/lab/review2/frozen/
+/lab/review2/runs/
+/lab/review2/selected/
+/lab/review5/artifacts/
+/lab/review6_1/
+/lab/review6_2/runs/
+/lab/review6_2/data/
+/lab/review6_2/development/
+/lab/review6_2/development-J/
+/lab/review6_2/backups/
+/lab/review6_2/receipts/
+/lab/review6_2/confirmation/
+/lab/review6_2/versions/
+/lab/review6_2/progress.md
+/lab/review6_2/*.proposed.patch
+/lab/review6/budget-ledger.jsonl
+/lab/review6/development-opened.jsonl
+/lab/review6/state-index.json
+
+# Historical source is retained; results, buffers and backups stay local
+/lab/archive/**
+!/lab/archive/**/
+!/lab/archive/**/*.ts
+!/lab/archive/**/*.py
+!/lab/archive/**/*.mjs
+!/lab/archive/**/*.sh
+!/lab/archive/**/README.md
+!/lab/archive/**/protocol*.json
+!/lab/archive/**/probe-protocol*.json
+!/lab/archive/**/cases/*.json
+/lab/archive/**/backups/**
+/lab/archive/legacy-through-20261030/initial-training/

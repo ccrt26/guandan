@@ -1,0 +1,3 @@
+import{it,expect}from'vitest';import{publicTerminalPair,replayNativePrefix}from'../review6_2/terminal-proof';import{json}from'../review6_2/protocol';
+it('does not promote existing ordinary early advice to a terminal proof',()=>{const r=json('lab/review6_2/data/student-source-roots-002/r62-train-root-1017.json');expect(publicTerminalPair(r.observedBefore,r.allCandidates)).toBe(null);});
+it('requires an actual native multi-round prefix rather than claimed A-level flags',()=>{expect(()=>replayNativePrefix({schema:'native-terminal-prefix-v1',sourceSeed:1,dealNamespace:'fixture',rootGameNo:1,moves:[],sourceFamilyId:'claimed',rootObservationSHA256:'claimed'})).toThrow(/native/);});

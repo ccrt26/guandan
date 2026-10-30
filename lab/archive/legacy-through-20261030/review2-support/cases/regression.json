@@ -1,0 +1,60 @@
+{
+  "version": "regression-cases-1.0",
+  "note": "REVIEW2-EXEC §三/§十二 case pack。每例标注 provenance：real_record(真实对局) / constructed(构造) / unavailable(原始材料缺失)。禁止用构造冒充事故原谱。",
+  "cases": [
+    {
+      "id": "incident-25-20261026",
+      "provenance": "unavailable",
+      "reason": "用户浏览器 localStorage 中的原始对局记录未取回（需用户在游戏页 Console 导出 gd_record）。本例不构造替代；第 25 手调查在该材料到位前只能做结构性分析（评分项构成/来源/方向核查）。",
+      "expected": "材料到位后：实际动作=JJJ+99、替代=JJJ+33 需先经严格回放确认，再列评分明细与两种打法剩牌。"
+    },
+    {
+      "id": "incident-4a-20261025",
+      "provenance": "unavailable",
+      "reason": "当时损坏记录未存档（事故后修复了记录器与校验）。可用等价构造做回归（见 F10 构造例），不称事故已原样复现。",
+      "expected": "构造的损坏记录（重复 id/缺张）必须被 validateRecord 拒绝且不产出分析。"
+    },
+    {
+      "id": "F01-stage-wildcard-prompt",
+      "provenance": "constructed",
+      "kind": "stage 异级双方台上方各一：coach 文案与引擎只说明实际生效万能牌",
+      "check": "buildCoachMessages 输出的级牌行不含未生效万能牌点数"
+    },
+    {
+      "id": "F03-wild-substitution-display",
+      "provenance": "constructed",
+      "kind": "实际牌含万能牌：所有牌型显示代入",
+      "check": "对子/三张/炸弹的描述含代入标注，非仅顺子/同花"
+    },
+    {
+      "id": "F04-same-key-diff-resources",
+      "provenance": "constructed",
+      "kind": "同 comboKey 不同物理资源：实际动作匹配到自己的牌",
+      "check": "analyzer 不拿另一实现的分数处罚玩家"
+    },
+    {
+      "id": "F05-uncovered-no-penalty",
+      "provenance": "constructed",
+      "kind": "合法实际动作不在候选：uncovered、不入失误统计",
+      "check": "无 best−20 罚分；不判 bad"
+    },
+    {
+      "id": "F07-historical-overpower",
+      "provenance": "constructed",
+      "kind": "历史动作压不过：禁止无记录强制开新轮后照常评分",
+      "check": "回放状态非 exact 时评分禁用或降级"
+    },
+    {
+      "id": "F09-source-consistency",
+      "provenance": "constructed",
+      "kind": "反事实来源/方向在 UI 与 prompt 一致",
+      "check": "表头来源=实际策略；胜率方向不抄反"
+    },
+    {
+      "id": "F11-deterministic-rollout-once",
+      "provenance": "constructed",
+      "kind": "noise=0 固定世界同轨迹不重复计为新样本",
+      "check": "每根动作单次演示 + 轨迹哈希对照"
+    }
+  ]
+}
