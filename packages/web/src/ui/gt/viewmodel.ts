@@ -1,3 +1,4 @@
+import { displaySeatLabel } from '@gd/review';
 import { cardItem, buildStageVM, type CardItem, type StageUiState, type StageVM } from '../gp/viewmodel';
 import type { MatchController } from '../../game/controller';
 import type { GameState } from '@gd/engine';
@@ -7,7 +8,7 @@ import type { GameState } from '@gd/engine';
  * 基础字段复用 gp/viewmodel（同一权威引擎状态、同一翻译口径），
  * 在此之上增加：阶段（normal / return-pick / tribute-result）、页头阶段文案、
  * 贡还交换配对（来自 controller.exchangeResult()，04 的同一权威版本）。
- * 座位→展示名：0=我方 1=东家 2=队友 3=西家（换座不改事务身份，只改称呼）。
+ * 座位→展示名：0=1号 1=4号 2=2号 3=3号（换座不改事务身份，只改称呼）。
  */
 
 export type GTPhase = 'normal' | 'return-pick' | 'tribute-result';
@@ -27,7 +28,7 @@ export interface GameTableVM extends StageVM {
   exchange: { pairs: ExchangePairVM[]; leader: number; version: string } | null;
 }
 
-export const SEAT_DISPLAY: Record<number, string> = { 0: '我方', 1: '东家', 2: '队友', 3: '西家' };
+export const SEAT_DISPLAY: Record<number, string> = Object.fromEntries([0, 1, 2, 3].map(seat => [seat, displaySeatLabel(seat).label]));
 
 export function buildGameTableVM(controller: MatchController, state: GameState, ui: StageUiState): GameTableVM {
   const base: StageVM = buildStageVM(controller, state, ui);

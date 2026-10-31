@@ -64,6 +64,9 @@ export class MLP {
   }
 
   setWeights(flat: Float32Array): void {
+    // Validate before touching any layer: malformed loads must be atomic.
+    if (flat.length !== this.paramCount) throw Error(`weights length ${flat.length} != ${this.paramCount}`);
+    if (!flat.every(Number.isFinite)) throw Error('non-finite weights');
     let o = 0;
     for (let l = 0; l < this.W.length; l++) {
       this.W[l].set(flat.subarray(o, o + this.W[l].length)); o += this.W[l].length;

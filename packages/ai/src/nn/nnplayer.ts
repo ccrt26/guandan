@@ -12,8 +12,9 @@ import { NeuralDecider } from './neuralSeat';
 import { decideTiered, NEURAL_TIERS, type NeuralTier } from './tiered';
 import type { EncoderOpts } from './neuralSeat';
 import type { PassEncoding } from './schema';
+import { isResolvedPolicy, LEGACY_O_MODEL_VERSION, LEGACY_O_POLICY_REF, type ResolvedPolicy } from '../policy/resolve';
 
-export const NEURAL_MODEL_VERSION = 'clean2-ck7051-20261027'; // 随权重部署记录，复盘/记录保存用
+export const NEURAL_MODEL_VERSION = LEGACY_O_MODEL_VERSION; // 随权重部署记录，复盘/记录保存用
 
 /** 完整政策包身份（REVIEW5 T0.1）：旧完整包必须整体绑定，不能只冻结权重名。
  *  REVIEW4 审计发现：NeuralPlayer 未传 candidateCompat → 默认 cand-suit-v3 候选
@@ -29,8 +30,8 @@ export interface NeuralPolicyIdentity {
 }
 
 export const FROZEN_CHAMPION_IDENTITY: NeuralPolicyIdentity = {
-  policyId: 'frozenChampion-clean2-ck7051-encv1-candv2',
-  modelVersion: 'clean2-ck7051-20261027',
+  policyId: LEGACY_O_POLICY_REF,
+  modelVersion: LEGACY_O_MODEL_VERSION,
   encoderVersion: 'gd-lab-schema-v1',
   candidateVersion: 'cand-dedup-v2',
   passEncoding: 'legacy-phys10',
@@ -40,22 +41,31 @@ export const FROZEN_CHAMPION_IDENTITY: NeuralPolicyIdentity = {
 export class NeuralPlayer implements AIPlayer {
   readonly difficulty = 2 as Difficulty; // 仅占位（接口要求）；正式档位语义见 tier
   private decider: NeuralDecider;
-  private mlp: MLP;
   /** 档位 ε（D1 近并列随机）；0=贪心。rand 默认确定性占位，产品路径注入 mulberry32 */
   private tierRand: () => number;
   /** 本玩家绑定的完整政策包身份（随对局记录保存） */
   readonly identity: NeuralPolicyIdentity;
 
-  constructor(readonly seat: number, weights: Float32Array, tier: NeuralTier | number = 0, rand?: () => number, identity: NeuralPolicyIdentity = FROZEN_CHAMPION_IDENTITY) {
-    this.identity = identity;
-    this.mlp = new MLP(1);
-    this.mlp.setWeights(weights);
-    const enc: EncoderOpts = {};
-    if (identity.candidateCompat) enc.candidateCompat = identity.candidateCompat;
-    enc.passEncoding = identity.passEncoding;
-    this.decider = new NeuralDecider(seat, this.mlp, 0, () => 0, enc);
+  /** Prefer a verified policy. Raw arrays are historical compatibility only;
+   * they do not claim a verified weight SHA and always retain old O semantics. */
+  constructor(readonly seat: number, weights: Float32Array | ResolvedPolicy, tier: NeuralTier | number = 0, rand?: () => number, identity: NeuralPolicyIdentity = FROZEN_CHAMPION_IDENTITY) {
+    if (isResolvedPolicy(weights)) {
+      this.identity = weights.identity;
+      this.decider = weights.createDecider(seat);
+    } else {
+      if (!(weights instanceof Float32Array)) throw Error('verified policy or legacy Float32Array required');
+      this.identity = Object.freeze({ ...identity });
+      const mlp = new MLP(1);
+      mlp.setWeights(weights);
+      const enc: EncoderOpts = { passEncoding: identity.passEncoding };
+      if (identity.candidateCompat) enc.candidateCompat = identity.candidateCompat;
+      this.decider = new NeuralDecider(seat, mlp, 0, () => 0, enc);
+    }
     this.epsilon = typeof tier === 'string' ? NEURAL_TIERS[tier] : tier;
-    this.tierRand = rand ?? (() => 0.999); // 无注入时近似贪心（不引入未控随机）
+    if (!Number.isFinite(this.epsilon) || this.epsilon < 0 || this.epsilon > 1) throw Error('invalid neural tier epsilon');
+    if (isResolvedPolicy(weights) && !Object.values(NEURAL_TIERS).includes(this.epsilon)) throw Error('unsupported product tier epsilon');
+    if (isResolvedPolicy(weights) && this.epsilon !== 0 && weights.descriptor.tierSpecId !== 'legacy-near-tie-v1') throw Error('selected policy does not support product tier overrides');
+    this.tierRand = rand ?? (() => 0.999);
   }
   readonly epsilon: number;
 
@@ -76,9 +86,8 @@ export class NeuralPlayer implements AIPlayer {
   }
 }
 
-/** 从 ArrayBuffer（weights.f32，小端 float32）构造玩家；tier 可选（D1 三档，默认贪心） */
-export function createNeuralAI(seat: number, buffer: ArrayBufferLike, tier?: NeuralTier, rand?: () => number, identity?: NeuralPolicyIdentity): NeuralPlayer {
-  const w = new Float32Array(buffer);
-  if (w.length !== 164_865) throw new Error(`权重长度异常: ${w.length} != 164865`);
-  return new NeuralPlayer(seat, w, tier ?? 0, rand, identity);
+/** Verified policy path; ArrayBuffer overload retains the legacy raw O API. */
+export function createNeuralAI(seat: number, source: ArrayBufferLike | ResolvedPolicy, tier?: NeuralTier, rand?: () => number, identity?: NeuralPolicyIdentity): NeuralPlayer {
+  if (isResolvedPolicy(source)) return new NeuralPlayer(seat, source, tier ?? 0, rand);
+  return new NeuralPlayer(seat, new Float32Array(source as ArrayBufferLike), tier ?? 0, rand, identity);
 }

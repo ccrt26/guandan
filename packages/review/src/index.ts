@@ -1,3 +1,4 @@
+export * from './seatDisplay';
 export * from './replay';
 export * from './replayStatus';
 export * from './actionIdentity';

@@ -1,3 +1,4 @@
+import { displaySeatLabel, displaySeatCounts } from './seatDisplay';
 /**
  * packages/review/src/decisionReview.ts — R3（REVIEW3-EXEC §3.1）：统一证据对象。
  * 每个被选中的决策产出一份 DecisionReview，页面/校验层/LLM 三方读同一对象：
@@ -373,8 +374,8 @@ export function buildDecisionReviews(
     // 上下文事实
     const ctxId = `f${mv.moveNo}-ctx`;
     facts[ctxId] = mv.context.isLead
-      ? '你领出此轮'
-      : `当前要压的是${['南', '东', '北', '西'][mv.context.toBeatPlayer ?? 0]}家的${state.lastCombo ? describeAction(state.lastCombo) : '牌'}；本轮领出者${['南', '东', '北', '西'][state.leader]}；各家剩牌 ${mv.context.handsBefore.map((n, i) => `${['南', '东', '北', '西'][i]}${n}张`).join('、')}`;
+      ? `${displaySeatLabel(seat).label}领出此轮`
+      : `当前要压的是${displaySeatLabel(mv.context.toBeatPlayer ?? 0).label}的${state.lastCombo ? describeAction(state.lastCombo) : '牌'}；本轮领出者${displaySeatLabel(state.leader).label}；各家剩牌 ${displaySeatCounts(mv.context.handsBefore)}`;
     facts[`f${mv.moveNo}-rule`] = `级牌口径=${record.ruleOpts.levelMode ?? 'both'}${record.stageTeam != null ? `（台上=${record.stageTeam === teamOf(seat) ? '我方' : '对方'}）` : ''}；双方级数 ${record.levelsBefore.join('/')}`;
 
     // ---- 冲突与 claimLevel ----

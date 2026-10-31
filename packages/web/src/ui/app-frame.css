@@ -1,5 +1,6 @@
 /* The approved statistics frame is shared by all landing pages. Sizes below
    are design units; AppFrame uniformly scales the entire 1672×941 canvas. */
+#sp-stage {--landing-title-band:112px;--landing-title-size:42px;--landing-title-line:50px;--landing-subtitle-size:20px;--landing-subtitle-line:28px;--landing-title-gap:4px;--landing-title-pad:15px;--landing-main-top:169px;--landing-main-rise:30px;}
 #sp-stage.app-stage {display:flex;flex-direction:column;overflow:hidden;}
 .sp-content {display:contents;}
 .app-stage > .sp-header {flex:none;z-index:2;}
@@ -9,18 +10,18 @@
 .app-stage > .review-wrap {background:#0d1412;color:#e8e6df;font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei',system-ui,sans-serif;}
 
 /* Keep content sizing independent of the outer window's media-query width. */
-#sp-stage > .tz {background:transparent;overflow:hidden;font-family:StatsBody,'PingFang SC',sans-serif;}
-#sp-stage .tz-head {height:142px;flex:none;flex-direction:row;align-items:flex-start;padding:27px 75px 8px;gap:24px;}
-#sp-stage .tz-head-title h1 {font:700 58px/65px StatsSerif,'Songti SC',serif;letter-spacing:2px;}
-#sp-stage .tz-head-title p {font:500 25px/35px StatsSerif,'Songti SC',serif;letter-spacing:3px;margin:6px 0 0;color:#767570;}
-#sp-stage .tz-head-stats {align-self:flex-end;gap:24px;padding:0 0 14px;}
+#sp-stage > .tz {background:transparent;overflow:visible;font-family:StatsBody,'PingFang SC',sans-serif;}
+#sp-stage .tz-head {height:var(--landing-title-band);flex:none;flex-direction:row;align-items:center;padding:var(--landing-title-pad) 75px;gap:24px;}
+#sp-stage .tz-head-title h1 {font:700 var(--landing-title-size)/var(--landing-title-line) StatsSerif,'Songti SC',serif;letter-spacing:2px;}
+#sp-stage .tz-head-title p {font:500 var(--landing-subtitle-size)/var(--landing-subtitle-line) StatsSerif,'Songti SC',serif;letter-spacing:3px;margin:var(--landing-title-gap) 0 0;color:#767570;}
+#sp-stage .tz-head-stats {align-self:center;gap:24px;padding:0;}
 #sp-stage .tz-stat b {font-size:32px;}
 #sp-stage .tz-stat i,#sp-stage .tz-stat-empty {font-size:17px;}
 #sp-stage .tz-vsep {height:32px;}
 #sp-stage .tz-stat-note {font-size:15px;}
 #sp-stage .tz-console {margin:0 44px 0 50px;padding:8px;flex:1;min-height:0;grid-template-columns:416px minmax(0,1fr);gap:5px;border-radius:26px;}
 #sp-stage .tz-console::before {border-radius:26px;}
-#sp-stage .tz-settings {border-radius:20px;padding:16px 22px 14px;min-height:0;overflow-y:auto;}
+#sp-stage .tz-settings {border-radius:20px;padding:16px 22px 14px;min-height:0;overflow:visible;}
 #sp-stage .tz-panel-title {font-size:22px;line-height:28px;gap:10px;letter-spacing:1px;}
 #sp-stage .tz-panel-title svg {width:20px;height:20px;}
 #sp-stage .tz-hr {margin:6px 0;}
@@ -98,3 +99,22 @@
 #sp-stage .rv-metaline i,#sp-stage .rv-note {font-size:16px;}
 #sp-stage .rv-start {height:64px;font-size:23px;letter-spacing:4px;border-radius:13px;}
 #sp-stage .rv-bottom {font-size:14px;padding:12px 18px;}
+
+/* NAV-S31: layout and preservation of unchanged live tz-* paint. */
+/* Preserve the old enabled-button system text paint when locking the tiers.
+   Child tz-name/tz-no/tz-hint colors remain the original explicit live values. */
+#sp-stage .tz-radiogroup .tz-row:disabled {opacity:1;cursor:default;color:ButtonText;}
+/* The former div inherited tz ink; button UA ButtonText must not replace it. */
+#sp-stage .ai-selection-card {color:inherit;display:block;width:100%;text-align:left;min-height:132px;}
+#sp-stage .ai-selection-card .tz-neural-head {width:100%;}
+#sp-stage .ai-change {font-size:15px;white-space:nowrap;}
+#sp-stage .ai-selection-names {display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+#sp-stage .ai-selection-line {display:flex;align-items:baseline;gap:8px;min-width:0;line-height:23px;}
+#sp-stage .ai-selection-line .ai-role {flex:0 0 76px;margin:0;font-size:15px;white-space:nowrap;}
+#sp-stage .ai-selection-line .ai-model-name {font-size:16px;letter-spacing:0;white-space:nowrap;font-weight:600;}
+#sp-stage .ai-selection-single {justify-content:center;min-height:65px;}
+#sp-stage .ai-selection-single .ai-model-name {font-size:18px;}
+#sp-stage .ai-card-issue {margin:0;font-size:14px;}
+#sp-stage .ai-home-error {font-size:12px;line-height:16px;margin:6px 0 0;overflow-wrap:anywhere;}
+#sp-stage .tz-resume-txt {white-space:normal;overflow:visible;}
+#sp-stage .tz-resume-txt b {font-size:12px;line-height:18px;}

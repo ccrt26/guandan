@@ -1,3 +1,4 @@
+import { displaySeatLabel, SEAT_DISPLAY_VERSION } from './seatDisplay';
 /**
  * packages/review/src/coachJson.ts — R3（REVIEW3-EXEC §3.2）：结构化教练输出与校验。
  * LLM 只允许输出 { summary, lessons[] }；每条 lesson 必须引用存在的 decisionId /
@@ -116,7 +117,7 @@ function entailedSurface(text: string, evidences: DecisionReview[], kind: 'summa
 /** 把证据对象渲染成"程序事实卡"文本（LLM 输入与页面展示共用） */
 export function renderFactCards(evidences: DecisionReview[], viewerSeat = evidences[0]?.seat): string {
   if (!Number.isInteger(viewerSeat) || viewerSeat! < 0 || viewerSeat! > 3) throw new Error('valid viewer seat required');
-  const seatNames = ['南', '东', '北', '西'].map((name,seat)=>name+(seat===viewerSeat?'(你)':seat===(viewerSeat!+2)%4?'(队友)':''));
+  const seatNames = [0, 1, 2, 3].map(seat => { const label = displaySeatLabel(seat, viewerSeat!); return `${label.label}（${label.relation}）`; });
   const blocks: string[] = [];
   for (const e of evidences) {
     const lines: string[] = [];
@@ -162,6 +163,9 @@ export function buildCoachJsonMessages(
   viewerSeat = evidences[0]?.seat,
 ): Array<{ role: 'system' | 'user'; content: string }> {
   const system = `你是一位掼蛋教练，根据程序生成的证据卡给学生做短篇复盘讲解。
+
+【固定座号】
+1号在下方，2号在上方，3号在左侧，4号在右侧；1号/2号一队，3号/4号一队。座号不随观察席改变；观察席、队友、对手仅表示分析视角，不表明真人控制。技术ID中的席位数仍为原引擎索引，不得当显示号解读。
 
 【输出契约（必须严格遵守）】
 只输出一个 JSON 对象，不要 markdown 代码块、不要多余文字。结构：
@@ -338,7 +342,7 @@ export function acceptCoachResponse(raw: string, evidences: DecisionReview[]): C
   } catch { return null; }
 }
 function cacheWitness(evidences: DecisionReview[], context: Record<string,unknown>): string {
-  return JSON.stringify({schema:'coach-cache-v3',context,prompt:COACH_JSON_PROMPT_VERSION,
+  return JSON.stringify({schema:'coach-cache-v3',context:{...context,seatDisplayVersion:SEAT_DISPLAY_VERSION},prompt:COACH_JSON_PROMPT_VERSION,
     validator:COACH_VALIDATOR_VERSION,validatorSource:validateCoachJson.toString()+validateSurface.toString()+entailedSurface.toString()+normalizedSentence.toString(),evidences});
 }
 export function makeCoachCache(raw: string, evidences: DecisionReview[], context: Record<string,unknown>): string {

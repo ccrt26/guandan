@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "gd-model-index-v1",
+  "defaultPolicyRef": "frozenChampion-clean2-ck7051-encv1-candv2",
+  "policies": [
+    {
+      "architectureId": "mlp-tanh-256x256-scalar-v1",
+      "weightsLayoutVersion": "f32le-layer-w-row-major-then-b-v1",
+      "epsilon": 0,
+      "tieBreakId": "first-candidate-v1",
+      "policyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "modelVersion": "clean2-ck7051-20261027",
+      "parameterCount": 164865,
+      "inputDim": 385,
+      "weightsPathOrUrl": {
+        "nodePath": "packages/web/public/ai/clean2.f32",
+        "assetUrl": "ai/clean2.f32"
+      },
+      "weightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+      "encoder": {
+        "schema": "v1",
+        "ctxFill": "none",
+        "passEncoding": "legacy-phys10",
+        "encoderVersion": "gd-lab-schema-v1"
+      },
+      "candidateSpecId": "cand-dedup-v2",
+      "tierSpecId": "legacy-near-tie-v1"
+    },
+    {
+      "architectureId": "mlp-tanh-256x256-scalar-v1",
+      "weightsLayoutVersion": "f32le-layer-w-row-major-then-b-v1",
+      "epsilon": 0,
+      "tieBreakId": "first-candidate-v1",
+      "policyId": "r62-p8c-control-u1400-greedy",
+      "modelVersion": "r62-p8c-control-u001400-41c9a38f",
+      "parameterCount": 168449,
+      "inputDim": 399,
+      "weightsPathOrUrl": {
+        "nodePath": "lab/review6_2/runs/r62-p8c-control/checkpoints/u001400-41c9a38f/weights.f32",
+        "assetUrl": "ai/ohuo/ohuo-1030-b-v1/weights.f32"
+      },
+      "weightsSHA256": "d05c52bbd28883760da11f042be2d110fd3b3a9affd97edd7aed43c9421eb081",
+      "encoder": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64",
+        "encoderVersion": "gd-lab-schema-v4"
+      },
+      "candidateSpecId": "cand-suit-v3",
+      "tierSpecId": "none"
+    }
+  ]
+}

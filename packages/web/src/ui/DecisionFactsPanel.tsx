@@ -1,4 +1,4 @@
-import {buildDecisionFactsV3,type DecisionReview} from '@gd/review';
+import {buildDecisionFactsV3,displaySeatLabel,displaySeatCounts,type DecisionReview} from '@gd/review';
 import type {GameRecord} from '@gd/engine';
 
 export const REVIEW_PREVIEW_ID='review6-facts-ui-20261028-03';
@@ -15,9 +15,9 @@ export function DecisionFactsPanel({record,moveNo,viewerSeat,identity,evidence}:
     const link=document.createElement('a');link.href=url;link.download=`${record.id}-m${moveNo}-v${viewerSeat}-incident.json`;link.click();URL.revokeObjectURL(url);
   }
   return <section className="ev-card" data-testid="decision-facts-v3">
-    <h4>本手事实 · 行动席 {facts.actorSeat} / 观察席 {facts.viewerSeat}</h4>
-    <p>当前目标：{facts.target?.text??'领出，无待压目标'}；控权席：{facts.currentTrickOwner??'无'}</p>
-    <p>实际：{facts.actual.text} · {facts.actual.cardCount} 张；行动后余牌：{facts.afterCounts.join(' / ')} 张</p>
+    <h4>本手事实 · 行动席 {displaySeatLabel(facts.actorSeat).label} / 观察席 {displaySeatLabel(facts.viewerSeat).label}</h4>
+    <p>当前目标：{facts.target?.text??'领出，无待压目标'}；控权席：{facts.currentTrickOwner == null ? '无' : displaySeatLabel(facts.currentTrickOwner).label}</p>
+    <p>实际：{facts.actual.text} · {facts.actual.cardCount} 张；行动后余牌：{displaySeatCounts(facts.afterCounts)}</p>
     <p>{facts.ruleRelation.applicabilityReason}</p>
     {facts.bombComparison&&<p>四炸 / 五炸规则比较：{facts.bombComparison.fourCanBeatCurrent&&facts.bombComparison.fiveCanBeatCurrent?'两者都能压当前目标':'领出时无待压目标'}；{facts.bombComparison.fiveBeatsFour?'五炸强度大于四炸':'按当前规则分别比较'}。行动后分别剩 {facts.bombComparison.fourRemaining} / {facts.bombComparison.fiveRemaining} 张。余手用途尚未验证，不据此判定哪种打法更好。</p>}
     <p>建议范围：{facts.expressionScope}</p>

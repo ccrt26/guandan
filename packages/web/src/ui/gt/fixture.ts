@@ -1,3 +1,4 @@
+import { SEAT_DISPLAY } from '../gp/viewmodel';
 import type { CardItem, StageVM } from '../gp/viewmodel';
 import type { ExchangePairVM, GameTableVM, GTPhase } from './viewmodel';
 
@@ -28,13 +29,13 @@ function played(codes: readonly string[], prefix: string): { status: 'cards'; ca
 const TRIBUTE_PAIRS: ExchangePairVM[] = [
   {
     id: 'pair-0',
-    tribute: { fromName: '东家', toName: '我方', card: { instanceId: 'demo-AS-1', code: 'AS', wild: false } },
-    ret: { fromName: '我方', toName: '东家', card: { instanceId: 'demo-3C-1', code: '3C', wild: false } },
+    tribute: { fromName: SEAT_DISPLAY.east, toName: SEAT_DISPLAY.self, card: { instanceId: 'demo-AS-1', code: 'AS', wild: false } },
+    ret: { fromName: SEAT_DISPLAY.self, toName: SEAT_DISPLAY.east, card: { instanceId: 'demo-3C-1', code: '3C', wild: false } },
   },
   {
     id: 'pair-1',
-    tribute: { fromName: '西家', toName: '队友', card: { instanceId: 'demo-KH-1', code: 'KH', wild: false } },
-    ret: { fromName: '队友', toName: '西家', card: { instanceId: 'demo-4D-1', code: '4D', wild: false } },
+    tribute: { fromName: SEAT_DISPLAY.west, toName: SEAT_DISPLAY.north, card: { instanceId: 'demo-KH-1', code: 'KH', wild: false } },
+    ret: { fromName: SEAT_DISPLAY.north, toName: SEAT_DISPLAY.west, card: { instanceId: 'demo-4D-1', code: '4D', wild: false } },
   },
 ];
 
@@ -46,9 +47,9 @@ export function gtFixtureVM(phase: GTPhase, forcePass = false): GameTableVM {
     status: tribute ? '贡还牌' : '第1局·第1手',
     notice: null,
     players: [
-      { seat: 'north', name: '队友', role: 'teammate', remaining: 23, rankIdx: null },
-      { seat: 'west', name: '西家', role: 'opponent', remaining: 23, rankIdx: null },
-      { seat: 'east', name: '东家', role: 'opponent', remaining: 21, rankIdx: null },
+      { seat: 'north', name: SEAT_DISPLAY.north, role: 'teammate', remaining: 23, rankIdx: null },
+      { seat: 'west', name: SEAT_DISPLAY.west, role: 'opponent', remaining: 23, rankIdx: null },
+      { seat: 'east', name: SEAT_DISPLAY.east, role: 'opponent', remaining: 21, rankIdx: null },
     ],
     passes: !tribute && forcePass ? { north: true, west: true, east: false, self: false } : { north: false, west: false, east: false, self: false },
     playedEast: tribute || forcePass ? { status: 'none', cards: [] } : played(['4C', '4S', '5C', '5D', '6H', '6S'], 'gtx-e'),

@@ -1,3 +1,4 @@
+import { displaySeatLabel } from '@gd/review';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { makeLevelCtx, RANK_NAME, type GameRecord } from '@gd/engine';
 import {
@@ -6,7 +7,8 @@ import {
   type CounterfactualResult, type MoveAnalysis, type ReplayFrame, type ReviewAnalysis,
 } from '@gd/review';
 import { KNOWLEDGE, analyzeWithModel, buildDecisionReviews, runInfosetCompare, defaultRoots, type NnReviewSummary, type DecisionReview } from '@gd/review';
-import { MLP, NEURAL_MODEL_VERSION, FROZEN_CHAMPION_IDENTITY } from '@gd/ai';
+import { FROZEN_CHAMPION_IDENTITY, type ResolvedPolicy } from '@gd/ai';
+import { loadRecordedWebPolicy } from '../game/policy';
 import {buildTeamReview} from '@gd/review';
 import {VerifiedReportTab} from './VerifiedReportTab';
 import {DecisionFactsPanel,REVIEW_PREVIEW_ID} from './DecisionFactsPanel';
@@ -16,8 +18,9 @@ import { Markdown } from './markdown';
 import { TrickRecap } from './TrickRecap';
 import { listRecords, loadReport, llmHeaders, loadLLMConfig, saveReport, setRecordFavorite, thinkingParams } from '../game/storage';
 import type { AppSettings } from '../App';
+import { RecordedSeats, recordSeatSnapshot, recordSeatController, recordedModelName } from './RecordedSeats';
 
-const ABSOLUTE_SEAT_NAMES = ['南家', '东家', '北家', '西家'];
+const ABSOLUTE_SEAT_NAMES = [0, 1, 2, 3].map(seat => displaySeatLabel(seat).label);
 const SEAT_POS = ['south', 'east', 'north', 'west'] as const;
 
 export function ReviewPage({
@@ -28,12 +31,16 @@ export function ReviewPage({
   onBack: () => void;
 }) {
   void settings;
+  const frozenSeats = useMemo(() => recordSeatSnapshot(record), [record]);
+  const [analysisSeat, setAnalysisSeat] = useState(() => frozenSeats?.seats.findIndex(s=>s.controller==='ai') ?? -1);
+  const [modelRequested, setModelRequested] = useState<string|null>(null);
+  const modelEnabled = !frozenSeats || modelRequested === record.id;
   const [viewerSeat,setViewerSeat]=useState(record.humanSeat??0);
   const [productStatus,setProductStatus]=useState<{facts:{passedCards:number;expectedAssertions:number;checkedAssertions:number;missingAssertions:number;errorAssertions:number};developmentExamples:Array<{id:string;category:string;actualAction:string;baselineAction:string|null;candidateAction:null;teamGoal:string;resourceImpact:string;changeCondition:string;kind:string}>}|null>(null);
   useEffect(()=>{let active=true;fetch('review6-product-status-003.json').then(r=>r.ok?r.json():null).then(d=>{
     if(active&&d?.schemaVersion==='r61-product-display-v1'&&d.actualPolicyId===FROZEN_CHAMPION_IDENTITY.policyId&&d.facts?.expectedCards===240&&Number.isInteger(d.facts.passedCards)&&d.facts.passedCards>=0&&d.facts.passedCards<=240&&Array.isArray(d.developmentExamples))setProductStatus(d);
   }).catch(()=>{});return()=>{active=false;};},[]);
-  const SEAT_NAMES=ABSOLUTE_SEAT_NAMES.map((name,seat)=>seat===viewerSeat?`你（${name}）`:seat===(viewerSeat+2)%4?`队友（${name}）`:name);
+  const SEAT_NAMES=ABSOLUTE_SEAT_NAMES.map((_,seat)=>displaySeatLabel(seat,viewerSeat,recordSeatController(record,seat)).text);
   // 旧版记录的 player 字段把出牌人记成了下家：先按牌张归属修正，再做完整性校验。
   // 数据损坏的记录绝不进分析——那会产出似是而非的错误建议（曾出现凭空的 4A 炸弹）。
   // R2：再按严格回放分级（exact/migrated_verified/ambiguous/invalid）；
@@ -107,28 +114,26 @@ export function ReviewPage({
     return map;
   }, [analysis]);
 
-  const [sharedMlp, setSharedMlp] = useState<MLP | null>(null);
-  const [weightHash,setWeightHash]=useState<string|null>(null);
-  const frozenEncoder={candidateCompat:'v2' as const,passEncoding:FROZEN_CHAMPION_IDENTITY.passEncoding};
+  const [referenceOnly, setReferenceOnly] = useState(false);
+  const [analysisPolicy, setAnalysisPolicy] = useState<ResolvedPolicy | null>(null);
+  const [policyError, setPolicyError] = useState<string | null>(null);
+  const sharedMlp = useMemo(() => analysisPolicy?.createNetwork() ?? null, [analysisPolicy]);
+  const weightHash = analysisPolicy?.identity.weightsSHA256 ?? null;
+  const frozenEncoder = analysisPolicy?.encoder;
+  const analysisPolicyId = analysisPolicy?.identity.policyId ?? 'unavailable';
   useEffect(()=>{
     let cancelled=false;
-    (async()=>{
-      try {
-        const [weightsResponse,identityResponse]=await Promise.all([fetch('ai/clean2.f32'),fetch('ai/deployed-identity.json')]);
-        if(!weightsResponse.ok||!identityResponse.ok)throw new Error('policy unavailable');
-        const [bytes,identity]=await Promise.all([weightsResponse.arrayBuffer(),identityResponse.json()]);
-        const digest=await crypto.subtle.digest('SHA-256',bytes);
-        const hash=Array.from(new Uint8Array(digest),x=>x.toString(16).padStart(2,'0')).join('');
-        if(hash!==identity.productLoads.weightsSHA256||identity.productLoads.policyId!==FROZEN_CHAMPION_IDENTITY.policyId)throw new Error('policy identity mismatch');
-        const mlp=new MLP(1);mlp.setWeights(new Float32Array(bytes));
-        if(!cancelled){setSharedMlp(mlp);setWeightHash(hash);}
-      }catch{if(!cancelled){setSharedMlp(null);setWeightHash(null);}}
-    })();
+    setAnalysisPolicy(null);
+    if (frozenSeats && !modelEnabled) { setPolicyError(null); return ()=>{cancelled=true;}; }
+    const selectedSeat = frozenSeats?.seats[analysisSeat];
+    const recordedPolicies = frozenSeats ? [fix.record.aiPolicies?.[analysisSeat] ?? 'missing'] : fix.record.aiPolicies;
+    loadRecordedWebPolicy(recordedPolicies).then(({ policy, referenceOnly }) => { if (selectedSeat?.controller === 'ai' && (policy.identity.weightsSHA256 !== selectedSeat.policyIdentity.weightsSHA256 || policy.identity.policyId !== selectedSeat.policyIdentity.policyId || policy.identity.encoderVersion !== selectedSeat.policyIdentity.encoderVersion || policy.identity.candidateVersion !== selectedSeat.policyIdentity.candidateVersion)) throw Error('recorded seat policy identity conflict'); if (!cancelled) { setAnalysisPolicy(policy); setReferenceOnly(referenceOnly); setPolicyError(null); } })
+      .catch(error => { if (!cancelled) { setAnalysisPolicy(null); setPolicyError(`政策加载失败，网络分析已暂停：${String(error)}`); } });
     return ()=>{cancelled=true;};
-  },[]);
+  },[fix.record,frozenSeats,analysisSeat,modelEnabled]);
   const nnAdvice=useMemo<NnReviewSummary|null>(()=>{
     if(!sharedMlp||badRecord)return null;
-    try{return analyzeWithModel(rec,sharedMlp,FROZEN_CHAMPION_IDENTITY.policyId,frozenEncoder);}catch{return null;}
+    try{return analyzeWithModel(rec,sharedMlp,analysisPolicyId,frozenEncoder);}catch{return null;}
   },[rec,sharedMlp,badRecord]);
 
   // R3 证据卡（自办项 1/5/6）：统一证据对象（含双来源续打方向冲突检测）；单次确定性推演挂接 cf 结果
@@ -145,7 +150,7 @@ export function ReviewPage({
         }]);
       }
       return buildDecisionReviews(rec, {
-        mlp: sharedMlp??undefined, modelVersion: FROZEN_CHAMPION_IDENTITY.policyId, weightHash, encoder:frozenEncoder, analysis, rollouts,
+        mlp: sharedMlp??undefined, modelVersion: analysisPolicyId, weightHash, encoder:frozenEncoder, analysis, rollouts,
       });
     } catch { return null; }
   }, [sharedMlp, weightHash, analysis, rec, cf]);
@@ -179,7 +184,7 @@ export function ReviewPage({
   const teamEvents=useMemo(()=>badRecord?null:buildTeamReview(fix.record,{viewerSeat}),[fix.record,viewerSeat,badRecord]);
   const actorEvidence=useMemo(()=>{
     const frame=frames[idx];if(!frame)return null;
-    try{return buildDecisionReviews({...fix.record,humanSeat:frame.move.player},{moves:[frame.move.moveNo],maxPoints:1,mlp:sharedMlp??undefined,modelVersion:FROZEN_CHAMPION_IDENTITY.policyId,weightHash,encoder:frozenEncoder})[0]??null;}catch{return null;}
+    try{return buildDecisionReviews({...fix.record,humanSeat:frame.move.player},{moves:[frame.move.moveNo],maxPoints:1,mlp:sharedMlp??undefined,modelVersion:analysisPolicyId,weightHash,encoder:frozenEncoder})[0]??null;}catch{return null;}
   },[fix.record,frames,idx,sharedMlp,weightHash]);
   const frame = frames[idx];
   const result = rec.result;
@@ -216,6 +221,11 @@ export function ReviewPage({
 
   return (
     <div className="review-wrap">
+      <RecordedSeats record={record} />
+      {frozenSeats && <div className="recorded-analysis"><label>本地提案分析参照 <select value={analysisSeat} onChange={e=>{setAnalysisSeat(Number(e.target.value));setModelRequested(null);}}>
+        {frozenSeats.seats.map((s,seat)=>s.controller==='ai'?<option key={seat} value={seat}>{displaySeatLabel(seat).label} · {recordedModelName(s)}</option>:null)}
+      </select></label> <button onClick={()=>setModelRequested(record.id)} disabled={analysisSeat<0||modelEnabled}>加载冻结本地政策分析（不请求API）</button>
+      <small>纯回放只读取实际动作；本地B建议不代表当时远端选择。</small></div>}
       <div className="review-topbar">
         <button className="btn-ghost btn-small" onClick={onBack}>← 返回复盘列表</button>
         <button
@@ -233,7 +243,7 @@ export function ReviewPage({
                 {analysis.humanTeamWon ? '胜' : '负'}
               </span>
               <span>
-                {result.finishOrder.map((p) => SEAT_NAMES[p]).join('→')} · 你是第
+                {result.finishOrder.map((p) => SEAT_NAMES[p]).join('→')} · 观察席第
                 {['一', '二', '三', '四'][analysis.humanRank - 1]}名
               </span>
               <span>决策 {analysis.stats.total} 手 · 分歧较大 {analysis.stats.divergent} · 未覆盖 {analysis.stats.uncovered}</span>
@@ -252,7 +262,7 @@ export function ReviewPage({
 
       <section className="ev-card" data-testid="capability-card">
         <b>复盘预览 {REVIEW_PREVIEW_ID}</b>
-        <p>复盘事实已接入，出牌能力尚未更新。当前仍使用旧政策 {FROZEN_CHAMPION_IDENTITY.policyId}。</p>
+        <p>复盘事实已接入，出牌能力尚未更新。分析政策：{analysisPolicyId}（{referenceOnly?'原谱无神经身份，使用固定 O 参照，非历史模型':'按原谱固定政策引用'}；不改变原谱实际动作）。</p>
         <p>240 张事实卡：{productStatus?`${productStatus.facts.passedCards}/240（有限开发回归）`:'未测'}；60 家族协作与正式比赛：未测；候选政策：无。</p>
         {productStatus&&<p>预期断言 {productStatus.facts.expectedAssertions}；已核 {productStatus.facts.checkedAssertions}；未核 {productStatus.facts.missingAssertions}；错误 {productStatus.facts.errorAssertions}。</p>}
         {productStatus&&<details><summary>开放开发例：四类各三个，另列证据不足例</summary>{productStatus.developmentExamples.map(example=><article key={example.id} className="ev-card">
@@ -261,7 +271,8 @@ export function ReviewPage({
           <p>队伍目标假设：{example.teamGoal}</p><p>{example.resourceImpact}</p><p>重新比较条件：{example.changeCondition}</p>
           <p>策略正确性尚未由完整比赛教师验证。</p>
         </article>)}</details>}
-        <details><summary>当前加载的政策身份</summary><p>权重 SHA-256：{weightHash??'未加载或身份核验不足'}</p><p>候选 cand-dedup-v2 · 编码 gd-lab-schema-v1 · pass legacy-phys10</p></details>
+        {policyError && <p role="alert">{policyError}</p>}
+        <details><summary>当前加载的政策身份</summary><p>权重 SHA-256：{weightHash??'未加载或身份核验不足'}</p><p>候选 {analysisPolicy?.identity.candidateVersion??'未加载'} · 编码 {analysisPolicy?.identity.encoderVersion??'未加载'} · pass {analysisPolicy?.identity.passEncoding??'未加载'}</p></details>
         <div>{teamEvents?.events.map(event=><button className="btn-ghost btn-small" key={event.moveNo} onClick={()=>{setPlaying(false);setIdx(rec.moves.findIndex(m=>m.moveNo===event.moveNo));setTab('replay');}}>第 {event.moveNo} 手 · {ABSOLUTE_SEAT_NAMES[event.actorSeat]} · 队伍事件</button>)}</div>
       </section>
       <div className={`review-body${tab === 'replay' ? '' : ' is-hidden'}`}>
@@ -302,7 +313,7 @@ export function ReviewPage({
                 <button className="btn-ghost btn-small" onClick={() => { setPlaying(false); setIdx((i) => Math.max(0, i - 1)); }}>上一手</button>
                 <button className="btn-primary btn-small" onClick={() => setPlaying((p) => !p)}>{playing ? '⏸ 暂停' : '▶ 自动'}</button>
                 <button className="btn-ghost btn-small" onClick={() => { setPlaying(false); setIdx((i) => Math.min(frames.length - 1, i + 1)); }}>下一手</button>
-                <button className="btn-ghost btn-small" onClick={() => { setPlaying(false); jumpHuman(1); }}>下一个我的决策 ⏭</button>
+                <button className="btn-ghost btn-small" onClick={() => { setPlaying(false); jumpHuman(1); }}>下一个观察席决策 ⏭</button>
                 <span className="move-counter">{idx + 1} / {frames.length}</span>
               </div>
               <div className="timeline">
@@ -327,7 +338,7 @@ export function ReviewPage({
           {/* 决策详情 */}
           <div className="detail-panel">
             <h3>第 {frame.move.moveNo} 手 · {SEAT_NAMES[frame.move.player]}</h3>
-            <DecisionFactsPanel record={fix.record} moveNo={frame.move.moveNo} viewerSeat={viewerSeat} identity={{...FROZEN_CHAMPION_IDENTITY,weightHash,previewBuildId:REVIEW_PREVIEW_ID}} evidence={actorEvidence}/>
+            <DecisionFactsPanel record={fix.record} moveNo={frame.move.moveNo} viewerSeat={viewerSeat} identity={{...(analysisPolicy?.identity??{policyId:'unavailable'}),weightHash,previewBuildId:REVIEW_PREVIEW_ID}} evidence={actorEvidence}/>
             {frame.move.player === human && myGrade ? (
               <>
                 <div className={`grade-line ${myGrade.grade}`}>
@@ -336,7 +347,7 @@ export function ReviewPage({
                   {myGrade.grade === 'divergent' && <span className="gap">（启发式评分差 {myGrade.scoreGap} 分 · 筛选信号，非判错）</span>}
                 </div>
                 <div className="compare">
-                  <div><span className="lbl">你打了</span><b>{myGrade.playedText}</b></div>
+                  <div><span className="lbl">观察席实际动作</span><b>{myGrade.playedText}</b></div>
                   {myGrade.grade !== 'good' && (
                     <div><span className="lbl">启发式偏好</span><b className="rec">{myGrade.recommendedText}</b></div>
                   )}
@@ -347,7 +358,7 @@ export function ReviewPage({
                       <span className="nn-tag">模型建议</span>
                       <b>{nnByMoveNo.get(frame.move.moveNo)!.verdictText}</b>
                       {nnByMoveNo.get(frame.move.moveNo)!.actualRank != null && (
-                        <span className="nn-rank">（你的选择列第 {nnByMoveNo.get(frame.move.moveNo)!.actualRank} / {nnByMoveNo.get(frame.move.moveNo)!.nCandidates}）</span>
+                        <span className="nn-rank">（该席选择列第 {nnByMoveNo.get(frame.move.moveNo)!.actualRank} / {nnByMoveNo.get(frame.move.moveNo)!.nCandidates}）</span>
                       )}
                     </div>
                     <ol className="nn-top">
@@ -363,14 +374,14 @@ export function ReviewPage({
                 )}
                 <p className="note">以上为启发式偏好与独立网络排序；没有完整团队策略证据时，不将分歧判为错误。</p>
                 <div className="ctx-line">
-                  {myGrade.context.isLead ? '领出' : `跟 ${SEAT_NAMES[myGrade.context.toBeatPlayer ?? 0]} 的 ${myGrade.context.toBeatText}`} · 你 {myGrade.context.myHandSize} 张 · 对手最少 {myGrade.context.oppMinCards} 张
+                  {myGrade.context.isLead ? '领出' : `跟 ${SEAT_NAMES[myGrade.context.toBeatPlayer ?? 0]} 的 ${myGrade.context.toBeatText}`} · 观察席 {myGrade.context.myHandSize} 张 · 对手最少 {myGrade.context.oppMinCards} 张
                 </div>
                 {cfOf(frame.move.moveNo) && (
                   <div className="cf-box">
                     <b>事后情景演示（单次确定性推演 · 替代来源={cfOf(frame.move.moveNo)!.sourceId}；续打={cfOf(frame.move.moveNo)!.continuationPolicyId}）</b>
-                    <div>你的打法「{cfOf(frame.move.moveNo)!.actualText}」→ {cfOf(frame.move.moveNo)!.actualOutcome}</div>
+                    <div>该席打法「{cfOf(frame.move.moveNo)!.actualText}」→ {cfOf(frame.move.moveNo)!.actualOutcome}</div>
                     <div>替代打法「{cfOf(frame.move.moveNo)!.alternativeText}」→ {cfOf(frame.move.moveNo)!.alternativeOutcome}</div>
-                    <div className="cf-verdict">这是真实牌面+固定续打策略下的单次推演，不是当时信息下的胜率；两分支走向不同≠你打错了。</div>
+                    <div className="cf-verdict">这是真实牌面+固定续打策略下的单次推演，不是当时信息下的胜率；两分支走向不同≠该席打错了。</div>
                   </div>
                 )}
                 {myGrade.tags.length > 0 && (
@@ -422,7 +433,7 @@ export function ReviewPage({
         </div>
       )}
       <div className={`report-page-wrap${tab === 'report' ? '' : ' is-hidden'}`}>
-        <VerifiedReportTab key={`${rec.id}:v${viewerSeat}`} record={rec} evidence={(evidence??[]).filter(e=>e.seat===viewerSeat)} onJump={moveNo=>{setPlaying(false);setTab('replay');const i=rec.moves.findIndex(m=>m.moveNo===moveNo);if(i>=0)setIdx(i);}}/>
+        <VerifiedReportTab key={`${rec.id}:v${viewerSeat}`} record={record} viewerSeat={viewerSeat} evidence={(evidence??[]).filter(e=>e.seat===viewerSeat)} onJump={moveNo=>{setPlaying(false);setTab('replay');const i=rec.moves.findIndex(m=>m.moveNo===moveNo);if(i>=0)setIdx(i);}}/>
       </div>
     </div>
   );

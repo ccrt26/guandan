@@ -1,0 +1,9 @@
+/* Only reserves space for the explicit fixture toolbar; product components use their real stylesheet. */
+.m-tools { position: relative; z-index: 100001; flex: none; padding: 10px 16px; background: #fff3c9; color: #1b232e; border-bottom: 3px solid #a67800; font: 13px/1.4 system-ui; }
+.m-controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0; }
+.m-controls button, .m-controls select { padding: 4px 8px; font-size: 13px; }
+.m-tools output { display: block; overflow-wrap: anywhere; }
+.m-main { overflow: auto; padding: 12px 20px; min-height: 0; }
+.m-main .page { overflow: visible; }
+.settings-mask { top: 168px; }
+.settings-mask .settings-modal { max-height: calc(100vh - 188px) !important; }

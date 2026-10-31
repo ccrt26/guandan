@@ -1,3 +1,4 @@
+import { displaySeatLabel, displaySeatCounts } from './seatDisplay';
 /**
  * packages/review/src/teamContext.ts — D2（REVIEW4-EXEC §5.2）：队伍教学输入。
  * 用当时玩家可见信息生成 TeamContext：局势（级牌/领牌/轮转/四席张数/已知归属）、
@@ -95,16 +96,16 @@ export function buildTeamContext(record: GameRecord, moveNo: number, opts: { use
   if (effectiveLevelRank != null) {
     f('tc-wild', `本局级牌为 ${RANK_NAME[effectiveLevelRank]}，红心${RANK_NAME[effectiveLevelRank]} 为逢人配（万能牌）`, 'public', 'rule:def');
   }
-  f('tc-counts', `四席剩牌：${stateAt.hands.map((h, i) => `${['南', '东', '北', '西'][i]}${h.length}`).join('、')}`, 'public');
+  f('tc-counts', `四席剩牌：${displaySeatCounts(stateAt.hands.map(h => h.length))}`, 'public');
   f('tc-lead', stateAt.lastCombo
-    ? `当前要压的是${['南', '东', '北', '西'][stateAt.lastPlayer]}家的 ${stateAt.lastCombo.cards.map(cardLabel).join(' ')}；本轮领出者${['南', '东', '北', '西'][stateAt.leader]}`
-    : `你（${['南', '东', '北', '西'][seat]}）领出此轮`, 'public');
-  f('tc-hand', `你的手牌（${ownHand.length} 张）：${ownHand.join(' ')}`, 'self_private');
+    ? `当前要压的是${displaySeatLabel(stateAt.lastPlayer).label}的 ${stateAt.lastCombo.cards.map(cardLabel).join(' ')}；本轮领出者${displaySeatLabel(stateAt.leader).label}`
+    : `${displaySeatLabel(seat).label}领出此轮`, 'public');
+  f('tc-hand', `本席手牌（${ownHand.length} 张）：${ownHand.join(' ')}`, 'self_private');
 
   // 已知归属（贡还公开流转；旧记录缺字段=缺失，不伪造）
   const tributes = record.tributes ?? [];
   if (tributes.length > 0) {
-    f('tc-transfers', `已知公开归属转移：${tributes.map((t) => `${['南', '东', '北', '西'][t.from]}→${['南', '东', '北', '西'][t.to]} ${t.kind === 'tribute' ? '贡' : '还'}${cardLabel(t.card)}`).join('；')}（出牌后从持有下界扣减）`, 'public', 'record.tributes');
+    f('tc-transfers', `已知公开归属转移：${tributes.map((t) => `${displaySeatLabel(t.from).label}→${displaySeatLabel(t.to).label} ${t.kind === 'tribute' ? '贡' : '还'}${cardLabel(t.card)}`).join('；')}（出牌后从持有下界扣减）`, 'public', 'record.tributes');
   } else {
     f('tc-transfers-missing', record.schemaVersion != null && record.tributes === undefined
       ? '本局记录未存贡还流转（旧记录）：已知归属信息缺失，信息集采样按探索性演示降级'
@@ -160,7 +161,7 @@ export function buildTeamContext(record: GameRecord, moveNo: number, opts: { use
     if (frame.move.moveNo >= moveNo) break;
     if (frame.state.leader !== lastLeader) {
       if (lastLeader >= 0 && ((frame.state.leader & 1) !== team) && (lastLeader & 1) === team) {
-        timelinePoints.push({ atMove: frame.move.moveNo, kind: 'control_shift', note: `出牌权从我方转到对方（${['南', '东', '北', '西'][frame.state.leader]}家领出）`, factIds: ['tc-lead'] });
+        timelinePoints.push({ atMove: frame.move.moveNo, kind: 'control_shift', note: `出牌权从我方转到对方（${displaySeatLabel(frame.state.leader).label}领出）`, factIds: ['tc-lead'] });
       }
       lastLeader = frame.state.leader;
     }

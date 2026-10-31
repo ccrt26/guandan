@@ -1,3 +1,4 @@
+import { displaySeatLabel } from './seatDisplay';
 import { RANK_NAME, SUIT_GLYPH, type Card, type GameRecord } from '@gd/engine';
 import type { CounterfactualResult } from './counterfactual';
 import { gradeIcon, type MoveAnalysis, type ReviewAnalysis } from './analyzer';
@@ -59,12 +60,15 @@ export function buildCoachMessages(
   counterfactuals: CounterfactualResult[],
   nn?: NnReviewSummary,
 ): Array<{ role: 'system' | 'user'; content: string }> {
-  const seatNames = ['你（南）', '东家', '队友（北）', '西家'];
+  const viewerSeat = record.humanSeat ?? 0, viewerTeam = viewerSeat % 2;
+  const seatNames = [0, 1, 2, 3].map(seat => {const label=displaySeatLabel(seat,viewerSeat);return `${label.label}（${label.relation}）`;});
   const result = record.result;
   const rankNames = ['头游', '二游', '三游', '末游'];
 
   const system = `你是一位经验丰富的掼蛋教练，正在给学生复盘一局牌。
-规则要点：掼蛋是 4 人 2v2（南北一队、东西一队），两副牌 108 张每人 27 张；级牌大于 A 小于王；红心级牌是万能配牌；顺子固定五张（A 可作 1）；三连对恰三对；钢板两连三不带对；炸弹四到八张。
+规则要点：掼蛋是 4 人 2v2（固定座号1号/2号一队、3号/4号一队），两副牌 108 张每人 27 张；级牌大于 A 小于王；红心级牌是万能配牌；顺子固定五张（A 可作 1）；三连对恰三对；钢板两连三不带对；炸弹四到八张。
+
+座号固定为下方1号、上方2号、左侧3号、右侧4号；下文“你”仅指观察席视角，不表明该席由真人操控。
 
 【铁律：禁止编牌】
 引擎会为每个关键手提供「复现剧本」，其中每一张牌（含花色点数、万能牌代入）都是真实记录。
@@ -84,19 +88,19 @@ export function buildCoachMessages(
 
   const lines: string[] = [];
   lines.push(`## 对局信息`);
-  lines.push(`- 学生座位：南（0），队友：北（2）；对手：东（1）、西（3）`);
+  lines.push(`- 观察席：${displaySeatLabel(viewerSeat).label}，队友：${displaySeatLabel((viewerSeat+2)%4).label}；对手：${[0,1,2,3].filter(seat=>seat%2!==viewerTeam).map(seat=>displaySeatLabel(seat).label).join("、")}`);
   // R1-B（REVIEW2-EXEC §4.1）：级牌/万能牌说明必须从记录的真实规则上下文生成，禁止按双方级数另拼一套
   const levelMode = record.ruleOpts.levelMode ?? 'both';
   if (levelMode === 'stage') {
     const stageTeam = record.stageTeam ?? 0;
     const stageLevel = record.levelsBefore[stageTeam];
     const otherLevel = record.levelsBefore[1 - stageTeam];
-    lines.push(`- 本局级数：${stageTeam === 0 ? '我方' : '对方'}在台，全场打 ${RANK_NAME[stageLevel]}（级牌共 8 张，红心${RANK_NAME[stageLevel]}×2 为万能配牌；${stageTeam === 0 ? '对方' : '我方'}级数 ${RANK_NAME[otherLevel]} 的牌本局不是级牌、其红心不参与配牌）`);
+    lines.push(`- 本局级数：${stageTeam === viewerTeam ? '我方' : '对方'}在台，全场打 ${RANK_NAME[stageLevel]}（级牌共 8 张，红心${RANK_NAME[stageLevel]}×2 为万能配牌；${stageTeam === viewerTeam ? '对方' : '我方'}级数 ${RANK_NAME[otherLevel]} 的牌本局不是级牌、其红心不参与配牌）`);
   } else {
-    lines.push(`- 本局级数（历史口径 ${levelMode}）：我方打 ${RANK_NAME[record.levelsBefore[0]]}、对方打 ${RANK_NAME[record.levelsBefore[1]]}（红心${[...new Set(record.levelsBefore)].map((l) => RANK_NAME[l]).join('/')}为万能配牌——该局按当时旧规则回放）`);
+    lines.push(`- 本局级数（历史口径 ${levelMode}）：我方打 ${RANK_NAME[record.levelsBefore[viewerTeam]]}、对方打 ${RANK_NAME[record.levelsBefore[1-viewerTeam]]}（红心${[...new Set(record.levelsBefore)].map((l) => RANK_NAME[l]).join('/')}为万能配牌——该局按当时旧规则回放）`);
   }
   if (result) {
-    lines.push(`- 结果：${result.finishOrder.map((p, i) => `${rankNames[i]}=${seatNames[p]}`).join('、')}；${result.winnerTeam === 0 ? '我方（学生队）胜' : '对方胜'}${result.doubleUp ? '（双上游）' : ''}；升级 +${result.upgrade}`);
+    lines.push(`- 结果：${result.finishOrder.map((p, i) => `${rankNames[i]}=${seatNames[p]}`).join('、')}；${result.winnerTeam === viewerTeam ? '我方（学生队）胜' : '对方胜'}${result.doubleUp ? '（双上游）' : ''}；升级 +${result.upgrade}`);
     lines.push(`- 学生名次：${rankNames[analysis.humanRank - 1]}`);
   }
   lines.push(`- 学生总出手 ${analysis.metrics.actualHands} 次（开局手牌启发式参考拆分约 ${analysis.metrics.optimalHands} 组，未证明最少）`);

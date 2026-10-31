@@ -1,5 +1,7 @@
 import type { GameRecord, GameResult, Move, RuleOptions } from '@gd/engine';
 import type { Difficulty } from '@gd/ai';
+import type { SeatSnapshot } from '../../../ai/src/policy/seats';
+import type { DecisionOutcome } from '../../../ai/src/hybrid/decide';
 import type { ExchangeHistoryEntry, InitialGameSnapshot } from './exchange';
 
 /**
@@ -8,6 +10,8 @@ import type { ExchangeHistoryEntry, InitialGameSnapshot } from './exchange';
  */
 
 export interface RecordMeta {
+  /** No human played: reference seat0 is only a replay viewpoint, not personal statistics. */
+  spectatorOnly?: boolean;
   id: string;
   matchId: string;
   createdAt: number;
@@ -108,6 +112,7 @@ export function saveRecord(record: GameRecord): void {
     matchId: record.matchId,
     createdAt: record.createdAt,
     humanSeat,
+    ...(record.humanSeat === null ? {spectatorOnly:true} : {}),
     difficulties: record.difficulties,
     winnerTeam: record.result.winnerTeam,
     doubleUp: record.result.doubleUp,
@@ -164,9 +169,13 @@ export interface ActiveGameSave {
   recorderMeta: Omit<GameRecord, 'moves' | 'result'>;
   moves: Move[];
   acknowledgedVersion: string | null;
+  decisionRecords?: DecisionOutcome[];
 }
 
 export interface MatchSave {
+  /** Absent means explicit legacy restore, never infer new seats. */
+  seatConfig?: SeatSnapshot;
+  executionState?: 'confirmed' | 'applying' | 'execution_uncertain';
   levels: [number, number];
   /** 引擎局号；有 activeGame 时该局进行中，无 activeGame 的旧档为已完成局数。 */
   gameNo: number;
@@ -244,9 +253,7 @@ export function llmHeaders(): Record<string, string> {
   return c ? { 'x-llm-base': c.baseUrl, 'x-llm-key': c.apiKey, 'x-llm-model': c.model } : {};
 }
 
-/** 按思考强度构造请求体的思考参数与输出上限
- * 实测（GLM-5.3 · Coding Plan 的 Anthropic 端点）：budget_tokens 会被无视、模型默认就思考，
- * 唯一有效的开关是 thinking.type=disabled（约 6 秒出答案）。最高档=放开思考，约 5~7 分钟。 */
+/** Legacy compatibility only. Live chat uses an explicitly selected named profile and its saved options. */
 export function thinkingParams(effort: LLMConfig['effort']): { thinking?: unknown; reasoning_effort?: string; maxTokens: number } {
   if (effort === 'off') return { thinking: { type: 'disabled' }, maxTokens: 8192 };
   if (effort === 'std') return { thinking: { type: 'disabled' }, maxTokens: 12288 };
@@ -262,7 +269,7 @@ export function loadStats(): Stats {
 }
 
 export function updateStats(record: GameRecord): void {
-  if (!record.result) return;
+  if (!record.result || record.humanSeat === null) return;
   const stats = loadStats();
   const humanSeat = record.humanSeat ?? 0;
   const humanTeamWon = record.result.winnerTeam === (humanSeat % 2 === 0 ? 0 : 1);
@@ -275,4 +282,62 @@ export function updateStats(record: GameRecord): void {
   if (humanTeamWon) slot.wins += 1;
   stats.byDifficulty[diff] = slot;
   localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+}
+
+// Named connections use a separate public-only cache. Chat stores only an exact explicit reference.
+export { createProfileClient } from './llm-profiles';
+export type { PublicProfile, ProfileFields, SaveProfile } from './llm-profiles';
+
+/** An explicit public choice, not credentials or a mutable profile-id alias. */
+export type ChatProfileReference = Pick<import('./llm-profiles').PublicProfile, 'profileId' | 'revision' | 'snapshotHash'>;
+const CHAT_PROFILE_KEY = 'gd_chat_profile_reference_v1';
+export function profileReference(profile: ChatProfileReference): ChatProfileReference {
+  return { profileId: profile.profileId, revision: profile.revision, snapshotHash: profile.snapshotHash };
+}
+export function profileReferenceKey(profile: ChatProfileReference): string { return JSON.stringify(profileReference(profile)); }
+export function loadChatProfileReference(): ChatProfileReference | null {
+  try {
+    const value = JSON.parse(localStorage.getItem(CHAT_PROFILE_KEY) ?? 'null');
+    if (!value || Object.keys(value).sort().join(',') !== 'profileId,revision,snapshotHash' ||
+      typeof value.profileId !== 'string' || !value.profileId || !Number.isSafeInteger(value.revision) || value.revision < 1 ||
+      typeof value.snapshotHash !== 'string' || !/^[a-f0-9]{64}$/.test(value.snapshotHash)) return null;
+    return profileReference(value);
+  } catch { return null; }
+}
+export function saveChatProfileReference(reference: ChatProfileReference | null): void {
+  try {
+    if (reference) localStorage.setItem(CHAT_PROFILE_KEY, profileReferenceKey(reference));
+    else localStorage.removeItem(CHAT_PROFILE_KEY);
+  } catch { /* The explicit in-memory choice remains usable; persistence is optional. */ }
+}
+
+// New-player intent is public metadata only; failures are visible to the committing UI.
+import { validateNewGameSettings, newGameSettingsFromLegacy, type NewGameSettings } from './ai-selection';
+import type { SeatAssignment } from '../../../ai/src/policy/seats';
+const NEW_GAME_SETTINGS_KEY = 'gd_new_game_settings_v1';
+export function loadNewGameSettings(legacy?:{passA?:RuleOptions['passA'];seats?:readonly SeatAssignment[]},storage:Pick<Storage,'getItem'>=localStorage):NewGameSettings {
+  const raw=storage.getItem(NEW_GAME_SETTINGS_KEY);
+  return raw===null?newGameSettingsFromLegacy(legacy):validateNewGameSettings(JSON.parse(raw));
+}
+export function saveNewGameSettings(value:NewGameSettings,storage:Pick<Storage,'setItem'>=localStorage):void {
+  storage.setItem(NEW_GAME_SETTINGS_KEY,JSON.stringify(validateNewGameSettings(value)));
+}
+export interface ProviderBindings {schema:'ohuo-provider-bindings-v1';glm:ChatProfileReference|null;deepseek:ChatProfileReference|null}
+const PROVIDER_BINDINGS_KEY='gd_provider_bindings_v1';
+export function validateProviderBindings(value:unknown):ProviderBindings {
+  if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).sort().join(',')!=='deepseek,glm,schema')throw Error('invalid_provider_bindings');
+  const b=value as ProviderBindings;
+  if(b.schema!=='ohuo-provider-bindings-v1')throw Error('invalid_provider_bindings');
+  for(const ref of [b.glm,b.deepseek]){
+    if(ref===null)continue;
+    if(!ref||typeof ref!=='object'||Array.isArray(ref)||Object.keys(ref).sort().join(',')!=='profileId,revision,snapshotHash'||typeof ref.profileId!=='string'||!ref.profileId||ref.profileId!==ref.profileId.trim()||!Number.isSafeInteger(ref.revision)||ref.revision<1||typeof ref.snapshotHash!=='string'||!/^[a-f0-9]{64}$/.test(ref.snapshotHash))throw Error('invalid_provider_binding_reference');
+  }
+  return structuredClone(b);
+}
+export function loadProviderBindings(storage:Pick<Storage,'getItem'>=localStorage):ProviderBindings {
+  const raw=storage.getItem(PROVIDER_BINDINGS_KEY);
+  return raw===null?{schema:'ohuo-provider-bindings-v1',glm:null,deepseek:null}:validateProviderBindings(JSON.parse(raw));
+}
+export function saveProviderBindings(value:ProviderBindings,storage:Pick<Storage,'setItem'>=localStorage):void {
+  storage.setItem(PROVIDER_BINDINGS_KEY,JSON.stringify(validateProviderBindings(value)));
 }

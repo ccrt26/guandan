@@ -1,10 +1,12 @@
+import { describeSeatChoice } from './ai-selection';
+import { displaySeatLabel } from '@gd/review';
 import {
   applyMove, beats, bestResponse, buildDeck, canPass, checkRecordIntegrity, classify, completeReturn, createMatch, describeCombo,
   legalCombos, newRecordId, pickReturnCard, RECORD_SCHEMA_VERSION, Recorder, sortedHandCopy, startGame,
   type Card, type Combo, type EngineEvent, type GameRecord, type GameResult, type GameState,
   type MatchState, type RuleOptions, RNG,
 } from '@gd/engine';
-import { createAI, createNeuralAI, decideMove, MLP, mulberry32, NEURAL_MODEL_VERSION, NeuralDecider, PlayMemory, scoreCandidates, type NeuralTier } from '@gd/ai';
+import { createAI, createNeuralAI, serializeSavedLocalPolicy, resolveSavedLocalPolicy, decideMove, MLP, mulberry32, NEURAL_MODEL_VERSION, NeuralDecider, PlayMemory, scoreCandidates, type NeuralTier, type ResolvedPolicy } from '@gd/ai';
 import type { AIPlayer, Difficulty, Move } from '@gd/ai';
 import { clearCurrentMatch, loadCurrentMatch, saveCurrentMatch, saveRecord, updateStats, type ActiveGameSave, type MatchSave } from './storage';
 import {
@@ -12,8 +14,18 @@ import {
   type ExchangeHistoryEntry, type ExchangeResult,
 } from './exchange';
 
+import { PendingDecision, type DecisionOutcome } from '../../../ai/src/hybrid/decide';
+import { createDecisionBundle } from '../../../ai/src/hybrid/candidates';
+import { canonicalActionId, resolveLegalMove } from '../../../ai/src/hybrid/legality';
+import { freezeCopy, type PublicStep, type DecisionKey } from '../../../ai/src/hybrid/protocol';
+import type { RemoteRequest } from '../../../ai/src/hybrid/remote-selector';
+import { decideTiered, NEURAL_TIERS } from '../../../ai/src/nn/tiered';
+import type { NeuralDecision } from '../../../ai/src/nn/neuralSeat';
+import { assertSavedSeats, isResolvedFourSeats, type ResolvedFourSeats } from './seats';
+import { createRemotePlayRequest } from './remote-play';
+
 export const HUMAN_SEAT = 0;
-export const SEAT_NAMES = ['你', '东家', '队友', '西家'];
+export const SEAT_NAMES = [0, 1, 2, 3].map(seat => displaySeatLabel(seat).label);
 
 /** 历史只是展示元数据；损坏项丢弃，不能使有效活动牌局崩溃或改变其确认门。 */
 function restoreExchangeHistory(value: unknown, matchId: string, gameNo: number): readonly ExchangeHistoryEntry[] {
@@ -59,12 +71,17 @@ function restoreExchangeHistory(value: unknown, matchId: string, gameNo: number)
 }
 
 export interface ControllerOptions {
+  seats?: ResolvedFourSeats;
+  /** Transport injection for an embedded host; ordinary UI uses same-origin B04 adapter. */
+  remoteRequest?: RemoteRequest;
   difficulty: Difficulty;
   rules: RuleOptions;
   aiDelayMs?: number;
   /** 实验性神经陪练（试用）：传入 armA_end 权重后，三个 AI 座位改用神经模型；
    *  加载或决策异常时回退启发式并计数（neuralFallbacks）。不替换正式三档默认。 */
   neuralOpponents?: ArrayBufferLike;
+  /** Verified immutable policy shared by players and hint. B01 production path. */
+  neuralPolicy?: ResolvedPolicy;
   /** D1 三档（难度只作用于两个对手席位；队友固定贪心）；缺省=hard（贪心）保持旧行为 */
   neuralTier?: NeuralTier;
   /** 神经权重加载失败原因（App 层 fetch 失败时传入；UI 横幅+记录如实标注回退） */
@@ -124,11 +141,39 @@ export class MatchController {
   private exchangeValidationError: string | null = null;
   private exchangeActionError: string | null = null;
   private recoveryError: string | null = null;
+  private destroyed = false;
+  private readonly controllerIdentity = `c${newRecordId()}-${Math.random().toString(36).slice(2)}`;
+  private generation = 0;
+  private requestSeq = 0;
+  private snapshotEpoch = 0;
+  private pendingDecision: PendingDecision | null = null;
+  private publicSteps: PublicStep[] = [];
+  private seatDeciders = new Map<number, NeuralDecider>();
+  private tierRand: () => number = () => 0;
+  private executionState: 'confirmed' | 'applying' | 'execution_uncertain' = 'confirmed';
+  decisionError: string | null = null;
+  lastDecision: DecisionOutcome | null = null;
 
   constructor(opts: ControllerOptions) {
+    if (opts.seats && !isResolvedFourSeats(opts.seats)) throw Error('four_seats_require_verified_references');
+    if (opts.neuralPolicy && opts.neuralTier && opts.neuralTier !== 'hard'
+      && opts.neuralPolicy.descriptor.tierSpecId !== 'legacy-near-tie-v1') throw Error('selected policy does not support product tier overrides');
     this.opts = { aiDelayMs: opts.autopilot ? 100 : 600, ...opts };
     this.difficulty = opts.difficulty;
     const save = opts.resumeMatch;
+    if ((save?.seatConfig || save?.executionState) && save.executionState !== 'confirmed') throw Error('execution_uncertain: saved apply was not confirmed');
+    if (save?.seatConfig) {
+      if (!opts.seats) throw Error('four_seat_save_requires_verified_references');
+      assertSavedSeats(save.seatConfig, opts.seats.snapshot);
+    } else if (save && opts.seats) throw Error('legacy_save_requires_legacy_restore');
+    if (save && !save.seatConfig) {
+      const expected = resolveSavedLocalPolicy(save.aiPolicy);
+      if (save.aiPolicy?.startsWith('neural-policy:') && !opts.neuralPolicy) throw Error('saved policy requires a verified instance');
+      if (opts.neuralPolicy && (!expected || expected.policyRef !== opts.neuralPolicy.identity.policyId
+        || expected.weightsSHA256 && expected.weightsSHA256 !== opts.neuralPolicy.identity.weightsSHA256)) {
+        throw Error('saved policy identity differs from selected instance');
+      }
+    }
     this.matchId = save?.matchId ?? `m${newRecordId()}-${Math.random().toString(36).slice(2)}`;
     this.savedRevision = save?.snapshotRevision ?? null;
     this.resumeGame = save?.activeGame ? copyJson(save.activeGame) : undefined;
@@ -146,7 +191,7 @@ export class MatchController {
     this.humanMemory = PlayMemory.fromStart({ ranks: new Set([2]), levels: [2, 2] });
     // 宿主休眠/标签挂起会吞掉已排定的计时器（AI 回合卡死）；唤醒/聚焦事件触发时自愈
     if (typeof window !== 'undefined') {
-      for (const ev of ['visibilitychange', 'focus', 'pageshow'] as const) {
+      for (const ev of ['visibilitychange', 'focus', 'pageshow', 'storage'] as const) {
         window.addEventListener(ev, this.reviveBound);
       }
     }
@@ -154,13 +199,16 @@ export class MatchController {
 
   /** 若卡在 AI 回合（thinking 状态没有计时器会推进），重排一次调度；健康时是无害重置 */
   reviveIfStalled(): void {
-    if (!this.state || this.state.over) return;
+    if (this.destroyed || !this.state || this.state.over) return;
+    if (!this.ownsLocalSnapshot()) { this.notify(); return; }
+    if (this.pendingDecision) return;
     if (this.thinking) this.scheduleNext();
   }
 
   /** 当前比赛快照：交换完成后的起点＋动作；局末则只保留比赛进度。 */
   matchSavePoint(): MatchSave {
     return {
+      ...(this.opts.seats ? { seatConfig: this.opts.seats.snapshot, executionState: this.executionState } : {}),
       levels: [...this.match.levels] as [number, number],
       gameNo: this.match.gameNo,
       lastResult: this.match.lastResult,
@@ -168,7 +216,8 @@ export class MatchController {
       rngState: this.match.rngState,
       ruleOpts: { ...this.match.opts },
       difficulty: this.difficulty,
-      aiPolicy: this.opts.neuralOpponents ? `neural-tier:${this.opts.neuralTier ?? 'hard'}` : `heuristic:L${this.difficulty}`,
+      aiPolicy: this.opts.seats ? 'four-seat:v2' : this.opts.neuralPolicy ? serializeSavedLocalPolicy(this.opts.neuralPolicy, this.opts.neuralTier ?? 'hard')
+        : this.opts.neuralOpponents ? `neural-tier:${this.opts.neuralTier ?? 'hard'}` : `heuristic:L${this.difficulty}`,
       savedAt: Date.now(),
       matchId: this.matchId,
       ...(this.savedRevision ? { snapshotRevision: this.savedRevision } : {}),
@@ -178,7 +227,7 @@ export class MatchController {
   }
 
   get autopilotOn(): boolean {
-    return this.opts.autopilot === true;
+    return !this.opts.seats && this.opts.autopilot === true;
   }
 
   subscribe = (fn: () => void): (() => void) => {
@@ -195,6 +244,14 @@ export class MatchController {
 
   /** 开始新的一局（保留比赛级数）。人类收贡须自选还牌：还贡阶段完成前不开始记录与出牌。 */
   startGame(): void {
+    if (this.destroyed || this.executionState !== 'confirmed') return;
+    this.pendingDecision?.cancel('new_game');
+    this.pendingDecision = null;
+    this.generation++;
+    this.publicSteps = [];
+    this.seatDeciders.clear();
+    this.decisionError = null;
+    this.lastDecision = null;
     if (this.aiTimer) clearTimeout(this.aiTimer);
     if (this.watchdog) clearTimeout(this.watchdog);
     this.aiTimer = this.watchdog = null;
@@ -218,7 +275,7 @@ export class MatchController {
     try {
       if (resume && resume.schemaVersion !== 1) throw new Error('不支持的续局版本');
       state = resume ? restoreInitialGame(resume.initial, this.match)
-        : startGame(this.match, this.autopilotOn ? [] : [HUMAN_SEAT]);
+        : startGame(this.match, this.hasHumanSeat ? [HUMAN_SEAT] : []);
       if (resume && (!resume.recorderMeta || !Array.isArray(resume.moves)
         || resume.recorderMeta.matchId !== this.matchId
         || resume.recorderMeta.leader !== state.leader
@@ -246,16 +303,26 @@ export class MatchController {
     // D1 语义：难度只作用于两个对手席位（东1/西3）；队友（北2）固定满血贪心。
     // 档位随机流：matchSeed 派生（确定性、可复现，不用时间/座位序号之外的熵）
     const tierRand = mulberry32((this.match.rngState ^ (this.match.gameNo * 0x9e37) ^ 0x71ea) >>> 0);
-    for (const seat of seats) {
+    this.tierRand = tierRand;
+    if (this.opts.seats) {
+      this.currentPolicies = this.opts.seats.runtime.map((runtime, seat) => {
+        if (!runtime) return 'human';
+        const decider = runtime.policy.createDecider(seat);
+        decider.newGame(); this.seatDeciders.set(seat, decider);
+        return serializeSavedLocalPolicy(runtime.policy, runtime.release.tier);
+      });
+    }
+    for (const seat of this.opts.seats ? [] : seats) {
       let ai: AIPlayer;
-      if (this.opts.neuralOpponents && seat !== HUMAN_SEAT) {
+      if ((this.opts.neuralPolicy || this.opts.neuralOpponents) && seat !== HUMAN_SEAT) {
         const seatTier: NeuralTier = seat === 2 ? 'hard' : tier; // 队友恒贪心
         try {
-          ai = createNeuralAI(seat, this.opts.neuralOpponents, seatTier, tierRand);
+          ai = createNeuralAI(seat, this.opts.neuralPolicy ?? this.opts.neuralOpponents!, seatTier, tierRand);
           this.currentPolicies[seat] = seat === 2
-            ? `neural:${NEURAL_MODEL_VERSION}`
-            : `neural-tier:${seatTier}:${NEURAL_MODEL_VERSION}`;
+            ? `neural:${this.opts.neuralPolicy?.identity.modelVersion ?? NEURAL_MODEL_VERSION}`
+            : `neural-tier:${seatTier}:${this.opts.neuralPolicy?.identity.modelVersion ?? NEURAL_MODEL_VERSION}`;
         } catch (e) {
+          if (this.opts.neuralPolicy) throw e; // Never swap a selected verified identity.
           this.neuralFallbacks += 1;
           this.lastNeuralFallbackReason = String(e);
           console.warn('[neural] 加载失败，回退启发式：', e);
@@ -271,7 +338,7 @@ export class MatchController {
       ai.reset(state, this.match.opts);
       this.players.set(seat, ai);
     }
-    if (this.opts.neuralLoadError) {
+    if (!this.opts.seats && this.opts.neuralLoadError) {
       // App 层权重加载失败：三席全部回退启发式——横幅与记录如实标注（不只写 console）。
       // 放在循环之后，避免被普通启发式分支覆盖 (fallback) 标记。
       this.neuralFallbacks += 1;
@@ -279,14 +346,25 @@ export class MatchController {
       this.currentPolicies = this.currentPolicies.map((p, i) =>
         i === 0 ? p : `heuristic:L${this.opts.difficulty}(fallback)`);
     }
+    if (resume && this.opts.seats && (JSON.stringify(resume.recorderMeta.aiPolicies) !== JSON.stringify(this.currentPolicies)
+      || resume.recorderMeta.humanSeat !== (this.hasHumanSeat ? HUMAN_SEAT : null))) {
+      this.recoveryError = 'saved_recorder_identity_conflict'; this.thinking = false; this.notify(); return;
+    }
     this.humanMemory = PlayMemory.fromStart(state.ctx);
     // 人类席位神经首选（提示"新 AI 首选"行用）：与对手共用部署权重，独立公开信息 tracker
-    if (this.opts.neuralOpponents) {
+    if (this.opts.seats) {
+      // Human hint is explicitly the frozen local proposal, never a remote call.
+      const proposal = this.opts.seats.runtime.find(s => s !== null)?.policy;
+      this.hintNeural = this.hasHumanSeat && proposal ? proposal.createDecider(HUMAN_SEAT) : null;
+    } else if (this.opts.neuralPolicy) {
+      this.hintNeural = this.opts.neuralPolicy.createDecider(HUMAN_SEAT);
+    } else if (this.opts.neuralOpponents) {
+      // Explicit old raw-buffer compatibility; use the same O encoder as players.
       try {
-        const w = new Float32Array(this.opts.neuralOpponents);
         const mlp = new MLP(1);
-        mlp.setWeights(w);
-        this.hintNeural = new NeuralDecider(HUMAN_SEAT, mlp, 0, () => 0);
+        mlp.setWeights(new Float32Array(this.opts.neuralOpponents));
+        this.hintNeural = new NeuralDecider(HUMAN_SEAT, mlp, 0, () => 0,
+          { candidateCompat: 'v2', passEncoding: 'legacy-phys10' });
       } catch { this.hintNeural = null; }
     } else this.hintNeural = null;
     this.recorder = null; // 还贡全部完成后才开记录（initialHands 口径=还贡后手牌，与回放契约一致）
@@ -322,7 +400,7 @@ export class MatchController {
   exchangeAckPending = false;
 
   get exchangeError(): string | null {
-    return this.recoveryError ?? this.exchangeValidationError ?? this.exchangeActionError;
+    return this.decisionError ?? this.recoveryError ?? this.exchangeValidationError ?? this.exchangeActionError;
   }
 
   /** Action failures can be retried against the still-valid displayed result. */
@@ -349,7 +427,7 @@ export class MatchController {
       if (!result) { this.exchangeAckPending = false; return; }
       this.verifiedExchangeVersion = result.version;
       this.exchangeHands = hands;
-      this.exchangeAckPending = !this.autopilotOn && this.acknowledgedVersion !== result.version;
+      this.exchangeAckPending = this.hasHumanSeat && this.acknowledgedVersion !== result.version;
       if (!this.history.some((entry) => entry.version === result.version)) {
         this.history = Object.freeze([...this.history, freezeExchange({ ...copyJson(result), confirmedAt: null })]);
       }
@@ -399,7 +477,7 @@ export class MatchController {
 
   get humanTurn(): boolean {
     this.armExchangeGate();
-    return this.state !== null && !this.state.over
+    return this.hasHumanSeat && !this.destroyed && this.state !== null && !this.state.over
       && (this.replaying || this.ownsLocalSnapshot())
       && !this.exchangeAckPending && !this.exchangeError
       && this.state.pendingReturns.length === 0
@@ -409,7 +487,7 @@ export class MatchController {
   /** 还贡阶段轮到人类选牌（UI 据此切换选牌/按钮语义） */
   get humanReturning(): boolean {
     const p = this.state?.pendingReturns[0];
-    return !this.exchangeError && p !== undefined && p.from === HUMAN_SEAT;
+    return this.hasHumanSeat && !this.destroyed && !this.exchangeError && p !== undefined && p.from === HUMAN_SEAT;
   }
 
   /** 还贡提示：与 AI 自动还同口径的建议牌 */
@@ -444,15 +522,20 @@ export class MatchController {
       levelsBefore: [...state.levelsBefore] as [number, number],
       stageTeam: state.stageTeam,
       leader: state.leader,
-      humanSeat: HUMAN_SEAT,
-      difficulties: [null, this.opts.difficulty, this.opts.difficulty, this.opts.difficulty],
-      aiPolicies: [...this.currentPolicies],
+      humanSeat: this.opts.seats && !this.hasHumanSeat ? null : HUMAN_SEAT,
+      difficulties: this.opts.seats ? this.opts.seats.runtime.map(s => s ? this.opts.difficulty : null) : [null, this.opts.difficulty, this.opts.difficulty, this.opts.difficulty],
+      aiPolicies: this.currentPolicies.map((label, seat) => this.opts.neuralPolicy && label.startsWith('neural')
+        ? serializeSavedLocalPolicy(this.opts.neuralPolicy, seat === 2 ? 'hard' : this.opts.neuralTier ?? 'hard') : label),
       initialHands: state.hands.map((h) => [...h]),
     });
+    if (this.opts.seats) {
+      Object.assign(this.recorder.meta, { seatConfig: this.opts.seats.snapshot, decisionRecords: copyJson(resume?.decisionRecords ?? []) });
+    }
     this.recorder.recordTributes(state.tribute);
     this.activeGame = {
       schemaVersion: 1, initial: snapshotInitialGame(state), recorderMeta: copyJson(this.recorder.meta),
       moves: [], acknowledgedVersion: resume?.acknowledgedVersion ?? null,
+      ...(this.opts.seats ? { decisionRecords: copyJson(resume?.decisionRecords ?? []) } : {}),
     };
   }
 
@@ -474,6 +557,7 @@ export class MatchController {
     if (!this.savedRevision || typeof localStorage === 'undefined') return true;
     const latest = loadCurrentMatch();
     if (latest?.snapshotRevision === this.savedRevision && latest.matchId === this.matchId) return true;
+    this.pendingDecision?.cancel('lost_ownership');
     this.recoveryError = '牌局已在其他页面更新，请回到首页继续最新存档';
     this.exchangeAckPending = true;
     this.thinking = false;
@@ -489,11 +573,22 @@ export class MatchController {
     const revision = `${newRecordId()}-${Math.random().toString(36).slice(2)}`;
     if (!saveCurrentMatch({ ...save, snapshotRevision: revision })) return false;
     this.savedRevision = revision;
+    this.snapshotEpoch++;
     return true;
   }
 
   private validateRestoredMove(move: Move): void {
     const state = this.state!;
+    if (this.opts.seats) {
+      resolveLegalMove(state, move);
+      if (this.opts.seats.runtime[state.turn]) {
+        const entries = this.activeGame?.decisionRecords?.filter(d=>d.decisionKey.moveNo===state.moveNo) ?? [];
+        if (entries.length !== 1 || !['selected','fallback'].includes(entries[0].status)
+          || entries[0].decisionKey.actorSeat !== state.turn || entries[0].decisionKey.matchId !== this.matchId
+          || entries[0].decisionKey.gameNo !== state.match.gameNo || JSON.stringify(entries[0].actualMove) !== JSON.stringify(move)) throw Error('saved_actual_action_identity_conflict');
+      }
+      return;
+    }
     if (!move || state.over || (move.pass && !canPass(state))) throw new Error('续局动作不合法');
     if (move.pass) return;
     const cards = move.combo?.cards;
@@ -572,19 +667,25 @@ export class MatchController {
   }
 
   /** 应用一步（人类或 AI 共用），更新桌面展示与记录 */
-  private step(move: Move): void {
-    if (!this.replaying && !this.ownsLocalSnapshot()) { this.notify(); return; }
+  private step(move: Move, decision?: DecisionOutcome): boolean {
+    if (!this.replaying && (this.destroyed || !this.ownsLocalSnapshot())) { this.notify(); return false; }
     this.armExchangeGate();
-    if (!this.state || this.state.over || this.exchangeAckPending || this.exchangeError || this.state.pendingReturns.length) return;
+    if (!this.state || this.state.over || this.exchangeAckPending || this.exchangeError || this.state.pendingReturns.length) return false;
     const state = this.state!;
     const toBeat = state.lastCombo;
     const mover = state.turn; // 必须在 applyMove 之前取：applyMove 会把 turn 推进到下家
     const events = applyMove(state, move);
+    this.publicSteps.push(freezeCopy({ events, priorTarget: toBeat }));
+    for (const decider of this.seatDeciders.values()) decider.observe(events);
     this.activeGame?.moves.push(copyJson(move));
     this.recorder?.record(mover, { pass: move.pass, combo: move.pass ? null : move.combo }, state.hands, toBeat);
     this.humanMemory.observeEvents(events, toBeat);
     this.hintNeural?.observe(events);
     for (const ai of this.players.values()) ai.observe(events, toBeat);
+    if (decision) {
+      this.activeGame?.decisionRecords?.push(copyJson(decision));
+      if (this.recorder) Object.assign(this.recorder.meta, {decisionRecords: copyJson(this.activeGame?.decisionRecords ?? [])});
+    }
     for (const ev of events) {
       if (ev.type === 'play') {
         if (this.completedTrickVisible) {
@@ -613,7 +714,7 @@ export class MatchController {
         }
         this.record = record;
         saveRecord(record);
-        updateStats(record);
+        if (!this.opts.seats || this.hasHumanSeat) updateStats(record);
         // 存档点=每局打完：没过 A 就记进度，过 A 清档（比赛结束）
         if (state.match.winner === null) this.persistMatchSave(this.matchSavePoint());
         else clearCurrentMatch();
@@ -623,6 +724,7 @@ export class MatchController {
       this.persistActiveGame();
       this.notify();
     }
+    return true;
   }
 
   /** 调度 AI 行动（带延迟营造节奏）。
@@ -630,6 +732,7 @@ export class MatchController {
    * 用 5 秒看门狗自愈：thinking 仍为 true 就重排一次。
    * 还贡阶段也由此调度：AI 席位延迟自动还，人类席位挂起等 UI 提交。 */
   private scheduleNext(): void {
+    if (this.destroyed || this.pendingDecision || this.decisionError || this.executionState !== 'confirmed') return;
     if (this.aiTimer) clearTimeout(this.aiTimer);
     if (this.watchdog) clearTimeout(this.watchdog);
     this.aiTimer = this.watchdog = null;
@@ -640,7 +743,7 @@ export class MatchController {
     if (this.exchangeAckPending || this.exchangeError) { this.thinking = false; return; }
     if (this.state.pendingReturns.length > 0) {
       const pending = this.state.pendingReturns[0];
-      if (this.autopilotOn || pending.from !== HUMAN_SEAT) {
+      if (!this.hasHumanSeat || pending.from !== HUMAN_SEAT) {
         this.thinking = true;
         this.notify();
         this.aiTimer = setTimeout(() => {
@@ -670,6 +773,7 @@ export class MatchController {
       if (!state || state.over) return;
       this.armExchangeGate();
       if (this.exchangeAckPending || this.exchangeError || !this.ownsLocalSnapshot()) return;
+      if (this.opts.seats) { this.beginSeatDecision(); return; }
       const player = this.players.get(state.turn);
       if (!player) return;
       this.step(player.decide(state));
@@ -679,6 +783,79 @@ export class MatchController {
       this.watchdog = null;
       if (this.thinking && this.state && !this.state.over) this.scheduleNext();
     }, 5000);
+  }
+
+  get hasHumanSeat(): boolean { return this.opts.seats ? this.opts.seats.runtime[0] === null : !this.autopilotOn; }
+  get waitingRemote(): boolean { return this.pendingDecision?.pending === true; }
+  get seatLabels(): readonly string[] {
+    return this.opts.seats ? this.opts.seats.snapshot.seats.map(s => {
+      if (s.controller === 'human') return '真人';
+      try { return describeSeatChoice(s).shortName + (s.profileRevisionRef ? ` · 连接版本 ${s.profileRevisionRef.profileId}@${s.profileRevisionRef.revision} · ${s.profileRevisionRef.snapshotHash}` : ''); }
+      catch (error) { return `身份未核验：${(error as Error).message}`; }
+    }) : this.currentPolicies.map(label => label === 'human' ? '真人' : `AI · 技术来源：${label}`);
+  }
+  useLocalForPending(): boolean {
+    const pending = this.pendingDecision;
+    if (!pending?.pending) return false;
+    pending.useLocal();
+    return true;
+  }
+  private beginSeatDecision(): void {
+    const state = this.state;
+    if (!state || this.destroyed || this.pendingDecision || !this.opts.seats) return;
+    const runtime = this.opts.seats.runtime[state.turn], decider = this.seatDeciders.get(state.turn);
+    if (!runtime || !decider) { this.decisionError = 'configured_ai_missing'; this.notify(); return; }
+    try {
+      const key: DecisionKey = { controllerOrRunnerGeneration: `${this.controllerIdentity}/${this.generation}`, matchId: this.matchId,
+        gameNo: state.match.gameNo, moveNo: state.moveNo, actorSeat: state.turn, requestSeq: ++this.requestSeq,
+        ownership: `${this.matchId}/${this.savedRevision ?? 'unsaved'}`, snapshotRevision: this.snapshotEpoch };
+      let cached!: NeuralDecision;
+      const bundle = createDecisionBundle({ state, actorSeat: state.turn, matchId: this.matchId,
+        decisionId: `${this.matchId}/${this.controllerIdentity}/${this.generation}/${key.gameNo}/${key.moveNo}/${key.actorSeat}/${key.requestSeq}`,
+        key, history: { matchId: this.matchId, gameNo: state.match.gameNo, throughMoveNo: state.moveNo, steps: this.publicSteps },
+        decider: { seat: decider.seat, decide: (s, options) => (cached = decider.decide(s, options)) } });
+      let localActionId: string | undefined;
+      if (runtime.assignment.mode === 'local') {
+        // Reuse the one B ranking through the existing product tier function, not a second forward.
+        const move = decideTiered(new Proxy(decider, { get: (target, key, receiver) => key === 'decide' ? () => cached : Reflect.get(target, key, receiver) }), state, NEURAL_TIERS[runtime.release.tier], this.tierRand);
+        const canonicalId = canonicalActionId(move.pass ? null : move.combo!, state.ctx);
+        localActionId = bundle.pool.find(c => c.canonicalId === canonicalId)?.actionId;
+        if (!localActionId) throw Error('local_action_outside_frozen_pool');
+      }
+      const request = runtime.assignment.mode === 'hybrid'
+        ? this.opts.remoteRequest ?? createRemotePlayRequest(runtime.assignment.profileRevisionRef!) : undefined;
+      const pending: PendingDecision = new PendingDecision({bundle,request,localActionId,owner:{
+        state: () => this.state,
+        isCurrent: (k): boolean => !this.destroyed && `${this.controllerIdentity}/${this.generation}` === k.controllerOrRunnerGeneration && !this.decisionError
+          && this.pendingDecision === pending && this.ownsLocalSnapshot() && !this.exchangeAckPending && !this.exchangeError
+          && k.ownership === `${this.matchId}/${this.savedRevision ?? 'unsaved'}` && k.snapshotRevision === this.snapshotEpoch,
+        apply: (move,outcome) => {
+          // Save a conservative crash marker BEFORE apply. A gap can never be guessed on restore.
+          this.executionState = 'applying';
+          if (!this.persistActiveGame()) throw Error('apply_marker_not_saved');
+          if (!this.step(move, outcome)) throw Error('apply_not_confirmed');
+          this.executionState = 'confirmed';
+          const persisted = this.state?.over
+            ? this.match.winner !== null || this.persistMatchSave(this.matchSavePoint()) : this.persistActiveGame();
+          if (!persisted) { this.executionState = 'execution_uncertain'; throw Error('confirmation_not_saved'); }
+        },
+      }});
+      this.pendingDecision = pending;
+      this.thinking = true;
+      this.notify();
+      void pending.start().then(outcome => {
+        if (this.pendingDecision !== pending) return;
+        this.pendingDecision = null;
+        this.thinking = false;
+        this.lastDecision = outcome;
+        if (outcome.status === 'halted') {
+          this.decisionError = outcome.reason ?? 'decision_halted';
+          if (outcome.reason === 'execution_uncertain') { this.executionState = 'execution_uncertain'; this.persistActiveGame(); }
+        }
+        this.notify();
+        if (outcome.status === 'selected' || outcome.status === 'fallback') this.scheduleNext();
+      });
+    } catch (error) { this.decisionError = `决定已暂停：${String(error)}`; this.thinking = false; this.notify(); }
   }
 
   sortedHand(seat: number): Card[] {
@@ -691,10 +868,15 @@ export class MatchController {
   }
 
   destroy(): void {
+    this.destroyed = true;
+    this.generation++;
+    this.pendingDecision?.cancel('user_stop');
+    this.pendingDecision = null;
+    this.thinking = false;
     if (this.aiTimer) clearTimeout(this.aiTimer);
     if (this.watchdog) clearTimeout(this.watchdog);
     if (typeof window !== 'undefined') {
-      for (const ev of ['visibilitychange', 'focus', 'pageshow'] as const) {
+      for (const ev of ['visibilitychange', 'focus', 'pageshow', 'storage'] as const) {
         window.removeEventListener(ev, this.reviveBound);
       }
     }

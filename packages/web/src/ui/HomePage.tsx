@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { NEURAL_TIER_LABELS, type NeuralTier } from '@gd/ai';
 import type { AppSettings } from '../App';
-import { loadStats, loadCurrentMatch } from '../game/storage';
+import { loadStats, loadCurrentMatch, type Stats, type MatchSave } from '../game/storage';
+import { describeSeatChoice, resolveNewGameAssignments, sameAIChoice, type SelectionContext } from '../game/ai-selection';
+import type { PublicProfile } from '../game/llm-profiles';
+import { BrainIcon } from './AISelectionModal';
 import { PreviewBackdrop } from './PreviewBackdrop';
 import { RANK_NAME } from '@gd/engine';
 
@@ -26,26 +29,34 @@ const PREVIEW_COPY: Record<NeuralTier, { title: string; sub: string }> = {
 };
 
 export function HomePage({
-  settings, onStart, onResume, onAbandon,
+  settings, profiles, context, error, onPassA, onAISelection, onStart, onResume, onAbandon, fixture,
 }: {
-  settings: AppSettings;
-  onStart: (s: AppSettings) => void | Promise<void>;
-  onResume: () => void;
-  onAbandon: () => void;
+  settings: AppSettings|null;profiles:readonly PublicProfile[];context:SelectionContext;error?:string|null;
+  onPassA:(passA:AppSettings['passA'])=>void;onAISelection:()=>void;
+  onStart: () => void | Promise<void>;onResume:()=>void;onAbandon:()=>void;
+  fixture?:{stats:Stats;resume:MatchSave|null};
 }) {
-  const [tier, setTier] = useState<NeuralTier>(settings.tier);
-  const [passA, setPassA] = useState<AppSettings['passA']>(settings.passA);
-  const [starting, setStarting] = useState(false);
-  const stats = loadStats();
-  const resume = loadCurrentMatch();
-  const copy = PREVIEW_COPY[tier];
-  const passAName = PASSA.find((p) => p.key === passA)!.name;
+  const tier:NeuralTier='standard';
+  const passA=settings?.passA??'head3';
+  const [starting,setStarting]=useState(false);
+  const stats=fixture?.stats??loadStats();
+  const resume=fixture?fixture.resume:loadCurrentMatch();
+  const copy=PREVIEW_COPY[tier];
+  const passAName=PASSA.find(p=>p.key===passA)!.name;
+  const aiContext={...context,profiles};
+  let card: {role:string;name:string;detail:string}[]=[],cardIssue='';
+  try {
+    if(!settings)throw Error('新局偏好未就绪');
+    const seats=resolveNewGameAssignments(settings,aiContext);
+    const same=sameAIChoice(seats[1],seats[2],aiContext)&&sameAIChoice(seats[2],seats[3],aiContext);
+    card=(same?[2]:[2,3,1]).map(seat=>{const d=describeSeatChoice(seats[seat],aiContext);return {role:same?'':seat===2?'2号 · 队友':seat===3?'3号 · 左侧':'4号 · 右侧',name:d.shortName,detail:d.detail};});
+  }catch(e){cardIssue=String(e);}
 
   const start = async () => {
     if (starting) return; // 防连击
     setStarting(true);
     try {
-      await onStart({ tier, passA });
+      await onStart();
     } finally {
       setStarting(false);
     }
@@ -98,17 +109,14 @@ export function HomePage({
                 role="radio"
                 aria-checked={tier === d.key}
                 className={`tz-row${tier === d.key ? ' tz-row-dark' : ''}`}
-                onClick={() => setTier(d.key)}
+                disabled
               >
                 <span className="tz-led" aria-hidden />
                 <span className="tz-no">{d.no}</span>
                 <span className="tz-name">{d.name}</span>
-                <span className="tz-hint">{d.hint}</span>
               </button>
             ))}
           </div>
-          <p className="tz-note">难度只影响两名对手；队友始终为满血新 AI。相对难度，非段位。</p>
-
           <hr className="tz-hr" />
           <h3 className="tz-section">过 A 规则</h3>
           <div className="tz-radiogroup" role="radiogroup" aria-label="过 A 规则">
@@ -119,7 +127,7 @@ export function HomePage({
                 role="radio"
                 aria-checked={passA === p.key}
                 className={`tz-row tz-row-thin${passA === p.key ? ' tz-row-lite' : ''}`}
-                onClick={() => setPassA(p.key)}
+                onClick={() => onPassA(p.key)} disabled={!settings}
               >
                 <span className="tz-led" aria-hidden />
                 <span className="tz-name">{p.name}</span>
@@ -133,28 +141,20 @@ export function HomePage({
               <span className="tz-led" aria-hidden />
               <span className="tz-resume-txt" title={resume.activeGame ? '当前牌局与贡还确认状态已保存，继续不会重新发牌' : '旧存档保存在局末，继续进入下一局'}>
                 <b>上次比赛 · 我方 {RANK_NAME[resume.levels[0]]} 对方 {RANK_NAME[resume.levels[1]]} · {resume.activeGame ? `第${resume.gameNo}局进行中` : `已打${resume.gameNo}局`}</b>
-                <i>{resume.activeGame ? '恢复当前牌局及确认状态' : '旧存档：从下一局继续'}</i>
-              </span>
+                </span>
               <button type="button" className="tz-resume-btn" onClick={onResume}>继续</button>
               <button type="button" className="tz-resume-drop" onClick={onAbandon} aria-label="放弃上次比赛进度">✕</button>
             </div>
           )}
           <hr className="tz-hr" />
-          <div className="tz-neural">
-            <div className="tz-neural-head">
-              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
-                <path d="M9.5 3.5a2.6 2.6 0 0 0-2.6 2.6c-1.7.4-3 1.9-3 3.8 0 .9.3 1.8.9 2.5-.6.6-.9 1.5-.9 2.4a3.7 3.7 0 0 0 3.7 3.7h.4a2.9 2.9 0 0 0 5.6 0h.4a3.7 3.7 0 0 0 3.7-3.7c0-.9-.3-1.8-.9-2.4.6-.7.9-1.6.9-2.5 0-1.9-1.3-3.4-3-3.8a2.6 2.6 0 0 0-2.6-2.6c-.6 0-1.2.2-1.8.6-.6-.4-1.2-.6-1.8-.6Z" />
-                <path d="M12 8v10M12 8c-1.4 0-2.2.7-2.6 1.6M12 12c1.6 0 2.5.8 2.9 1.8" />
-              </svg>
-              <b>对手 · 新 AI</b>
-            </div>
-            <p className="tz-neural-warn">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden>
-                <path d="M12 3 1.8 20.2h20.4L12 3Zm0 5.2c.7 0 1.2.5 1.2 1.2l-.2 4.6h-2l-.2-4.6c0-.7.5-1.2 1.2-1.2Zm0 9.9a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6Z" />
-              </svg>
-              模型 clean2-ck7051（2026-10-27）：正式确认赛对上一代 57.4%（独立种子复训复现 60.9%）。对手默认即此模型，权重加载失败时自动回退启发式并在牌桌横幅如实提示。
-            </p>
-          </div>
+          <button type="button" className="tz-neural ai-selection-card" onClick={onAISelection} aria-label="AI选择，更换新局队友和对手">
+            <span className="tz-neural-head"><BrainIcon/><b>AI选择</b><span className="tz-hint ai-change">更换 ›</span></span>
+            <span className={`ai-selection-names${card.length===1?' ai-selection-single':''}`}>
+              {card.map((row,i)=><span className="ai-selection-line" key={i} title={row.detail}>{row.role&&<span className="tz-hint ai-role">{row.role}</span>}<span className="tz-name ai-model-name">{row.name}</span></span>)}
+              {cardIssue&&<span className="tz-hint ai-card-issue">选择未就绪，请更换查看</span>}
+            </span>
+          </button>
+          {(error||cardIssue)&&<p className="ai-home-error" role="alert">{error??cardIssue}</p>}
         </section>
 
         {/* 右：牌桌预览 + 启动栏 */}
@@ -194,7 +194,7 @@ export function HomePage({
               </svg>
               <b>从 2 打到 A</b>
             </span>
-            <button type="button" className="tz-cta" onClick={start} disabled={starting}>
+            <button type="button" className="tz-cta" onClick={start} disabled={starting||!settings||!!cardIssue}>
               <span>{starting ? '正在准备…' : '开始练习'}</span>
               <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M6 18 18 6M9 6h9v9" />

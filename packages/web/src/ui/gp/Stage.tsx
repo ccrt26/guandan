@@ -1,3 +1,4 @@
+import { SEAT_DISPLAY } from './viewmodel';
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import type { CardItem, PlayedVM, StageVM } from './viewmodel';
 import './gp.css';
@@ -211,7 +212,7 @@ export function Stage({
           <section className="table" aria-label="牌桌" />
 
           {vm.players.map((p) => (
-            <section key={p.seat} className={`player ${p.seat}`} aria-label={`${p.seat === 'north' ? '队友' : `${p.seat === 'west' ? '西家' : '东家'} 对手`}`}>
+            <section key={p.seat} className={`player ${p.seat}`} aria-label={`${SEAT_DISPLAY[p.seat]} · ${p.role === 'teammate' ? '队友' : '对手'}`}>
               <span className="avatar" aria-hidden="true" />
               <div>
                 <span className="player-name">
@@ -231,23 +232,23 @@ export function Stage({
           {vm.passes.east && <div className="pass east-pass">不出</div>}
           {vm.passes.self && <div className="pass self-pass">不出</div>}
 
-          <div className="zone-label east-label">东家出牌</div>
-          <div className="zone-label own-label">我方出牌</div>
+          <div className="zone-label east-label">{SEAT_DISPLAY.east}出牌</div>
+          <div className="zone-label own-label">{SEAT_DISPLAY.self}出牌</div>
 
-          <div className="cards-layer" aria-label="东家已出的牌">
+          <div className="cards-layer" aria-label={`${SEAT_DISPLAY.east}已出的牌`}>
             <PlayedZone vm={vm.playedEast} zone="east" onImageError={onImageError} />
           </div>
-          <div className="cards-layer" aria-label="我方已出的牌">
+          <div className="cards-layer" aria-label={`${SEAT_DISPLAY.self}已出的牌`}>
             <PlayedZone vm={vm.playedSelf} zone="self" onImageError={onImageError} />
           </div>
-          <div className="cards-layer" aria-label="北家已出的牌">
+          <div className="cards-layer" aria-label={`${SEAT_DISPLAY.north}已出的牌`}>
             <PlayedZone vm={vm.playedNorth} zone="north" onImageError={onImageError} />
           </div>
-          <div className="cards-layer" aria-label="西家已出的牌">
+          <div className="cards-layer" aria-label={`${SEAT_DISPLAY.west}已出的牌`}>
             <PlayedZone vm={vm.playedWest} zone="west" onImageError={onImageError} />
           </div>
 
-          <div className="cards-layer" aria-label="我的手牌，可选中">
+          <div className="cards-layer" aria-label={`${SEAT_DISPLAY.self}手牌${vm.selectable ? "，可选中" : "（只读）"}`}>
             {vm.hand.map((item, i) => (
               <CardFace
                 key={item.instanceId}
@@ -264,7 +265,7 @@ export function Stage({
 
           <div className="hand-tag">
             <span className="avatar" aria-hidden="true" />
-            <span>我的手牌</span>
+            <span>{SEAT_DISPLAY.self}手牌</span>
           </div>
           <span className="hand-count">{vm.hand.length} 张</span>
 

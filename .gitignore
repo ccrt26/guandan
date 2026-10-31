@@ -8,6 +8,7 @@ lab/out/
 # Private configuration (GitHub publication protection)
 .env
 .env.*
+# Includes .env.llm-profiles.json plus private save lock/temp files; never export these.
 .env_*
 !.env.example
 *.pem
@@ -68,3 +69,5 @@ __pycache__/
 !/lab/archive/**/cases/*.json
 /lab/archive/**/backups/**
 /lab/archive/legacy-through-20261030/initial-training/
+
+/packages/web/public/ai/ohuo/ohuo-1030-b-v1/weights.f32

@@ -1,7 +1,8 @@
+import{resolveLegalMove}from'../../packages/ai/src/hybrid/legality';
 import{readFileSync}from'node:fs';
 import{createHash}from'node:crypto';
 import{isDeepStrictEqual}from'node:util';
-import{createMatch,startGame,DEFAULT_RULES,applyMove,canPass,classify,beats,RNG,teamOf,buildDeck,makeLevelCtx,stageTeamOf,applyTribute,completeReturn,type Combo,type EngineEvent,type GameState,type GameResult}from'@gd/engine';
+import{createMatch,startGame,DEFAULT_RULES,applyMove,RNG,teamOf,buildDeck,makeLevelCtx,stageTeamOf,applyTribute,completeReturn,type Combo,type EngineEvent,type GameState,type GameResult}from'@gd/engine';
 import{MLP,NeuralDecider,createAI,mulberry32,deriveSeed,type EncoderOpts,type Difficulty}from'@gd/ai';
 import{resourceEffectKey}from'./data-replay';
 import{fileHash}from'./product-artifacts';
@@ -67,19 +68,8 @@ function assertPublicExchange(root:GameState,postExchangeHands:GameState['hands'
  for(const transfer of recorded.returns){const pending=witness.pendingReturns[0];if(!pending||pending.from!==transfer.from||pending.to!==transfer.to)throw new Error('public return role/order invalid');const card=witness.hands[transfer.from].find(c=>c.id===transfer.card.id);if(!card||!isDeepStrictEqual(card,transfer.card))throw new Error('public return card not owned');completeReturn(witness,card);}
  if(witness.pendingReturns.length||!isDeepStrictEqual(actual.returns,recorded.returns)||witness.hands.some((h,seat)=>h.map(c=>c.id).sort((a,b)=>a-b).join(',')!==postExchangeHands[seat].map(c=>c.id).sort((a,b)=>a-b).join(',')))throw new Error('public exchange does not reconstruct recorded ownership');
 }
-/** applyMove trusts a declared combination. Validate its full owned resources and
- * declaration independently; no guard fallback and no best-response reselection. */
-export function resolveLegalMove(state:GameState,move:{pass:boolean;combo?:Combo}):{pass:boolean;combo?:Combo}{
- if(state.over||state.pendingReturns.length)throw new Error('illegal move outside active play');
- if(move.pass){if(!canPass(state)||move.combo)throw new Error('illegal pass');return{pass:true};}
- if(!move.combo?.cards.length)throw new Error('illegal empty declared move');
- const ids=move.combo.cards.map(c=>c.id);if(new Set(ids).size!==ids.length)throw new Error('duplicate physical resource identity');
- const own=state.hands[state.turn],cards=ids.map(id=>own.find(c=>c.id===id));if(cards.some(c=>!c))throw new Error('physical resource not owned');
- if(cards.some((card,index)=>card!.suit!==move.combo!.cards[index].suit||card!.rank!==move.combo!.cards[index].rank))throw new Error('selected physical-card identity differs from the actual owned card');
- const key=necessaryDeclarationKey(move.combo,state.ctx),declared=classify(cards as any,state.ctx,state.match.opts).find(c=>necessaryDeclarationKey(c,state.ctx)===key);
- if(!declared||state.lastCombo&&!beats(declared,state.lastCombo))throw new Error('declared legal action identity mismatch');
- return{pass:false,combo:move.combo};
-}
+/** Compatibility entry; browser and research share the same strict validator. */
+export { resolveLegalMove } from '../../packages/ai/src/hybrid/legality';
 
 const networks=new Map<string,MLP>();
 const inferenceDiagnostics=new Map<string,ReturnType<typeof createInferenceExecution>>();

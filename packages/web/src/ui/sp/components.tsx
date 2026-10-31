@@ -4,7 +4,7 @@ import type { StatsRowVM, StatsVM } from './viewmodel';
 /**
  * 战绩页七个区块组件（规格执行令第2步的拆分）。
  * 全部真实 DOM 文本/表格/按钮，图标用单色 SVG（public/sp/icons.svg），
- * 不把整页 PNG 当背景。坐标与样式在 sp.css（来源 layout.json + 规格，PNG 优先）。
+ * 不把整页 PNG 当背景。坐标与样式在 sp.css（来源 layout.json + 规格，现网CSS视觉值优先；PNG仅布局参考）。
  */
 
 const ICONS = '/sp/icons.svg';

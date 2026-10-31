@@ -1,3 +1,4 @@
+import { displaySeatLabel } from './seatDisplay';
 /**
  * packages/review/src/teamReview.ts — REVIEW5 T1：复盘单位改成队伍关键事件。
  * 缺陷背景（审计 E04）：analyzer 默认只分析 humanSeat——队友的接管/送牌/炸弹不进入
@@ -150,7 +151,7 @@ export function buildTeamReview(record: GameRecord, opts: { viewerSeat?: number;
       alternatives: alts.slice(0, 2),
       actualResourceCost: move.pass ? '不消耗资源' : `消耗 ${(move.playedCards ?? []).length} 张${actualCombo?.kind === 'bomb' || actualCombo?.kind === 'joker_bomb' ? '（炸弹）' : ''}`,
       conditionalNext: isTakeover
-        ? `接管后控制权转移到 ${p.actorSeat} 号位（${teamOf(p.actorSeat) === teamOf(viewerSeat) ? '我方' : '对方'}）；若让牌，控制权留在原出牌方`
+        ? `接管后控制权转移到 ${displaySeatLabel(p.actorSeat).label}（${teamOf(p.actorSeat) === teamOf(viewerSeat) ? '我方' : '对方'}）；若让牌，控制权留在原出牌方`
         : state.lastCombo == null ? '领出方决定下一轮方向' : '压过后进入下一家响应',
       replanTriggers: [
         '对手剩牌 ≤ 4（公开信息）→ 拦截优先级上升',

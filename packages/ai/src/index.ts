@@ -12,3 +12,4 @@ export * from './legal';
 export * from './nn/observationAudit';
 export * from './nn/wave';
 export * from './nn/tiered';
+export * from './policy/resolve';

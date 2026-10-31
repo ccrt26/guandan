@@ -55,7 +55,7 @@ export function difficultyName(d: 0 | 1 | 2): string {
 }
 
 export function buildStatsVM(records: RecordMeta[]): StatsVM {
-  const rows: StatsRowVM[] = [...records]
+  const rows: StatsRowVM[] = records.filter(record => !record.spectatorOnly)
     .sort((a, b) => b.createdAt - a.createdAt)
     .map((m) => {
       const win = teamOf(m.humanSeat) === m.winnerTeam;

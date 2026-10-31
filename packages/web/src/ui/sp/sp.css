@@ -1,6 +1,7 @@
 /*
  * 「我的战绩」整页 Stage 样式（1672×941 固定画布）。
- * 坐标来源：deliverables/ui/reference-20261030/results_ui_handoff/layout.json（人工量测 ±3px）+ 01 规格；与 PNG 冲突时以 PNG 为准校准。
+ * 历史坐标来源：deliverables/ui/reference-20261030/results_ui_handoff/layout.json（人工量测 ±3px）+ 01 规格。
+ * NAV-S31本轮以最新文字及现网CSS视觉值为准；PNG只提供已批准的布局/文字参考，不覆盖颜色、阴影、字体或资源。
  * tokens.json 的颜色/阴影/字体为建议值（非原图反解）；字体为本地打包的 Noto CJK 衍生
  * （StatsSerif/StatsBody，OFL，已按保留名条款改名），大数字优先 Georgia（系统字体，见交件说明）。
  * 全部类名 sp- 前缀，作用域限定 #sp-root，避免与全局 styles.css 冲突。
@@ -138,22 +139,22 @@
 .sp-gear { font-size: 25px; line-height: 1; }
 
 /* ---------- 标题区 ---------- */
-.sp-heading { position: absolute; left: 75px; top: 84px; }
+.sp-heading { position: absolute; left: 75px; top: 57px; height:var(--landing-title-band); padding:var(--landing-title-pad) 0; }
 .sp-heading h1 {
   margin: 0;
   font-family: StatsSerif, 'Noto Serif CJK SC', 'Songti SC', serif;
   font-weight: 700;
-  font-size: 58px;
-  line-height: 65px;
+  font-size: var(--landing-title-size);
+  line-height: var(--landing-title-line);
   letter-spacing: 2px;
   color: #111719;
 }
 .sp-heading p {
-  margin: 6px 0 0;
+  margin: var(--landing-title-gap) 0 0;
   font-family: StatsSerif, 'Noto Serif CJK SC', 'Songti SC', serif;
   font-weight: 500;
-  font-size: 25px;
-  line-height: 35px;
+  font-size: var(--landing-subtitle-size);
+  line-height: var(--landing-subtitle-line);
   letter-spacing: 3px;
   color: #767570;
 }
@@ -162,7 +163,7 @@
 .sp-summary {
   position: absolute;
   left: 50px;
-  top: 199px;
+  top:var(--landing-main-top);
   width: 1578px;
   height: 164px;
   border: 1px solid #C5BEB3;
@@ -245,7 +246,7 @@
 .sp-check-mark { width: 24px; height: 24px; }
 
 /* ---------- 对局记录标题 ---------- */
-.sp-record-heading { position: absolute; left: 70px; top: 393px; display: flex; align-items: center; gap: 22px; }
+.sp-record-heading { position: absolute; left: 70px; top:calc(393px - var(--landing-main-rise)); display: flex; align-items: center; gap: 22px; }
 .sp-record-heading h2 {
   margin: 0;
   font-family: StatsSerif, 'Noto Serif CJK SC', 'Songti SC', serif;
@@ -260,7 +261,7 @@
 .sp-records {
   position: absolute;
   left: 54px;
-  top: 441px;
+  top:calc(441px - var(--landing-main-rise));
   width: 1114px;
   height: 437px;
   border: 1px solid #DDD7CE;
@@ -359,7 +360,7 @@
 .sp-aside {
   position: absolute;
   left: 1189px;
-  top: 380px;
+  top:calc(380px - var(--landing-main-rise));
   width: 439px;
   height: 505px;
   border: 1px solid #D5D0C7;

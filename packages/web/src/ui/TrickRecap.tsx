@@ -1,3 +1,4 @@
+import { displaySeatLabel } from '@gd/review';
 import { RANK_NAME, type Card, type LevelCtx } from '@gd/engine';
 import type { MoveAnalysis } from '@gd/review';
 import { gradeIcon } from '@gd/review';
@@ -9,14 +10,17 @@ const SUIT_GLYPH: Record<string, string> = { S: '♠', H: '♥', D: '♦', C: '�
  * 复现这一轮：各家出的牌面（图）→ 你的动作高亮 → 引擎建议 → 一键跳回放。
  */
 export function TrickRecap({
-  moveNo, mv, ctx, seatNames, onJump,
+  moveNo, mv, ctx, seatNames, onJump, viewerSeat=0,
 }: {
   moveNo: string;
   mv: MoveAnalysis | undefined;
   ctx: LevelCtx;
   seatNames: string[];
+  viewerSeat?: number;
   onJump: (moveNo: number) => void;
 }) {
+  void seatNames; // Legacy callers may pass old names; render from engine seats only.
+  const name=(seat:number)=>{const label=displaySeatLabel(seat,viewerSeat);return `${label.label}（${label.relation}）`;};
   if (!mv) {
     return (
       <div className="recap-card">
@@ -44,12 +48,12 @@ export function TrickRecap({
       <div className="recap-body">
         {mv.trickBefore.map((a, i) => (
           <div key={i} className="recap-row">
-            <span className={`recap-who ${a.player === 0 ? 'me' : a.player === 2 ? 'mate' : ''}`}>{seatNames[a.player]}</span>
+            <span className={`recap-who ${a.player === viewerSeat ? 'me' : a.player === (viewerSeat+2)%4 ? 'mate' : ''}`}>{name(a.player)}</span>
             {a.pass ? <span className="recap-pass">不出</span> : mini(a.cards ?? [])}
           </div>
         ))}
         <div className={`recap-row recap-you ${mv.grade}`}>
-          <span className="recap-who me">你</span>
+          <span className="recap-who me">{name(viewerSeat)}</span>
           {mv.pass ? <span className="recap-pass">不出</span> : mini(mv.playedCards)}
           <span className="recap-mark">{mv.grade === 'good' ? '与首选一致' : mv.grade === 'forced' ? '无牌可跟' : mv.grade === 'ok' ? '略有分歧' : mv.grade === 'uncovered' ? '候选未覆盖' : '分歧较大'}</span>
         </div>

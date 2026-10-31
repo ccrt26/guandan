@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "ohuo-release-index-v1",
+  "releases": [
+    {"releaseRef":"product-o-hard-v1","label":"O · 挑战","proposalPolicyRef":"frozenChampion-clean2-ck7051-encv1-candv2","mode":"local","tier":"hard","status":"adopted","parentRelease":null},
+    {"releaseRef":"product-o-standard-v1","label":"O · 标准","proposalPolicyRef":"frozenChampion-clean2-ck7051-encv1-candv2","mode":"local","tier":"standard","status":"adopted","parentRelease":"product-o-hard-v1"},
+    {"releaseRef":"product-o-easy-v1","label":"O · 轻松","proposalPolicyRef":"frozenChampion-clean2-ck7051-encv1-candv2","mode":"local","tier":"easy","status":"adopted","parentRelease":"product-o-hard-v1"},
+    {"releaseRef":"ohuo-1030-b-v1","label":"C1400 · 本地B（候选）","proposalPolicyRef":"r62-p8c-control-u1400-greedy","mode":"local","tier":"hard","status":"candidate","parentRelease":null},
+    {"releaseRef":"ohuo-1030-h-v1","label":"C1400 + API · H（候选）","proposalPolicyRef":"r62-p8c-control-u1400-greedy","mode":"hybrid","tier":"hard","status":"candidate","parentRelease":"ohuo-1030-b-v1"}
+  ],
+  "legacyProductLayouts": {
+    "easy":["human","product-o-easy-v1","product-o-hard-v1","product-o-easy-v1"],
+    "standard":["human","product-o-standard-v1","product-o-hard-v1","product-o-standard-v1"],
+    "hard":["human","product-o-hard-v1","product-o-hard-v1","product-o-hard-v1"]
+  }
+}

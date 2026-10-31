@@ -1,0 +1,10 @@
+.seat-picker { margin: 12px 0; padding: 12px; border: 1px solid #8888; border-radius: 8px; font-size: 14px; }
+.seat-picker p { line-height: 1.5; margin: 8px 0; }
+.seat-picker-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.seat-picker select { max-width: 100%; padding: 5px; }
+.seat-runtime { position: fixed; right: 12px; top: 82px; z-index: 40; max-width: min(470px, 90vw); padding: 8px 12px; border: 1px solid #b7b2a6; border-radius: 8px; background: #fffdf6ee; color: #232323; font-size: 13px; line-height: 1.5; }
+.seat-runtime summary { cursor: pointer; }
+.seat-runtime button { margin: 4px; padding: 4px 7px; }
+.seat-runtime p { margin: 5px 0; }
+.recorded-seats, .recorded-analysis { padding: 8px 12px; border: 1px solid #8888; margin: 8px 0; }
+.recorded-analysis small { display: block; margin-top: 5px; }

@@ -1,0 +1,20 @@
+{
+  "schema": "B03-fake-profiles-v1",
+  "warning": "Synthetic only; no request may be sent to either URL.",
+  "profiles": [
+    {
+      "profileId": "fixture-glm", "nickname": "GLM fixture",
+      "protocol": "anthropic-messages", "baseUrl": "https://glm.invalid.example/anthropic",
+      "requestedModel": "fake-glm-model", "supportedReasoningOptions": {"thinking": ["enabled", "disabled"]},
+      "requestOptions": {"thinking": {"type": "enabled"}, "max_tokens": 8192},
+      "secret": "FAKE_SECRET_GLM_B03_ONLY"
+    },
+    {
+      "profileId": "fixture-deepseek", "nickname": "DeepSeek fixture",
+      "protocol": "openai-chat-completions", "baseUrl": "https://deepseek.invalid.example/v1",
+      "requestedModel": "fake-deepseek-model", "supportedReasoningOptions": {"reasoning_effort": ["low", "high"]},
+      "requestOptions": {"reasoning_effort": "low", "temperature": 0.25, "max_tokens": 4096},
+      "secret": "FAKE_SECRET_DEEPSEEK_B03_ONLY"
+    }
+  ]
+}

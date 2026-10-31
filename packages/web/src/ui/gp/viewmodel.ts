@@ -1,3 +1,4 @@
+import { displaySeatLabel } from '@gd/review';
 import { canPass, isWild, RANK_NAME, cardLabel, type Card, type Combo, type GameState } from '@gd/engine';
 import type { MatchController } from '../../game/controller';
 
@@ -91,10 +92,10 @@ export function comboDisplayCards(combo: Combo): Card[] {
   });
 }
 
-const SEAT_DISPLAY = { north: '队友', west: '西家', east: '东家', self: '你' } as const;
+export const SEAT_DISPLAY = { north: displaySeatLabel(2).label, west: displaySeatLabel(3).label, east: displaySeatLabel(1).label, self: displaySeatLabel(0).label } as const;
 const HUMAN_SEAT = 0;
 
-/** 引擎座位 → 显示用座位键。0=你(南)，1=东家，2=队友(北)，3=西家；0 不能落进 east。 */
+/** 引擎座位 → 显示用座位键。0=下方1号，1=右侧4号，2=上方2号，3=左侧3号；0 不能落进 east。 */
 function seatName(seat: number): 'north' | 'west' | 'east' | 'self' {
   return seat === 2 ? 'north' : seat === 3 ? 'west' : seat === 0 ? 'self' : 'east';
 }
@@ -111,7 +112,7 @@ export function buildStageVM(controller: MatchController, state: GameState, ui: 
   const ctx = state.ctx;
   const humanTurn = controller.humanTurn;
   const pendingReturn = state.pendingReturns[0] ?? null;
-  const myReturn = pendingReturn !== null && pendingReturn.from === HUMAN_SEAT;
+  const myReturn = controller.humanReturning;
   const toBeat = state.lastCombo;
 
   const rawHand = controller.sortedHand(HUMAN_SEAT);

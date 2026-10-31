@@ -1034,3 +1034,31 @@ button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .ev-details{margin-top:8px;border-top:1px dashed #d8cbaa;padding-top:6px;font-size:12px;color:#7a6f57}
 .ev-details summary{cursor:pointer;color:#8a7b5c;font-size:12px;user-select:none}
 .ev-details>div{margin:3px 0}
+
+/* NAV-S31 dialogs reuse live tz-console/settings/row/button paint verbatim.
+   No reference-image colors, material, border paint, or new shadow recipes. */
+.tz-console.tz-dialog {display:flex;flex-direction:column;gap:0;width:min(720px,calc(100vw - 32px));margin:0;padding:8px;border-radius:26px;max-height:calc(100vh - 32px);overflow-y:auto;color:#151b20;font-family:StatsBody,'PingFang SC',sans-serif;}
+.tz-dialog::before {border-radius:26px;}
+.tz-dialog-head {position:relative;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
+.tz-dialog-head h2 {display:flex;align-items:center;gap:14px;margin:0;font-size:28px;line-height:36px;}
+.tz-dialog-body.tz-settings {padding:18px 24px;border-radius:20px;gap:12px;}
+.tz-dialog .tz-hint {margin:0;font-size:15px;line-height:22px;}
+.tz-dialog-choice {display:grid;grid-template-columns:136px minmax(0,1fr);align-items:center;gap:16px;font-size:17px;}
+.tz-dialog .tz-dialog-input {min-width:0;height:44px;padding:0 14px;margin:0;font-family:inherit;font-size:16px;color:inherit;border-radius:10px;}
+.tz-dialog .tz-hr {margin:2px 0;}
+.ai-seat-selectors {display:flex;flex-direction:column;gap:12px;}
+.ai-human-fixed {justify-content:space-between;}
+.ai-choice-identity {font-size:12px;line-height:18px;margin-top:4px;}
+.ai-choice-identity summary {cursor:pointer;}
+.ai-choice-identity pre {white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;margin:4px 0 0;}
+.ai-reset {align-self:flex-start;font-size:14px;padding:4px 0;}
+.tz-dialog-actions {position:relative;display:flex;align-items:center;gap:12px;padding:16px 24px 12px;}
+.tz-dialog-actions > .tz-hint {flex:1;}
+.tz-dialog .tz-dialog-cancel {flex:none;justify-content:center;width:auto;min-width:90px;height:42px;margin:0;padding:0 18px;font-size:16px;color:inherit;}
+.tz-dialog-confirm {min-height:42px;padding:8px 20px;font-size:16px;white-space:nowrap;}
+.tz-dialog-message {font-size:13px;line-height:19px;margin:0;overflow-wrap:anywhere;}
+.tz-dialog-section {display:flex;flex-direction:column;gap:10px;}
+.tz-dialog-section h3 {margin:0;font-size:23px;line-height:30px;}
+.tz-dialog-section .tz-dialog-input {width:100%;}
+.tz-dialog-provider-key {display:flex;align-items:center;gap:10px;}
+.tz-dialog-provider-key .tz-dialog-input {flex:1;min-width:0;}

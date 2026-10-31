@@ -1,0 +1,61 @@
+// B04 fixed registry/accepted-parent integration; this case never runs transport/parser vectors.
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { CHECK_REGISTRY, commandFor, runChecks } from '../../../scripts/ohuo-delivery/checks.mjs';
+import { loadContext, inspect, sourceIdentity, sha256 } from '../../../scripts/ohuo-delivery/core.mjs';
+assert.deepEqual(process.argv.slice(2), ['--case', 'registry-contract'], 'one explicit selector required');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+for (const caseId of ['complete-response', 'stream-error-or-eof', 'cancel-pending', 'chunk-boundary', 'profile-isolation', 'input-boundary', 'expand-and-choose', 'second-expand-rejected', 'response-identity', 'cancel-before-expand']) {
+  const spec = CHECK_REGISTRY[`B04.${caseId}`];
+  assert.equal(spec?.status, 'implemented', `B04.${caseId} must be implemented`);
+  assert.equal(spec.entryId, 'transport_cases'); assert.equal(spec.caseId, caseId);
+  assert.deepEqual(spec.requires, ['offline_synthetic']);
+  const c = commandFor({ root }, spec);
+  assert.deepEqual(c.argv, ['--import', 'tsx', 'lab/review6_2/checks/check-transport.mjs', '--case', caseId]);
+  assert.equal(c.shell, false); assert.equal(c.cwd, root);
+}
+const typecheck = CHECK_REGISTRY['B04.typecheck-ai'];
+assert.equal(typecheck.status, 'implemented'); assert.equal(typecheck.entryId, 'package_typecheck');
+assert.equal(typecheck.runtime, 'tsc-package'); assert.equal(typecheck.packagePath, 'packages/ai');
+assert.deepEqual(typecheck.requires, ['offline_synthetic']);
+const local = CHECK_REGISTRY['B04.import-local'];
+assert.equal(local.status, 'implemented'); assert.deepEqual(local.sites, ['local']);
+assert.equal(local.mode, 'manual'); assert.deepEqual(local.requires, ['offline_synthetic']);
+assert.deepEqual(local.observations.map(x => x.key), ['nodeImportSucceeded', 'noImportSideEffects', 'sharedSelectorImportSucceeded', 'frozenOptionsAndSignalForwarded', 'noRealApiRequest']);
+assert.equal(CHECK_REGISTRY['B03.two-profile-roundtrip'].status, 'implemented');
+assert.equal(CHECK_REGISTRY['B06.task-lifecycle'].status, 'implemented');
+assert.equal(CHECK_REGISTRY['B05.pending_once'].status, 'planned');
+assert.equal(CHECK_REGISTRY['B07.record-replay'].status, 'planned');
+assert.deepEqual(CHECK_REGISTRY['B01.c1400_parity'].requires, ['private_asset_read', 'real_model_forward']);
+const ctx = loadContext(root, path.join(root, 'deliverables/ohuo-batches/B04/engineering-batch.json'));
+assert.equal(inspect(ctx).status, 'passed'); sourceIdentity(ctx);
+const parent = ctx.m.acceptedParentRef.receiptRef;
+assert.equal(parent.path, 'deliverables/ohuo-batches/B06/accepted-code.json');
+assert.equal(sha256(fs.readFileSync(path.join(root, parent.path))), parent.sha256);
+const row = ctx.m.changedFiles.find(f => f.path === 'scripts/ohuo-delivery/checks.mjs');
+assert.equal(row.beforeSHA256, 'fab7fc5d2b6ae317f859b005e83a0392ffe6dce776ebddc7791a8904420b830b');
+assert.notEqual(row.beforeSHA256, row.afterSHA256);
+const wrong = structuredClone(ctx.m); wrong.changedFiles.find(f => f.path === row.path).beforeSHA256 = '0'.repeat(64);
+assert.throws(() => inspect({ ...ctx, m: wrong }), /before identity/);
+const original = JSON.parse(fs.readFileSync(path.join(root, 'deliverables/ohuo-batches/B04/evidence/original-r1-batch.json')));
+const exactOwners = [...original.ownerFiles, 'scripts/ohuo-delivery/checks.mjs', 'lab/review6_2/checks/check-transport-integration.mjs'].sort();
+assert.deepEqual([...ctx.m.ownerFiles].sort(), exactOwners, 'parent-source digest reads do not grant product write ownership');
+assert.deepEqual(ctx.m.changedFiles.map(f => f.path).sort(), exactOwners);
+assert.deepEqual(ctx.m.cleanupCandidates, [], 'no package/model/index cleanup is authorized');
+for (const protectedPath of ['packages/web/public/ai', 'packages/web/dist', '.env', '.env.llm-profiles.json', '.zcode', 'lab/review6_2/runs', 'lab/review6_2/data', 'lab/review6_2/stop-after-p13.json']) assert.ok(ctx.m.protectedPaths.includes(protectedPath), protectedPath);
+for (const file of original.changedFiles) assert.equal(sha256(fs.readFileSync(path.join(root, file.path))), file.afterSHA256, `reviewed B04 r1 byte changed: ${file.path}`);
+const output = path.join(root, 'lab/out/B04'); fs.mkdirSync(output, { recursive: true });
+const fixture = fs.mkdtempSync(path.join(output, 'local-guard-'));
+try {
+  const m = structuredClone(ctx.m);
+  m.batchId = 'B04-local-guard'; m.revision = m.checkPlan.revision = 1; m.checkPlan.planRef = 'B04-local-guard/plan';
+  m.checkPlan.checks = [m.checkPlan.checks.find(c => c.checkId === 'B04.import-local')];
+  m.checkPlan.checks[0].site = 'cloud'; m.checkReceiptRefs = [];
+  const probe = { ...ctx, m, dir: path.relative(root, fixture).split(path.sep).join('/'), batchPath: path.join(fixture, 'engineering-batch.json') };
+  const r = await runChecks(probe, { site: 'cloud', checkIds: ['B04.import-local'] });
+  assert.equal(r.status, 'rejected'); assert.deepEqual(r.executed, []);
+  assert.match(r.reason, /entry\/case\/site mismatch/);
+} finally { fs.rmSync(fixture, { recursive: true, force: true }); }
+console.log(JSON.stringify({ caseId: 'registry-contract', status: 'passed', actual: ['ten fixed B04 offline cases plus ai-only typecheck', 'actual accepted B06 parent and registry before/after binding', 'five original B04 product/check bytes unchanged', 'exact seven owners and no cleanup', 'Mac import-local is manual/local-only and cannot run at cloud site', 'B05/B07 remain planned'], transportCasesExecutedHere: [], realApiRequests: 0 }));

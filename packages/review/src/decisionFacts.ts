@@ -1,3 +1,4 @@
+import { displaySeatLabel, displaySeatCounts } from './seatDisplay';
 import {
   applyMove, beats, canPass, describeCombo, teamOf, checkRecordIntegrity, legalCombos, type GameRecord, type GameState, type Card,
 } from '@gd/engine';
@@ -93,10 +94,10 @@ export function buildDecisionFactsV3(
     expressionScope:'只陈述程序核实的事实；启发式与网络属于各自偏好，尚未证明哪种打法更好',
     expectedAssertionIds:FACT_ASSERTION_IDS.map(id=>`${record.id}#m${moveNo}:v${viewerSeat}:${id}`),
     assertions:[
-      {id:'target_and_owner',checked:true,applicable:true,text:target?`当前目标：${target.text}；控权席 ${owner}`:'当前领出，无待压目标与控权席'},
-      {id:'actor_and_viewer',checked:true,applicable:true,text:`行动席 ${actorSeat}；观察席 ${viewerSeat}；行动队伍 ${teamOf(actorSeat)}`},
+      {id:'target_and_owner',checked:true,applicable:true,text:target?`当前目标：${target.text}；控权席 ${displaySeatLabel(owner!).label}`:'当前领出，无待压目标与控权席'},
+      {id:'actor_and_viewer',checked:true,applicable:true,text:`行动席 ${displaySeatLabel(actorSeat).label}；观察席 ${displaySeatLabel(viewerSeat).label}；行动队伍 ${teamOf(actorSeat) === teamOf(viewerSeat) ? '我方' : '对方'}（观察席视角）`},
       {id:'actual_identity_and_count',checked:true,applicable:true,text:`实际动作 ${actualActionId}；${ids.length} 张；来源为原谱`},
-      {id:'remaining_counts',checked:true,applicable:true,text:`行动前 ${beforeCounts.join('/')}；行动后 ${afterCounts.join('/')} 张`},
+      {id:'remaining_counts',checked:true,applicable:true,text:`行动前 ${displaySeatCounts(beforeCounts)}；行动后 ${displaySeatCounts(afterCounts)}`},
       {id:'rule_relation',checked:true,applicable,text:applicable?'实际动作经引擎核验可以压当前目标':'无需进行出牌大小比较',...(!applicable?{applicabilityReason:move.pass?'过牌只核合法性，不推断压制能力':'领出没有比较对象'}:{})},
       {id:'advice_source',checked:true,applicable:true,text:'本卡事实来自规则引擎与原谱；未加载的网络或未验证搜索不生成策略真值'},
     ],

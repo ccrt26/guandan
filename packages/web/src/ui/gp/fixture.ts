@@ -1,3 +1,4 @@
+import { SEAT_DISPLAY } from './viewmodel';
 import type { MatchController } from '../../game/controller';
 import type { StageVM } from './viewmodel';
 
@@ -57,9 +58,9 @@ export function fixtureVM(opts: { handCount?: number; locked?: boolean } = {}): 
     status: '本局进行中',
     notice: { visible: true, text: '抗贡 · 下游方抓有两大王，免进贡' },
     players: [
-      { seat: 'north', name: '队友', role: 'teammate', remaining: 25, rankIdx: null },
-      { seat: 'west', name: '西家', role: 'opponent', remaining: 25, rankIdx: null },
-      { seat: 'east', name: '东家', role: 'opponent', remaining: 20, rankIdx: null },
+      { seat: 'north', name: SEAT_DISPLAY.north, role: 'teammate', remaining: 25, rankIdx: null },
+      { seat: 'west', name: SEAT_DISPLAY.west, role: 'opponent', remaining: 25, rankIdx: null },
+      { seat: 'east', name: SEAT_DISPLAY.east, role: 'opponent', remaining: 20, rankIdx: null },
     ],
     passes: { north: true, west: true, east: false, self: false },
     playedEast: { status: 'cards', cards: items(EAST_CODES, EAST_WILD_IDX, 'fx-e') },

@@ -16,6 +16,14 @@ interface Row {
   fav: boolean;
 }
 
+/** Same compact heading used by the real picker and its memory-only visual fixture. */
+export function ReviewHeading(){return (<header className="tz-head">
+        <div className="tz-head-title">
+          <h1>复盘</h1>
+          <p>回看每一步，理解每次选择。</p>
+        </div>
+      </header>);}
+
 /** 复盘选择页（主从式）：左列表选局，右石墨灰摘要卡；单一 selectedReviewId 状态源 */
 export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
   const [tick, setTick] = useState(0);
@@ -42,6 +50,7 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
   const visible = useMemo(() => {
     const winOf = (m: Row['meta']) => teamOf(m.humanSeat) === m.winnerTeam;
     const list = all.filter((r) => {
+      if (r.meta.spectatorOnly && result !== 'all') return false;
       if (result === 'win' && !winOf(r.meta)) return false;
       if (result === 'loss' && winOf(r.meta)) return false;
       if (favOnly && !r.fav) return false;
@@ -86,12 +95,7 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
 
   return (
     <div className="tz rv">
-      <header className="tz-head">
-        <div className="tz-head-title">
-          <h1>复盘</h1>
-          <p>回看每一步，理解每次选择。</p>
-        </div>
-      </header>
+      <ReviewHeading />
 
       <main className="tz-console rv-console">
         {/* 筛选横条 */}
@@ -166,8 +170,8 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
                   </span>
                   <span className="rv-when">{new Date(r.meta.createdAt).toLocaleString('zh-CN', { hour12: false })}</span>
                   <span className="rv-result">
-                    <span className={`rv-rchip ${win ? 'w' : 'l'}`}>{win ? '胜' : '负'}</span>
-                    <b>{rankText(r.meta.humanRank)}</b>
+                    <span className={`rv-rchip ${win ? 'w' : 'l'}`}>{r.meta.spectatorOnly ? 'AI' : win ? '胜' : '负'}</span>
+                    <b>{r.meta.spectatorOnly ? '四席AI · 无真人' : rankText(r.meta.humanRank)}</b>
                     {r.meta.doubleUp && <span className="rv-du">双上游</span>}
                   </span>
                   <span className="rv-meta">
@@ -189,9 +193,9 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
                 <p className="rv-date">{new Date(selected.meta.createdAt).toLocaleString('zh-CN', { hour12: false })}</p>
                 <div className="rv-bigline">
                   <span className={`rv-rchip big ${teamOf(selected.meta.humanSeat) === selected.meta.winnerTeam ? 'w' : 'l'}`}>
-                    {teamOf(selected.meta.humanSeat) === selected.meta.winnerTeam ? '胜' : '负'}
+                    {selected.meta.spectatorOnly ? 'AI' : teamOf(selected.meta.humanSeat) === selected.meta.winnerTeam ? '胜' : '负'}
                   </span>
-                  <b className="rv-bigrank">{rankText(selected.meta.humanRank)}</b>
+                  <b className="rv-bigrank">{selected.meta.spectatorOnly ? '四席AI · 无真人' : rankText(selected.meta.humanRank)}</b>
                 </div>
                 <div className="rv-metaline">
                   <div><i>难度</i><b>{diffText(selected.meta)}</b></div>

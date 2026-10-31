@@ -1,6 +1,6 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { DEFAULT_RULES, RANK_NAME, type RuleOptions } from '@gd/engine';
-import type { NeuralTier } from '@gd/ai';
+import { loadWebSeats, loadSavedWebSeats, loadSavedWebPolicy, webReleaseChoices, webPolicyDescriptors } from './game/policy';
 import type { GameRecord } from '@gd/engine';
 import { MatchController } from './game/controller';
 import { fixtureControllerStub } from './ui/gp/fixture';
@@ -11,88 +11,109 @@ import { StatsPage } from './ui/sp/StatsPage';
 import { ReviewPicker } from './ui/ReviewPicker';
 import { SettingsModal } from './ui/SettingsModal';
 import { AppFrame } from './ui/AppFrame';
-import { clearCurrentMatch, loadCurrentMatch, pruneOrphanReports } from './game/storage';
+import { AISelectionModal } from './ui/AISelectionModal';
+import { resolveNewGameSeats, resolveNewGameAssignments, validateNewGameSettings, newGameSettingsFromLegacy, type NewGameSettings, type AISelection } from './game/ai-selection';
+import { createProfileClient, type PublicProfile } from './game/llm-profiles';
+import { clearCurrentMatch, loadCurrentMatch, pruneOrphanReports, loadNewGameSettings, saveNewGameSettings } from './game/storage';
 
 export type View = 'home' | 'table' | 'review' | 'history';
+const DevAISelectionAudit = import.meta.env.DEV ? lazy(()=>import('./ui/DevAISelectionAudit')) : null;
 const DevTableAudit = import.meta.env.DEV ? lazy(()=>import('./ui/gt/DevTableAudit')) : null;
 
-export interface AppSettings {
-  /** 难度三档（D1 锁定，作用于两个对手；队友固定满血新 AI） */
-  tier: NeuralTier;
-  passA: RuleOptions['passA'];
+export type AppSettings = NewGameSettings;
+const selectionContext={policies:webPolicyDescriptors,choices:webReleaseChoices};
+function initialSettings():{value:NewGameSettings|null;error:string|null} {
+  try{return {value:loadNewGameSettings(),error:null};}
+  catch(error){return {value:null,error:`新局偏好未加载，原值保留：${String(error)}`};}
 }
 
 export function App() {
+  if(DevAISelectionAudit&&new URLSearchParams(window.location.search).has('aiselectionaudit'))return <Suspense fallback={<p>正在加载隔离验收夹具…</p>}><DevAISelectionAudit/></Suspense>;
+  return <PlayerApp/>;
+}
+function PlayerApp() {
   const [view, setView] = useState<View>('home');
-  const [settings, setSettings] = useState<AppSettings>({ tier: 'standard', passA: 'head3' });
+  const [settingsState,setSettingsState]=useState(initialSettings);
+  const settings=settingsState.value;
+  const [showAISelection,setShowAISelection]=useState(false);
+  const [publicProfiles,setPublicProfiles]=useState<PublicProfile[]>(()=>createProfileClient({storage:localStorage,fetchImpl:fetch}).cached());
   const [controller, setController] = useState<MatchController | null>(null);
   const [reviewRecord, setReviewRecord] = useState<GameRecord | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [homeTick, setHomeTick] = useState(0);
+  const [policyError, setPolicyError] = useState<string | null>(null);
+  const loadGeneration = useRef(0);
 
-  const startMatch = useCallback(async (next: AppSettings) => {
-    setSettings(next);
+  const startMatch = useCallback(async () => {
+    if(!settings){setPolicyError(settingsState.error);return;}
+    const next=settings;
+    const operation = ++loadGeneration.current;
     const rules: RuleOptions = { ...DEFAULT_RULES, passA: next.passA };
     // 开发期自动驾驶（?autopilot=1）：生产构建直接忽略
-    const autopilot = import.meta.env.DEV && new URLSearchParams(window.location.search).has('autopilot');
-    clearCurrentMatch(); // 开新比赛放弃旧进度；继续比赛走恢复入口，不重新发牌。
-    // 新 AI 为默认对手（clean2=ck-7051，D1 三档）；加载失败才回退启发式并横幅如实标注
-    let neural: ArrayBuffer | undefined;
-    let neuralLoadError: string | undefined;
+    setPolicyError(null);
+    let c: MatchController;
     try {
-      const res = await fetch('ai/clean2.f32');
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      neural = await res.arrayBuffer();
-    } catch (e) {
-      neuralLoadError = `权重加载失败：${String(e).slice(0, 120)}`;
-      console.warn('[neural] 权重加载失败，本局使用启发式：', e);
-    }
-    const c = new MatchController({ difficulty: 1, rules, autopilot, neuralOpponents: neural, neuralTier: next.tier, neuralLoadError });
+      const seats = await resolveNewGameSeats(next,selectionContext,loadWebSeats);
+      if (operation !== loadGeneration.current) return;
+      c = new MatchController({ difficulty: 1, rules, seats });
+    } catch (error) { if(operation === loadGeneration.current)setPolicyError(`政策加载失败，未开始比赛：${String(error)}`); return; }
+    // Failed loading/tier binding must not discard a saved game or substitute policy.
+    clearCurrentMatch();
     setController(c);
     c.startGame();
     setView('table');
-  }, []);
+  }, [settings,settingsState.error]);
+
+  const commitSettings=(value:NewGameSettings)=>{
+    const next=validateNewGameSettings(value);saveNewGameSettings(next);setSettingsState({value:next,error:null});setPolicyError(null);
+  };
+  const changePassA=(passA:RuleOptions['passA'])=>{
+    if(!settings)return;
+    try{commitSettings({...settings,passA});}catch(error){setPolicyError(`规则未保存，原选择保留：${String(error)}`);}
+  };
+  const commitAI=(aiSelection:AISelection,profiles:readonly PublicProfile[])=>{
+    const next=validateNewGameSettings({...(settings??newGameSettingsFromLegacy()),aiSelection});
+    resolveNewGameAssignments(next,{...selectionContext,profiles});commitSettings(next);setPublicProfiles([...profiles]);
+  };
+  useEffect(()=>{
+    if(!settings||settings.aiSelection.kind!=='explicit'||!settings.aiSelection.seats.some(s=>s.controller==='ai'&&s.mode==='hybrid'))return;
+    let current=true;
+    createProfileClient({storage:localStorage,fetchImpl:fetch}).refresh().then(profiles=>{if(current)setPublicProfiles(profiles);},()=>{if(current)setPublicProfiles([]);});
+    return()=>{current=false;};
+  },[settings]);
 
   const openReview = useCallback((record: GameRecord) => {
+    loadGeneration.current++;
+    controller?.destroy();
     setReviewRecord(record);
     setView('review');
-  }, []);
+  }, [controller]);
 
   const resumeMatch = useCallback(async () => {
+    const operation = ++loadGeneration.current;
     controller?.destroy();
     const save = loadCurrentMatch();
     if (!save) return;
-    // 继续比赛：按存档时的对手口径恢复（中途不偷换难度）。旧档（无 aiPolicy）=当
-    // 时就是启发式对手，按旧难度恢复；新档=新 AI+存档档位。神经加载失败回退启发式。
-    let neural: ArrayBuffer | undefined;
-    let neuralLoadError: string | undefined;
-    if (save.aiPolicy?.startsWith('neural-tier')) {
-      try {
-        const res = await fetch('ai/clean2.f32');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        neural = await res.arrayBuffer();
-      } catch (e) {
-        neuralLoadError = `权重加载失败：${String(e).slice(0, 120)}`;
+    setPolicyError(null);
+    let c: MatchController;
+    try {
+      const seats = save.seatConfig ? await loadSavedWebSeats(save.seatConfig) : undefined;
+      const loaded = seats ? undefined : await loadSavedWebPolicy(save.aiPolicy);
+      if (operation !== loadGeneration.current) return;
+      const latestSave = loadCurrentMatch();
+      if (!latestSave || latestSave.snapshotRevision !== save.snapshotRevision || latestSave.savedAt !== save.savedAt) {
+        setHomeTick(t=>t+1); return;
       }
-    }
-    const latestSave = loadCurrentMatch();
-    if (!latestSave) return;
-    // Another page may advance the save while weights load. Never resume the
-    // stale object captured before the await. A changed AI policy needs a new load.
-    if (latestSave.aiPolicy !== save.aiPolicy) {
-      setHomeTick(t=>t+1);
-      return;
-    }
-    const tier = latestSave.aiPolicy?.startsWith('neural-tier:')
-      ? (latestSave.aiPolicy.split(':')[1] as NeuralTier)
-      : 'hard';
-    const c = new MatchController({ difficulty: latestSave.difficulty, rules: latestSave.ruleOpts, resumeMatch: latestSave, neuralOpponents: neural, neuralTier: tier, neuralLoadError });
+      c = new MatchController({difficulty:save.difficulty,rules:save.ruleOpts,resumeMatch:save,
+        ...(seats ? {seats} : {neuralPolicy:loaded!.policy,neuralTier:loaded!.tier})});
+    } catch (error) { if(operation === loadGeneration.current)setPolicyError(`引用缺失或恢复被暂停：${String(error)}`); return; }
     setController(c);
     c.startGame();
     setView('table');
   }, [controller]);
 
   const abandonMatch = useCallback(() => {
+    loadGeneration.current++;
     clearCurrentMatch();
     setHomeTick((t) => t + 1);
   }, []);
@@ -103,7 +124,9 @@ export function App() {
   // 启动时清理孤儿报告（对局已删但报告残留）；幂等，只跑一次
   useEffect(() => { pruneOrphanReports(); }, []);
 
-  const settingsModal = showSettings ? <SettingsModal onClose={() => setShowSettings(false)} /> : null;
+  const navigate = (next: View) => { loadGeneration.current++; controller?.destroy(); setController(null); setView(next); };
+
+  const settingsModal = <>{showSettings&&<SettingsModal onClose={() => setShowSettings(false)} />}{showAISelection&&<AISelectionModal value={settings} context={selectionContext} onConfirm={commitAI} onClose={()=>setShowAISelection(false)}/>}</>;
 
   if (DevTableAudit && new URLSearchParams(window.location.search).has('gtaudit')) {
     return <Suspense fallback={<p>正在加载本地验收入口…</p>}><DevTableAudit /></Suspense>;
@@ -135,8 +158,8 @@ export function App() {
           controller={fixtureControllerStub}
           onExit={() => setView('home')}
           onReview={() => {}}
-          onNavStats={() => setView('history')}
-          onNavReview={() => setView('review')}
+          onNavStats={() => navigate('history')}
+          onNavReview={() => navigate('review')}
           onOpenSettings={() => setShowSettings(true)}
         />
       </>
@@ -151,13 +174,11 @@ export function App() {
         <TablePage
           controller={controller}
           onExit={() => {
-            controller.destroy();
-            setController(null);
-            setView('home');
+            navigate('home');
           }}
           onReview={(record) => openReview(record)}
-          onNavStats={() => setView('history')}
-          onNavReview={() => setView('review')}
+          onNavStats={() => navigate('history')}
+          onNavReview={() => navigate('review')}
           onOpenSettings={() => setShowSettings(true)}
         />
       </>
@@ -168,13 +189,13 @@ export function App() {
     <>
       {settingsModal}
       <AppFrame active={view==='history'?'stats':view==='review'?'review':'train'}
-        onNav={section=>setView(section==='train'?'home':section==='stats'?'history':'review')}
+        onNav={section=>navigate(section==='train'?'home':section==='stats'?'history':'review')}
         onSettings={()=>setShowSettings(true)}>
         {view==='history' ? <StatsPage embedded onOpenReview={openReview} /> :
           view==='review' ? (reviewRecord ?
-            <ReviewPage record={reviewRecord} settings={settings} onBack={()=>setReviewRecord(null)} /> :
+            <ReviewPage record={reviewRecord} settings={settings??newGameSettingsFromLegacy()} onBack={()=>setReviewRecord(null)} /> :
             <ReviewPicker onOpen={openReview} />) :
-          <HomePage key={homeTick} settings={settings} onStart={startMatch} onResume={resumeMatch} onAbandon={abandonMatch} />}
+          <HomePage key={homeTick} settings={settings} profiles={publicProfiles} context={selectionContext} error={policyError??settingsState.error} onPassA={changePassA} onAISelection={()=>setShowAISelection(true)} onStart={startMatch} onResume={resumeMatch} onAbandon={abandonMatch} />}
       </AppFrame>
     </>
   );

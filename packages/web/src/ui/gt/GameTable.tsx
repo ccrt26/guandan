@@ -1,3 +1,4 @@
+import { SEAT_DISPLAY } from '../gp/viewmodel';
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import type { CardItem, PlayedVM } from '../gp/viewmodel';
 import type { GameTableVM } from './viewmodel';
@@ -63,7 +64,7 @@ function PlayedZone({ vm, seat, layout, onImageError }: { vm: PlayedVM; seat:Tab
   if (vm.status !== 'cards') return null;
   const pose = getPlayedLayout(seat,vm.cards.length,layout);
   return (
-    <div className={`gt-played gt-z-${seat}`} style={rectStyle(pose)} aria-label="已出的牌">
+    <div className={`gt-played gt-z-${seat}`} style={rectStyle(pose)} aria-label={`${SEAT_DISPLAY[seat]}已出的牌`}>
       {vm.cards.map((c, i) => (
         <CardImg key={c.instanceId} item={c} w={pose.cardWidth} style={{ left: i * pose.step, height:pose.height }} onImageError={onImageError} />
       ))}
@@ -168,9 +169,9 @@ export function GameTable({
       </header>
 
       <main className="gt-table">
-        <PlayerPill name="队友" count={vm.players[0].remaining} cls="gt-p-north" showCount={!tribute} rect={layout.players.north} />
-        <PlayerPill name="西家" count={vm.players[1].remaining} cls="gt-p-west" showCount={!tribute} rect={layout.players.west} />
-        <PlayerPill name="东家" count={vm.players[2].remaining} cls="gt-p-east" showCount={!tribute} rect={layout.players.east} />
+        <PlayerPill name={vm.players[0].name} count={vm.players[0].remaining} cls="gt-p-north" showCount={!tribute} rect={layout.players.north} />
+        <PlayerPill name={vm.players[1].name} count={vm.players[1].remaining} cls="gt-p-west" showCount={!tribute} rect={layout.players.west} />
+        <PlayerPill name={vm.players[2].name} count={vm.players[2].remaining} cls="gt-p-east" showCount={!tribute} rect={layout.players.east} />
 
         {/* 「不出」徽章：各家出牌区中心（过牌时显示，结果确认页隐藏） */}
         {!tribute && (['north','west','east','self'] as const).map(seat => {
@@ -178,7 +179,7 @@ export function GameTable({
           const p=getPlayedLayout(seat,1,layout), width=120*layout.scale;
           const left=seat==='west'?p.x:seat==='east'?p.x+p.width-width:(size.width-width)/2;
           return <div key={seat} className={`gt-passpill gt-pass-${seat}`} role="status"
-            aria-label={`${{north:'队友',west:'西家',east:'东家',self:'我方'}[seat]}不出`}
+            aria-label={`${SEAT_DISPLAY[seat]}不出`}
             style={{left,top:p.y+32*layout.scale,width}}>不出</div>;
         })}
 
@@ -217,13 +218,13 @@ export function GameTable({
           <p>确认前暂停出牌，请通过返回入口恢复比赛。</p>
         </section>}
 
-        <div className="gt-self-label" style={rectStyle(layout.selfLabel)} aria-label="我的手牌">
+        <div className="gt-self-label" style={rectStyle(layout.selfLabel)} aria-label={`${SEAT_DISPLAY.self}手牌`}>
           <span className="gt-avatar" aria-hidden="true" />
-          <span>我的手牌</span>
+          <span>{SEAT_DISPLAY.self}手牌</span>
           {!tribute && <b>{n} <i>张</i></b>}
         </div>
 
-        <div className="gt-hand" style={rectStyle(layout.hand)} aria-label={tribute ? '我的手牌（只读）' : '我的手牌，可选中'}>
+        <div className="gt-hand" style={rectStyle(layout.hand)} aria-label={`${SEAT_DISPLAY.self}手牌${tribute || !vm.selectable ? '（只读）' : '，可选中'}`}>
           {vm.hand.map((c, i) => {
             const t = mid ? (i - mid) / mid : 0;
             const style: React.CSSProperties = {

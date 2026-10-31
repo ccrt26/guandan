@@ -1,0 +1,129 @@
+{
+  "schema": "M-legacy-ui-fixture-v1",
+  "origin": "http://127.0.0.1:15183",
+  "artificial": true,
+  "profile": {
+    "profileId": "m-fake-profile",
+    "nickname": "M 假连接（不会联网）",
+    "revision": 1,
+    "snapshotHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "protocol": "openai-chat-completions",
+    "baseUrl": "https://fixture.invalid/v1",
+    "requestedModel": "fake-model",
+    "supportedReasoningOptions": {},
+    "requestOptions": {}
+  },
+  "record": {
+    "id": "m-public-fixture",
+    "humanSeat": 0
+  },
+  "evidence": [
+    {
+      "decisionId": "m-public-fixture#m2",
+      "recordId": "m-public-fixture",
+      "moveNo": 2,
+      "seat": 1,
+      "replayStatus": "exact",
+      "actual": {
+        "actionId": "a0",
+        "coverage": {
+          "status": "exact",
+          "index": 0
+        },
+        "wildAs": [],
+        "declaration": null
+      },
+      "facts": {
+        "rule": "小王压得过♥A",
+        "count": "剩余5张"
+      },
+      "actionTexts": {
+        "a0": "小王",
+        "a1": "♥A"
+      },
+      "claims": [
+        {
+          "claimId": "c1",
+          "kind": "rule_relation",
+          "decisionId": "m-public-fixture#m2",
+          "factIds": [
+            "rule"
+          ],
+          "scope": "provable_fact",
+          "text": "小王压得过♥A"
+        }
+      ],
+      "claimLevel": "provable_fact",
+      "conflicts": [],
+      "missing": [],
+      "recordHash": "synthetic-public-only",
+      "verifiedPrefixEnd": 2,
+      "ruleContext": {
+        "levelMode": "stage",
+        "stageTeam": 0,
+        "levelsBefore": [
+          2,
+          2
+        ],
+        "version": "fixture"
+      },
+      "observation": {
+        "hash": "synthetic-public-only",
+        "basis": "legal visible"
+      },
+      "candidates": null,
+      "policy": null,
+      "heuristic": {
+        "topActionId": null,
+        "note": null,
+        "perItemBreakdown": false
+      },
+      "heuristicBreakdowns": [],
+      "rollouts": [],
+      "expressionScope": "只陈述规则事实",
+      "singleStep": {
+        "actual": {
+          "actionId": "a0",
+          "label": "实际打法",
+          "sourceId": "record",
+          "text": "小王",
+          "remainingCards": 5,
+          "wildsSpent": 0,
+          "factIds": [
+            "count"
+          ]
+        },
+        "alternatives": []
+      }
+    }
+  ],
+  "coachOutput": {
+    "summary": "以下仅说明规则事实。",
+    "lessons": [
+      {
+        "decisionId": "m-public-fixture#m2",
+        "actionIds": [
+          "a0"
+        ],
+        "factIds": [
+          "rule"
+        ],
+        "claimIds": [
+          "c1"
+        ],
+        "claimLevel": "provable_fact",
+        "title": "规则比较",
+        "text": "小王压得过♥A。"
+      }
+    ]
+  },
+  "importDraft": {
+    "baseUrl": "https://import.fixture.invalid/v1",
+    "apiKey": "FAKE_ONLY_NOT_A_CREDENTIAL",
+    "model": "fake-import-model",
+    "note": "人工假导入；不会读取本机配置",
+    "opaqueSource": {
+      "preserved": true
+    }
+  }
+}

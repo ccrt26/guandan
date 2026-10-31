@@ -1,5 +1,7 @@
+import { displaySeatLabel } from '@gd/review';
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { canPass, isReturnableCard, type GameRecord , describeCombo } from '@gd/engine';
+import './seat-config.css';
 import { HUMAN_SEAT, type MatchController } from '../game/controller';
 import { GameTable } from './gt/GameTable';
 import { ExchangeHistory } from './gt/ExchangeHistory';
@@ -84,7 +86,7 @@ export function TablePage({
 
   // 还贡阶段：轮到人类自选一张不大于 10 的牌还给贡牌方
   const pendingReturn = state?.pendingReturns[0] ?? null;
-  const myReturn = !isFixture && pendingReturn !== null && pendingReturn.from === HUMAN_SEAT;
+  const myReturn = !isFixture && controller.humanReturning;
   const returnCard = myReturn && selectedCards.length === 1 && ctx && isReturnableCard(selectedCards[0], ctx)
     ? { card: selectedCards[0], to: pendingReturn!.to }
     : null;
@@ -143,7 +145,7 @@ export function TablePage({
     const nh = controller.neuralHint();
     setHintInfo({
       heur: `${item.combo ? describeCombo(item.combo) : '不出'}（第 ${next + 1}/${list.length} 项，可再点轮换）`,
-      neural: nh ? (nh.pass ? '不出' : nh.combo ? describeCombo(nh.combo) : '?') : null,
+      neural: nh ? `本地提案（不调用API）：${nh.pass ? '不出' : nh.combo ? describeCombo(nh.combo) : '?'}` : null,
     });
   }, [controller, hintIdx, myReturn, showToast, isFixture]);
 
@@ -202,6 +204,13 @@ export function TablePage({
   </main> : null;
 
   return (
+    <>
+    {!isFixture && <aside className="seat-runtime" aria-label="四席冻结身份">
+      <details><summary>四席冻结身份</summary>{controller.seatLabels?.map((label,seat)=><div key={seat}>{displaySeatLabel(seat).label}：{label}</div>)}</details>
+      {controller.waitingRemote && <div role="status">等待本手决定，不会因等待重发。<button onClick={()=>controller.useLocalForPending()}>本手改用已缓存本地B</button><button onClick={onExit}>停止并离桌</button></div>}
+      {controller.decisionError && <p role="alert">牌局已暂停：{controller.decisionError}。请离桌检查配置后恢复；执行结果未知的存档不能续出。</p>}
+      {controller.lastDecision?.source==='local_override'&&<p>上一手由缓存本地B接手；四席配置未改变。</p>}
+    </aside>}
     <GameTable
       vm={vm}
       overlay={historyOpen && !isFixture ? <ExchangeHistory entries={controller.exchangeHistory} onClose={()=>setHistoryOpen(false)} /> : null}
@@ -258,5 +267,6 @@ export function TablePage({
       onEscape={clearSelection}
       onImageError={onImageError}
     />
+    </>
   );
 }

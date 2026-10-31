@@ -1,0 +1,136 @@
+{
+  "levels": [
+    2,
+    2
+  ],
+  "gameNo": 0,
+  "lastResult": null,
+  "lastHead": null,
+  "rngState": 1234,
+  "ruleOpts": {
+    "levelMode": "stage",
+    "passA": "head3",
+    "pairSeqMin": 3,
+    "pairSeqMax": 3,
+    "trioSeqMin": 2,
+    "trioSeqMax": 2,
+    "flushLen": 5,
+    "straightLen": 5
+  },
+  "difficulty": 1,
+  "aiPolicy": "four-seat:v2",
+  "savedAt": 1793383200000,
+  "matchId": "B05-manual-missing",
+  "snapshotRevision": "B05-fixture-missing",
+  "executionState": "confirmed",
+  "seatConfig": {
+    "schemaVersion": 2,
+    "seats": [
+      {
+        "controller": "human"
+      },
+      {
+        "controller": "ai",
+        "releaseRef": "B05-deliberately-missing-release",
+        "mode": "local",
+        "release": {
+          "releaseRef": "product-o-standard-v1",
+          "label": "O · 标准",
+          "proposalPolicyRef": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "mode": "local",
+          "tier": "standard",
+          "status": "adopted",
+          "parentRelease": "product-o-hard-v1",
+          "remoteFallbackPolicyRef": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "localSelector": "proposal",
+          "candidateSpecRef": "ohuo-frozen-c8-expand4-v1",
+          "observationSchema": "ohuo-public-observation-v1",
+          "promptRef": "ohuo-engine-rules-v1/choose-expand-v1"
+        },
+        "policyIdentity": {
+          "policyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "modelVersion": "clean2-ck7051-20261027",
+          "weightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+          "inputDim": 385,
+          "encoderVersion": "gd-lab-schema-v1",
+          "candidateVersion": "cand-dedup-v2",
+          "passEncoding": "legacy-phys10",
+          "candidateCompat": "v2",
+          "architectureId": "mlp-tanh-256x256-scalar-v1",
+          "weightsLayoutVersion": "f32le-layer-w-row-major-then-b-v1",
+          "epsilon": 0,
+          "tieBreakId": "first-candidate-v1",
+          "tierSpecId": "legacy-near-tie-v1"
+        }
+      },
+      {
+        "controller": "ai",
+        "releaseRef": "product-o-hard-v1",
+        "mode": "local",
+        "release": {
+          "releaseRef": "product-o-hard-v1",
+          "label": "O · 挑战",
+          "proposalPolicyRef": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "mode": "local",
+          "tier": "hard",
+          "status": "adopted",
+          "parentRelease": null,
+          "remoteFallbackPolicyRef": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "localSelector": "proposal",
+          "candidateSpecRef": "ohuo-frozen-c8-expand4-v1",
+          "observationSchema": "ohuo-public-observation-v1",
+          "promptRef": "ohuo-engine-rules-v1/choose-expand-v1"
+        },
+        "policyIdentity": {
+          "policyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "modelVersion": "clean2-ck7051-20261027",
+          "weightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+          "inputDim": 385,
+          "encoderVersion": "gd-lab-schema-v1",
+          "candidateVersion": "cand-dedup-v2",
+          "passEncoding": "legacy-phys10",
+          "candidateCompat": "v2",
+          "architectureId": "mlp-tanh-256x256-scalar-v1",
+          "weightsLayoutVersion": "f32le-layer-w-row-major-then-b-v1",
+          "epsilon": 0,
+          "tieBreakId": "first-candidate-v1",
+          "tierSpecId": "legacy-near-tie-v1"
+        }
+      },
+      {
+        "controller": "ai",
+        "releaseRef": "product-o-standard-v1",
+        "mode": "local",
+        "release": {
+          "releaseRef": "product-o-standard-v1",
+          "label": "O · 标准",
+          "proposalPolicyRef": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "mode": "local",
+          "tier": "standard",
+          "status": "adopted",
+          "parentRelease": "product-o-hard-v1",
+          "remoteFallbackPolicyRef": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "localSelector": "proposal",
+          "candidateSpecRef": "ohuo-frozen-c8-expand4-v1",
+          "observationSchema": "ohuo-public-observation-v1",
+          "promptRef": "ohuo-engine-rules-v1/choose-expand-v1"
+        },
+        "policyIdentity": {
+          "policyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+          "modelVersion": "clean2-ck7051-20261027",
+          "weightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+          "inputDim": 385,
+          "encoderVersion": "gd-lab-schema-v1",
+          "candidateVersion": "cand-dedup-v2",
+          "passEncoding": "legacy-phys10",
+          "candidateCompat": "v2",
+          "architectureId": "mlp-tanh-256x256-scalar-v1",
+          "weightsLayoutVersion": "f32le-layer-w-row-major-then-b-v1",
+          "epsilon": 0,
+          "tieBreakId": "first-candidate-v1",
+          "tierSpecId": "legacy-near-tie-v1"
+        }
+      }
+    ]
+  }
+}
