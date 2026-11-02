@@ -3,7 +3,7 @@
 import type { GameState, Move } from '@gd/engine';
 import { resolveLegalMove } from './legality';
 import { freezeCopy, type DecisionBundle, type DecisionKey } from './protocol';
-import { selectRemoteDecision, type RemoteDecisionResult, type RemoteRequest } from './remote-selector';
+import { selectRemoteDecision, isRemoteRequestSummary, type RemoteDecisionResult, type RemoteRequest } from './remote-selector';
 
 export interface DecisionOutcome {
   status: 'selected' | 'fallback' | 'cancelled' | 'halted';
@@ -26,10 +26,17 @@ export interface PendingDecisionOptions {
   /** Local mode may choose a preserved product-tier action; hybrid B is immutable. */
   localActionId?: string;
 }
-const referenceFailures = new Set(['revision_conflict','profile_not_found','invalid_profile_reference',
-  'private_store_unavailable','private_store_requires_0600_regular_file','invalid_private_store',
-  'unsupported_protocol','profile_service_unavailable','invalid_profile_response',
-  'local_same_origin_required','invalid_play_request','invalid_json','json_required']);
+const completedExternalFailures=new Set(['upstream_error','output_truncated','unexpected_eof','missing_completion',
+  'invalid_response_json','invalid_response_shape','decision_id_mismatch','action_id_not_offered','group_id_not_expandable','expansion_already_used']);
+/** Only producer-classified external terminal failures with a real safe receipt may use frozen B. */
+export function confirmedRemoteFailure(remote:RemoteDecisionResult):boolean {
+  if(remote.status!=='remote_failure'||!Array.isArray(remote.attempts)||!remote.attempts.length||!remote.attempts.every(isRemoteRequestSummary)||!Number.isFinite(remote.elapsedMs)||remote.elapsedMs<0||!(remote.requestCount===null||Number.isSafeInteger(remote.requestCount)&&remote.requestCount>=0))return false;
+  const receipt=remote.attempts[remote.attempts.length-1];
+  if(remote.reason==='transport_failed')return receipt.requestCount===null||receipt.requestCount===1;
+  if(receipt.requestCount!==1||receipt.httpStatus===undefined)return false;
+  if(remote.reason==='http_error')return receipt.httpStatus>=400&&receipt.httpStatus<=599;
+  return completedExternalFailures.has(remote.reason)&&receipt.httpStatus>=200&&receipt.httpStatus<=299;
+}
 export class PendingDecision {
   readonly abort = new AbortController();
   private begun = false;
@@ -65,7 +72,7 @@ export class PendingDecision {
         if(remote.status==='cancelled'||!this.options.owner.isCurrent(bundle.key)) {this.cancel(remote.status==='cancelled'?remote.reason:'stale');return;}
         if(remote.status==='halted') {this.finish({status:'halted',reason:remote.reason,remote});return;}
         if(remote.status==='remote_failure') {
-          if(referenceFailures.has(remote.reason))this.finish({status:'halted',reason:remote.reason,remote});
+          if(!confirmedRemoteFailure(remote))this.finish({status:'halted',reason:remote.reason,remote});
           else this.commit(bundle.fallbackActionId,'fallback','remote_failure',remote.offeredIds,remote.reason,remote);
         } else if (remote.status==='selected') this.commit(remote.actionId,'selected','remote',remote.offeredIds,undefined,remote);
       }).catch(error=>{this.rejectRemote(error);if(!this.terminal)this.finish({status:'halted',reason:'decision_internal_error'});});
@@ -77,12 +84,6 @@ export class PendingDecision {
     if(!this.begun)this.settleRemote(null);
     this.abort.abort(reason);
     return this.finish({status:'cancelled',reason});
-  }
-  useLocal(): DecisionOutcome {
-    if(this.terminal)return this.terminal;
-    if(!this.begun)this.settleRemote(null);
-    this.abort.abort('local_override');
-    return this.commit(this.options.bundle.fallbackActionId,'fallback','local_override',this.options.bundle.offeredIds,'local_override');
   }
   private finish(value: Pick<DecisionOutcome,'status'> & Partial<DecisionOutcome>): DecisionOutcome {
     if(this.terminal)return this.terminal;

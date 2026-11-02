@@ -5,6 +5,7 @@
  */
 import { canPass, comboKey, legalCombos, type Combo, type EngineEvent, type GameState } from '@gd/engine';
 import type { Move } from '../types';
+import { resolveCandidatePolicy, FIRST_TARGET_CANDIDATE_SPEC, type CandidatePolicySpec } from '../candidate-spec';
 import {
   encodeAction, encodeState, encodeStateV2, INPUT_DIM, INPUT_DIM_V2, KIND_DIM, kindIdx, physIdx,
   PublicTracker, STATE_DIM, STATE_DIM_V2, DEFAULT_PASS_ENCODING, type PassEncoding,
@@ -29,6 +30,8 @@ export interface EncoderOpts {
 }
 
 export interface NeuralDecision {
+  /** Present only for an explicitly selected new proposal contract. */
+  candidatePolicy?: CandidatePolicySpec;
   move: Move;
   /** 完整输入向量（决策时刻独立快照）；仅 collectFeat 时返回 */
   feat?: Float32Array;
@@ -93,8 +96,10 @@ export class NeuralDecider {
   newGame(): void { this.tracker.reset(); }
   observe(events: EngineEvent[]): void { this.tracker.observe(events); }
 
-  decide(state: GameState, opts?: { collectFeat?: boolean; wantRanking?: boolean }): NeuralDecision {
-    let cands = dedupCandidates(legalCombos(state), canPass(state));
+  decide(state: GameState, opts?: { collectFeat?: boolean; wantRanking?: boolean; candidatePolicy?: CandidatePolicySpec }): NeuralDecision {
+    const policy = resolveCandidatePolicy(opts?.candidatePolicy);
+    if (policy.candidateSpec === FIRST_TARGET_CANDIDATE_SPEC && (this.encoder.candidateCompat || this.encoder.faultDropComboKeyPrefix?.length)) throw new Error('new candidate spec cannot use historical folding or injected truncation');
+    let cands = dedupCandidates(legalCombos(state, policy.enumSpec.enumerationMode), canPass(state));
     if (this.encoder.candidateCompat === 'v2') cands = dedupCandidatesV2Compat(cands);
     if (this.encoder.faultDropComboKeyPrefix?.length) {
       cands = cands.filter((c) => !c.combo || !this.encoder.faultDropComboKeyPrefix!.some((p) => comboKey(c.combo!).startsWith(p)));
@@ -131,6 +136,7 @@ export class NeuralDecider {
     const chosen = cands[pick];
     const move: Move = chosen.combo ? { pass: false, combo: chosen.combo } : { pass: true };
     const out: NeuralDecision = { move, nCands: n, explored };
+    if (policy.candidateSpec === FIRST_TARGET_CANDIDATE_SPEC) out.candidatePolicy = policy;
     if (opts?.collectFeat) out.feat = X.slice(pick * dim, (pick + 1) * dim);
     if (opts?.wantRanking) {
       out.ranking = cands

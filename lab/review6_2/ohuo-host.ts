@@ -7,10 +7,11 @@ import {validateTask,fixedReference,validateIdentifier,taskReferences,digest,fai
 const ROOT=resolve(fileURLToPath(new URL('../../',import.meta.url)));
 export async function runFixedHost(argv:string[]){
  try{
-  const [action,flag,value,...extra]=argv;if(extra.length||!value||!['init','start','status','stop','resume','qualify-calibration','finalize-student'].includes(action)||flag!==(action==='init'?'--state':action==='start'?'--task':['qualify-calibration','finalize-student'].includes(action)?'--request':'--run'))fail('invalid_cli','argv','exact fixed command/flag/value required');
-  if(['init','start','qualify-calibration','finalize-student'].includes(action))fixedReference(value,'reference');else validateIdentifier(value,'runId');
+  const [action,flag,value,...extra]=argv;if(extra.length||!value||!['init','start','status','stop','resume','qualify-calibration','finalize-student','freeze-first-round-budget'].includes(action)||flag!==(action==='init'?'--state':action==='start'?'--task':['qualify-calibration','finalize-student','freeze-first-round-budget'].includes(action)?'--request':'--run'))fail('invalid_cli','argv','exact fixed command/flag/value required');
+  if(['init','start','qualify-calibration','finalize-student','freeze-first-round-budget'].includes(action))fixedReference(value,'reference');else validateIdentifier(value,'runId');
   const adapter=new FixedHostFiles(ROOT);
   if(action==='init')return await adapter.initialize(value);
+  if(action==='freeze-first-round-budget')return await adapter.freezeFirstRoundBudget(value);
   if(action==='qualify-calibration')return await adapter.qualifyCalibration(value);
   if(action==='finalize-student'){const policy:any=await import('./distill-policy');if(typeof policy.finalizeStudentFromHost!=='function')fail('capability_planned','finalizeStudentFromHost','fixed reviewed finalization entry is absent');return await policy.finalizeStudentFromHost(value,adapter);}
   const state=adapter.checkExistingRoot();

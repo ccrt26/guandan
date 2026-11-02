@@ -790,15 +790,9 @@ export class MatchController {
   get seatLabels(): readonly string[] {
     return this.opts.seats ? this.opts.seats.snapshot.seats.map(s => {
       if (s.controller === 'human') return '真人';
-      try { return describeSeatChoice(s).shortName + (s.profileRevisionRef ? ` · 连接版本 ${s.profileRevisionRef.profileId}@${s.profileRevisionRef.revision} · ${s.profileRevisionRef.snapshotHash}` : ''); }
+      try { return describeSeatChoice(s,{policies:this.opts.seats!.runtime.flatMap(runtime=>runtime?[runtime.policy.descriptor]:[])}).shortName + (s.profileRevisionRef ? ` · 连接版本 ${s.profileRevisionRef.profileId}@${s.profileRevisionRef.revision} · ${s.profileRevisionRef.snapshotHash}` : ''); }
       catch (error) { return `身份未核验：${(error as Error).message}`; }
     }) : this.currentPolicies.map(label => label === 'human' ? '真人' : `AI · 技术来源：${label}`);
-  }
-  useLocalForPending(): boolean {
-    const pending = this.pendingDecision;
-    if (!pending?.pending) return false;
-    pending.useLocal();
-    return true;
   }
   private beginSeatDecision(): void {
     const state = this.state;

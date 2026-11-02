@@ -1,0 +1,285 @@
+{
+  "schema": "ohuo-student-migration-receipt-v1",
+  "parentRef": {
+    "architectureId": "mlp-tanh-256x256-scalar-v1",
+    "weightsLayoutVersion": "f32le-layer-w-row-major-then-b-v1",
+    "epsilon": 0,
+    "tieBreakId": "first-candidate-v1",
+    "policyId": "r62-p8c-control-u1400-greedy",
+    "modelVersion": "r62-p8c-control-u001400-41c9a38f",
+    "parameterCount": 168449,
+    "inputDim": 399,
+    "weightsPathOrUrl": {
+      "nodePath": "lab/review6_2/runs/r62-p8c-control/checkpoints/u001400-41c9a38f/weights.f32",
+      "assetUrl": "ai/ohuo/ohuo-1030-b-v1/weights.f32"
+    },
+    "weightsSHA256": "d05c52bbd28883760da11f042be2d110fd3b3a9affd97edd7aed43c9421eb081",
+    "encoder": {
+      "schema": "v2",
+      "ctxFill": "rule-context",
+      "passEncoding": "action64",
+      "encoderVersion": "gd-lab-schema-v4"
+    },
+    "candidateSpecId": "cand-suit-v3",
+    "tierSpecId": "none"
+  },
+  "sourceRegistryRef": {
+    "path": "lab/model-index.json",
+    "sha256": "408412939a44f4c430ff0710c5945214f36aed01c938c11208b9e87658fe42e0"
+  },
+  "target": {
+    "schema": "ohuo-student-scorer-v1",
+    "policyId": "s0-untrained-memory24-8180b44f6085",
+    "modelVersion": "s0-untrained-memory24-8180b44f6085",
+    "architectureId": "mlp-tanh-256x256-scalar-v1",
+    "weightsLayoutVersion": "f32le-layer-w-row-major-then-b-v1",
+    "inputDim": 423,
+    "parameterCount": 174593,
+    "weightsPathOrUrl": {
+      "nodePath": "lab/out/S33-student-migration/weights.f32"
+    },
+    "weightsSHA256": "8180b44f60858aaf3e4879da4eed42846dc00b1432ef40163526512468e1dcd5",
+    "encoder": {
+      "schema": "student-input399plus24-v1",
+      "encoderVersion": "student-input399plus24-v1",
+      "inputLayout": "legacy399_then_publicMemory24",
+      "baseEncoderRef": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64",
+        "encoderVersion": "gd-lab-schema-v4"
+      },
+      "segments": [
+        {
+          "role": "legacy-state",
+          "offset": 0,
+          "length": 331
+        },
+        {
+          "role": "legacy-action",
+          "offset": 331,
+          "length": 68
+        },
+        {
+          "role": "public-memory",
+          "offset": 399,
+          "length": 24
+        }
+      ],
+      "memorySchemaId": "public-high-card-memory-v1",
+      "relativeSeatOrder": [
+        "self",
+        "partner",
+        "upper",
+        "lower"
+      ],
+      "slotOrder": [
+        "J",
+        "Q",
+        "K",
+        "LEVEL_OTHER",
+        "SJ",
+        "BJ"
+      ],
+      "normalizationDivisors": [
+        8,
+        8,
+        8,
+        8,
+        2,
+        2
+      ]
+    },
+    "tieBreakId": "first-candidate-v1"
+  },
+  "migration": {
+    "ruleId": "legacy399-append24-zero-w1-columns-v1",
+    "codeRefs": [
+      {
+        "path": "packages/ai/src/nn/schema.ts",
+        "sha256": "bfdac505fc279de57d0810b38f4b2712e163cb944a42760e7f48183b2edc6c8e"
+      },
+      {
+        "path": "packages/ai/src/nn/mlp.ts",
+        "sha256": "8ace387bb126d8b2ab4686761be2789662c5908470730a1637921bfc87ba8267"
+      },
+      {
+        "path": "packages/ai/src/nn/publicMemory.ts",
+        "sha256": "467cfd4f1c85505f00df8540fd212fde772500bb8da0c3f2ef2c2498ca01d450"
+      },
+      {
+        "path": "packages/ai/src/policy/descriptor.ts",
+        "sha256": "d856d681fcdffc6f0d587aa274edd218249d2d3058d9b78fcd58efc12ab8b4f6"
+      },
+      {
+        "path": "packages/ai/src/policy/resolve.ts",
+        "sha256": "47b3e0bc106f7b03882d9e9ccf88676d1ca9dd79758aaf44cb4506ff72439f2c"
+      },
+      {
+        "path": "lab/review6_2/policy-loader.ts",
+        "sha256": "04db2c999d93246068f0ef06e4691c9e38073257b613f5c9294dce43cd4febbc"
+      },
+      {
+        "path": "lab/review6_2/checks/check-student-c1400.ts",
+        "sha256": "b9e2d46bf510776285c87414a66b6943e3d34564b79eee4f0dca61fedfdb90cb"
+      }
+    ],
+    "sourceSHA256": "d05c52bbd28883760da11f042be2d110fd3b3a9affd97edd7aed43c9421eb081",
+    "targetSHA256": "8180b44f60858aaf3e4879da4eed42846dc00b1432ef40163526512468e1dcd5",
+    "sourceEncoder": {
+      "schema": "v2",
+      "ctxFill": "rule-context",
+      "passEncoding": "action64",
+      "encoderVersion": "gd-lab-schema-v4"
+    },
+    "targetEncoder": {
+      "schema": "student-input399plus24-v1",
+      "encoderVersion": "student-input399plus24-v1",
+      "inputLayout": "legacy399_then_publicMemory24",
+      "baseEncoderRef": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64",
+        "encoderVersion": "gd-lab-schema-v4"
+      },
+      "segments": [
+        {
+          "role": "legacy-state",
+          "offset": 0,
+          "length": 331
+        },
+        {
+          "role": "legacy-action",
+          "offset": 331,
+          "length": 68
+        },
+        {
+          "role": "public-memory",
+          "offset": 399,
+          "length": 24
+        }
+      ],
+      "memorySchemaId": "public-high-card-memory-v1",
+      "relativeSeatOrder": [
+        "self",
+        "partner",
+        "upper",
+        "lower"
+      ],
+      "slotOrder": [
+        "J",
+        "Q",
+        "K",
+        "LEVEL_OTHER",
+        "SJ",
+        "BJ"
+      ],
+      "normalizationDivisors": [
+        8,
+        8,
+        8,
+        8,
+        2,
+        2
+      ]
+    },
+    "offsets": {
+      "W1": 0,
+      "b1": 108288,
+      "W2": 108544,
+      "b2": 174080,
+      "W3": 174336,
+      "b3": 174592
+    },
+    "newColumnsZero": 6144,
+    "parameters": 174593,
+    "bytes": 698372,
+    "initialization": "cross-input-migration-fresh-optimizer",
+    "strictResume": false
+  },
+  "finiteEvidence": {
+    "checkId": "student.same-input-smoke",
+    "candidateIds": [
+      "pass",
+      "{\"physicalCardIds\":[49],\"declaration\":\"{\\\"kind\\\":\\\"single\\\",\\\"mainRank\\\":12,\\\"keyRank\\\":12,\\\"length\\\":1,\\\"size\\\":1,\\\"resources\\\":[76],\\\"wildAs\\\":[],\\\"pairRanks\\\":[]}\"}",
+      "{\"physicalCardIds\":[50],\"declaration\":\"{\\\"kind\\\":\\\"single\\\",\\\"mainRank\\\":13,\\\"keyRank\\\":13,\\\"length\\\":1,\\\"size\\\":1,\\\"resources\\\":[77],\\\"wildAs\\\":[],\\\"pairRanks\\\":[]}\"}"
+    ],
+    "oldScores": [
+      -0.33331742882728577,
+      -0.4550963342189789,
+      -0.3780871033668518
+    ],
+    "newScores": [
+      -0.33331742882728577,
+      -0.4550963342189789,
+      -0.3780871033668518
+    ],
+    "selected": "pass",
+    "tolerance": "abs(diff)<=1e-6*(1+max(abs(q_old),abs(q_new)))",
+    "memory": {
+      "memorySchemaId": "public-high-card-memory-v1",
+      "dealId": {
+        "matchId": "s33-c1400-engineering-only",
+        "gameNo": 1
+      },
+      "throughMoveNo": 1,
+      "throughEvent": {
+        "moveNo": 1,
+        "eventIndex": 0
+      },
+      "levelRank": 7,
+      "countsBySeat": [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "levelPlayedBySeat": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "key": {
+      "matchId": "s33-c1400-engineering-only",
+      "gameNo": 1,
+      "moveNo": 1,
+      "actorSeat": 1
+    },
+    "parentFileUnchanged": true
+  },
+  "datasetEligible": false,
+  "realTraining": false,
+  "learningImprovementClaimed": false,
+  "publicRelease": false,
+  "acceptance": "pending-Q02"
+}

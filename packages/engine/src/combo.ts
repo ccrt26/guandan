@@ -250,12 +250,20 @@ function buildVariants(info: HandInfo, args: BuildArgs): Array<{ cards: Card[]; 
   return out;
 }
 
-export function enumerateCombos(hand: Card[], ctx: LevelCtx, rules: RuleOptions = DEFAULT_RULES): Combo[] {
+/** Explicit opt-in; omitted calls retain the historical bestS attachment scan. */
+export type EnumerationMode = 'legacy_best_pair' | 'all_supported_attachment_ranks';
+export function enumerateCombos(hand: Card[], ctx: LevelCtx, rules: RuleOptions = DEFAULT_RULES, enumerationMode: EnumerationMode = 'legacy_best_pair'): Combo[] {
+  if (enumerationMode !== 'legacy_best_pair' && enumerationMode !== 'all_supported_attachment_ranks') throw new Error('unknown enumeration mode');
+  const allAttachments = enumerationMode === 'all_supported_attachment_ranks';
+  // Reuse the existing classifier for new declarations, not a second rules engine.
+  const validNewFullHouse = (c: Combo): boolean => !allAttachments || c.kind !== 'trio_pair' ||
+    new Set(c.cards.map(card => card.id)).size === c.cards.length && classify(c.cards, ctx, rules).some(valid =>
+      comboKey(valid) === comboKey(c) && resourceRoles(valid.cards, valid.wildAs, ctx) === resourceRoles(c.cards, c.wildAs, ctx));
   const info = analyzeHand(hand, ctx);
   const out: Combo[] = [];
   const seen = new Set<string>();
   const push = (c: Combo | null) => {
-    if (!c) return;
+    if (!c || !validNewFullHouse(c)) return;
     // 候选 v3：去重键=声明+资源角色（含花色）。同声明的不同花色资源消耗是不同动作
     // （对8 用 ♣8♦8 保 ♠5-9 同花顺 vs ♠8♣8 破坏之，REVIEW4-A1 反例坐实 v2 合并缺陷）。
     const k = `${comboKey(c)}#${resourceRoles(c.cards, c.wildAs, ctx)}`;
@@ -335,6 +343,7 @@ export function enumerateCombos(hand: Card[], ctx: LevelCtx, rules: RuleOptions 
     // 找最小的可带对子（真实优先、rank 升序）
     let bestS: Rank | null = null;
     let bestKey = Infinity;
+    const supported: Rank[] = [];
     for (const s of allNonJokerRanks(ctx)) {
       if (s === r) continue;
       const cs = info.byRank.get(s)?.length ?? 0;
@@ -343,6 +352,7 @@ export function enumerateCombos(hand: Card[], ctx: LevelCtx, rules: RuleOptions 
       else if (cs === 1 && wLeft >= 1) cost = 1;
       else if (cs === 0 && wLeft >= 2 && ctx.ranks.has(s)) cost = 2;
       else continue;
+      supported.push(s);
       const key = cost * 100 + order(s);
       if (key < bestKey) {
         bestKey = key;
@@ -350,7 +360,9 @@ export function enumerateCombos(hand: Card[], ctx: LevelCtx, rules: RuleOptions 
       }
     }
     if (bestS === null) continue;
-    pushBuilt({ kind: 'trio_pair', ctx, need: [[r, 3]], pairNeed: [[bestS, 2]], mainRank: r, length: 1 });
+    for (const s of allAttachments ? supported : [bestS]) {
+      pushBuilt({ kind: 'trio_pair', ctx, need: [[r, 3]], pairNeed: [[s, 2]], mainRank: r, length: 1 });
+    }
   }
 
   // --- 序列牌型：顺子 / 三连对 / 钢板（位置域统一模型）---
@@ -455,6 +467,7 @@ export function enumerateCombos(hand: Card[], ctx: LevelCtx, rules: RuleOptions 
     const offered = new Set<string>();
     for (const o of out) offered.add(`${comboKey(o)}|${physOf(o.cards)}`);
     const pushVariant = (v: Combo): void => {
+      if (!validNewFullHouse(v)) return;
       const k = `${comboKey(v)}|${physOf(v.cards)}`;
       if (offered.has(k)) return;
       offered.add(k);
@@ -483,21 +496,23 @@ export function enumerateCombos(hand: Card[], ctx: LevelCtx, rules: RuleOptions 
       {
         let bestS: Rank | null = null;
         let bestKey = Infinity;
+        const supported: Rank[] = [];
         for (const s of allNonJokerRanks(ctx)) {
           if (s === lr) continue;
           if ((info.byRank.get(s)?.length ?? 0) >= 2) { // 仅 cost=0（全自然带对）
+            supported.push(s);
             const key = order(s);
             if (key < bestKey) { bestKey = key; bestS = s; }
           }
         }
-        if (bestS !== null) {
+        if (bestS !== null) for (const pairRank of allAttachments ? supported : [bestS]) {
           const deficit = Math.max(0, 3 - naturals.length);
           for (let j = deficit + 1; j <= Math.min(lrWilds.length, 3); j++) {
-            const pairCards = (info.byRank.get(bestS) ?? []).slice(0, 2);
+            const pairCards = (info.byRank.get(pairRank) ?? []).slice(0, 2);
             pushVariant({
               kind: 'trio_pair', cards: [...naturals.slice(0, 3 - j), ...lrWilds.slice(0, j), ...pairCards],
               size: 5, keyRank: rankOrder(lr, ctx), length: 1,
-              pairRanks: [bestS], mainRank: lr, suit: undefined, wildAs: wildAs(j),
+              pairRanks: [pairRank], mainRank: lr, suit: undefined, wildAs: wildAs(j),
             });
           }
         }

@@ -1,6 +1,6 @@
 # 掼蛋训练场 · 对战 + AI 复盘
 
-本地 Web 应用：与所选 AI 打饭局掼蛋（2 打到 A、逢人配、双升级），支持逐手回放、引擎标注、反事实分析与 LLM 教练讲解。当前首页保留三档外观并锁定中间档，**不表示模型能力已达“中级”**。
+本地 Web 应用：与所选 AI 打饭局掼蛋（2 打到 A、逢人配、双升级），支持逐手回放、引擎标注、反事实分析与 LLM 教练讲解。首页难度控制的固定档不表示模型能力已达“中级”；当前规范要求产品名及“实际策略：标准”按准确模型身份呈现，具体命名/UI生效以对应接收与运行回件为准。
 
 ## 快速开始
 
@@ -23,7 +23,7 @@ npm run server
 
 ### AI 设置：只保留 GLM 与 DeepSeek 两项
 
-打开首页 **AI 设置**，沿现有“读取本机已有 GLM”“修改”“保存设置”维护本地连接；已有配置无需重新输入 Key，取消不确认迁移。公开 preset、私有凭据、旧来源、公开关联与真实调用结果是不同状态；“已配置/已关联”不等于本次测试成功。当前已恢复的实际配置如下，源码合同见 [provider-presets.ts](packages/web/src/game/provider-presets.ts)：
+打开首页 **AI 设置**，只修改确需修改的项并明确保存；已有配置无需重新输入 Key，取消不确认迁移。设置、AI选择与复盘教练读取同一后台保存的公开 provider 状态和 exactRef，不以每个浏览器的私有 binding 决定连接是否可用；个人席位选择/旧局存档仍保各自原语义。公开 preset、私有凭据、历史来源、已保存 exactRef 与真实调用结果分开，“已配置”不等于刚做过连接测试。当前原连接的协议/参数如下，源码合同见 [provider-presets.ts](packages/web/src/game/provider-presets.ts)：
 
 | 连接 | 实际协议与 base URL | requestedModel | 实际思考参数 |
 |---|---|---|---|
@@ -32,7 +32,7 @@ npm run server
 
 GLM 实际请求沿 `/v1/messages`，DeepSeek 沿 `/chat/completions`；不能把 GLM 的原 Anthropic route/Key 换成同品牌 OpenAI preset，也不能互换两协议的 effort 参数。支持列表与已选请求值分开，保存一项不覆盖另一项。真实 Key 只在本机设置/私有存储，`.env*`、认证头与签名下载地址不进 Git、日志、截图或交付；`.env.example` 只是无密钥模板，不要 `cp` 覆盖已有 `.env`。
 
-[provider 恢复接收凭据](deliverables/ohuo-batches/S31-PROVIDER-RESTORE/accepted-code.json)对应的 DS/GLM 各一次真实连接已成功并消费，**不要再次测试**。当前原用户浏览器公开关联仍因 Mac 锁屏未核；内置浏览器中已关联不证明原用户上下文已关联，不要求重填 Key。完整当前事实入口见 [AGENTS](AGENTS.md#current-software-delivery)。
+[原 provider 恢复](deliverables/ohuo-batches/S31-PROVIDER-RESTORE/accepted-code.json)中的 DS/GLM 各一次真实连接已成功并消费，**不要再次测试**；[共享状态 r3](deliverables/ohuo-batches/S31-PROVIDER-STATE/accepted-code.json) 已接受后台共享 saved exactRef 与历史诊断的限定证明，原历史时点不能冒新测试。每浏览器关联/Chrome解锁已不是可用性前置，但实际 fresh browser context、生产 coach DOM、选择页历史时间可见仍未观察；不把这一接受写成所有浏览器、真实混合局或教练生成都已验证。两弹窗恢复、用户手动测试按钮等后继仍按各自真实接收回件确认，不能仅凭设计/源码通过称已交付。完整当前事实入口见 [AGENTS](AGENTS.md#current-software-delivery)。
 
 ## 玩法
 
@@ -60,7 +60,7 @@ GLM 实际请求沿 `/v1/messages`，DeepSeek 沿 `/chat/completions`；不能�
 
 ### 历史规则 AI 三档设计（不是当前模型评级）
 
-以下为原启发式规则 AI 的设计和当时实验记录。当前首页三档锁中间，不开放三档能力切换；这些表格和旧自对弈结果不构成 ohuo 当前牌力或等级结论。
+以下为原启发式规则 AI 的设计和当时实验记录。原首页三档锁中间是历史呈现；现行“实际策略：标准”的命名/UI落实按当前规范与真实接收回件核，不把旧三档表当当前能力开关。这些表格和旧自对弈结果不构成 ohuo 当前牌力或等级结论。
 
 分级依据掼蛋专项调研（掼蛋竞技教程体系、掼蛋 AI 学术研究 DanZero、棋牌 AI 难度设计方法 Stockfish/Maia/Suphx），映射民间高手体系公认的三段位 **会打 / 能赢 / 近道**（对应平台等级制的 十级~六级 / 五级~二级 / 一级~大师）：
 
@@ -130,6 +130,6 @@ packages/
 
 GitHub默认分支为main。上传范围、保留的历史材料和本机研究依赖见[同步说明](docs/engineering/GITHUB.md)；P1—P13只公开[汇总记录](docs/history/reviews/20261030-review62-p13-public-summary/README.md)。
 
-现行方案为 5.2.6 v14，固定身份与最新事实索引见 [当前软件交付入口](AGENTS.md#current-software-delivery)。S31 新局默认、provider 恢复与 [B10 r2 有限软件接收](deliverables/ohuo-batches/B10/accepted-code.json) 已完成；B snapshot preparer 仍待正式接收，未完项见 [lab 工程状态](lab/README.md#current-engineering-status)。旧 P13 停止不阻已授权软件，真实研究/训练仍 `NOT_DUE`，按用户要求基础建设全部完成后再统一讨论。最新修改尚未完成 GitHub commit/push 和远端恢复核；Library/Space 归档不能替代源码已推证明。
+现行正式入口为 **《掼蛋项目实施方案和执行计划文档_v5.3.0.docx》＋《掼蛋项目需求文档_v5.3.0.docx》＋《掼蛋项目模型迭代说明文档_v1.0.0.docx》**；本步固定身份、读序和具体模块检查见 [AGENTS](AGENTS.md#current-software-delivery) 与 [模块检查表](AGENTS.md#module-checks)。B10、[B snapshot preparer](deliverables/ohuo-batches/B-probe-preparer/accepted-code.json) 和 provider 共享状态已有各自限定软件接收；命名、R14、两弹窗/按钮、R15 的实际阶段与缺口沿 [lab 工程状态](lab/README.md#current-engineering-status) 和真实回件查询，不预填全部完成。旧 P13 停止不跨停现行方案已授权步骤；真实研究/训练按 R29/NAV-00、具体授权及实际前置判定，不沿用编制时 `NOT_DUE` 重复审批。Git 操作按用户当次明确授权执行；Git 同步不阻软件交付，Library/Space 归档也不替代远端源码恢复证明。
 
 本仓库不是完整训练恢复包；完整报告、原始数据、检查点和治理恢复资产留本机。

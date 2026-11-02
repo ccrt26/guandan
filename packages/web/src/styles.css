@@ -1038,6 +1038,9 @@ button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 /* NAV-S31 dialogs reuse live tz-console/settings/row/button paint verbatim.
    No reference-image colors, material, border paint, or new shadow recipes. */
 .tz-console.tz-dialog {display:flex;flex-direction:column;gap:0;width:min(720px,calc(100vw - 32px));margin:0;padding:8px;border-radius:26px;max-height:calc(100vh - 32px);overflow-y:auto;color:#151b20;font-family:StatsBody,'PingFang SC',sans-serif;}
+/* These two AppFrame-sibling dialogs must not inherit the wide-screen console flex growth. */
+.settings-mask > .tz-console.provider-settings-dialog,
+.settings-mask > .tz-console.ai-selection-dialog {flex:0 1 auto;margin:0;min-width:0;max-width:min(720px,calc(100vw - 32px));box-sizing:border-box;}
 .tz-dialog::before {border-radius:26px;}
 .tz-dialog-head {position:relative;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
 .tz-dialog-head h2 {display:flex;align-items:center;gap:14px;margin:0;font-size:28px;line-height:36px;}
@@ -1062,3 +1065,10 @@ button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .tz-dialog-section .tz-dialog-input {width:100%;}
 .tz-dialog-provider-key {display:flex;align-items:center;gap:10px;}
 .tz-dialog-provider-key .tz-dialog-input {flex:1;min-width:0;}
+.provider-settings-dialog .tz-dialog-provider-key {flex-wrap:wrap;}
+.provider-settings-dialog .provider-settings-key-actions {display:flex;flex-wrap:wrap;gap:10px;max-width:100%;}
+.provider-settings-dialog .provider-settings-key-actions button {flex:0 0 auto;}
+.provider-settings-dialog .provider-settings-diagnostic {min-width:0;max-width:100%;}
+.provider-settings-dialog .provider-settings-diagnostic pre {font:inherit;white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;}
+.provider-settings-dialog .tz-hint,.provider-settings-dialog .tz-dialog-message {overflow-wrap:anywhere;}
+

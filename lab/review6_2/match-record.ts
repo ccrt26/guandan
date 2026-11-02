@@ -3,8 +3,12 @@
 import {createHash} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 import {applyMove,type GameState,type Move,type EngineEvent,type RuleOptions,type Combo} from '@gd/engine';
-import {encodeState,encodeStateV2,encodeAction,PublicTracker,STATE_DIM,STATE_DIM_V2,INPUT_DIM,INPUT_DIM_V2} from '../../packages/ai/src/nn/schema';
+import {encodeState,encodeStateV2,encodeAction,PublicTracker,STATE_DIM,STATE_DIM_V2,INPUT_DIM,INPUT_DIM_V2,encodeStudentInput399Plus24} from '../../packages/ai/src/nn/schema';
+import type {MLP} from '../../packages/ai/src/nn/mlp';
+import {buildPublicHighCardMemory,type PublicHighCardMemory} from '../../packages/ai/src/nn/publicMemory';
+import {STUDENT_SCORER_ENCODER,validateStudentScorerDescriptor,type StudentScorerDescriptor} from '../../packages/ai/src/policy/descriptor';
 import type {EncoderOpts} from '../../packages/ai/src/nn/neuralSeat';
+import {candidatePolicyForBundle,resolveCandidatePolicy,FIRST_TARGET_CANDIDATE_SPEC,type CandidatePolicySpec} from '../../packages/ai/src/candidate-spec';
 import type {ResolvedPolicy} from '../../packages/ai/src/policy/resolve';
 import {resolveLegalMove} from '../../packages/ai/src/hybrid/legality';
 import {type DecisionKey,type DecisionBundle,type PublicHistoryPrefix} from '../../packages/ai/src/hybrid/protocol';
@@ -62,10 +66,13 @@ export class MatchRecorder {
   const saved=saveState(state);this.sources.games.push({gameNo:state.match.gameNo,state:saved});
   this.record.games.push({gameNo:state.match.gameNo,sourceSHA256:hashJSON(saved),levelsBefore:[...state.levelsBefore],tribute:structuredClone(state.tribute),...(sourceFamilyId?{sourceFamilyId}:{})});this.flush('game',this.record.games.at(-1),saved);
  }
- beginDecision(input:{key:DecisionKey;policyId:string;initialCandidateIds:readonly string[];offeredIds:readonly string[];bundle?:DecisionBundle;candidateInputs?:CandidateInputs}){
+ beginDecision(input:{key:DecisionKey;policyId:string;initialCandidateIds:readonly string[];offeredIds:readonly string[];bundle?:DecisionBundle;candidateInputs?:CandidateInputs;studentInputs?:StudentCandidateInputs}){
   const {key}=input;if(key.matchId!==this.record.matchId||this.record.decisions.some(d=>keyOf(d.key)===keyOf(key))||!this.record.games.some(g=>g.gameNo===key.gameNo))throw Error('decision identity conflict');
   const prefix=this.history(key.gameNo);if(prefix.throughMoveNo!==key.moveNo)throw Error('complete public prefix required before decision');
-  const trainingInput=input.bundle?{schema:'ohuo-decision-input-v1',key,policyId:input.policyId,observation:input.bundle.observation,candidateSpec:input.bundle.candidateSpec,initialCandidateIds:input.bundle.initialCandidateIds,pool:input.bundle.pool,candidateInputs:input.candidateInputs??null,selectionBundle:input.bundle}:null;
+  const candidatePolicy=input.bundle?candidatePolicyForBundle(input.bundle):undefined;
+  if(candidatePolicy?.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC&&(!isDeepStrictEqual(input.initialCandidateIds,input.bundle!.initialCandidateIds)||!isDeepStrictEqual(input.offeredIds,input.bundle!.initialCandidateIds)||!input.candidateInputs||resolveCandidatePolicy(input.candidateInputs.candidatePolicy)!==candidatePolicy||!isDeepStrictEqual(input.candidateInputs.candidateIds,input.bundle!.initialCandidateIds)))throw Error('new candidate record set/spec mismatch');
+  if(input.studentInputs&&(!input.bundle||!input.candidateInputs||candidatePolicy?.candidateSpec!==FIRST_TARGET_CANDIDATE_SPEC||!isDeepStrictEqual(input.studentInputs.candidateIds,input.bundle.initialCandidateIds)||input.studentInputs.inputDim!==423))throw Error('student capture/record set mismatch');
+  const trainingInput=input.bundle?{schema:input.studentInputs?'ohuo-decision-input-first-round-v3':candidatePolicy?.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC?'ohuo-decision-input-candidate-v2':'ohuo-decision-input-v1',key,policyId:input.policyId,observation:input.bundle.observation,candidateSpec:input.bundle.candidateSpec,...(candidatePolicy?.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC?{enumSpec:candidatePolicy.enumSpec}:{}),initialCandidateIds:input.bundle.initialCandidateIds,pool:input.bundle.pool,candidateInputs:input.candidateInputs??null,...(input.studentInputs?{studentInputs:input.studentInputs}:{}),selectionBundle:input.bundle}:null;
   if(trainingInput&&keyOf(input.bundle!.key)!==keyOf(key))throw Error('private decision key mismatch');
   this.record.decisions.push({key:structuredClone(key),policyId:input.policyId,initialCandidateIds:[...input.initialCandidateIds],offeredIds:[...input.offeredIds],requestedActionId:null,actualActionId:null,actualMove:null,actualSource:null,status:'pending',reason:null,executionKind:'none',trainingInputSHA256:trainingInput?hashJSON(trainingInput):null,elapsedMs:null,requests:[],priorTarget:null,events:[]});this.flush('decision',this.record.decisions.at(-1),undefined,trainingInput);
  }
@@ -163,16 +170,18 @@ export function loadMatchStore(ref:MatchStoreRef,outputRoot:string){
  return attachStore(ref.directory,identity,ref.identitySHA256,journal,{record,privateSources});
 }
 
-export interface CandidateInputs {encoderVersion:string;policyId:string;inputDim:number;candidateIds:string[];candidateFeatures:number[][];rawQ:number[];policyIdentity:ResolvedPolicy['identity'];encoder:Readonly<EncoderOpts>}
+export interface CandidateInputs {candidatePolicy?:CandidatePolicySpec;encoderVersion:string;policyId:string;inputDim:number;candidateIds:string[];candidateFeatures:number[][];rawQ:number[];policyIdentity:ResolvedPolicy['identity'];encoder:Readonly<EncoderOpts>}
 /** Same causal state/tracker and original canonical objects as the B ranking;
  * no candidate enumeration, sorting, network forward, or default encoder. */
 export function captureInitialCandidateInputs({bundle,state,tracker,encoder,policyIdentity}:{bundle:DecisionBundle;state:GameState;tracker:PublicTracker;encoder:Readonly<EncoderOpts>;policyIdentity:ResolvedPolicy['identity']}):CandidateInputs{
+ const candidatePolicy=candidatePolicyForBundle(bundle),newSpec=candidatePolicy.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC;
+ if(newSpec&&(!bundle.initialCandidateIds.length||bundle.initialCandidateIds.length>12||new Set(bundle.initialCandidateIds).size!==bundle.initialCandidateIds.length||bundle.expansionCount!==0||!isDeepStrictEqual(bundle.initialCandidateIds,bundle.offeredIds)))throw Error('new candidate capture set mismatch');
  const v2=encoder.schema==='v2',inputDim=v2?INPUT_DIM_V2:INPUT_DIM,stateDim=v2?STATE_DIM_V2:STATE_DIM;
  if(policyIdentity.inputDim!==inputDim||!policyIdentity.encoderVersion||!['action64','legacy-phys10'].includes(encoder.passEncoding??'')||bundle.key.actorSeat!==state.turn||bundle.key.gameNo!==state.match.gameNo||bundle.key.moveNo!==state.moveNo||!(tracker instanceof PublicTracker))throw Error('candidate encoder/provenance mismatch');
  const base=new Float32Array(inputDim);if(v2){if(encoder.ctxFill!=='zero'&&encoder.ctxFill!=='rule-context')throw Error('explicit encoder context required');encodeStateV2(state,state.turn,tracker,base.subarray(0,stateDim),encoder.ctxFill);}else encodeState(state,state.turn,tracker,base.subarray(0,stateDim));
  const candidateIds=[...bundle.initialCandidateIds],candidateFeatures:number[][]=[],rawQ:number[]=[];
  for(const id of candidateIds){const row=bundle.pool.find(c=>c.actionId===id);if(!row||!Number.isFinite(row.rawQ))throw Error('initial candidate mapping mismatch');const features=base.slice();encodeAction(row.canonical,features.subarray(stateDim),encoder.passEncoding);if(!features.every(Number.isFinite))throw Error('non-finite actual candidate input');candidateFeatures.push([...features]);rawQ.push(row.rawQ);}
- return {encoderVersion:policyIdentity.encoderVersion,policyId:policyIdentity.policyId,inputDim,candidateIds,candidateFeatures,rawQ,policyIdentity:structuredClone(policyIdentity),encoder:structuredClone(encoder)};
+ return {...(newSpec?{candidatePolicy}:{}),encoderVersion:policyIdentity.encoderVersion,policyId:policyIdentity.policyId,inputDim,candidateIds,candidateFeatures,rawQ,policyIdentity:structuredClone(policyIdentity),encoder:structuredClone(encoder)};
 }
 
 /** Only approved outcome fields cross worker/checkpoint/status boundaries.
@@ -181,4 +190,18 @@ export function publicMatchOutcome(result:any){
  return {complete:result.complete,winner:result.winner,games:result.games,decisions:result.decisions,incompleteReason:result.incompleteReason,
   rootRoundResult:result.rootRoundResult?publicResult(result.rootRoundResult):null,rootG:result.rootG,finalW:result.finalW,rootTeamTarget:result.rootTeamTarget,
   policyIds:[...result.policyIds],traceSHA256:result.traceSHA256,traceSchema:result.traceSchema,wallSeconds:result.wallSeconds};
+}
+
+/** New S0 view sits BESIDE the unchanged B-prime399 capture. Pool rawQ never
+ * changes meaning; the keep parent distribution comes from this actual forward. */
+export interface StudentCandidateInputs {schema:'ohuo-student-candidate-input-v1';studentParentRef:string;scorer:StudentScorerDescriptor;inputDim:423;inputContract:typeof STUDENT_SCORER_ENCODER;candidatePolicy:CandidatePolicySpec;candidateIds:string[];candidateFeatures:number[][];rawQ:number[];baseActionId:string;publicHighCardMemory:PublicHighCardMemory}
+export interface StudentCapture {studentParentRef:string;scorer:StudentScorerDescriptor;network:MLP}
+export function captureStudentCandidateInputs({bundle,state,tracker,candidateInputs,student}:{bundle:DecisionBundle;state:GameState;tracker:PublicTracker;candidateInputs:CandidateInputs;student:StudentCapture}):StudentCandidateInputs {
+ const candidatePolicy=candidatePolicyForBundle(bundle),scorer=validateStudentScorerDescriptor(student.scorer),obs=bundle.observation;
+ if(candidatePolicy.candidateSpec!==FIRST_TARGET_CANDIDATE_SPEC||candidateInputs.inputDim!==399||!isDeepStrictEqual(candidateInputs.candidateIds,bundle.initialCandidateIds)||resolveCandidatePolicy(candidateInputs.candidatePolicy)!==candidatePolicy||student.network.inputDim!==423||typeof student.studentParentRef!=='string'||!/@sha256:[a-f0-9]{64}$/.test(student.studentParentRef))throw Error('student capture identities');
+ const memory=buildPublicHighCardMemory({matchId:obs.matchId,gameNo:obs.gameNo,throughMoveNo:obs.moveNo,steps:obs.publicPrefix},{matchId:bundle.key.matchId,gameNo:bundle.key.gameNo},obs.effectiveLevelRanks);
+ const rows=bundle.initialCandidateIds.map((id,i)=>{const c=bundle.pool.find(c=>c.actionId===id);if(!c)throw Error('student same C mapping');const x=encodeStudentInput399Plus24(state,tracker,c.canonical,bundle.key,memory);if(!isDeepStrictEqual([...x.subarray(0,399)],candidateInputs.candidateFeatures[i]))throw Error('student legacy segment differs from proposal capture');return [...x];});
+ const rawQ=[...student.network.forward(new Float32Array(rows.flat()),rows.length)];if(rawQ.length!==rows.length||rawQ.some(q=>!Number.isFinite(q)))throw Error('student actual forward nonfinite');
+ let best=0;for(let i=1;i<rawQ.length;i++){const a=bundle.pool.find(c=>c.actionId===bundle.initialCandidateIds[i])!,b=bundle.pool.find(c=>c.actionId===bundle.initialCandidateIds[best])!;if(rawQ[i]>rawQ[best]||rawQ[i]===rawQ[best]&&a.originalIndex<b.originalIndex)best=i;}
+ return{schema:'ohuo-student-candidate-input-v1',studentParentRef:student.studentParentRef,scorer,inputDim:423,inputContract:STUDENT_SCORER_ENCODER,candidatePolicy,candidateIds:[...bundle.initialCandidateIds],candidateFeatures:rows,rawQ,baseActionId:bundle.initialCandidateIds[best],publicHighCardMemory:memory};
 }

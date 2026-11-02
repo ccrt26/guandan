@@ -1,32 +1,36 @@
-import modelIndex from 'virtual:gd-model-index';
-import type { ResolvedPolicy } from '@gd/ai';
-import { resolveBrowserPolicy, resolveSavedBrowserPolicy, resolveRecordedBrowserPolicy } from '../../../ai/src/policy/browser';
+import modelIndex,{productCatalog,releaseCatalog} from 'virtual:gd-model-index';
+import type {ResolvedPolicy} from '@gd/ai';
+import {resolveBrowserPolicy} from '../../../ai/src/policy/browser';
+import type {SeatAssignment,SeatSnapshot} from '../../../ai/src/policy/seats';
+import {createProfileClient} from './llm-profiles';
+import {validateProductModelCatalog} from './ai-selection';
+import {createProductDirectory,publishProductIntent} from './product-directory';
 
-/** Every call resolves a fresh immutable instance. Existing games retain theirs. */
-export function loadWebPolicy(ref = modelIndex.defaultPolicyRef): Promise<ResolvedPolicy> {
-  return resolveBrowserPolicy(ref, modelIndex);
-}
-export async function loadSavedWebPolicy(aiPolicy: string | undefined): Promise<{ policy: ResolvedPolicy | undefined; tier: 'easy' | 'standard' | 'hard' }> {
-  return resolveSavedBrowserPolicy(aiPolicy, modelIndex);
-}
+const directory=createProductDirectory({schema:'ohuo-public-policy-directory-v1',index:modelIndex,catalog:productCatalog,releaseCatalog},{
+ validateCatalog:validateProductModelCatalog,
+ loadProfiles:()=>createProfileClient({storage:localStorage,fetchImpl:fetch}).refresh(),
+ onPublish:snapshot=>{publishProductIntent(snapshot);webPolicyDescriptors=snapshot.policies;webReleaseChoices=snapshot.choices;},
+});
+publishProductIntent(directory.exactSnapshot());
+/** Live public data bindings; existing resolved games never read these again. */
+export let webPolicyDescriptors=directory.exactSnapshot().policies;
+export let webReleaseChoices=directory.exactSnapshot().choices;
+export const captureWebDirectory=()=>directory.capture();
+export const getWebSelectionContext=()=>directory.displayContext();
+/** Every new operation captures one immutable generation before any await. */
+export function loadWebPolicy(ref?:string):Promise<ResolvedPolicy>{const {snapshot}=directory.capture();return resolveBrowserPolicy(ref??snapshot.index.defaultPolicyRef,snapshot.index);}
+export function loadWebSeats(assignments:readonly SeatAssignment[],saved?:SeatSnapshot){return directory.capture().loadSeats(assignments,saved);}
+/** Historical consumers only resolve their recorded identity, even while a new catalog is invalid. */
+export const loadSavedWebSeats=(saved:SeatSnapshot)=>directory.loadSavedSeats(saved);
+export const loadSavedWebPolicy=(reference:string|undefined)=>directory.loadSavedPolicy(reference);
+export const loadRecordedWebPolicy=(references:readonly string[]|undefined)=>directory.loadRecordedPolicy(references);
 
-export function loadRecordedWebPolicy(aiPolicies: readonly string[] | undefined): Promise<{ policy: ResolvedPolicy; referenceOnly: boolean }> {
-  return resolveRecordedBrowserPolicy(aiPolicies, modelIndex);
+if(import.meta.hot){
+ directory.markUnavailable();
+ const receive=(value:unknown)=>directory.receive(value),disconnect=()=>directory.markUnavailable();
+ import.meta.hot.on('ohuo:policy-directory',receive);
+ import.meta.hot.on('vite:ws:disconnect',disconnect);
+ // Vite buffers this single initial request until its connection is ready. No poll/retry/reconnect platform.
+ import.meta.hot.send('ohuo:policy-directory-request');
+ import.meta.hot.dispose(()=>{import.meta.hot?.off('ohuo:policy-directory',receive);import.meta.hot?.off('vite:ws:disconnect',disconnect);});
 }
-
-import { RELEASES, type SeatAssignment, type SeatSnapshot } from '../../../ai/src/policy/seats';
-import { resolveFourSeats, savedAssignments, assertSavedSeats } from './seats';
-import { createProfileClient } from './llm-profiles';
-/** Existing public descriptors; product intent validates them without duplicating registry data. */
-export const webPolicyDescriptors = modelIndex.policies;
-export const webReleaseChoices = RELEASES.map(release => ({ release,
-  available: !!modelIndex.policies.find(policy => policy.policyId === release.proposalPolicyRef)?.weightsPathOrUrl.assetUrl,
-}));
-export async function loadWebSeats(assignments: readonly SeatAssignment[], saved?: SeatSnapshot) {
-  const profiles = assignments.some(s => s.controller === 'ai' && s.mode === 'hybrid')
-    ? await createProfileClient({storage: localStorage, fetchImpl: fetch}).refresh() : [];
-  const seats = await resolveFourSeats(assignments, loadWebPolicy, profiles);
-  if (saved) assertSavedSeats(saved, seats.snapshot);
-  return seats;
-}
-export function loadSavedWebSeats(saved: SeatSnapshot) { return loadWebSeats(savedAssignments(saved), saved); }

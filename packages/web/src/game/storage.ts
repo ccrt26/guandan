@@ -52,23 +52,14 @@ export function loadReport(recordId: string,viewerSeat?:number): string | null {
   try { return localStorage.getItem(reportKey(recordId,viewerSeat)); } catch { return null; }
 }
 
-export function saveReport(recordId: string, report: string,viewerSeat?:number): void {
+export function saveReport(recordId: string, report: string,viewerSeat?:number): boolean {
   const key=reportKey(recordId,viewerSeat);
   try {
     localStorage.setItem(key, report);
+    return true;
   } catch {
-    // 配额兜底：删掉其他报告键腾位并重试一次；再失败只放弃持久化（当前页面仍能看）
-    try {
-      for (let i = 0; i < localStorage.length; i++) {
-        const k = localStorage.key(i);
-        if (k && reportOwner(k)!==null && k !== key && reportOwner(k)!==recordId) {
-          localStorage.removeItem(k); i -= 1;
-        }
-      }
-      localStorage.setItem(key, report);
-    } catch {
-      console.warn('[storage] 报告持久化失败（localStorage 配额不足）');
-    }
+    // 保存失败不牺牲其他报告，也不自动重试；调用方保留本页内容并提示未保存。
+    return false;
   }
 }
 

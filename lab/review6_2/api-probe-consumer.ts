@@ -10,6 +10,8 @@ import {createMeteredRemote,validateMatchRules} from './match-consumer';
 import {createProfileSelector} from '../../packages/web/server/llm-select.mjs';
 import {selectRemoteDecision} from '../../packages/ai/src/hybrid/remote-selector';
 import {freezeCopy,publicCombo,CANDIDATE_SPEC,type DecisionBundle} from '../../packages/ai/src/hybrid/protocol';
+import {resolveCandidateReleaseRef} from '../../packages/ai/src/policy/candidate-release';
+import {candidatePolicyForBundle,resolveCandidatePolicy,FIRST_TARGET_CANDIDATE_SPEC} from '../../packages/ai/src/candidate-spec';
 import {RELEASES} from '../../packages/ai/src/policy/seats';
 import {decisionRequestView} from '../../packages/ai/src/hybrid/candidates';
 import {canonicalActionId} from '../../packages/ai/src/hybrid/legality';
@@ -61,7 +63,7 @@ export function verifyProbeSnapshots({task:inputTask,refs,inputs}:any):Omit<Prep
  const refsOf=(v:any,keys:string[])=>{for(const k of keys)read(v[k]);};
  const list=(v:any,name:string,min=0)=>{if(!Array.isArray(v)||v.length<min)throw Error('probe_array_invalid: '+name);return v;};
  const profileRef=(r:any)=>{strictObject(r,'profileRevisionRef',['profileId','revision','snapshotHash']);if(typeof r.profileId!=='string'||!r.profileId||!integer(r.revision,1)||!/^[a-f0-9]{64}$/.test(r.snapshotHash))throw Error('probe_profile_identity');};
- const release=(ref:string,mode:string)=>{const value=schema(read(ref),'ohuo-release-ref-v1',['release','policyIdentity']),known=RELEASES.find(r=>r.releaseRef===value.release?.releaseRef);if(!known||!equal(value.release,known)||known.mode!==mode||known.tier!=='hard'||known.localSelector!=='proposal')throw Error('probe_release_identity');return value;};
+ const release=(ref:string,mode:string)=>{const value=resolveCandidateReleaseRef(read(ref),read,RELEASES),known=value.release;if(known.mode!==mode||known.tier!=='hard'||known.localSelector!=='proposal')throw Error('probe_release_identity');return value;};
  const capability=read(task.capabilityRef);strictObject(capability,'capability',['id','kind','mode']);
  if(!equal(capability,{id:'B04.api-probe.v1',kind:'probe',mode:'research'})||task.taskKind!=='probe'||!equal(task.operationScope,scope(true))||task.datasetRefs.length!==1||task.allowedBranches.length||task.limits.maxProviderRequests>24||['maxOptimizerSteps','maxMatchAttempts','maxLabelDecisions'].some(k=>task.limits[k]!==0))throw Error('probe_scope_or_limit');
  const spec=schema(read(task.datasetRefs[0]),'ohuo-api-probe-spec-v1',['screeningPlanRef','snapshotSetRef','configurationRef','configurationOrdinal']);refsOf(spec,['screeningPlanRef','snapshotSetRef','configurationRef']);
@@ -74,7 +76,7 @@ export function verifyProbeSnapshots({task:inputTask,refs,inputs}:any):Omit<Prep
   const c=schema(read(r),'ohuo-api-probe-configuration-v1',['releaseRef','profileRevisionRef','publicProfileRef']);profileRef(c.profileRevisionRef);
   const h=release(c.releaseRef,'hybrid'),pub=read(c.publicProfileRef);strictObject(pub,'publicProfile',['profileId','nickname','protocol','baseUrl','requestedModel','supportedReasoningOptions','requestOptions','revision','snapshotHash']);
   const {snapshotHash,...publicFields}=pub;
-  if(!equal(h.policyIdentity,base.policyIdentity)||h.release.proposalPolicyRef!==base.release.proposalPolicyRef||h.release.candidateSpecRef!==base.release.candidateSpecRef||prompt.promptRef!==h.release.promptRef||snapshotHash!==digest(publicFields)||!equal(c.profileRevisionRef,{profileId:pub.profileId,revision:pub.revision,snapshotHash:pub.snapshotHash}))throw Error('probe_configuration_identity');
+  if(resolveCandidatePolicy(h.candidatePolicy)!==resolveCandidatePolicy(base.candidatePolicy)||!equal(h.policyIdentity,base.policyIdentity)||h.release.proposalPolicyRef!==base.release.proposalPolicyRef||h.release.candidateSpecRef!==base.release.candidateSpecRef||prompt.promptRef!==h.release.promptRef||snapshotHash!==digest(publicFields)||!equal(c.profileRevisionRef,{profileId:pub.profileId,revision:pub.revision,snapshotHash:pub.snapshotHash}))throw Error('probe_configuration_identity');
   return {configurationRef:r,...c,publicProfile:pub};
  });
  const config=configurations[spec.configurationOrdinal];
@@ -125,9 +127,10 @@ export function verifyProbeSnapshots({task:inputTask,refs,inputs}:any):Omit<Prep
  * original producer evidence establishes legal provenance; all candidates,
  * including unoffered expansion entries, are checked at the same wire boundary. */
 function validatePublicBundle(b:DecisionBundle,rules:any,candidateSpec:string){
- strictObject(b,'bundle',['candidateSpec','decisionId','pool','initialCandidateIds','offeredIds','fallbackActionId','expansionCount','isUniqueLegalAction','observation','key']);
+ const fresh=candidatePolicyForBundle(b).candidateSpec===FIRST_TARGET_CANDIDATE_SPEC;
+ strictObject(b,'bundle',[...(fresh?['enumSpec','coverage']:[]),'candidateSpec','decisionId','pool','initialCandidateIds','offeredIds','fallbackActionId','expansionCount','isUniqueLegalAction','observation','key']);
  strictObject(b.key,'decisionKey',['controllerOrRunnerGeneration','matchId','gameNo','moveNo','actorSeat','requestSeq',...('ownership'in b.key?['ownership']:[]),...('snapshotRevision'in b.key?['snapshotRevision']:[])]);
- if(b.candidateSpec!==CANDIDATE_SPEC||b.candidateSpec!==candidateSpec||b.isUniqueLegalAction!==false||b.expansionCount!==0||!Array.isArray(b.pool)||b.pool.length<2||!Array.isArray(b.initialCandidateIds)||!b.initialCandidateIds.length||b.initialCandidateIds.length>8||!equal(b.initialCandidateIds,b.offeredIds)||b.fallbackActionId!==b.pool[0].actionId||new Set(b.initialCandidateIds).size!==b.initialCandidateIds.length||b.decisionId!==b.observation?.decisionId||!equal(b.observation.ruleOptions,rules)||b.observation.rulesText!==describeRules(rules)||b.key.matchId!==b.observation.matchId||b.key.gameNo!==b.observation.gameNo||b.key.moveNo!==b.observation.moveNo||b.key.actorSeat!==b.observation.actorSeat||!integer(b.key.requestSeq))throw Error('probe_bundle_identity');
+ if(b.candidateSpec!==candidateSpec||b.isUniqueLegalAction!==false||b.expansionCount!==0||!Array.isArray(b.pool)||b.pool.length<2||!Array.isArray(b.initialCandidateIds)||!b.initialCandidateIds.length||b.initialCandidateIds.length>(fresh?12:8)||!equal(b.initialCandidateIds,b.offeredIds)||b.fallbackActionId!==b.pool[0].actionId||new Set(b.initialCandidateIds).size!==b.initialCandidateIds.length||b.decisionId!==b.observation?.decisionId||!equal(b.observation.ruleOptions,rules)||b.observation.rulesText!==describeRules(rules)||b.key.matchId!==b.observation.matchId||b.key.gameNo!==b.observation.gameNo||b.key.moveNo!==b.observation.moveNo||b.key.actorSeat!==b.observation.actorSeat||!integer(b.key.requestSeq))throw Error('probe_bundle_identity');
  if(!['string','number'].includes(typeof b.key.controllerOrRunnerGeneration)||'ownership'in b.key&&typeof b.key.ownership!=='string'||'snapshotRevision'in b.key&&!integer(b.key.snapshotRevision))throw Error('probe_decision_key');
  const ids=new Set<string>(),canonicalIds=new Set<string>(),indices=new Set<number>(),groups=new Map<string,string>();
  for(const [rank,c] of b.pool.entries()){
@@ -149,7 +152,7 @@ function validatePublicBundle(b:DecisionBundle,rules:any,candidateSpec:string){
   const projected=publicCombo(c.canonical),remaining=b.observation.ownHand.map(f=>({...f}));
   for(const resource of projected?.resources??[]){const own=remaining.find(f=>f.suit===resource.suit&&f.rank===resource.rank);if(!own||own.count<resource.count)throw Error('probe_resource_not_owned');own.count-=resource.count;}
   if(!equal(c.remainingHand,remaining.filter(f=>f.count>0)))throw Error('probe_remaining_hand');
-  freezeRequestView(decisionRequestView({...b,offeredIds:[c.actionId],expansionCount:1}));
+  freezeRequestView(decisionRequestView({...b,offeredIds:[c.actionId],expansionCount:fresh?0:1}));
  }
  if(b.initialCandidateIds.some(id=>!ids.has(id)))throw Error('probe_offered_identity');
  freezeRequestView(decisionRequestView(b));

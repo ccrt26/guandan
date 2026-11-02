@@ -8,6 +8,7 @@
  */
 import type { Card, Combo, GameState, Suit } from '@gd/engine';
 import { rankOrder } from '@gd/engine';
+import { PUBLIC_HIGH_CARD_MEMORY_SCHEMA, projectPublicHighCardMemory, type PublicHighCardMemory } from './publicMemory';
 
 export const SCHEMA_VERSION = 'gd-lab-schema-v1';
 
@@ -96,6 +97,73 @@ export const RULE_CTX_DIM = 14;
 export const RULE_CTX_OFFSET = STATE_DIM; // 317
 export const STATE_DIM_V2 = STATE_DIM + RULE_CTX_DIM; // 331
 export const INPUT_DIM_V2 = STATE_DIM_V2 + ACTION_DIM; // 399
+
+// NAV-S33: append public memory AFTER the complete legacy state+action input.
+// Never insert it between state and action: PASS must remain at input index395.
+export const STUDENT_ENCODER_VERSION = 'student-input399plus24-v1' as const;
+export const STUDENT_INPUT_LAYOUT = 'legacy399_then_publicMemory24' as const;
+export const PUBLIC_MEMORY_DIM = 24;
+export const STUDENT_INPUT_DIM = INPUT_DIM_V2 + PUBLIC_MEMORY_DIM; // 423
+export const STUDENT_PASS_INPUT_IDX = STATE_DIM_V2 + PASS_ACTION_IDX; // 395
+export const STUDENT_INPUT_SEGMENTS = Object.freeze([
+  Object.freeze({ role: 'legacy-state', offset: 0, length: STATE_DIM_V2 }),
+  Object.freeze({ role: 'legacy-action', offset: STATE_DIM_V2, length: ACTION_DIM }),
+  Object.freeze({ role: 'public-memory', offset: INPUT_DIM_V2, length: PUBLIC_MEMORY_DIM }),
+]);
+
+/** Explicit new input, never a missing-memory fallback. Counts are S32's
+ * actor-relative integer projection; divisors are fixed physical deck bounds. */
+export function appendPublicMemory24(legacy399: Float32Array, counts24: readonly number[]): Float32Array {
+  if (legacy399.length !== INPUT_DIM_V2 || !legacy399.every(Number.isFinite)) throw Error('student input requires finite legacy399');
+  if (!Array.isArray(counts24) || counts24.length !== PUBLIC_MEMORY_DIM) throw Error('student input requires all24 public counts');
+  const out = new Float32Array(STUDENT_INPUT_DIM);
+  out.set(legacy399);
+  for (let i = 0; i < PUBLIC_MEMORY_DIM; i++) {
+    const divisor = i % 6 < 4 ? 8 : 2;
+    const count = counts24[i];
+    if (!Number.isSafeInteger(count) || count < 0 || count > divisor) throw Error(`invalid public count at ${i}`);
+    out[INPUT_DIM_V2 + i] = count / divisor;
+  }
+  return out;
+}
+
+/** New student-only encoder. The proposer continues to use the legacy399 path.
+ * Memory must be produced from the confirmed S32 prefix for this exact decision.
+ * Missing memory, a foreign/stale prefix, or unsupported multi-level context is
+ * an error; none is represented as an all-zero observation. */
+export function encodeStudentInput399Plus24(
+  state: GameState, tracker: PublicTracker, action: Combo | null,
+  key: Readonly<{ matchId: string; gameNo: number; moveNo: number; actorSeat: number }>,
+  memory: PublicHighCardMemory,
+): Float32Array {
+  if (!memory || memory.memorySchemaId !== PUBLIC_HIGH_CARD_MEMORY_SCHEMA) throw Error('student public memory required');
+  if (!key || key.actorSeat !== state.turn || key.gameNo !== state.match.gameNo || key.moveNo !== state.moveNo ||
+      memory.dealId?.matchId !== key.matchId || memory.dealId.gameNo !== key.gameNo || memory.throughMoveNo !== key.moveNo) throw Error('student memory/decision identity mismatch');
+  const level = ruleContextOf(state, key.actorSeat).levelRank;
+  if (state.ctx.ranks.size !== 1 || !state.ctx.ranks.has(memory.levelRank) || level !== memory.levelRank) throw Error('student memory level context mismatch');
+  if (!Array.isArray(memory.countsBySeat) || memory.countsBySeat.length !== 4 || memory.countsBySeat.some(row => !Array.isArray(row) || row.length !== 6)) throw Error('student memory count shape');
+  if ([11,12,13].includes(memory.levelRank) && memory.countsBySeat.some(row => row[3] !== 0)) throw Error('student memory overlapping level must not double count');
+  const legacy = new Float32Array(INPUT_DIM_V2);
+  encodeStateV2(state, key.actorSeat, tracker, legacy.subarray(0, STATE_DIM_V2), 'rule-context');
+  encodeAction(action, legacy.subarray(STATE_DIM_V2), 'action64');
+  return appendPublicMemory24(legacy, projectPublicHighCardMemory(memory, key.actorSeat));
+}
+
+/** Only the validated399→423 shape migration. Returns new weights and leaves
+ * the parent untouched. The new columns train normally; no optimizer is copied.
+ * File endian, parent descriptor/SHA and provenance are enforced by the caller. */
+export function remapLegacy399WeightsToStudent423(flat399: Float32Array): Float32Array {
+  const hidden = 256;
+  const sourceCount = hidden * INPUT_DIM_V2 + hidden + hidden * hidden + hidden + hidden + 1;
+  if (flat399.length !== sourceCount) throw Error(`migration length ${flat399.length} != ${sourceCount}`);
+  if (!flat399.every(Number.isFinite)) throw Error('migration requires finite weights');
+  const target = new Float32Array(sourceCount + hidden * PUBLIC_MEMORY_DIM);
+  for (let h = 0; h < hidden; h++) {
+    target.set(flat399.subarray(h * INPUT_DIM_V2, (h + 1) * INPUT_DIM_V2), h * STUDENT_INPUT_DIM);
+  }
+  target.set(flat399.subarray(hidden * INPUT_DIM_V2), hidden * STUDENT_INPUT_DIM);
+  return target;
+}
 
 /** 生效级牌上下文（公开信息）：stage=台上队级数；both=双方级数皆级牌（取本队） */
 export function ruleContextOf(state: GameState, seat: number): { levelRank: number | null; myTeamOnStage: boolean } {

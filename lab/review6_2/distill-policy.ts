@@ -1,12 +1,19 @@
+import {validateFirstRoundParentEnvelope,resolveFirstRoundParent,validateFirstRoundDatasetMetadata} from './first-round-parent';
+import {resolveCandidateReleaseRef} from '../../packages/ai/src/policy/candidate-release';
+import {RELEASES} from '../../packages/ai/src/policy/seats';
+import {validateStudentScorerDescriptor,resolveStudentScorer} from '../../packages/ai/src/policy/resolve';
+import {isFirstRoundRecipe,isFirstRoundR2Recipe,FIRST_ROUND_R2_RECIPE_ID,FIRST_ROUND_R2_STOPPING_RULE,isFirstRoundR2DatasetPlan,validateFirstRoundRecipe,firstRoundTrainingShape,decideFirstRoundR2Learning} from './first-round-contract.mjs';
+import {selectFirstRoundCheckpoint,selectFirstRoundR2Checkpoint} from './first-round-selection.mjs';
 /** Node-only composite development candidate. Does not register or deploy S. */
 import {readFileSync,realpathSync,writeFileSync,lstatSync,existsSync,mkdirSync,readdirSync} from 'node:fs';
 import {resolve,relative,isAbsolute,dirname} from 'node:path';
 import {createHash} from 'node:crypto';
 import {isDeepStrictEqual as same} from 'node:util';
 import {resolvePolicy,validatePolicyDescriptor} from '../../packages/ai/src/policy/resolve';
-import {rerankInitialCandidates,type StudentRelease} from '../../packages/ai/src/hybrid/student';
+import {rerankInitialCandidates,resolveStudentCandidatePolicy,type StudentRelease} from '../../packages/ai/src/hybrid/student';
 import {resolveNodePolicy,POLICY_REPOSITORY_ROOT} from './policy-loader';
 import type {DecisionBundle} from '../../packages/ai/src/hybrid/protocol';
+import {candidatePolicyForBundle,resolveCandidatePolicy,FIRST_TARGET_CANDIDATE_SPEC} from '../../packages/ai/src/candidate-spec';
 import type {CandidateInputs} from './match-record';
 import {canonical,digest,fixedReference,strictObject,validateTask,validateIdentifier,validateCost,validateLimits,fail} from './task-schema.mjs';
 import {acquireSourceWriter} from './writer-lock';
@@ -14,11 +21,20 @@ const jsonIdentity=(v:unknown)=>JSON.parse(JSON.stringify(v));
 const sha=(b:Uint8Array)=>createHash('sha256').update(b).digest('hex');
 function fixed(ref:any){if(!ref||typeof ref.id!=='string'||!ref.id||/(^|[/:-])latest($|[/:-])/i.test(ref.id)||!/^[a-f0-9]{64}$/.test(ref.sha256))throw Error('fixed student reference required');}
 function local(root:string,path:string){if(typeof path!=='string'||isAbsolute(path)||path.split('/').some(x=>x==='..'||x==='.'||!x))throw Error('student relative path required');const full=resolve(root,path);if(realpathSync(full)!==full||relative(root,full).startsWith('..'))throw Error('student path escape/symlink');return full;}
-export async function loadStudentRelease(releasePath:string,expectedSHA256:string,repositoryRoot=POLICY_REPOSITORY_ROOT){
+/** The selected checkpoint and summary must describe the same proposal program,
+ * not merely the same weights/encoder. Legacy absence remains explicitly legacy. */
+export function verifyFrozenCandidatePolicy(summary:{candidate:string;candidatePolicy?:import('../../packages/ai/src/candidate-spec').CandidatePolicySpec},checkpoint:{candidate:string;candidatePolicy?:import('../../packages/ai/src/candidate-spec').CandidatePolicySpec}){
+ const policy=resolveCandidatePolicy(summary.candidatePolicy);
+ if(typeof summary.candidate!=='string'||!summary.candidate||summary.candidate!==checkpoint.candidate||policy!==resolveCandidatePolicy(checkpoint.candidatePolicy)||(policy.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC)!==(summary.candidate===FIRST_TARGET_CANDIDATE_SPEC))throw Error('checkpoint/summary candidate identity mismatch');
+ return policy;
+}
+export async function loadStudentRelease(releasePath:string,expectedSHA256:string,repositoryRoot=POLICY_REPOSITORY_ROOT,options?:{readEvidence:(ref:{id:string;sha256:string})=>Uint8Array}){
  const root=realpathSync(repositoryRoot),path=resolve(releasePath);if(realpathSync(path)!==path||relative(root,path).startsWith('..'))throw Error('student release path escape');
  const bytes=readFileSync(path);if(sha(bytes)!==expectedSHA256)throw Error('student release SHA mismatch');
- const r:StudentRelease=JSON.parse(bytes.toString());
- if(r.schema!=='ohuo-student-release-v1'||r.trainingKind!=='supervised_rerank'||typeof r.policyId!=='string'||!r.policyId||r.candidateSpecRef!=='ohuo-frozen-c8-expand4-v1'||r.tieBreakId!=='first-candidate-v1')throw Error('student release schema');
+ const r:any=JSON.parse(bytes.toString());
+ if(r.schema==='ohuo-student-release-first-round-v3')return loadFirstRoundStudentRelease(r,expectedSHA256,root,options);
+ const candidatePolicy=resolveStudentCandidatePolicy(r);
+ if(r.trainingKind!=='supervised_rerank'||typeof r.policyId!=='string'||!r.policyId||r.tieBreakId!=='first-candidate-v1')throw Error('student release schema');
  for(const f of [r.dataset,r.recipe,r.selection])fixed(f);
  const basePolicy=await resolveNodePolicy(r.proposer.policyRef,root);
  if(!same(jsonIdentity(basePolicy.identity),r.proposer.identity)||basePolicy.identity.inputDim!==399||basePolicy.encoder.schema!=='v2'||basePolicy.encoder.ctxFill!=='rule-context'||basePolicy.encoder.passEncoding!=='action64'||basePolicy.encoder.candidateCompat!==undefined)throw Error('student frozen B identity mismatch');
@@ -29,13 +45,37 @@ export async function loadStudentRelease(releasePath:string,expectedSHA256:strin
  const policy=await resolvePolicy(scorer.policyId,{registry:{schemaVersion:'gd-model-index-v1',defaultPolicyRef:scorer.policyId,policies:[scorer]},site:'node',readWeights:async p=>new Uint8Array(readFileSync(local(root,p))),sha256:sha});
  const network=policy.createNetwork(),release=structuredClone(r);
  const selectInitialAction=({bundle,candidateInputs}:{bundle:DecisionBundle;candidateInputs:CandidateInputs})=>{
+  if(candidatePolicyForBundle(bundle)!==candidatePolicy)throw Error('student release/bundle candidate specification mismatch');
   if(candidateInputs.policyId!==basePolicy.identity.policyId||!same(jsonIdentity(candidateInputs.policyIdentity),jsonIdentity(basePolicy.identity))||candidateInputs.encoderVersion!==basePolicy.identity.encoderVersion||candidateInputs.inputDim!==399)throw Error('student proposal input identity mismatch');
   return rerankInitialCandidates(bundle,candidateInputs,network).actionId;
  };
- return {release,releaseSHA256:expectedSHA256,basePolicy,selectInitialAction};
+ return {release,releaseSHA256:expectedSHA256,basePolicy,selectInitialAction,...(candidatePolicy.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC?{candidatePolicy}:{})};
+}
+async function loadFirstRoundStudentRelease(r:any,expectedSHA256:string,root:string,options?:{readEvidence:(ref:{id:string;sha256:string})=>Uint8Array}){
+ strictObject(r,'firstRoundRelease',['schema','trainingKind','policyId','proposer','proposalRef','learningParent','scorer','candidateSpecRef','candidatePolicy','tieBreakId','checkpoint','dataset','recipe','selection']);
+ if(r.trainingKind!=='supervised_rerank'||!options?.readEvidence||r.tieBreakId!=='first-candidate-v1')throw Error('first-round release/evidence contract');
+ fixedReference(r.proposalRef,'proposalRef');strictObject(r.learningParent,'learningParent',['ref','scorer','migrationReceiptRef']);
+ const parent=await resolveFirstRoundParent({repositoryRoot:root,parentRef:r.learningParent.ref,envelope:{schema:'ohuo-student-parent-ref-v1',scorer:r.learningParent.scorer,migrationReceiptRef:r.learningParent.migrationReceiptRef,basePolicyIdentity:r.proposer.identity},readEvidence:options.readEvidence});
+ const candidatePolicy=resolveStudentCandidatePolicy(r),scorer=validateStudentScorerDescriptor(r.scorer),basePolicy=await resolveNodePolicy(r.proposer.policyRef,root);
+ if(!same(jsonIdentity(basePolicy.identity),parent.basePolicyIdentity)||!r.policyId||[scorer.policyId,parent.scorer.policyId,basePolicy.identity.policyId].includes(r.policyId)||scorer.policyId===parent.scorer.policyId||scorer.policyId===basePolicy.identity.policyId)throw Error('first-round scorer/proposer separation');
+ for(const f of [r.dataset,r.recipe,r.selection])fixed(f);
+ if(!['first-round-partner-control-fixed64-v1',FIRST_ROUND_R2_RECIPE_ID].includes(r.recipe.id))throw Error('first-round release recipe');
+ const cpPath=local(root,r.checkpoint.path),cpBytes=readFileSync(cpPath);if(sha(cpBytes)!==r.checkpoint.sha256)throw Error('student checkpoint SHA');const cp=JSON.parse(cpBytes.toString());
+ const stateBytes=readFileSync(resolve(dirname(cpPath),'state.json'));if(sha(stateBytes)!==cp.files?.['state.json'])throw Error('student checkpoint facts SHA');const state=JSON.parse(stateBytes.toString());
+ if(cp.schema!=='ohuo-supervised-commit-v1'||(r.recipe.id===FIRST_ROUND_R2_RECIPE_ID?(!Number.isSafeInteger(cp.optimizerSteps)||cp.optimizerSteps<1||state.completedEpochs<1):![16,32,64].includes(cp.optimizerSteps))||state.schema!=='ohuo-supervised-checkpoint-first-round-v2'||state.optimizerSteps!==cp.optimizerSteps||state.weightsSHA256!==scorer.weightsSHA256||cp.files?.['weights.f32']!==scorer.weightsSHA256||local(root,scorer.weightsPathOrUrl.nodePath!)!==resolve(dirname(cpPath),'weights.f32')||state.frozenRefs.parent!==r.learningParent.ref||state.frozenRefs.B!==r.proposalRef||!same(state.frozenRefs.parentIdentity,parent.parentIdentity)||!same(state.frozenRefs.proposalIdentity,parent.basePolicyIdentity)||!same(state.inputContract,scorer.encoder))throw Error('first-round checkpoint/scorer/parent binding');
+ if(r.recipe.id===FIRST_ROUND_R2_RECIPE_ID&&(r.recipe.id!==state.recipe?.recipeId||r.recipe.sha256!==sha(Buffer.from(JSON.stringify(state.recipe)))))throw Error('release recipe/checkpoint binding');
+ verifyFrozenCandidatePolicy({candidate:r.candidateSpecRef,candidatePolicy:r.candidatePolicy},state.frozenRefs);
+ const policy=await resolveStudentScorer(scorer,{site:'node',readWeights:async p=>new Uint8Array(readFileSync(local(root,p))),sha256:sha}),network=policy.createNetwork(),release=structuredClone(r);
+ const {rerankStudent423InitialCandidates}=await import('../../packages/ai/src/hybrid/student');
+ const selectInitialAction=({bundle,candidateInputs,studentInputs}:any)=>{
+  if(candidatePolicyForBundle(bundle)!==candidatePolicy||!same(jsonIdentity(candidateInputs.policyIdentity),jsonIdentity(basePolicy.identity))||!studentInputs||!same(studentInputs.scorer,parent.parentIdentity))throw Error('first-round actual proposal/student inputs mismatch');
+  return rerankStudent423InitialCandidates(bundle,studentInputs,network).actionId;
+ };
+ return {release,releaseSHA256:expectedSHA256,basePolicy,candidatePolicy,selectInitialAction,studentCapture:parent.studentCapture};
 }
 /** Pure §15 gate: no final match results and no inferred behavior review. */
-export function selectDistillCheckpoint(milestones:any[],reviews:Array<{checkpointSHA256:string;status:string}>){
+export function selectDistillCheckpoint(milestones:any[],reviews:Array<{checkpointSHA256:string;status:string}>,recipe?:any){
+ if(isFirstRoundRecipe(recipe)){validateFirstRoundRecipe(recipe);return isFirstRoundR2Recipe(recipe)?selectFirstRoundR2Checkpoint(milestones,reviews):selectFirstRoundCheckpoint(milestones,reviews);}
  const baseline=milestones.find(m=>m.checkpoint.optimizerSteps===0)?.metrics;
  if(!baseline||![baseline.demoCE,baseline.targetDisagreementCE].every(Number.isFinite))return {status:'no_candidate',selected:null,reason:'missing_update0_dev',eligible:[]};
  const eligible:any[]=[];let pending=false;
@@ -51,26 +91,34 @@ export function selectDistillCheckpoint(milestones:any[],reviews:Array<{checkpoi
  return {status:eligible.length?'selected':'no_candidate',selected:eligible[0]?.checkpoint??null,reason:eligible.length?'section15_dev_only':'no_transferable_absorption_established',eligible:eligible.map(m=>m.checkpoint)};
 }
 /** Explicit post-review artifact, never called automatically by the learner. */
-type CandidateFinalizationInputs={summaryPath:string;summarySHA256:string;reviewPath:string;reviewSHA256:string;parentPolicyRef:string;policyId:string;outputPath:string;repositoryRoot?:string;inputRefs?:{summary:StudentFileRef;review:StudentFileRef};verifyBeforeWrite?:(artifacts:Array<{path:string;bytes:string}>)=>void};
-async function prepareStudentCandidate({summaryPath,summarySHA256,reviewPath,reviewSHA256,parentPolicyRef,policyId,outputPath,repositoryRoot=POLICY_REPOSITORY_ROOT,inputRefs}:CandidateFinalizationInputs){
+type CandidateFinalizationInputs={summaryPath:string;summarySHA256:string;reviewPath:string;reviewSHA256:string;parentPolicyRef:string;policyId:string;outputPath:string;repositoryRoot?:string;inputRefs?:{summary:StudentFileRef;review:StudentFileRef};verifyBeforeWrite?:(artifacts:Array<{path:string;bytes:string}>)=>void;firstRoundContext?:{parentRef:string;envelope:any;proposalRef:string;proposal:any;readEvidence:(ref:StudentFileRef)=>Uint8Array}};
+async function prepareStudentCandidate({summaryPath,summarySHA256,reviewPath,reviewSHA256,parentPolicyRef,policyId,outputPath,repositoryRoot=POLICY_REPOSITORY_ROOT,inputRefs,firstRoundContext}:CandidateFinalizationInputs){
  const root=realpathSync(repositoryRoot),summaryBytes=readFileSync(summaryPath),reviewBytes=readFileSync(reviewPath);
  if(sha(summaryBytes)!==summarySHA256||sha(reviewBytes)!==reviewSHA256)throw Error('selection input SHA mismatch');
- const summary=JSON.parse(summaryBytes.toString()),review=JSON.parse(reviewBytes.toString());
- if(summary.schema!=='ohuo-supervised-summary-v1'||summary.plan.phase!=='formal'||summary.actual.realTraining!==true||summary.actual.optimizerSteps!==3*summary.plan.Uepoch||review.schema!=='ohuo-distill-behavior-review-v1'||review.taskSHA256!==summary.taskSHA256||!Array.isArray(review.reviews))throw Error('complete formal run and frozen behavior review required');
+ const summary=JSON.parse(summaryBytes.toString()),review=JSON.parse(reviewBytes.toString()),firstRound=isFirstRoundRecipe(summary.plan?.recipe),r2=isFirstRoundR2Recipe(summary.plan?.recipe);
+ if(firstRound)validateFirstRoundRecipe(summary.plan.recipe);
+ if(summary.schema!=='ohuo-supervised-summary-v1'||summary.plan.phase!=='formal'||summary.actual.realTraining!==true||(r2?!['candidate','diagnostic_stop'].includes(summary.actual.learningObservation?.decision)||!Number.isSafeInteger(summary.actual.optimizerSteps)||summary.actual.optimizerSteps<1||summary.actual.optimizerSteps%summary.plan.Uepoch!==0:summary.actual.optimizerSteps!==(firstRound?64:3*summary.plan.Uepoch))||review.schema!=='ohuo-distill-behavior-review-v1'||review.taskSHA256!==summary.taskSHA256||!Array.isArray(review.reviews))throw Error('complete formal run and frozen behavior review required');
  for(const r of review.reviews){fixed(r.evidence);if(!['accepted','rejected','pending'].includes(r.status))throw Error('behavior review status');}
- const selection=selectDistillCheckpoint(summary.selection.allowedCheckpoints,review.reviews);
+ const selection=selectDistillCheckpoint(summary.selection.allowedCheckpoints,review.reviews,summary.plan.recipe);
  if(!selection.selected)return {selection,release:null};
  const cpPath=resolve(dirname(summaryPath),selection.selected.path,'manifest.json');if(realpathSync(cpPath)!==cpPath)throw Error('selection checkpoint symlink');
  const cpBytes=readFileSync(cpPath);if(sha(cpBytes)!==selection.selected.manifestSHA256)throw Error('selected checkpoint SHA mismatch');const cp=JSON.parse(cpBytes.toString());
  const parent=await resolveNodePolicy(parentPolicyRef,root);if(!policyId||policyId===parent.identity.policyId)throw Error('new S policy ID required');
  const parsed=(ref:string)=>{const marker=ref.lastIndexOf('@sha256:');if(marker<1)throw Error('fixed selection ref');return {id:ref.slice(0,marker),sha256:ref.slice(marker+8)};};
  const stateBytes=readFileSync(resolve(dirname(cpPath),'state.json'));if(sha(stateBytes)!==cp.files['state.json'])throw Error('selected checkpoint facts SHA');const state=JSON.parse(stateBytes.toString());
- if(!same(jsonIdentity(parent.identity),state.frozenRefs.parentIdentity)||state.frozenRefs.B!==summary.frozenRefs.B||state.frozenRefs.manifestSHA256!==summary.frozenRefs.manifestSHA256||state.weightsSHA256!==cp.files['weights.f32'])throw Error('selected checkpoint/run identity');
- const scorer={...parent.descriptor,policyId:policyId+'-scorer',modelVersion:policyId+'-'+selection.selected.optimizerSteps,weightsSHA256:cp.files['weights.f32'],weightsPathOrUrl:{nodePath:relative(root,resolve(dirname(cpPath),'weights.f32'))}};
- validatePolicyDescriptor(scorer);
- const selectionRecord={schema:'ohuo-student-selection-v1',rule:'section-15-unique-checkpoint',summary:inputRefs?.summary??{id:summary.runId+'-summary',sha256:summarySHA256},behaviorReview:inputRefs?.review??{id:policyId+'-behavior-review',sha256:reviewSHA256},...selection};
+ let learning:any=null;if(firstRound){
+  if(!firstRoundContext)throw Error('verified first-round finalization context required');
+  learning=validateFirstRoundParentEnvelope({parentRef:firstRoundContext.parentRef,envelope:firstRoundContext.envelope,readEvidence:firstRoundContext.readEvidence});
+  if(firstRoundContext.parentRef!==summary.frozenRefs.parent||firstRoundContext.proposalRef!==summary.frozenRefs.B||firstRoundContext.proposal.release.proposalPolicyRef!==parentPolicyRef||!same(firstRoundContext.proposal.policyIdentity,learning.basePolicyIdentity)||!same(state.frozenRefs,summary.frozenRefs)||!same(state.frozenRefs.parentIdentity,learning.parentIdentity)||!same(state.inputContract,learning.scorer.encoder)||state.schema!=='ohuo-supervised-checkpoint-first-round-v2')throw Error('first-round selected checkpoint/context mismatch');
+ }
+ if(!same(jsonIdentity(parent.identity),firstRound?state.frozenRefs.proposalIdentity:state.frozenRefs.parentIdentity)||state.frozenRefs.B!==summary.frozenRefs.B||state.frozenRefs.manifestSHA256!==summary.frozenRefs.manifestSHA256||state.weightsSHA256!==cp.files['weights.f32'])throw Error('selected checkpoint/run identity');
+ const scorer={...(firstRound?learning.scorer:parent.descriptor),policyId:policyId+'-scorer',modelVersion:policyId+'-'+selection.selected.optimizerSteps,weightsSHA256:cp.files['weights.f32'],weightsPathOrUrl:{nodePath:relative(root,resolve(dirname(cpPath),'weights.f32'))}};
+ if(firstRound)validateStudentScorerDescriptor(scorer);else validatePolicyDescriptor(scorer);
+ const selectionRecord={schema:'ohuo-student-selection-v1',rule:r2?'r2-first-dev-behavioral-candidate':firstRound?'nav-r15-first-round-unique-checkpoint':'section-15-unique-checkpoint',summary:inputRefs?.summary??{id:summary.runId+'-summary',sha256:summarySHA256},behaviorReview:inputRefs?.review??{id:policyId+'-behavior-review',sha256:reviewSHA256},...selection};
  const selectionBytes=JSON.stringify(selectionRecord)+'\n';
- const release:StudentRelease={schema:'ohuo-student-release-v1',trainingKind:'supervised_rerank',policyId,proposer:{policyRef:parentPolicyRef,identity:jsonIdentity(parent.identity)},scorer,candidateSpecRef:'ohuo-frozen-c8-expand4-v1',tieBreakId:'first-candidate-v1',checkpoint:{path:relative(root,cpPath),sha256:selection.selected.manifestSHA256},dataset:parsed(summary.frozenRefs.dataset),recipe:{id:'supervised-rerank-v1',sha256:sha(Buffer.from(JSON.stringify(summary.plan.recipe)))},selection:{id:policyId+'-dev-selection',sha256:sha(Buffer.from(selectionBytes))}};
+ const candidatePolicy=verifyFrozenCandidatePolicy(summary.frozenRefs,state.frozenRefs);
+ const release={schema:firstRound?'ohuo-student-release-first-round-v3':candidatePolicy.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC?'ohuo-student-release-candidate-v2':'ohuo-student-release-v1',trainingKind:'supervised_rerank',policyId,proposer:{policyRef:parentPolicyRef,identity:jsonIdentity(parent.identity)},...(firstRound?{proposalRef:firstRoundContext!.proposalRef,learningParent:{ref:firstRoundContext!.parentRef,scorer:learning.scorer,migrationReceiptRef:learning.migrationReceiptRef}}:{}),scorer,candidateSpecRef:candidatePolicy.candidateSpec,...(candidatePolicy.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC?{candidatePolicy}:{}),tieBreakId:'first-candidate-v1',checkpoint:{path:relative(root,cpPath),sha256:selection.selected.manifestSHA256},dataset:parsed(summary.frozenRefs.dataset),recipe:{id:summary.plan.recipe.recipeId,sha256:sha(Buffer.from(JSON.stringify(summary.plan.recipe)))},selection:{id:policyId+'-dev-selection',sha256:sha(Buffer.from(selectionBytes))}} as StudentRelease;
+ resolveStudentCandidatePolicy(release);
  const target=resolve(outputPath);if(relative(root,target).startsWith('..')||!relative(root,target).startsWith('lab/out/')||realpathSync(dirname(target))!==dirname(target))throw Error('development release output only');
  const artifacts=[{path:target+'.selection.json',bytes:selectionBytes},{path:target,bytes:JSON.stringify(release)+'\n'}];
  if(inputRefs&&(inputRefs.summary.sha256!==summarySHA256||inputRefs.review.sha256!==reviewSHA256))throw Error('selection input refs SHA mismatch');
@@ -151,7 +199,7 @@ function authority(request:StudentFinalizationRequest,host:StudentFinalizationHo
  requireStudent(required.every(k=>list(rule.requiredKinds).includes(k)&&kinds.has(k))&&list(rule.requiredKinds).every(k=>kinds.has(k)),'prerequisites_missing','all original formal finalization kinds required');
  return facts;
 }
-function formalFacts(r:StudentFinalizationRequest,host:StudentFinalizationHost,task:any,summary:any,state:any){
+export function verifyStudentFinalizationFacts(r:StudentFinalizationRequest,host:StudentFinalizationHost,task:any,summary:any,state:any){
  requireStudent(state.schemaVersion===1&&state.rootInstanceId===host.manifest.rootInstanceId&&state.tasks&&state.runs&&state.budgets&&state.batches,'state_history_conflict','original complete control ledger required');
  for(const [id,run] of Object.entries(state.runs) as any){requireStudent(run.runId===id&&state.tasks[run.task?.taskId]===id&&run.taskSHA256===digest(run.task)&&run.taskRef?.endsWith('@sha256:'+run.taskSHA256),'state_history_conflict','all original Task/run identities required');}
  for(const [id,runId] of Object.entries(state.tasks))requireStudent(state.runs[runId as string]?.task?.taskId===id,'state_history_conflict','missing attempt history is not zero');
@@ -169,14 +217,26 @@ function formalFacts(r:StudentFinalizationRequest,host:StudentFinalizationHost,t
  requireStudent(same(totals,ledger.used)&&sameSet(list(run.committed),owned),'state_history_conflict','full consumption and committed update list disagree');
  const bindings=list(host.manifest.inputBindings).filter(x=>x.taskRef===r.trainingTaskRef);requireStudent(bindings.length===1&&bindings[0].trainingPhase==='formal'&&integer(bindings[0].seed),'input_identity_unverified','original formal input binding required');const binding=bindings[0];
  const data=host.resolveRef(task.datasetRefs[0]),manifestPath=local(host.repositoryRoot,binding.datasetDirectory+'/manifest.json'),manifestBytes=regularBytes(manifestPath);
- requireStudent(data.schema==='ohuo-frozen-dataset-ref-v1'&&sha(manifestBytes)===data.manifestSHA256,'input_identity_unverified','original frozen dataset manifest required');const manifest=JSON.parse(manifestBytes.toString()),Ndemo=manifest.qualification?.Ndemo,Uepoch=Math.ceil(Ndemo/32),total=3*Uepoch;
- requireStudent(integer(Ndemo,1)&&integer(total,1)&&run.committed.length===total,'incomplete_formal','exact three complete epochs required');
- const parentEnvelope=host.resolveRef(task.parentPolicyRef);strictObject(parentEnvelope,'parentPolicy',['schema','policyRef','policyIdentity']);
- requireStudent(parentEnvelope.schema==='ohuo-parent-policy-ref-v1'&&parentEnvelope.policyRef===r.parentPolicyRef&&same(parentEnvelope.policyIdentity,manifest.plan?.identities?.basePolicy),'input_identity_unverified','Node selector must match original parent envelope/dataset');
- const ids=manifest.plan.identities,frozenRefs={dataset:task.datasetRefs[0],manifestSHA256:data.manifestSHA256,teacher:task.labelPolicyRef,B:task.parentPolicyRef,parentIdentity:parentEnvelope.policyIdentity,encoder:ids.encoderVersion,candidate:ids.candidateSpecRef,prompt:task.promptRef,recipe:task.learnerRecipe,sourceRevision:task.sourceRevision,runtimeRef:task.runtimeRef,phase:'formal',seed:binding.seed};
+ requireStudent(data.schema==='ohuo-frozen-dataset-ref-v1'&&sha(manifestBytes)===data.manifestSHA256,'input_identity_unverified','original frozen dataset manifest required');const manifest=JSON.parse(manifestBytes.toString()),firstRound=isFirstRoundRecipe(task.learnerRecipe),r2=isFirstRoundR2Recipe(task.learnerRecipe),Ndemo=manifest.qualification?.Ndemo,Uepoch=Math.ceil(Ndemo/32),shape=firstRound?firstRoundTrainingShape(task.learnerRecipe,'formal',Ndemo,manifest.qualification?.Nkeep):null,total=r2?summary.actual?.optimizerSteps:shape?.maxOptimizerSteps??3*Uepoch,milestoneUpdates:number[]=r2?(Number.isSafeInteger(total)&&total>=1&&total%Uepoch===0?Array.from({length:total/Uepoch+1},(_,i)=>i*Uepoch):[]):shape?.milestoneUpdates??[0,Uepoch,2*Uepoch,3*Uepoch];
+ if(firstRound){validateFirstRoundDatasetMetadata(manifest,'research');requireStudent(isFirstRoundR2DatasetPlan(manifest.plan)===r2&&(!r2||manifest.plan.researchProtocol.revisionRef===task.scientificContract.analysisMethodRef),'input_identity_unverified','dataset protocol must match learning recipe');if(!r2)requireStudent(ledger.limits.maxOptimizerSteps<=130&&ledger.used.optimizerSteps+Object.values(ledger.reservations).filter((x:any)=>['reserved','reserved_unknown'].includes(x.status)).reduce((n:number,x:any)=>n+x.cost.optimizerSteps,0)<=130,'budget_binding_conflict','same submitted/unknown shared130 allocation required');}
+ requireStudent(integer(Ndemo,1)&&integer(total,1)&&run.committed.length===total,'incomplete_formal','exact complete formal trajectory required');
+ let frozenSampleIds:{demo:string[];keep:string[]}|null=null;
+ if(firstRound){
+  requireStudent(manifest.samples?.path==='samples.jsonl','input_identity_unverified','fixed first-round samples path required');const sampleBytes=regularBytes(local(host.repositoryRoot,binding.datasetDirectory+'/samples.jsonl'));
+  requireStudent(sha(sampleBytes)===manifest.samples.sha256&&sampleBytes.byteLength===manifest.samples.bytes,'input_identity_unverified','original frozen sample bytes required');const rows=sampleBytes.toString('utf8').trimEnd().split('\n').map(line=>JSON.parse(line));
+  requireStudent(rows.length===manifest.samples.decisions&&new Set(rows.map(row=>row.decisionId)).size===rows.length,'input_identity_unverified','complete unique frozen sample identities required');
+  frozenSampleIds=Object.fromEntries(['demo','keep'].map(kind=>[kind,rows.filter(row=>row.sampleKind===kind&&row.split==='train').map(row=>row.decisionId)])) as {demo:string[];keep:string[]};
+  requireStudent(['demo','keep'].every(kind=>(frozenSampleIds as any)[kind].length===Ndemo&&(frozenSampleIds as any)[kind].every((id:any)=>typeof id==='string'&&id.length>0)),'exposure_identity_mismatch','exact frozen first-round train demo/keep sets required');
+ }
+ const parentEnvelope=host.resolveRef(task.parentPolicyRef),ids=manifest.plan.identities;let firstRoundContext:CandidateFinalizationInputs['firstRoundContext'];
+ if(firstRound){const parent=validateFirstRoundParentEnvelope({parentRef:task.parentPolicyRef,envelope:parentEnvelope,readEvidence:f=>host.evidenceBytes(f)}),proposal=resolveCandidateReleaseRef(host.resolveRef(task.outputSpec.proposalPolicyRef),ref=>host.resolveRef(ref),RELEASES);
+  requireStudent(proposal.release.proposalPolicyRef===r.parentPolicyRef&&task.parentPolicyRef===ids.studentParentRef&&task.parentPolicyRef!==task.outputSpec.proposalPolicyRef&&same(parent.parentIdentity,ids.studentScorer)&&same(parent.basePolicyIdentity,ids.basePolicy)&&same(parent.migrationReceiptRef,ids.migrationReceiptRef)&&same(proposal.policyIdentity,ids.basePolicy)&&same(proposal.candidatePolicy,ids.candidatePolicy),'input_identity_unverified','original separate S0 learning parent and B proposal required');
+  firstRoundContext={parentRef:task.parentPolicyRef,envelope:parentEnvelope,proposalRef:task.outputSpec.proposalPolicyRef,proposal,readEvidence:f=>host.evidenceBytes(f)};
+ }else{strictObject(parentEnvelope,'parentPolicy',['schema','policyRef','policyIdentity']);requireStudent(parentEnvelope.schema==='ohuo-parent-policy-ref-v1'&&parentEnvelope.policyRef===r.parentPolicyRef&&same(parentEnvelope.policyIdentity,ids.basePolicy),'input_identity_unverified','Node selector must match original parent envelope/dataset');}
+ const frozenRefs={dataset:task.datasetRefs[0],manifestSHA256:data.manifestSHA256,teacher:task.labelPolicyRef,B:firstRound?task.outputSpec.proposalPolicyRef:task.parentPolicyRef,...(firstRound?{parent:task.parentPolicyRef,proposalIdentity:ids.basePolicy,inputContract:ids.encoderConfig}:{}),parentIdentity:firstRound?ids.studentScorer:parentEnvelope.policyIdentity,encoder:ids.encoderVersion,candidate:ids.candidateSpecRef,...(ids.candidatePolicy?{candidatePolicy:resolveCandidatePolicy(ids.candidatePolicy)}:{}),prompt:task.promptRef,recipe:task.learnerRecipe,sourceRevision:task.sourceRevision,runtimeRef:task.runtimeRef,phase:'formal',seed:binding.seed};
  requireStudent(same(host.resolveRef(task.labelPolicyRef),ids.teacher)&&host.resolveRef(task.promptRef).promptRef===ids.promptRef,'input_identity_unverified','original teacher/prompt identity required');
- requireStudent(summary.schema==='ohuo-supervised-summary-v1'&&summary.trainingKind==='supervised_rerank'&&summary.runId===run.runId&&summary.taskSHA256===digest(task)&&same(summary.frozenRefs,frozenRefs)&&same(summary.plan,{recipe:task.learnerRecipe,phase:'formal',Uepoch,maxEpochs:3,maxOptimizerSteps:total,effectiveBatch:64})&&summary.actual?.realTraining===true&&summary.actual.optimizerSteps===total&&summary.actual.providerRequests===0,'incomplete_formal','summary must bind the complete original formal run');
- const allowed=list(summary.selection?.allowedCheckpoints);requireStudent(allowed.length===4&&allowed.every((m,i)=>m.checkpoint?.optimizerSteps===i*Uepoch),'checkpoint_identity_mismatch','only update 0 and all three epoch ends allowed');
+ requireStudent(summary.schema==='ohuo-supervised-summary-v1'&&summary.trainingKind==='supervised_rerank'&&summary.runId===run.runId&&summary.taskSHA256===digest(task)&&same(summary.frozenRefs,frozenRefs)&&same(summary.plan,r2?{recipe:task.learnerRecipe,phase:'formal',Uepoch,stoppingRule:FIRST_ROUND_R2_STOPPING_RULE,observationEveryUpdates:Uepoch,effectiveBatch:2*Math.min(32,Ndemo)}:firstRound?{recipe:task.learnerRecipe,phase:'formal',Uepoch,maxUpdates:64,maxOptimizerSteps:total,effectiveBatch:2*Ndemo,milestoneUpdates}:{recipe:task.learnerRecipe,phase:'formal',Uepoch,maxEpochs:3,maxOptimizerSteps:total,effectiveBatch:64})&&summary.actual?.realTraining===true&&summary.actual.optimizerSteps===total&&summary.actual.providerRequests===0,'incomplete_formal','summary must bind the complete original formal run');
+ const allowed=list(summary.selection?.allowedCheckpoints);requireStudent(allowed.length===(r2?milestoneUpdates.length:4)&&allowed.every((m,i)=>m.checkpoint?.optimizerSteps===milestoneUpdates[i]),'checkpoint_identity_mismatch','only the four original fixed milestones allowed');
  const first={schema:'ohuo-supervised-run-v1',taskSHA256:digest(task),datasetSHA256:data.manifestSHA256,optimizerSteps:0,studentCheckpoint:allowed[0].checkpoint,milestones:[allowed[0]]};
  const expectedDigests=[digest(first),...run.committed.map((id:string)=>ledger.reservations[id].checkpointSHA256)],exposureCounts={demo:new Map<string,number>(),keep:new Map<string,number>()},epochIds=new Set<string>();let previous:any=null,finalFacts:any;
  for(let n=0;n<=total;n++){
@@ -185,27 +245,41 @@ function formalFacts(r:StudentFinalizationRequest,host:StudentFinalizationHost,t
   const pointer=cp.studentCheckpoint;strictObject(pointer,'checkpointPointer',['schema','path','optimizerSteps','manifestSHA256']);requireStudent(pointer.schema==='ohuo-supervised-pointer-v1'&&pointer.optimizerSteps===n&&hash(pointer.manifestSHA256)&&/^checkpoints\/[^/.][^/]*$/.test(pointer.path)&&!pointer.path.endsWith('.tmp'),'checkpoint_identity_mismatch','fixed committed student pointer required');
   const cpPath=local(host.repositoryRoot,relative(host.repositoryRoot,resolve(task.outputRoot,pointer.path,'manifest.json'))),bytes=regularBytes(cpPath),cm=JSON.parse(bytes.toString());requireStudent(sha(bytes)===pointer.manifestSHA256&&cm.schema==='ohuo-supervised-commit-v1'&&cm.optimizerSteps===n&&sameSet(Object.keys(cm.files),['learner.pt','weights.f32','state.json'])&&Object.values(cm.files).every(hash),'checkpoint_identity_mismatch','checkpoint manifest identity differs');
   const factsBytes=regularBytes(local(host.repositoryRoot,relative(host.repositoryRoot,resolve(dirname(cpPath),'state.json')))),facts=JSON.parse(factsBytes.toString());
-  requireStudent(sha(factsBytes)===cm.files['state.json']&&facts.schema==='ohuo-supervised-checkpoint-v1'&&facts.trainingKind==='supervised_rerank'&&facts.optimizerSteps===n&&facts.completedEpochs===Math.floor(n/Uepoch)&&same(facts.frozenRefs,frozenRefs)&&same(facts.recipe,task.learnerRecipe)&&facts.weightsSHA256===cm.files['weights.f32'],'checkpoint_identity_mismatch','original checkpoint facts/frozen identities differ');
-  const milestones=allowed.slice(0,1+Math.floor(n/Uepoch));requireStudent(same(cp.milestones,milestones)&&same(facts.facts?.metrics,milestones.map(m=>m.metrics))&&milestones.every((m,i)=>m.metrics?.optimizerSteps===i*Uepoch&&m.metrics.completedEpochs===i),'checkpoint_identity_mismatch','committed metrics cannot insert or rewrite selection history');
-  if(n%Uepoch===0)requireStudent(same(pointer,allowed[n/Uepoch].checkpoint),'checkpoint_identity_mismatch','epoch pointer not in committed chain');
+  requireStudent(sha(factsBytes)===cm.files['state.json']&&facts.schema===(firstRound?'ohuo-supervised-checkpoint-first-round-v2':'ohuo-supervised-checkpoint-v1')&&facts.trainingKind==='supervised_rerank'&&facts.optimizerSteps===n&&facts.completedEpochs===Math.floor(n/Uepoch)&&same(facts.frozenRefs,frozenRefs)&&same(facts.recipe,task.learnerRecipe)&&(!firstRound||same(facts.inputContract,ids.encoderConfig))&&facts.weightsSHA256===cm.files['weights.f32'],'checkpoint_identity_mismatch','original checkpoint facts/frozen identities differ');
+  const milestones=allowed.filter(m=>m.checkpoint.optimizerSteps<=n);requireStudent(same(cp.milestones,milestones)&&same(facts.facts?.metrics,milestones.map(m=>m.metrics))&&milestones.every((m,i)=>m.metrics?.optimizerSteps===milestoneUpdates[i]&&m.metrics.completedEpochs===(firstRound&&!r2?milestoneUpdates[i]:i)),'checkpoint_identity_mismatch','committed metrics cannot insert or rewrite selection history');
+  if(milestoneUpdates.includes(n))requireStudent(same(pointer,allowed[milestoneUpdates.indexOf(n)].checkpoint)&&(!r2||allowed[milestoneUpdates.indexOf(n)].metrics.weightsSHA256===cm.files['weights.f32']),'checkpoint_identity_mismatch','epoch pointer not in committed chain');
   if(previous)requireStudent(same(cp.milestones.slice(0,previous.milestones.length),previous.milestones),'checkpoint_identity_mismatch','committed selection history changed');
-  if(n){const step=facts.facts.step,expectedCount=(n%Uepoch===0?Ndemo-(Uepoch-1)*32:32);requireStudent(step&&same(step,cp.lastStep)&&step.optimizerSteps===n&&step.epochEnded===(n%Uepoch===0)&&step.completedEpochs===Math.floor(n/Uepoch),'checkpoint_identity_mismatch','original committed step facts required');
-   for(const kind of ['demo','keep'] as const){const chosen=list(step[kind+'Ids']);requireStudent(chosen.length===expectedCount&&chosen.every(x=>typeof x==='string'&&x.length>0),'exposure_identity_mismatch','exact committed sample exposure required');for(const id of chosen){if(kind==='demo'){requireStudent(!epochIds.has(id),'exposure_identity_mismatch','demo cannot repeat within an epoch');epochIds.add(id);}exposureCounts[kind].set(id,(exposureCounts[kind].get(id)??0)+1);}}
+  if(n){const step=facts.facts.step,expectedCount=(n%Uepoch===0?Ndemo-(Uepoch-1)*32:32);requireStudent(step&&same(step,cp.lastStep)&&step.optimizerSteps===n&&step.epochEnded===(n%Uepoch===0)&&step.completedEpochs===Math.floor(n/Uepoch)&&(!firstRound||step.milestone===milestoneUpdates.includes(n)),'checkpoint_identity_mismatch','original committed step facts required');
+   for(const kind of ['demo','keep'] as const){const chosen=list(step[kind+'Ids']);requireStudent(chosen.length===expectedCount&&chosen.every(x=>typeof x==='string'&&x.length>0)&&(!firstRound||(r2?chosen.every(x=>frozenSampleIds![kind].includes(x)):sameSet(chosen,frozenSampleIds![kind]))),'exposure_identity_mismatch','exact committed sample exposure required');for(const id of chosen){if(kind==='demo'){requireStudent(!epochIds.has(id),'exposure_identity_mismatch','demo cannot repeat within an epoch');epochIds.add(id);}exposureCounts[kind].set(id,(exposureCounts[kind].get(id)??0)+1);}}
    if(n%Uepoch===0){requireStudent(epochIds.size===Ndemo,'exposure_identity_mismatch','complete without-replacement epoch required');epochIds.clear();}
   }
   const exposure=Object.fromEntries((['demo','keep'] as const).map(kind=>{const values=[...exposureCounts[kind].values()],total=values.reduce((a,b)=>a+b,0);return [kind,{unique:values.length,total,repeats:total-values.length}];}));
+  if(firstRound){const expected=Object.fromEntries(['demo','keep'].map(kind=>[kind,Object.fromEntries((frozenSampleIds as any)[kind].map((id:string)=>[id,r2?(exposureCounts as any)[kind].get(id)??0:n]))]));requireStudent(same(facts.perDecisionExposure,expected),'exposure_identity_mismatch','every frozen demo/keep ID including update0 must have exact committed exposure');}
   requireStudent(same(facts.exposure,exposure),'exposure_identity_mismatch','all original exposure facts must reconcile');previous=cp;finalFacts=facts;
  }
- requireStudent(exposureCounts.demo.size===Ndemo&&[...exposureCounts.demo.values()].every(n=>n===3),'exposure_identity_mismatch','same frozen demo set must be seen exactly once in each of three epochs');
+ requireStudent(exposureCounts.demo.size===Ndemo&&[...exposureCounts.demo.values()].every(n=>n===(r2?total/Uepoch:firstRound?64:3))&&(!firstRound||exposureCounts.keep.size===Ndemo&&[...exposureCounts.keep.values()].every(n=>n===(r2?total/Uepoch:64))),'exposure_identity_mismatch','same frozen sample set must have exact planned exposure');
  requireStudent(same(run.checkpoint,previous)&&run.checkpointSHA256===expectedDigests.at(-1)&&run.checkpointRef===resolve(task.outputRoot,'checkpoint-'+run.checkpointSHA256+'.json')&&same(summary.actual.latestCompleteCheckpoint,previous.studentCheckpoint)&&same(summary.actual.lastCommittedStep,previous.lastStep)&&same(summary.actual.exposure,finalFacts.exposure)&&same(summary.metrics,finalFacts.facts.metrics),'checkpoint_identity_mismatch','summary/latest committed boundary disagreement');
+ if(r2){
+  requireStudent(milestoneUpdates.length>1&&task.limits.mode==='scientific-observation-v1','incomplete_formal','r2 completed observation trajectory required');
+  let lastDecision:any=null;
+  for(let i=1;i<allowed.length;i++){
+   const current=allowed[i].metrics,previous=allowed[i-1].metrics;
+   requireStudent(hash(current.weightsSHA256)&&hash(previous.weightsSHA256),'checkpoint_identity_mismatch','r2 exact weight hashes required');
+   const cpPath=local(host.repositoryRoot,relative(host.repositoryRoot,resolve(task.outputRoot,allowed[i].checkpoint.path,'manifest.json'))),cm=JSON.parse(regularBytes(cpPath).toString());
+   requireStudent(cm.files['weights.f32']===current.weightsSHA256,'checkpoint_identity_mismatch','r2 metric weight identity');
+   lastDecision=decideFirstRoundR2Learning({baseline:allowed[0].metrics,previous,current,weightsChanged:current.weightsSHA256!==previous.weightsSHA256});
+   requireStudent(i===allowed.length-1?lastDecision.decision!=='continue':lastDecision.decision==='continue','incomplete_formal','r2 cannot stop early or update after scientific stop');
+  }
+  requireStudent(same(summary.actual.learningObservation,lastDecision),'checkpoint_identity_mismatch','r2 learning stop must recompute from committed metrics');
+ }
  const summaryPath=evidencePath(host,r.summaryRef);requireStudent(summaryPath===resolve(task.outputRoot,'summary.json')&&list(run.consumerArtifactRefs).some(a=>a.path===summaryPath&&a.sha256===r.summaryRef.sha256),'input_identity_unverified','summary must be the actual completed consumer artifact');
- return {allowed,parentEnvelope};
+ return {allowed,parentEnvelope,firstRoundContext};
 }
-function selectionIssues(selection:any,allowed:any[],reviews:any[]){
+function selectionIssues(selection:any,allowed:any[],reviews:any[],recipe?:any){
  if(selection.status==='selected')return [];
  // Reuse the original mathematical gate to name unresolved viable checkpoints;
  // eliminated checkpoints never acquire a new human-review requirement.
- return [selection.reason,...(selection.status==='pending_behavior_review'?allowed.slice(1).filter(m=>selectDistillCheckpoint([allowed[0],m],reviews).status==='pending_behavior_review').map(m=>'behavior_review_pending:'+m.checkpoint.manifestSHA256):[])];
+ return [selection.reason,...(selection.status==='pending_behavior_review'?allowed.slice(1).filter(m=>(isFirstRoundRecipe(recipe)?selectDistillCheckpoint(allowed,[...reviews.filter(r=>r.checkpointSHA256===m.checkpoint.manifestSHA256),...allowed.slice(1).filter(o=>o!==m).map(o=>({checkpointSHA256:o.checkpoint.manifestSHA256,status:'accepted'}))],recipe):selectDistillCheckpoint([allowed[0],m],reviews)).status==='pending_behavior_review').map(m=>'behavior_review_pending:'+m.checkpoint.manifestSHA256):[])];
 }
 function saveCompletionReceipt(directory:string,path:string,receipt:StudentFinalizationReceipt){mkdirSync(directory,{recursive:true,mode:0o700});requireStudent(realpathSync(directory)===directory,'artifact_conflict','receipt directory must be real');writeNewOrVerifyIdentical(path,canonical(receipt)+'\n');}
 function behaviorReview(host:StudentFinalizationHost,ref:StudentFileRef,taskSHA256:string,allowed:any[]){
@@ -236,24 +310,24 @@ export async function finalizeStudentFromHost(specRef:string,host:StudentFinaliz
   const history=[...saved.values()],existing=saved.get(specRef)??null,terminals=history.filter(r=>r.status!=='pending_behavior_review');
   requireStudent(terminals.length<=1&&(existing!==null||terminals.length===0),'artifact_conflict','terminal selection cannot be reopened');
   const state=host.checkExistingRoot(),summary=JSON.parse(evidence(host,request.summaryRef).toString()),review=JSON.parse(evidence(host,request.reviewRef).toString());
-  const {allowed}=formalFacts(request,host,task,summary,state);
+  const {allowed,firstRoundContext}=verifyStudentFinalizationFacts(request,host,task,summary,state);
   behaviorReview(host,request.reviewRef,summary.taskSHA256,allowed);
-  for(const old of history){const historical=selectDistillCheckpoint(allowed,behaviorReview(host,old.reviewRef,summary.taskSHA256,allowed).reviews);requireStudent(old.status===historical.status&&same(old.issues,selectionIssues(historical,allowed,behaviorReview(host,old.reviewRef,summary.taskSHA256,allowed).reviews)),'artifact_conflict','saved completion status/issue cannot rewrite original request outcome');}
+  for(const old of history){const historical=selectDistillCheckpoint(allowed,behaviorReview(host,old.reviewRef,summary.taskSHA256,allowed).reviews,task.learnerRecipe);requireStudent(old.status===historical.status&&same(old.issues,selectionIssues(historical,allowed,behaviorReview(host,old.reviewRef,summary.taskSHA256,allowed).reviews,task.learnerRecipe)),'artifact_conflict','saved completion status/issue cannot rewrite original request outcome');}
   authority(request,host,task,existing!==null);
   const observed=state.hostPlanObservations?.[canonical([request.planRef,request.planVersion])];requireStudent(existing!==null||!['completed','terminated'].includes(observed?.status),'plan_closed','durably closed plan cannot select');
-  const selected=selectDistillCheckpoint(allowed,review.reviews),target=resolve(root,request.outputPath),selectionPath=target+'.selection.json';
+  const selected=selectDistillCheckpoint(allowed,review.reviews,task.learnerRecipe),target=resolve(root,request.outputPath),selectionPath=target+'.selection.json';
   if(existing){requireStudent(existing.status===selected.status&&same(existing.summaryRef,request.summaryRef)&&same(existing.reviewRef,request.reviewRef),'artifact_conflict','saved receipt differs from exact fixed selection');if(existing.status!=='selected'){saveCompletionReceipt(receiptDirectory,receiptPath,existing);return existing;}
    // Rebuild deterministic bytes through the original parent-identity read path,
    // but do not call finalize again or write anything for an intact receipt.
-   const prepared=await prepareStudentCandidate({summaryPath:evidencePath(host,request.summaryRef),summarySHA256:request.summaryRef.sha256,reviewPath:evidencePath(host,request.reviewRef),reviewSHA256:request.reviewRef.sha256,parentPolicyRef:request.parentPolicyRef,policyId:request.policyId,outputPath:target,repositoryRoot:root,inputRefs:{summary:request.summaryRef,review:request.reviewRef}});
+   const prepared=await prepareStudentCandidate({summaryPath:evidencePath(host,request.summaryRef),summarySHA256:request.summaryRef.sha256,reviewPath:evidencePath(host,request.reviewRef),reviewSHA256:request.reviewRef.sha256,parentPolicyRef:request.parentPolicyRef,policyId:request.policyId,outputPath:target,repositoryRoot:root,firstRoundContext,inputRefs:{summary:request.summaryRef,review:request.reviewRef}});
    requireStudent(prepared.release&&existing.selectionRef!.id===request.policyId+'-dev-selection'&&existing.releaseRef!.id===request.outputPath&&existing.releaseRef!.sha256===prepared.release.sha256&&existing.selectionRef!.sha256===sha(Buffer.from(prepared.artifacts![0].bytes)),'artifact_conflict','saved receipt must bind original deterministic selection/release bytes');
    for(const a of prepared.artifacts!)verifyIdenticalIfPresent(a.path,a.bytes);
    if(prepared.artifacts!.every(a=>existsSync(a.path))){authority(request,host,task,true);saveCompletionReceipt(receiptDirectory,receiptPath,existing);return existing;}
   }
   let result:any={selection:selected,release:null};
-  if(selected.status==='selected')result=await finalizeStudentCandidate({summaryPath:evidencePath(host,request.summaryRef),summarySHA256:request.summaryRef.sha256,reviewPath:evidencePath(host,request.reviewRef),reviewSHA256:request.reviewRef.sha256,parentPolicyRef:request.parentPolicyRef,policyId:request.policyId,outputPath:target,repositoryRoot:root,inputRefs:{summary:request.summaryRef,review:request.reviewRef},verifyBeforeWrite:artifacts=>{authority(request,host,task,existing!==null);requireStudent(same(host.checkExistingRoot(),state),'state_history_conflict','original state changed during finalization');if(existing)for(const a of artifacts){const f=a.path===target?existing.releaseRef!:existing.selectionRef!;requireStudent(sha(Buffer.from(a.bytes))===f.sha256,'artifact_conflict','repair must reconstruct previously completed bytes');}}});
+  if(selected.status==='selected')result=await finalizeStudentCandidate({summaryPath:evidencePath(host,request.summaryRef),summarySHA256:request.summaryRef.sha256,reviewPath:evidencePath(host,request.reviewRef),reviewSHA256:request.reviewRef.sha256,parentPolicyRef:request.parentPolicyRef,policyId:request.policyId,outputPath:target,repositoryRoot:root,firstRoundContext,inputRefs:{summary:request.summaryRef,review:request.reviewRef},verifyBeforeWrite:artifacts=>{authority(request,host,task,existing!==null);requireStudent(same(host.checkExistingRoot(),state),'state_history_conflict','original state changed during finalization');if(existing)for(const a of artifacts){const f=a.path===target?existing.releaseRef!:existing.selectionRef!;requireStudent(sha(Buffer.from(a.bytes))===f.sha256,'artifact_conflict','repair must reconstruct previously completed bytes');}}});
   else requireStudent(!existsSync(target)&&!existsSync(selectionPath),'artifact_conflict','nonselected request cannot ignore partial selected artifacts');
-  const receipt:StudentFinalizationReceipt={schema:'ohuo-student-finalization-receipt-v1',requestRef:specRef,trainingTaskRef:request.trainingTaskRef,trainingRunId:request.trainingRunId,summaryRef:request.summaryRef,reviewRef:request.reviewRef,status:result.selection.status,selectionRef:result.release?{id:request.policyId+'-dev-selection',sha256:sha(regularBytes(selectionPath))}:null,releaseRef:result.release?{id:request.outputPath,sha256:result.release.sha256}:null,issues:selectionIssues(result.selection,allowed,review.reviews)};
+  const receipt:StudentFinalizationReceipt={schema:'ohuo-student-finalization-receipt-v1',requestRef:specRef,trainingTaskRef:request.trainingTaskRef,trainingRunId:request.trainingRunId,summaryRef:request.summaryRef,reviewRef:request.reviewRef,status:result.selection.status,selectionRef:result.release?{id:request.policyId+'-dev-selection',sha256:sha(regularBytes(selectionPath))}:null,releaseRef:result.release?{id:request.outputPath,sha256:result.release.sha256}:null,issues:selectionIssues(result.selection,allowed,review.reviews,task.learnerRecipe)};
   if(existing)requireStudent(same(receipt,existing),'artifact_conflict','reconstructed receipt differs');authority(request,host,task,existing!==null);
   saveCompletionReceipt(receiptDirectory,receiptPath,receipt);return receipt;
  }finally{releaseOutput?.();releaseState();}

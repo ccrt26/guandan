@@ -35,10 +35,13 @@ def commit_checkpoint(run_dir, learner, committed_facts, *, publish=True):
     weights = array.array('f', learner.model.flat().tolist())
     if sys.byteorder != 'little': weights.byteswap()
     with open(tmp / 'weights.f32', 'xb') as out: weights.tofile(out); out.flush(); os.fsync(out.fileno())
-    facts = {'schema': 'ohuo-supervised-checkpoint-v1', 'trainingKind': 'supervised_rerank',
+    facts = {'schema': 'ohuo-supervised-checkpoint-first-round-v2' if learner.first_round else 'ohuo-supervised-checkpoint-student423-v1' if learner.input_contract is not None else 'ohuo-supervised-checkpoint-v1',
+             **({'inputContract': learner.input_contract} if learner.input_contract is not None else {}), 'trainingKind': 'supervised_rerank',
              'optimizerSteps': learner.optimizerSteps, 'completedEpochs': learner.epoch,
              'frozenRefs': learner.refs, 'recipe': learner.recipe, 'exposure': learner.exposure_summary(),
              'weightsSHA256': sha((tmp / 'weights.f32').read_bytes()), 'facts': committed_facts}
+    if learner.first_round:
+        facts['perDecisionExposure'] = state['exposures']
     write_json_new(tmp / 'state.json', facts)
     files = {p: sha((tmp / p).read_bytes()) for p in ('learner.pt', 'weights.f32', 'state.json')}
     write_json_new(tmp / 'manifest.json', {'schema': 'ohuo-supervised-commit-v1', 'optimizerSteps': learner.optimizerSteps, 'files': files})
@@ -79,8 +82,18 @@ def read_committed(run_dir, ref):
             facts['weightsSHA256'] == manifest['files']['weights.f32'], 'checkpoint facts')
     state = torch.load(directory / 'learner.pt', map_location='cpu', weights_only=True)
     require(state['optimizerSteps'] == ref['optimizerSteps'] and state['frozenRefs'] == facts['frozenRefs'], 'checkpoint inner identity')
-    from distill_learner import Net
-    rng = torch.get_rng_state(); net = Net(); torch.set_rng_state(rng)
+    from distill_learner import Net, input_dimension, is_first_round, STUDENT_INPUT_CONTRACT
+    input_contract = state.get('inputContract')
+    input_dim = input_dimension(input_contract)
+    first_round = is_first_round(state.get('recipe'))
+    expected_state = 'ohuo-supervised-state-first-round-v2' if first_round else 'ohuo-supervised-state-student423-v1' if input_contract is not None else 'ohuo-supervised-state-v1'
+    expected_facts = 'ohuo-supervised-checkpoint-first-round-v2' if first_round else 'ohuo-supervised-checkpoint-student423-v1' if input_contract is not None else 'ohuo-supervised-checkpoint-v1'
+    if first_round:
+        require(input_contract == STUDENT_INPUT_CONTRACT and facts.get('recipe') == state.get('recipe') and
+                facts.get('perDecisionExposure') == state.get('exposures'), 'first-round checkpoint facts mismatch')
+    require(state.get('schema') == expected_state and facts.get('schema') == expected_facts and
+            facts.get('inputContract') == input_contract, 'checkpoint explicit input identity mismatch')
+    rng = torch.get_rng_state(); net = Net(input_dim); torch.set_rng_state(rng)
     net.load_state_dict(state['model'])
     flat = torch.frombuffer(bytearray((directory / 'weights.f32').read_bytes()), dtype=torch.float32).clone()
     require(torch.equal(net.flat(), flat), 'checkpoint weight/state disagreement')

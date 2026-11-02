@@ -18,7 +18,7 @@ export function selectConsumer(task,capability,consumers){
  if(supervised){
   // Fixed reviewed consumer source, not a TaskFile path/module or self-hash.
   const file=new URL('./distill-consumer.ts',import.meta.url);let valid=false;
-  try{valid=lstatSync(file).isFile()&&!lstatSync(file).isSymbolicLink()&&createHash('sha256').update(readFileSync(file)).digest('hex')==='5cc406e00823326b2a6b81252f116cfd4920b86978f0070a1f37572cbc100f50';}catch{}
+  try{valid=lstatSync(file).isFile()&&!lstatSync(file).isSymbolicLink()&&createHash('sha256').update(readFileSync(file)).digest('hex')==='5a903851053ffad8e654f6b053ae2127f9a7a8c1a4d5d85b8f89953b12d48b27';}catch{}
   if(!valid)fail('consumer_source_mismatch','capabilityRef','fixed reviewed B10 consumer source missing or changed');
  }
  if(task.operationScope.localExecution!==true)fail('scope_not_supported','operationScope.localExecution','explicit local execution request and authorization required');

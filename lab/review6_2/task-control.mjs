@@ -1,8 +1,10 @@
+import {readFirstRoundAllocation,firstRoundStageRemaining} from './first-round-budget.mjs';
+import {isFirstRoundRecipe,FIRST_ROUND_RECIPE} from './first-round-contract.mjs';
 import {readFileSync,writeFileSync,renameSync,realpathSync,existsSync,mkdirSync,lstatSync} from 'node:fs';
 import {resolve,join,relative,sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {randomUUID,createHash} from 'node:crypto';
-import {TaskError,fail,canonical,digest,fixedReference,strictObject,validateIdentifier,validateTask,taskReferences,COUNTERS,LIMITS,validateLimits,validateCost} from './task-schema.mjs';
+import {TaskError,fail,canonical,digest,fixedReference,strictObject,validateIdentifier,validateTask,taskReferences,COUNTERS,LIMITS,validateLimits,validateCost,isWorkloadLimits,isScientificObservationLimits,validateResourcePolicy} from './task-schema.mjs';
 import {selectConsumer} from './task-consumer.mjs';
 
 const ROOT=fileURLToPath(new URL('../../',import.meta.url));
@@ -35,11 +37,12 @@ function ledgerFor(state,task){
  for(const r of Object.values(ledger.reservations)){validateCost(r.cost);if(!['reserved','reserved_unknown','committed','consumed','released'].includes(r.status)||typeof r.runId!=='string')fail('state_invalid','budget.reservations','invalid reservation');}
  return ledger;
 }
-function budgetView(ledger){
+function budgetView(ledger,limits=ledger.limits,resourcePolicy=null){
  const reserved=zeros(),reservedUnknown=zeros(),released=zeros();
  for(const r of Object.values(ledger.reservations))for(const k of COUNTERS){if(r.status==='reserved_unknown')reservedUnknown[k]+=r.cost[k];else if(r.status==='reserved')reserved[k]+=r.cost[k];else if(r.status==='released')released[k]+=r.cost[k];}
+ if(resourcePolicy)return {accountingMode:ledger.accountingMode??'offline_synthetic',counterMeaning:ledger.accountingMode==='research'?'confirmed local operations/upstream invocations; not provider billing':'synthetic control events, not real upstream calls or scientific work',resourcePolicy,originalBudgetLimits:ledger.limits,used:ledger.used,reserved,reservedUnknown,released,elapsedSeconds:ledger.elapsedSeconds};
  for(const k of COUNTERS)if(ledger.used[k]+reserved[k]+reservedUnknown[k]>ledger.limits[LIMITS[k]])fail('state_invalid','budget','recorded consumption exceeds approved allocation');
- return {accountingMode:ledger.accountingMode??'offline_synthetic',counterMeaning:ledger.accountingMode==='research'?'confirmed local operations/upstream invocations; not provider billing':'synthetic control events, not real upstream calls or scientific work',approvedTotal:ledger.limits,used:ledger.used,reserved,reservedUnknown,released,remaining:Object.fromEntries(COUNTERS.map(k=>[k,ledger.limits[LIMITS[k]]-ledger.used[k]-reserved[k]-reservedUnknown[k]])),elapsedSeconds:ledger.elapsedSeconds};
+ return {accountingMode:ledger.accountingMode??'offline_synthetic',counterMeaning:ledger.accountingMode==='research'?'confirmed local operations/upstream invocations; not provider billing':'synthetic control events, not real upstream calls or scientific work',approvedTotal:limits,used:ledger.used,reserved,reservedUnknown,released,remaining:Object.fromEntries(COUNTERS.map(k=>[k,ledger.limits[LIMITS[k]]-ledger.used[k]-reserved[k]-reservedUnknown[k]])),elapsedSeconds:ledger.elapsedSeconds};
 }
 function runConsumption(ledger,runId){
  const result={confirmed:zeros(),reserved:zeros(),reservedUnknown:zeros(),released:zeros()};
@@ -62,6 +65,14 @@ export function createTaskController({root,adapter=null,consumers=[]}){
  const handles=new Map();let normalized;
  const location=()=>{normalized??=safeRoot(root);return normalized;};
  const statePath=()=>join(location(),'state.json');
+ const allocationFor=(ledger,budgetRef)=>readFirstRoundAllocation({root:location(),budgetRef,ledger});
+ const limitsFor=(ledger,budgetRef)=>allocationFor(ledger,budgetRef)?.effectiveLimits??ledger.limits;
+ const policyFor=(ledger,budgetRef)=>{
+  if(!Object.hasOwn(ledger,'resourcePolicy'))return null;
+  const p=validateResourcePolicy(ledger.resourcePolicy),v=p.value;
+  if(v.planRef!==ledger.planRef||v.budgetRef!==budgetRef||v.authorizationRef!==ledger.authorizationRef||v.controlRoot!==location())fail('resource_policy_conflict','resourcePolicy','registered policy must retain the original root/plan/budget/authority');
+  if(ledger.firstRoundAllocation)fail('resource_policy_conflict','allocation','record-only policy cannot reinterpret an existing allocation receipt');return p;
+ };
  async function transact(fn){
   const path=statePath();readState(path);
   let release;try{const {acquireSourceWriter}=await import('./writer-lock.ts');release=acquireSourceWriter(path);}catch(e){if(e instanceof TaskError)throw e;fail('control_busy','stateRoot',e.message);}
@@ -69,8 +80,8 @@ export function createTaskController({root,adapter=null,consumers=[]}){
  }
  function snapshot(runId){
   const s=readState(statePath()),r=s.runs[runId];if(!r)fail('unknown_run','runId','run is not registered');
-  const ledger=ledgerFor(s,r.task);const copy=JSON.parse(canonical(r));
-  return {...copy,observationStatus:r.cleanupConfirmed===false||(activeStatuses.includes(r.status)&&!handles.has(runId))?'unknown':'confirmed',sharedBudget:budgetView(ledger),consumption:runConsumption(ledger,runId),artifactRefs:[{path:statePath(),purpose:'current committed state and shared budget'},...(r.checkpointRef?[{path:r.checkpointRef,purpose:'immutable committed consumer checkpoint',sha256:r.checkpointSHA256}]:[]),...(r.consumerArtifactRefs??[])]};
+   const ledger=ledgerFor(s,r.task),policy=policyFor(ledger,r.task.budgetRef);const copy=JSON.parse(canonical(r));
+   return {...copy,observationStatus:r.cleanupConfirmed===false||(activeStatuses.includes(r.status)&&!handles.has(runId))?'unknown':'confirmed',sharedBudget:budgetView(ledger,policy?ledger.limits:limitsFor(ledger,r.task.budgetRef),policy),consumption:runConsumption(ledger,runId),artifactRefs:[{path:statePath(),purpose:'current committed state and shared budget'},...(r.checkpointRef?[{path:r.checkpointRef,purpose:'immutable committed consumer checkpoint',sha256:r.checkpointSHA256}]:[]),...(r.consumerArtifactRefs??[])]};
  }
  async function resolveReference(ref){
   fixedReference(ref,'reference');if(!adapter?.resolveRef)fail('reference_unavailable','reference','no fixed-reference adapter installed');
@@ -92,12 +103,28 @@ export function createTaskController({root,adapter=null,consumers=[]}){
   // verifyInputs owns semantic source-family/split validation using the existing
   // source-index interface. B06 only locks the real verified index; it never
   // imports protocol.ts (which loads research dependencies) or invents an index.
+  let resourcePolicy=null;
+  if(isWorkloadLimits(task.limits)){
+   resourcePolicy=validateResourcePolicy(authorization.resourcePolicy);const v=resourcePolicy.value;
+   if(v.planRef!==task.planRef||v.budgetRef!==task.budgetRef||v.authorizationRef!==task.authorizationRef||v.controlRoot!==location()||v.protocolRevisionRef!==task.scientificContract.analysisMethodRef)fail('resource_policy_conflict','resourcePolicy','new Task must bind the exact approved method and original scope');
+  }else if(authorization.resourcePolicy)fail('resource_policy_conflict','limits','record-only authority cannot reinterpret a legacy Task as new work');
   const budget=refs.get(task.budgetRef);
   if(budget.controlRoot!==location()||budget.authorizationRef!==task.authorizationRef||budget.researchBatchId!==task.researchBatchId||budget.planRef!==task.planRef)fail('budget_binding_conflict','budgetRef','budget reference does not bind original root/batch/authorization');
   validateLimits(budget.limits,'budget.limits');
+  const allocation=allocationFor(ledgerFor(readState(statePath()),task),task.budgetRef);
+  if(typeof adapter?.resolveFirstRoundAllocation==='function'){if(canonical(await adapter.resolveFirstRoundAllocation(task,budget))!==canonical(allocation))fail('authorization_unverified','allocation','fixed host must verify original allocation facts and grant');}else if(allocation)fail('authorization_unverified','allocation','allocated research requires the fixed host verifier');
+  if(resourcePolicy&&allocation)fail('resource_policy_conflict','allocation','new protocol does not freeze or reuse a legacy allocation');
+  const effectiveLimits=allocation?.effectiveLimits??budget.limits;
+  if(!resourcePolicy&&isFirstRoundRecipe(task.learnerRecipe)&&budget.limits.maxOptimizerSteps>FIRST_ROUND_RECIPE.maxSharedOptimizerSteps)fail('budget_binding_conflict','budget.limits.maxOptimizerSteps','first-round attempts share at most 130 submitted or unknown updates');
   if(resolve(task.outputRoot)!==join(location(),'runs',task.runId))fail('invalid_output_root','outputRoot','run output must be this root/runs/runId');
   const executionInputs=consumer.prepare?await consumer.prepare({task,refs,inputs}):null;
-  return {consumer,refs,authorization,inputs,budget,executionInputs};
+  if(resourcePolicy){
+   if(inputs.inputWorkload!==undefined&&executionInputs?.inputWorkload!==undefined&&canonical(inputs.inputWorkload)!==canonical(executionInputs.inputWorkload))fail('input_identity_unverified','inputWorkload','host and fixed consumer workload differ');
+   const w=inputs.inputWorkload??executionInputs?.inputWorkload;
+   if(isScientificObservationLimits(task.limits)){strictObject(w,'inputWorkload',['mode','providerRequests','matchAttempts','labelDecisions']);if(w.mode!=='scientific-observation-v1'||['providerRequests','matchAttempts','labelDecisions'].some(k=>w[k]!==0))fail('input_identity_unverified','inputWorkload','trusted scientific learner scope required');}
+   else{validateCost(w);for(const k of COUNTERS)if(w[k]!==task.limits[LIMITS[k]])fail('input_identity_unverified','inputWorkload','Task counts must equal the actually verified frozen inputs');}
+  }
+  return {consumer,refs,authorization,inputs,budget,effectiveLimits,allocation,executionInputs,resourcePolicy};
  }
  async function planCheck(task,refs){
   if(adapter?.productionPlanClosure===true){const prior=readState(statePath()).hostPlanObservations?.[canonical([task.planRef,task.planVersion])];if(prior&&['completed','terminated'].includes(prior.status))fail('plan_closed','planScope','original plan has a durable closed observation');}
@@ -114,6 +141,18 @@ export function createTaskController({root,adapter=null,consumers=[]}){
   if(plan.eligible!==true)fail('prerequisites_missing','planScope',JSON.stringify(plan.missing??['eligibility not verified']));
  }
  function checkAdmissions(task,state,pre){
+  let pilotRemainingSeconds;
+  const registered=policyFor(ledgerFor(state,task),task.budgetRef);
+  if(pre.resourcePolicy){if(!registered||canonical(registered)!==canonical(pre.resourcePolicy))fail('resource_policy_conflict','resourcePolicy','every new work boundary requires the same registered policy');if(Object.values(ledgerFor(state,task).reservations).some(r=>r.status==='reserved_unknown'))fail('execution_uncertain','budgetRef','unresolved invocation or update must not be bypassed by another revised Task');}
+  else if(registered)fail('resource_policy_conflict','limits','legacy execution cannot restart under the revised record-only policy');
+  if(pre.inputs.firstRoundPilotContext||pre.refs.get(task.scientificContract.selectionRuleRef)?.schema==='ohuo-offline-selection-first-round-pilot-rule-v1'){
+   if(pre.resourcePolicy)fail('resource_policy_conflict','pilot','old pilot cannot be restarted as revised work');
+   if(!pre.inputs.firstRoundPilotContext||typeof adapter?.checkFirstRoundPilotAdmission!=='function')fail('input_identity_unverified','firstRoundPilotContext','named pilot requires the fixed synchronous host admission adapter');
+   const result=adapter.checkFirstRoundPilotAdmission(task,state,pre.inputs.firstRoundPilotContext);
+   if(!result||typeof result.then==='function'||!Number.isFinite(result.remainingSeconds)||result.remainingSeconds<0||result.remainingSeconds>3600)fail('input_identity_unverified','firstRoundPilotContext','original finite cumulative pilot remainder required');
+   if(result.remainingSeconds<=0)fail('run_boundary','firstRoundPilotContext','the original 3600 active-second pilot allowance is exhausted');
+   pilotRemainingSeconds=result.remainingSeconds;
+  }
   const numeric=pre.inputs.numericalRecoveryContext;
   if(numeric||pre.inputs.numericalRestart?.schema==='ohuo-verified-numerical-recovery-v1'){
    if(!numeric||typeof adapter?.checkBranchAdmission!=='function')fail('branch_evidence_unverified','numericalRecoveryContext','fixed synchronous host role adapter required');
@@ -129,6 +168,8 @@ export function createTaskController({root,adapter=null,consumers=[]}){
    if(!pre.inputs.offlineSelectionAdmissionContext||typeof adapter?.checkOfflineSelectionAdmission!=='function')fail('input_identity_unverified','offlineSelectionAdmissionContext','fixed synchronous selection binding adapter required');
    const result=adapter.checkOfflineSelectionAdmission(task,state,pre.inputs.offlineSelectionAdmissionContext);if(result!==true)fail('selection_task_binding','offlineSelectionAdmissionContext','locked original selection binding not admitted');
   }
+  if(pre.allocation){const current=allocationFor(ledgerFor(state,task),task.budgetRef);if(canonical(current)!==canonical(pre.allocation))fail('budget_identity_mismatch','allocation','allocation changed after fixed preflight');const remaining=firstRoundStageRemaining({state,task,receipt:current});if(remaining<=0)fail('run_boundary','stageSeconds','original stage cumulative allowance exhausted');pilotRemainingSeconds=Math.min(pilotRemainingSeconds??Infinity,remaining);}
+  return pilotRemainingSeconds;
  }
  function validateResume(r,consumer){
   if(r.checkpoint!==null&&(digest(r.checkpoint)!==r.checkpointSHA256||consumer.validateCheckpoint(r.checkpoint)!==true||r.checkpointRef!==join(r.task.outputRoot,`checkpoint-${r.checkpointSHA256}.json`)||!existsSync(r.checkpointRef)||lstatSync(r.checkpointRef).isSymbolicLink()||digest(JSON.parse(readFileSync(r.checkpointRef,'utf8')))!==r.checkpointSHA256))fail('checkpoint_identity_mismatch','checkpoint','complete committed consumer checkpoint required');
@@ -137,7 +178,7 @@ export function createTaskController({root,adapter=null,consumers=[]}){
  }
  async function launch(task,taskRef,taskSHA256,pre,resuming){
   const {acquireSourceWriter}=await import('./writer-lock.ts');
-  let releaseSource,reuseRunId=null,reconcileOnly=false,reconciliationBaseline=null;
+  let releaseSource,reuseRunId=null,reconcileOnly=false,reconciliationBaseline=null,pilotRemainingSeconds=Infinity;
   const mirrorRefs=()=>Object.fromEntries(['latest.json','status.json','summary.json'].map(name=>{const path=join(task.outputRoot,name);if(!existsSync(path))return[name,null];if(!lstatSync(path).isFile()||lstatSync(path).isSymbolicLink())fail('recovery_mirror_invalid','mirror','regular original-run mirror required');return[name,{path,sha256:createHash('sha256').update(readFileSync(path)).digest('hex')}];}));
   const researchBoundary=(r,ledger)=>({used:ledger.used,reservations:ledger.reservations,committed:r.committed,checkpoint:r.checkpoint,checkpointSHA256:r.checkpointSHA256,checkpointRef:r.checkpointRef,checkpointSequence:r.checkpointSequence??null,runElapsedSeconds:r.elapsedSeconds,budgetElapsedSeconds:ledger.elapsedSeconds});
   try{
@@ -145,8 +186,10 @@ export function createTaskController({root,adapter=null,consumers=[]}){
     const existing=s.runs[s.tasks[task.taskId]];
     if(!resuming&&existing){if(existing.taskSHA256!==taskSHA256)fail('task_conflict','taskId','same ID has different content');reuseRunId=existing.runId;return;}
     if(resuming&&existing&&activeStatuses.includes(existing.status)){reuseRunId=existing.runId;return;}
-    checkAdmissions(task,s,pre);
-    const ledger=ledgerFor(s,task);if(ledger.accountingMode&&ledger.accountingMode!==pre.consumer.mode)fail('budget_mode_conflict','budgetRef','cannot mix research and synthetic accounting');ledger.accountingMode=pre.consumer.mode;if(canonical(ledger.limits)!==canonical(pre.budget.limits))fail('budget_identity_mismatch','budgetRef','ledger limits differ from frozen approved allocation');
+    const ledger=ledgerFor(s,task);
+    if(pre.resourcePolicy){const current=policyFor(ledger,task.budgetRef);if(!current){if(resuming||allocationFor(ledger,task.budgetRef))fail('resource_policy_conflict','resourcePolicy','only the first newly admitted Task can register the approved policy');ledger.resourcePolicy=JSON.parse(canonical(pre.resourcePolicy));}else if(canonical(current)!==canonical(pre.resourcePolicy))fail('resource_policy_conflict','resourcePolicy','registered policy is immutable');}
+    const pilotRemaining=checkAdmissions(task,s,pre);if(pilotRemaining!==undefined)pilotRemainingSeconds=pilotRemaining;
+    if(ledger.accountingMode&&ledger.accountingMode!==pre.consumer.mode)fail('budget_mode_conflict','budgetRef','cannot mix research and synthetic accounting');ledger.accountingMode=pre.consumer.mode;if(canonical(ledger.limits)!==canonical(pre.budget.limits))fail('budget_identity_mismatch','budgetRef','ledger limits differ from frozen approved allocation');
     if(ledger.activeRunId!==null)fail('budget_busy','budgetRef','active ownership has not reached confirmed terminal/release');
     let r=s.runs[task.runId];
     if(!resuming){
@@ -167,12 +210,13 @@ export function createTaskController({root,adapter=null,consumers=[]}){
      if(!r)fail('unknown_run','runId','registered original run required');validateResume(r,pre.consumer);
      if(Object.values(ledger.reservations).some(x=>x.runId===task.runId&&['reserved','reserved_unknown'].includes(x.status)))fail('execution_uncertain','budgetRef','unknown occupancy cannot be refunded/replayed');
     }
-    const remaining=budgetView(ledger);
-    const timeExhausted=r.elapsedSeconds>=task.limits.maxRunSeconds||ledger.elapsedSeconds>=ledger.limits.maxRunSeconds;
-    const allowanceExhausted=!Object.entries(remaining.remaining).some(([k,v])=>v>0&&task.limits[LIMITS[k]]>0);
+    const remaining=pre.resourcePolicy?null:budgetView(ledger);
+    const timeExhausted=!pre.resourcePolicy&&(r.elapsedSeconds>=task.limits.maxRunSeconds||ledger.elapsedSeconds>=limitsFor(ledger,task.budgetRef).maxRunSeconds);
+    const allowanceExhausted=remaining!==null&&!Object.entries(remaining.remaining).some(([k,v])=>v>0&&task.limits[LIMITS[k]]>0);
     const supervised=pre.consumer.id==='B10.supervised-rerank.v1'&&pre.consumer.kind==='supervised_training'&&task.taskKind==='supervised_training';
     const confirmedSteps=runConsumption(ledger,task.runId).confirmed.optimizerSteps;
-    const taskStepsExhausted=supervised&&confirmedSteps>=task.limits.maxOptimizerSteps;
+    const taskStepsExhausted=supervised&&!isScientificObservationLimits(task.limits)&&confirmedSteps>=task.limits.maxOptimizerSteps;
+    if(timeExhausted&&isFirstRoundRecipe(task.learnerRecipe))fail('run_boundary','limits.maxRunSeconds','first-round active time is exhausted; mirror repair cannot launch computation');
     if(timeExhausted||allowanceExhausted||taskStepsExhausted){
      // REC-1 repairs mirrors of this already committed run only. It is not an
      // extension of training/API/time allowance or a generic resume escape.
@@ -198,11 +242,11 @@ export function createTaskController({root,adapter=null,consumers=[]}){
     checkAdmissions(task,s,pre);
     const r=s.runs[task.runId],ledger=ledgerFor(s,task);
     if(r.status!=='running'||ledger.activeRunId!==task.runId)fail('run_boundary','runId','run no longer owns active budget');
-    if(r.elapsedSeconds+(performance.now()-started)/1000>=task.limits.maxRunSeconds||ledger.elapsedSeconds+(performance.now()-started)/1000>=ledger.limits.maxRunSeconds)fail('run_boundary','limits.maxRunSeconds','wall-clock boundary reached before new work');
+    if(!pre.resourcePolicy&&(r.elapsedSeconds+(performance.now()-started)/1000>=task.limits.maxRunSeconds||ledger.elapsedSeconds+(performance.now()-started)/1000>=limitsFor(ledger,task.budgetRef).maxRunSeconds||(performance.now()-started)/1000>=pilotRemainingSeconds))fail('run_boundary','limits.maxRunSeconds','wall-clock boundary reached before new work');
     validateCost(cost);if(typeof key!=='string'||!/^[-a-zA-Z0-9_]{1,100}$/.test(key))fail('invalid_reservation','reservationId','stable bounded consumer key required');
     const reservationId=`${task.runId}:${key}`;if(ledger.reservations[reservationId])fail('duplicate_reservation','reservationId','cannot resend an already reserved/committed action');
-    const all=Object.values(ledger.reservations),view=budgetView(ledger);
-    for(const k of COUNTERS){const runUsed=all.filter(x=>x.runId===task.runId&&x.status!=='released').reduce((n,x)=>n+x.cost[k],0);if(cost[k]>view.remaining[k]||runUsed+cost[k]>task.limits[LIMITS[k]])fail('run_boundary',`limits.${LIMITS[k]}`,'task or shared budget exhausted');}
+    const all=Object.values(ledger.reservations),view=pre.resourcePolicy?null:budgetView(ledger);
+    for(const k of COUNTERS){const runUsed=all.filter(x=>x.runId===task.runId&&x.status!=='released').reduce((n,x)=>n+x.cost[k],0);if(view&&cost[k]>view.remaining[k]||!(isScientificObservationLimits(task.limits)&&k==='optimizerSteps')&&runUsed+cost[k]>task.limits[LIMITS[k]])fail('run_boundary',`limits.${LIMITS[k]}`,'task input workload or legacy shared budget exhausted');}
     ledger.reservations[reservationId]={runId:task.runId,key,cost,status:'reserved',at:new Date().toISOString()};return reservationId;
    });
   };
@@ -250,10 +294,10 @@ export function createTaskController({root,adapter=null,consumers=[]}){
    r.checkpoint=JSON.parse(canonical(newCheckpoint));r.checkpointSHA256=sha;r.checkpointRef=checkpointRef;r.checkpointSequence=sequence;
   });};
   const timer=setInterval(()=>{
-   try{const s=readState(statePath()),r=s.runs[task.runId],ledger=ledgerFor(s,task);if(r.status==='stopping')abort.abort('user_stop');else if(r.elapsedSeconds+(performance.now()-started)/1000>=task.limits.maxRunSeconds||ledger.elapsedSeconds+(performance.now()-started)/1000>=ledger.limits.maxRunSeconds)abort.abort('run_boundary');}catch{abort.abort('lost_ownership');}
+   try{const s=readState(statePath()),r=s.runs[task.runId],ledger=ledgerFor(s,task);if(pre.resourcePolicy&&canonical(policyFor(ledger,task.budgetRef))!==canonical(pre.resourcePolicy))throw Error('registered resource policy changed');if(r.status==='stopping')abort.abort('user_stop');else if(!pre.resourcePolicy&&(r.elapsedSeconds+(performance.now()-started)/1000>=task.limits.maxRunSeconds||ledger.elapsedSeconds+(performance.now()-started)/1000>=limitsFor(ledger,task.budgetRef).maxRunSeconds||(performance.now()-started)/1000>=pilotRemainingSeconds))abort.abort('run_boundary');}catch{abort.abort('lost_ownership');}
   },25);
   handle.done=(async()=>{
-   let outcome,error;try{outcome=await pre.consumer.run({task:JSON.parse(canonical(task)),checkpoint,checkpointSequence:readState(statePath()).runs[task.runId].checkpointSequence??0,executionId:readState(statePath()).runs[task.runId].owner.token,signal:abort.signal,reconcileOnly,reserve,commit,settleReservation,saveCheckpoint,executionInputs:pre.executionInputs,getConsumption:()=>snapshot(task.runId).consumption,deadlineMonotonicMs:started+1000*Math.min(task.limits.maxRunSeconds-readState(statePath()).runs[task.runId].elapsedSeconds,pre.budget.limits.maxRunSeconds-readState(statePath()).budgets[task.budgetRef].elapsedSeconds)});if(outcome?.cleanupConfirmed!==true)fail('ownership_unconfirmed','consumer','consumer did not confirm owned-process cleanup');}catch(e){error=e;}
+   let outcome,error;try{outcome=await pre.consumer.run({task:JSON.parse(canonical(task)),checkpoint,checkpointSequence:readState(statePath()).runs[task.runId].checkpointSequence??0,executionId:readState(statePath()).runs[task.runId].owner.token,signal:abort.signal,reconcileOnly,reserve,commit,settleReservation,saveCheckpoint,executionInputs:pre.executionInputs,getConsumption:()=>snapshot(task.runId).consumption,...(pre.resourcePolicy?{executionBoundary:{mode:'input-workload-only',resourcePolicyRef:pre.resourcePolicy.ref}}:{deadlineMonotonicMs:started+1000*Math.min(task.limits.maxRunSeconds-readState(statePath()).runs[task.runId].elapsedSeconds,pre.effectiveLimits.maxRunSeconds-readState(statePath()).budgets[task.budgetRef].elapsedSeconds,pilotRemainingSeconds)})});if(outcome?.cleanupConfirmed!==true)fail('ownership_unconfirmed','consumer','consumer did not confirm owned-process cleanup');}catch(e){error=e;}
    clearInterval(timer);
    const cleanupConfirmed=outcome?.cleanupConfirmed===true||error?.cleanupConfirmed===true;
    try{
@@ -262,8 +306,13 @@ export function createTaskController({root,adapter=null,consumers=[]}){
      if(reconcileOnly){
       if(canonical(researchBoundary(r,ledger))!==canonical(reconciliationBaseline.boundary))fail('recovery_research_mutation','consumer','mirror-only path changed historical research boundary');
       const directory=join(task.outputRoot,'recovery-receipts');if(existsSync(directory)&&(!lstatSync(directory).isDirectory()||lstatSync(directory).isSymbolicLink()))fail('recovery_receipt_invalid','outputRoot','owned regular receipt directory required');mkdirSync(directory,{recursive:true,mode:0o700});
+      // Legacy mirror repair retains its historical immutable-time contract.
+      // First-round repair is still active owned computation: charge it even
+      // on failure, without changing optimizer/reservation/checkpoint facts.
+      const activeTimeCharged=isFirstRoundRecipe(task.learnerRecipe);
+      if(activeTimeCharged){r.elapsedSeconds+=seconds;ledger.elapsedSeconds+=seconds;}
       const receiptId=randomUUID(),path=join(directory,`${r.checkpointSHA256}-${receiptId}.json`),afterConsumption=runConsumption(ledger,task.runId);
-      const receipt={schema:'ohuo-checkpoint-reconciliation-v1',receiptId,runId:task.runId,taskRef:r.taskRef,taskSHA256:r.taskSHA256,checkpointRef:r.checkpointRef,checkpointSHA256:r.checkpointSHA256,sourceRevision:task.sourceRevision,runtimeRef:task.runtimeRef,planRef:task.planRef,planVersion:task.planVersion,recoveryWallSeconds:seconds,mirrorsBefore:reconciliationBaseline.mirrors,mirrorsAfter:mirrorRefs(),consumptionBefore:reconciliationBaseline.consumption,consumptionAfter:afterConsumption,researchBoundaryBeforeSHA256:digest(reconciliationBaseline.boundary),researchBoundaryAfterSHA256:digest(researchBoundary(r,ledger)),optimizerStepIncrement:afterConsumption.confirmed.optimizerSteps-reconciliationBaseline.consumption.confirmed.optimizerSteps,providerRequestIncrement:afterConsumption.confirmed.providerRequests-reconciliationBaseline.consumption.confirmed.providerRequests,cleanupConfirmed,status:error?'failed':cleanupConfirmed?'reconciled':'cleanup_unknown',reason:error?.reason??error?.message??null};
+      const receipt={schema:activeTimeCharged?'ohuo-checkpoint-reconciliation-first-round-v1':'ohuo-checkpoint-reconciliation-v1',...(activeTimeCharged?{activeTimeCharged:true}:{}),receiptId,runId:task.runId,taskRef:r.taskRef,taskSHA256:r.taskSHA256,checkpointRef:r.checkpointRef,checkpointSHA256:r.checkpointSHA256,sourceRevision:task.sourceRevision,runtimeRef:task.runtimeRef,planRef:task.planRef,planVersion:task.planVersion,recoveryWallSeconds:seconds,mirrorsBefore:reconciliationBaseline.mirrors,mirrorsAfter:mirrorRefs(),consumptionBefore:reconciliationBaseline.consumption,consumptionAfter:afterConsumption,researchBoundaryBeforeSHA256:digest(reconciliationBaseline.boundary),researchBoundaryAfterSHA256:digest(researchBoundary(r,ledger)),optimizerStepIncrement:afterConsumption.confirmed.optimizerSteps-reconciliationBaseline.consumption.confirmed.optimizerSteps,providerRequestIncrement:afterConsumption.confirmed.providerRequests-reconciliationBaseline.consumption.confirmed.providerRequests,cleanupConfirmed,status:error?'failed':cleanupConfirmed?'reconciled':'cleanup_unknown',reason:error?.reason??error?.message??null};
       const bytes=canonical(receipt);writeFileSync(path,bytes,{flag:'wx',mode:0o600});r.recoveryReceiptRefs=[...(r.recoveryReceiptRefs??[]),{path,sha256:createHash('sha256').update(bytes).digest('hex')}];
      }else{
       r.elapsedSeconds+=seconds;ledger.elapsedSeconds+=seconds;
@@ -292,7 +341,7 @@ export function createTaskController({root,adapter=null,consumers=[]}){
     const s=readState(statePath()),existing=s.runs[s.tasks[task.taskId]];
     if(existing){if(existing.taskSHA256!==taskSHA256)fail('task_conflict','taskId','same taskId carries different frozen content');return snapshot(existing.runId);}
     // Bind before preflight so a new task/attempt cannot swap budgets to reset consumption.
-    ledgerFor(s,task);const pre=await preflight(task);return await launch(task,request.taskRef,taskSHA256,pre,false);
+    allocationFor(ledgerFor(s,task),task.budgetRef);const pre=await preflight(task);return await launch(task,request.taskRef,taskSHA256,pre,false);
    }
    const current=snapshot(request.runId);
    if(action==='status')return current;
@@ -310,6 +359,6 @@ export function createTaskController({root,adapter=null,consumers=[]}){
  }
  // Fixed production CLI checks closure before constructing model/worker hosts.
  // Not a TaskFile action; ordinary/synthetic controllers cannot use this hook.
- const assertCurrentPlan=async task=>{if(adapter?.productionPlanClosure!==true)fail('host_adapter_missing','plan','fixed production adapter required');await planCheck(validateTask(task),new Map());};
+ const assertCurrentPlan=async task=>{if(adapter?.productionPlanClosure!==true)fail('host_adapter_missing','plan','fixed production adapter required');validateTask(task);allocationFor(ledgerFor(readState(statePath()),task),task.budgetRef);await planCheck(task,new Map());};
  return {dispatchOhuo,assertCurrentPlan};
 }

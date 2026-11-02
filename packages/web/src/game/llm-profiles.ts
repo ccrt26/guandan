@@ -10,6 +10,32 @@ export interface ProfileFields {
   requestOptions: { temperature?: number; top_p?: number; max_tokens?: number; thinking?: { type: string; budget_tokens?: number }; reasoning_effort?: string; output_config?: { effort: string } };
 }
 export interface PublicProfile extends ProfileFields { revision: number; snapshotHash: string }
+export type ProfileReference = Pick<PublicProfile, 'profileId' | 'revision' | 'snapshotHash'>;
+export const CONNECTION_ERROR_CATEGORIES = ['authentication_rejected','billing_or_balance','authorization_rejected','rate_or_capacity',
+  'quota_plan_or_rate_limit','content_rejected','request_or_model_rejected','endpoint_not_found','provider_failure','http_rejected',
+  'response_too_large','invalid_json_response','invalid_protocol_response','timeout_unknown','network_error'] as const;
+export type ConnectionErrorCategory = typeof CONNECTION_ERROR_CATEGORIES[number];
+export interface ConnectionSummary {
+  state: 'passed' | 'failed' | 'incomplete' | 'untested' | 'stale' | 'unknown';
+  testedAt?: string; scope?: 'native-connection-probe'; httpStatus?: number; returnedModel?: string; errorCategory?: ConnectionErrorCategory;
+  reason?: 'no_receipt' | 'receipt_unavailable' | 'credential_or_profile_changed' | 'historical_credential_unknown' | 'provider_not_ready';
+}
+export interface ProviderState {
+  availability: 'ready' | 'missing' | 'incompatible' | 'ambiguous';
+  reference: ProfileReference | null; connection: ConnectionSummary;
+}
+export interface ProviderStateView {
+  schema: 'ohuo-provider-state-v1'; profiles: PublicProfile[];
+  providers: { glm: ProviderState; deepseek: ProviderState };
+}
+export interface ProviderTestResult {
+  provider: 'glm' | 'deepseek'; reference: ProfileReference; requestId: string; connection: ConnectionSummary;
+  profileUnchanged: boolean; persisted: boolean; error?: 'receipt_persist_failed';
+}
+/** Unknown includes lost/invalid replies: never infer zero provider calls or retry automatically. */
+export class ProviderTestError extends Error {
+  constructor(readonly code: string, readonly execution: 'not-started' | 'unknown') { super(code); this.name = 'ProviderTestError'; }
+}
 export interface SaveProfile { profile: ProfileFields & { secret?: string }; expectedRevision: number | null; expectedSnapshotHash?: string }
 type StorageLike = Pick<Storage,'getItem'|'setItem'|'removeItem'>;
 type FetchLike = (url: string, init?: RequestInit) => Promise<Pick<Response,'ok'|'status'|'json'>>;
@@ -41,9 +67,70 @@ function publicList(value: unknown): PublicProfile[] {
   if(new Set(profiles.map(p=>p.profileId)).size!==profiles.length) throw Error('invalid_public_profile');
   return profiles;
 }
+const exactKeys = (value: Record<string, unknown>, keys: string[]) => Object.keys(value).sort().join(',') === keys.slice().sort().join(',');
+function publicConnection(value: unknown, errorCode = 'invalid_provider_state'): ConnectionSummary {
+  const invalid = (): never => { throw Error(errorCode); };
+  const c = value;
+  if (!plain(c) || Object.keys(c).some(k => !['state','testedAt','scope','httpStatus','returnedModel','reason','errorCategory'].includes(k)) ||
+      typeof c.state !== 'string' || !['passed','failed','incomplete','untested','stale','unknown'].includes(c.state)) return invalid();
+  if ('testedAt' in c && (typeof c.testedAt !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,6})?Z$/.test(c.testedAt) || !Number.isFinite(Date.parse(c.testedAt)))) return invalid();
+  if ('scope' in c && c.scope !== 'native-connection-probe') return invalid();
+  if ('httpStatus' in c && (!Number.isInteger(c.httpStatus) || Number(c.httpStatus) < 100 || Number(c.httpStatus) > 599)) return invalid();
+  if ('returnedModel' in c && (typeof c.returnedModel !== 'string' || !c.returnedModel || c.returnedModel.length > 200 || !/^[A-Za-z0-9_.:/\[\]-]+$/.test(c.returnedModel))) return invalid();
+  if ('reason' in c && (typeof c.reason !== 'string' || !['no_receipt','receipt_unavailable','credential_or_profile_changed','historical_credential_unknown','provider_not_ready'].includes(c.reason))) return invalid();
+  if (['passed','failed','incomplete','stale'].includes(String(c.state)) && (typeof c.testedAt !== 'string' || c.scope !== 'native-connection-probe')) return invalid();
+  if (c.state === 'passed' && (typeof c.httpStatus !== 'number' || c.httpStatus < 200 || c.httpStatus > 299 || typeof c.returnedModel !== 'string' || 'reason' in c || 'errorCategory' in c)) return invalid();
+  if ('errorCategory' in c && (typeof c.errorCategory !== 'string' || !(CONNECTION_ERROR_CATEGORIES as readonly string[]).includes(c.errorCategory) || !['failed','incomplete','stale'].includes(c.state))) return invalid();
+  return structuredClone(c) as unknown as ConnectionSummary;
+}
+/** This view is authoritative and uncached: old browser metadata cannot imply availability or a test pass. */
+function providerStateView(value: unknown): ProviderStateView {
+  const invalid = () => { throw Error('invalid_provider_state'); };
+  if (!plain(value) || !exactKeys(value, ['schema','profiles','providers']) || value.schema !== 'ohuo-provider-state-v1' ||
+      !plain(value.providers) || !exactKeys(value.providers, ['glm','deepseek'])) return invalid();
+  const profiles = publicList(value.profiles);
+  for (const provider of ['glm','deepseek']) {
+    const state = value.providers[provider];
+    if (!plain(state) || !exactKeys(state, ['availability','reference','connection']) ||
+        !['ready','missing','incompatible','ambiguous'].includes(String(state.availability))) return invalid();
+    const ref = state.reference;
+    if (state.availability === 'ready') {
+      if (!plain(ref) || !exactKeys(ref, ['profileId','revision','snapshotHash']) ||
+          profiles.filter(p => p.profileId === ref.profileId && p.revision === ref.revision && p.snapshotHash === ref.snapshotHash).length !== 1) return invalid();
+    } else if (ref !== null) return invalid();
+    const c = publicConnection(state.connection);
+    if (state.availability !== 'ready') {
+      const unavailable = c.state === 'unknown' && c.reason === 'provider_not_ready' && Object.keys(c).length === 2;
+      const historical = state.availability === 'incompatible' && c.state === 'stale' &&
+        ['credential_or_profile_changed','historical_credential_unknown'].includes(String(c.reason));
+      if (!unavailable && !historical) return invalid();
+    }
+  }
+  return { ...structuredClone(value), profiles } as unknown as ProviderStateView;
+}
+function validTestReference(value: unknown): value is ProfileReference {
+  return plain(value) && exactKeys(value, ['profileId','revision','snapshotHash']) && typeof value.profileId === 'string' &&
+    /^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/.test(value.profileId) && Number.isSafeInteger(value.revision) && Number(value.revision) > 0 &&
+    typeof value.snapshotHash === 'string' && /^[a-f0-9]{64}$/.test(value.snapshotHash);
+}
+const testRejections: Record<string, number> = {invalid_test_request:400,invalid_json:400,revision_conflict:409,test_in_progress:409,
+  request_id_conflict:409,profile_store_busy:409,profile_not_found:404,profile_contract_mismatch:422,profile_service_unavailable:503,
+  local_same_origin_required:403,method_not_allowed:405,profile_request_too_large:413,json_required:415};
+function testResult(value: unknown, provider: 'glm'|'deepseek', reference: ProfileReference, requestId: string): ProviderTestResult {
+  const invalid = (): never => { throw new ProviderTestError('invalid_provider_test_response','unknown'); };
+  if (!plain(value) || typeof value.persisted !== 'boolean' || !exactKeys(value, ['provider','reference','requestId','connection','profileUnchanged','persisted',...(!value.persisted?['error']:[])]) ||
+      value.provider !== provider || value.requestId !== requestId || !validTestReference(value.reference) ||
+      value.reference.profileId !== reference.profileId || value.reference.revision !== reference.revision || value.reference.snapshotHash !== reference.snapshotHash ||
+      typeof value.profileUnchanged !== 'boolean' || (!value.persisted && value.error !== 'receipt_persist_failed')) return invalid();
+  let connection: ConnectionSummary;
+  try { connection = publicConnection(value.connection); } catch { return invalid(); }
+  if (!connection.testedAt || connection.scope !== 'native-connection-probe' ||
+      !(value.profileUnchanged ? ['passed','failed','incomplete'] : ['stale','unknown']).includes(connection.state)) return invalid();
+  return {...structuredClone(value),connection} as unknown as ProviderTestResult;
+}
 export function createProfileClient({storage,fetchImpl}:{storage:StorageLike;fetchImpl:FetchLike}) {
-  async function call(init?:RequestInit):Promise<unknown> {
-    let response;try {response=await fetchImpl('/api/llm-profiles',init);} catch {throw Error('profile_service_unavailable');}
+  async function call(init?:RequestInit, url = '/api/llm-profiles'):Promise<unknown> {
+    let response;try {response=await fetchImpl(url,init);} catch {throw Error('profile_service_unavailable');}
     let data;try {data=await response.json();} catch {throw Error('invalid_profile_response');}
     if(!response.ok) {
       // Never echo arbitrary upstream error content or submitted credentials.
@@ -56,6 +143,25 @@ export function createProfileClient({storage,fetchImpl}:{storage:StorageLike;fet
   return {
     cached():PublicProfile[] {try{return publicList(JSON.parse(storage.getItem(CACHE_KEY)??'[]'));}catch{return []; }},
     async refresh():Promise<PublicProfile[]> {const profiles=publicList(await call());cache(profiles);return profiles;},
+    async refreshProviderState():Promise<ProviderStateView> {const state=providerStateView(await call(undefined, '/api/llm-profiles?view=providers'));cache(state.profiles);return state;},
+    async testProvider(provider:'glm'|'deepseek', reference:ProfileReference, requestId:string):Promise<ProviderTestResult> {
+      if (!['glm','deepseek'].includes(provider) || !validTestReference(reference) || typeof requestId !== 'string' ||
+          !/^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(requestId)) throw new ProviderTestError('invalid_test_request','not-started');
+      const captured = structuredClone(reference), id = requestId.toLowerCase();
+      let response;
+      try { response = await fetchImpl('/api/llm-profiles/test',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({provider,reference:captured,requestId:id})}); }
+      catch { throw new ProviderTestError('provider_test_result_unknown','unknown'); }
+      let data: unknown;
+      try { data = await response.json(); } catch { throw new ProviderTestError('invalid_provider_test_response','unknown'); }
+      if (typeof response.ok !== 'boolean' || !Number.isInteger(response.status)) throw new ProviderTestError('invalid_provider_test_response','unknown');
+      if (!response.ok) {
+        if (plain(data) && exactKeys(data,['error']) && typeof data.error === 'string' && Object.prototype.hasOwnProperty.call(testRejections,data.error) && testRejections[data.error] === response.status)
+          throw new ProviderTestError(data.error,'not-started');
+        throw new ProviderTestError('provider_test_result_unknown','unknown');
+      }
+      if (response.status !== 200) throw new ProviderTestError('invalid_provider_test_response','unknown');
+      return testResult(data,provider,captured,id);
+    },
     async save(command:SaveProfile):Promise<PublicProfile> {
       const saved=publicProfile(await call({method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(command)}));
       if (saved.profileId !== command.profile.profileId) throw Error('profile_response_mismatch');

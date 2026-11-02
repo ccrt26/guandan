@@ -73,7 +73,10 @@ const cases={
     ];
     for(const [index,wire,expected] of variants) await withSelector(async({selector})=>assertFailure(await selector.request(decisionRequestView(b),new AbortController().signal),expected),async()=>response(wire).value,index);
     for(const status of [401,429,500]) await withSelector(async({selector})=>{const r=await selector.request(decisionRequestView(b),new AbortController().signal);assertFailure(r,'http_error');assert.equal(r.summary.httpStatus,status);},async()=>response('FAKE_SECRET',{status}).value);
-    await withSelector(async({selector})=>assertFailure(await selector.request(decisionRequestView(b),new AbortController().signal),'network_error'),async()=>{throw Error('FAKE_SECRET');});
+    await withSelector(async({selector})=>assertFailure(await selector.request(decisionRequestView(b),new AbortController().signal),'transport_failed'),async()=>{throw Error('FAKE_SECRET');});
+    // A local adapter already consumed this successful body: not an upstream EOF terminal.
+    const {selectRemoteDecision}=await ai();const {confirmedRemoteFailure}=await import('../../../packages/ai/src/hybrid/decide.ts');
+    await withSelector(async({selector})=>{const result=await selectRemoteDecision({bundle:b,request:selector.request,signal:new AbortController().signal});assert.equal(result.reason,'request_internal_error');assert.equal(result.requestCount,1);assert.equal(confirmedRemoteFailure(result),false);},async()=>{const used=new Response(open(good),{headers:{'content-type':'text/event-stream'}});const reader=used.body.getReader();while(!(await reader.read()).done){}reader.releaseLock();assert.equal(used.bodyUsed,true);assert.equal(used.body.locked,false);return used;});
     return {variants:variants.length,httpStatuses:[401,429,500],networkErrorRedacted:true};
   },
   async 'chunk-boundary'() {
@@ -111,12 +114,17 @@ const cases={
     return {profiles:2,frozenWholeRevision:true,exactOptions:true,noEnvironmentReads:true};
   },
   async 'input-boundary'() {
-    const b=transportBundle(), v=decisionRequestView(b);let sends=0;
-    await withSelector(async({selector})=>{
+    const b=transportBundle(), v=decisionRequestView(b);let sends=0;const {selectRemoteDecision}=await ai();const {confirmedRemoteFailure}=await import('../../../packages/ai/src/hybrid/decide.ts');
+    await withSelector(async({selector,store,reference})=>{
       for(const mutate of [x=>{x.observation.rngState=123;},x=>{x.observation.ownHand[0].physicalId='LEAK';},x=>{x.candidates[0].rawQ=3;},x=>{x.candidates.push(...x.candidates);},x=>{x.observation.rulesText='';}]) {
         const bad=structuredClone(v);mutate(bad);assertFailure(await selector.request(bad,new AbortController().signal),'invalid_request');
       }
-      const large=structuredClone(v);large.observation.rulesText='必需规则'.repeat(100000);assertFailure(await selector.request(large,new AbortController().signal),'input_too_large');assert.equal(sends,0);
+      const large=structuredClone(v);large.observation.rulesText='必需规则'.repeat(100000);assertFailure(await selector.request(large,new AbortController().signal),'input_too_large');assert.equal(sends,0);const remote=await selectRemoteDecision({bundle:b,request:(_v,signal)=>selector.request(large,signal),signal:new AbortController().signal});assert.equal(confirmedRemoteFailure(remote),false);assert.equal(remote.requestCount,0);assert.equal(sends,0);
+      // Bypass fake-store field validation deliberately: exercise native Headers/Request preparation, not save validation.
+      const {createProfileSelector}=await import(moduleUrl);const captured=store.resolve(reference);
+      const native=createProfileSelector({store:{resolve:()=>({...captured,secret:'FAKE\nBAD'})},reference,fetchImpl:()=>{sends++;throw Error('native preparation must prevent send');}});
+      const preparation=await selectRemoteDecision({bundle:b,request:native.request,signal:new AbortController().signal});
+      assert.equal(preparation.reason,'request_internal_error');assert.equal(preparation.requestCount,0);assert.equal(confirmedRemoteFailure(preparation),false);assert.equal(sends,0);
     },async()=>{sends++;throw Error('must not send');});
     return {rejectedExtrasAndLimits:true,upstreamRequests:sends,noTruncation:true};
   },
@@ -136,9 +144,9 @@ const cases={
     return {sends,secondExpandRejected:true};
   },
   async 'response-identity'() {
-    const b=transportBundle();const {selectRemoteDecision}=await ai();
+    const b=transportBundle();const {selectRemoteDecision}=await ai();const {confirmedRemoteFailure}=await import('../../../packages/ai/src/hybrid/decide.ts');
     const variants=[{kind:'choose',decisionId:'wrong',actionId:b.offeredIds[0]},{kind:'choose',decisionId:b.decisionId,actionId:b.pool.find(x=>!b.offeredIds.includes(x.actionId)).actionId},{kind:'expand',decisionId:b.decisionId,groupId:'unoffered'},{...choice(b),reasoning:'must not accept'}];
-    for(const value of variants) await withSelector(async({selector})=>{const r=await selectRemoteDecision({bundle:b,request:selector.request,signal:new AbortController().signal});assertFailure(r);assert.equal(r.requestCount,1);},async()=>response(open(JSON.stringify(value))).value);
+    for(const value of variants) await withSelector(async({selector})=>{const r=await selectRemoteDecision({bundle:b,request:selector.request,signal:new AbortController().signal});assertFailure(r);assert.equal(r.requestCount,1);assert.equal(confirmedRemoteFailure(r),true,'completed wire output is unusable, unlike a local consumer contract fault');},async()=>response(open(JSON.stringify(value))).value);
     return {rejectedWrongDecisionUnseenActionUnseenGroupExtraFields:variants.length};
   },
   async 'cancel-before-expand'() {
@@ -150,7 +158,7 @@ const cases={
 export async function runTransportCase(caseId) {if(!Object.hasOwn(cases,caseId))throw Error('unsupported_case');return cases[caseId]();}
 if(process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href) {
   const args=process.argv.slice(2);assert.ok(args.length===2&&args[0]==='--case'&&Object.hasOwn(cases,args[1]),'exactly one known --case required');
-  const sources=['packages/web/server/llm-select.mjs','packages/web/server/llm-selection-wire.mjs','packages/ai/src/hybrid/remote-selector.ts','lab/review6_2/checks/check-transport.mjs','lab/review6_2/checks/fixtures/transport-fixture.ts','lab/review6_2/checks/fixtures/profiles.fake.json','packages/web/server/llm-profiles.mjs','packages/ai/src/hybrid/candidates.ts','packages/ai/src/hybrid/observation.ts','packages/ai/src/hybrid/protocol.ts'];
+  const sources=['packages/web/server/llm-select.mjs','packages/web/server/llm-selection-wire.mjs','packages/ai/src/hybrid/remote-selector.ts','packages/ai/src/hybrid/decide.ts','lab/review6_2/checks/check-transport.mjs','lab/review6_2/checks/fixtures/transport-fixture.ts','lab/review6_2/checks/fixtures/profiles.fake.json','packages/web/server/llm-profiles.mjs','packages/ai/src/hybrid/candidates.ts','packages/ai/src/hybrid/observation.ts','packages/ai/src/hybrid/protocol.ts'];
   const sourceHashes=Object.fromEntries(sources.map(p=>[p,existsSync(p)?createHash('sha256').update(readFileSync(p)).digest('hex'):null]));
   const startedAt=new Date().toISOString();try {const actual=await runTransportCase(args[1]);console.log(JSON.stringify({batchId:'B04',caseId:args[1],status:'passed',startedAt,endedAt:new Date().toISOString(),sourceHashes,actual}));}catch(e){console.error(JSON.stringify({batchId:'B04',caseId:args[1],status:'failed',startedAt,endedAt:new Date().toISOString(),sourceHashes,error:e.message,stack:e.stack}));process.exitCode=1;}
 }

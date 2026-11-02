@@ -1,32 +1,36 @@
 import { useEffect, useRef, useState } from 'react';
 import type { SeatAssignment } from '../../../ai/src/policy/seats';
-import { describeSeatChoice, newGameSettingsFromLegacy, resolveNewGameAssignments, restoreDefaultSelection, setAllDraftSeats, setDraftSeat,
+import { describeSeatChoice, isNewGameRelease, newGameSettingsFromLegacy, resolveNewGameAssignments, restoreDefaultSelection, setAllDraftSeats, setDraftSeat,
  type AISelection, type NewGameSettings, type SelectionContext } from '../game/ai-selection';
-import { loadProviderBindings, type ProviderBindings } from '../game/storage';
 import { describeProviderAvailability, PROVIDER_PRESETS } from '../game/provider-presets';
 import { SettingsModal, type SettingsModalFixtureDependencies } from './SettingsModal';
-import { createProfileClient, type PublicProfile } from '../game/llm-profiles';
+import { createProfileClient, type PublicProfile, type ProviderStateView } from '../game/llm-profiles';
 import { SeatPicker, assignmentKey, type AIChoiceOption } from './SeatPicker';
 
 export function BrainIcon({size=24}:{size?:number}) {return <svg viewBox="0 0 32 32" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 5c-2-3-6-1-6 2-3-1-6 3-4 6-3 2-2 7 1 8-1 4 4 7 7 5l2 2V5Zm2 0c2-3 6-1 6 2 3-1 6 3 4 6 3 2 2 7-1 8 1 4-4 7-7 5l-2 2V5Z"/><path d="M9 7v5l3 2m-7-1 4 3-1 4m5 6-1-6m11-13v5l-3 2m7-1-4 3 1 4m-5 6 1-6"/></svg>;}
-export interface AISelectionServices {refreshProfiles:()=>Promise<PublicProfile[]>;loadBindings:()=>ProviderBindings;settingsFixture?:SettingsModalFixtureDependencies}
-const defaultServices:AISelectionServices={refreshProfiles:()=>createProfileClient({storage:localStorage,fetchImpl:fetch}).refresh(),loadBindings:()=>loadProviderBindings()};
-export function makeAIChoiceOptions(context:SelectionContext,bindings:ProviderBindings,{profilesReady=true,bindingIssue='',profileIssue=''}={}):{options:AIChoiceOption[];issues:string[]} {
+export interface AISelectionServices {refreshProfiles:()=>Promise<PublicProfile[]>;refreshProviderState:()=>Promise<ProviderStateView>;settingsFixture?:SettingsModalFixtureDependencies}
+const defaultServices:AISelectionServices={refreshProfiles:()=>createProfileClient({storage:localStorage,fetchImpl:fetch}).refresh(),refreshProviderState:()=>createProfileClient({storage:localStorage,fetchImpl:fetch}).refreshProviderState()};
+export function makeAIChoiceOptions(context:SelectionContext,providerState:ProviderStateView|null,{profileIssue=''}={}):{options:AIChoiceOption[];issues:string[]} {
  const options:AIChoiceOption[]=[],issues:string[]=[];
  for(const choice of context.choices??[]){
   const release=choice.release;
+  try {if(!isNewGameRelease(release,context))continue;}catch(error){
+   issues.push(String(error));
+   if(release.mode==='local')continue; // Keep recognized provider placeholders when the local catalog is unavailable.
+  }
   if(release.mode==='local'){
    const assignment:SeatAssignment={controller:'ai',releaseRef:release.releaseRef,mode:'local'};
    try {options.push({key:assignmentKey(assignment),assignment,description:describeSeatChoice(assignment,context),available:choice.available,reason:'浏览器资源未准备'});}catch(error){issues.push(String(error));}
   }else for(const provider of ['glm','deepseek'] as const){
    // A recognized preset remains discoverable without inventing a playable profile/seat identity.
-   const status=describeProviderAvailability(provider,bindings,profilesReady?[...(context.profiles??[])]:null);
-   const p=!bindingIssue&&!profileIssue&&status.state==='ready'?status.profile:null;
-   let reason=bindingIssue?`预设已配置；关联读取失败：${bindingIssue}`:profileIssue?`预设已配置；连接列表读取失败：${profileIssue}，请在AI设置重试。`:status.reason;
+   const status=describeProviderAvailability(provider,providerState);
+   const p=!profileIssue&&status.state==='ready'?status.profile:null;
+   let reason=profileIssue?`预设已配置；连接列表读取失败：${profileIssue}，请在AI设置重试。`:status.reason;
    try {
     if(p){
      const assignment:SeatAssignment={controller:'ai',releaseRef:release.releaseRef,mode:'hybrid',profileRevisionRef:{profileId:p.profileId,revision:p.revision,snapshotHash:p.snapshotHash}};
-     options.push({key:assignmentKey(assignment),assignment,description:describeSeatChoice(assignment,context),available:choice.available,reason:'浏览器资源未准备'});
+     const description=describeSeatChoice(assignment,context);
+     options.push({key:assignmentKey(assignment),assignment,description:{...description,detail:`${description.detail}\n${status.reason}`},available:choice.available,reason:'浏览器资源未准备'});
      continue;
     }
    }catch(error){reason=String(error);}
@@ -47,26 +51,25 @@ export function AISelectionModal({value,context,onConfirm,onClose,services=defau
  value:NewGameSettings|null;context:SelectionContext;onConfirm:(selection:AISelection,profiles:readonly PublicProfile[])=>void|Promise<void>;onClose:()=>void;services?:AISelectionServices;
 }) {
  const [draft,setDraft]=useState<NewGameSettings|null>(()=>value?structuredClone(value):null);
- const [profiles,setProfiles]=useState<PublicProfile[]>([]),[bindings,setBindings]=useState<ProviderBindings>({schema:'ohuo-provider-bindings-v1',glm:null,deepseek:null});
+ const [profiles,setProfiles]=useState<PublicProfile[]>([]),[providerState,setProviderState]=useState<ProviderStateView|null>(null);
  const [issue,setIssue]=useState(''),[busy,setBusy]=useState(false),[listReady,setListReady]=useState(false);
- const [bindingIssue,setBindingIssue]=useState(''),[profileIssue,setProfileIssue]=useState(''),[settingsOpen,setSettingsOpen]=useState(false);
+ const [profileIssue,setProfileIssue]=useState(''),[settingsOpen,setSettingsOpen]=useState(false);
  const generation=useRef(0),panel=useRef<HTMLDivElement>(null),confirming=useRef(false);
  const close=()=>{generation.current++;onClose();};
  useEffect(()=>{
   if(settingsOpen)return;
-  setListReady(false);setBindingIssue('');setProfileIssue('');setIssue('');
+  setListReady(false);setProviderState(null);setProfileIssue('');setIssue('');
   const operation=++generation.current,previous=document.activeElement as HTMLElement|null;
   panel.current?.querySelector<HTMLElement>('button')?.focus();
-  try{setBindings(services.loadBindings());}catch(e){setBindingIssue(String(e));}
-  services.refreshProfiles().then(rows=>{if(operation===generation.current){setProfiles(rows);setListReady(true);}},e=>{if(operation===generation.current)setProfileIssue(String(e));});
+  services.refreshProviderState().then(view=>{if(operation===generation.current){setProfiles(view.profiles);setProviderState(view);setListReady(true);}},e=>{if(operation===generation.current)setProfileIssue(String(e));});
   return()=>{generation.current++;previous?.focus();};
  },[services,settingsOpen]);
  const liveContext={...context,profiles};
- const result=makeAIChoiceOptions(liveContext,bindings,{profilesReady:listReady,bindingIssue,profileIssue}),options=[...result.options];
+ const result=makeAIChoiceOptions(liveContext,providerState,{profileIssue}),options=[...result.options];
  let seats:readonly SeatAssignment[]|null=null,draftIssue='';
  try {
   if(draft){
-   // Current exact explicit references stay pinned even if they are no longer the provider's new-choice binding.
+   // Current exact explicit references stay pinned even if they are no longer the provider's shared new-choice reference.
    seats=resolveNewGameAssignments(draft,{...context,...(listReady?{profiles}:{})});
    for(const seat of seats)if(seat.controller==='ai'&&!options.some(o=>o.key===assignmentKey(seat))){
     const description=describeSeatChoice(seat,liveContext);options.push({key:assignmentKey(seat),assignment:seat,description,available:true,retainOnly:true});
@@ -89,7 +92,8 @@ export function AISelectionModal({value,context,onConfirm,onClose,services=defau
  function keyDown(e:React.KeyboardEvent){
   if(e.key==='Escape'){e.preventDefault();close();return;}
   if(e.key==='Tab'){
-   const nodes=Array.from(panel.current?.querySelectorAll<HTMLElement>('button:not(:disabled),select:not(:disabled),summary,[tabindex="0"]')??[]);
+   const nodes=Array.from(panel.current?.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),select:not(:disabled),summary,[tabindex]')??[])
+    .filter(node=>node.tabIndex>=0&&node.getClientRects().length>0&&getComputedStyle(node).visibility==='visible');
    const first=nodes[0],last=nodes[nodes.length-1];
    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}
   }

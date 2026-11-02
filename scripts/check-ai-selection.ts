@@ -7,7 +7,7 @@ import { RELEASES, defaultSeatAssignments, type FrozenAISeat } from '../packages
 import { validatePolicyIndex } from '../packages/ai/src/policy/descriptor';
 import { assertSavedSeats, savedAssignments, resolveFourSeats } from '../packages/web/src/game/seats';
 import { validateProductModelCatalog, validateNewGameSettings, newGameSettingsFromLegacy, resolveNewGameAssignments,
-  resolveNewGameSeats, describeSeatChoice, sameAIChoice, setDraftSeat, setAllDraftSeats, restoreDefaultSelection } from '../packages/web/src/game/ai-selection';
+  resolveNewGameSeats, describeSeatChoice, selectionPolicyIdentity, sameAIChoice, setDraftSeat, setAllDraftSeats, restoreDefaultSelection } from '../packages/web/src/game/ai-selection';
 import { loadNewGameSettings, saveNewGameSettings, loadProviderBindings, saveProviderBindings } from '../packages/web/src/game/storage';
 const registry=validatePolicyIndex(JSON.parse(readFileSync(new URL('../lab/model-index.json',import.meta.url),'utf8')));
 const policies=registry.policies;
@@ -24,10 +24,12 @@ check('UI-IDENTITY actual formal C policy, native full strategy and immutable de
  assert.match(RELEASES.find(r=>r.releaseRef===c.formalLocalReleaseRef)!.label,/C1400/);
  assert.equal(registry.defaultPolicyRef,'frozenChampion-clean2-ck7051-encv1-candv2');
 });
-check('UI-INTENT auto resolves three exact C assignments, explicit preserves O and no tier field',()=>{
+check('UI-INTENT auto resolves three exact C assignments, legacy intent remains readable but cannot start; no tier field',()=>{
  const seats=resolveNewGameAssignments(auto,context);
  assert.deepEqual(seats,[{controller:'human'},...Array.from({length:3},()=>({controller:'ai',releaseRef:'ohuo-1030-b-v1',mode:'local'}))]);
- assert.deepEqual(newGameSettingsFromLegacy({passA:'head',seats:defaultSeatAssignments('easy')}).aiSelection,{kind:'explicit',seats:defaultSeatAssignments('easy')});
+ const legacy=newGameSettingsFromLegacy({passA:'head',seats:defaultSeatAssignments('easy')});
+ assert.deepEqual(legacy.aiSelection,{kind:'explicit',seats:defaultSeatAssignments('easy')});
+ assert.throws(()=>resolveNewGameAssignments(legacy,context),/历史选择，当前仅提供标准档，请恢复默认后确认/);
  assert.throws(()=>validateNewGameSettings({...auto,tier:'standard'}));
  assert.throws(()=>validateNewGameSettings({...auto,aiSelection:{kind:'explicit',seats:[...seats].fill(seats[1])}}));
  assert.equal(newGameSettingsFromLegacy({passA:'head3'}).aiSelection.kind,'auto_latest');
@@ -37,7 +39,7 @@ check('UI-IDENTITY catalog rejects unknown, duplicate, invalid date/version and 
  ...[{version:'01.0.0'},{version:'1.0.1',displayVersion:'v1'},{effectiveDate:'2026-02-30'},{weightsSHA256:'f'.repeat(64)},{policyId:'absent'}].map(p=>({...catalog,models:[{...catalog.models[0],...p}]}))]) assert.throws(()=>validateProductModelCatalog(bad,policies));
 });
 check('UI-INTENT drafts isolate changes, uniform setting and reset keep passA; no-change confirm stays auto',()=>{
- const before=JSON.stringify(auto),seat=defaultSeatAssignments('easy')[1];
+ const before=JSON.stringify(auto),seat=resolveNewGameAssignments(auto,context)[1];
  const one=setDraftSeat(auto,2,seat,context);assert.equal(one.aiSelection.kind,'explicit');
  assert.equal(JSON.stringify(auto),before);assert.equal(validateNewGameSettings(auto).aiSelection.kind,'auto_latest');
  const all=setAllDraftSeats(one,seat);assert.equal(all.passA,'head3');
@@ -48,8 +50,10 @@ check('UI-IDENTITY names use actual local and hybrid identities; distinct profil
  const local=resolveNewGameAssignments(auto,context)[1];
  const profile={profileId:'synthetic-ds',revision:1,snapshotHash:'a'.repeat(64),nickname:'DeepSeek',protocol:'openai-chat-completions' as const,baseUrl:'https://api.deepseek.com',requestedModel:'deepseek-flash',supportedReasoningOptions:{thinking:['enabled'],reasoning_effort:['low','high','max']},requestOptions:{thinking:{type:'enabled'},reasoning_effort:'max'}};
  const hybrid={controller:'ai' as const,releaseRef:'ohuo-1030-h-v1',mode:'hybrid' as const,profileRevisionRef:{profileId:profile.profileId,revision:1,snapshotHash:profile.snapshotHash}};
- assert.equal(describeSeatChoice(local,context).shortName,'ohuo-v1-1031');
- const desc=describeSeatChoice(hybrid,{...context,profiles:[profile]});assert.equal(desc.shortName,'ohuo-v1-1031 + DeepSeek');assert.match(desc.detail,/synthetic-ds/);
+ const localDescription=describeSeatChoice(local,context);
+ assert.equal(localDescription.shortName,'ohuo-v1-1031');assert.equal(localDescription.localModelName,'ohuo-v1-1031');assert.equal(localDescription.productTier,'standard');
+ assert.match(localDescription.detail,/实际策略：标准/);assert.match(localDescription.detail,/release: ohuo-v1-1031\n/);assert(!localDescription.detail.split('技术来源')[0].includes('ohuo-1030-b-v1'));
+ const desc=describeSeatChoice(hybrid,{...context,profiles:[profile]});assert.equal(desc.shortName,'ohuo-v1-1031 + DeepSeek');assert.equal(desc.productTier,'standard');assert.match(desc.detail,/标准指本地模型档位/);assert.match(desc.detail,/synthetic-ds/);
  assert(sameAIChoice(local,local,context));assert(!sameAIChoice(local,hybrid,{...context,profiles:[profile]}));
  const nextProfile={...profile,revision:2,snapshotHash:'b'.repeat(64)},next={...hybrid,profileRevisionRef:{...hybrid.profileRevisionRef,revision:2,snapshotHash:nextProfile.snapshotHash}};
  assert(!sameAIChoice(hybrid,next,{...context,profiles:[profile,nextProfile]}));
@@ -67,28 +71,35 @@ check('UI-INTENT storage failures never replace committed state, corrupt values 
 });
 check('UI-COMPAT frozen old local and all-AI seats retain original complete snapshot bytes',()=>{
  const p=policies[1],r=RELEASES.find(r=>r.releaseRef==='ohuo-1030-b-v1')!;
- const ai={controller:'ai',releaseRef:r.releaseRef,mode:r.mode,release:r,policyIdentity:{policyId:p.policyId,weightsSHA256:p.weightsSHA256}} as FrozenAISeat;
+ const ai={controller:'ai',releaseRef:r.releaseRef,mode:r.mode,release:r,policyIdentity:selectionPolicyIdentity(p)} as FrozenAISeat;
  const snapshot={schemaVersion:2 as const,seats:[ai,ai,ai,ai]},before=JSON.stringify(snapshot);
  assertSavedSeats(snapshot,structuredClone(snapshot));assert.equal(savedAssignments(snapshot)[0].controller,'ai');
- assert.equal(describeSeatChoice(ai).shortName,'ohuo-v1-1031');assert.equal(JSON.stringify(snapshot),before);
+ assert.equal(describeSeatChoice(ai,context).shortName,'ohuo-v1-1031');assert.equal(describeSeatChoice(ai,context).productTier,'standard');assert.equal(JSON.stringify(snapshot),before);
  assert.throws(()=>assertSavedSeats(snapshot,{...snapshot,seats:[{...ai,release:{...r,label:'new name'}},ai,ai,ai]}));
 });
 check('UI-INTENT missing formal assets never fall back to O',()=>{
  assert.throws(()=>resolveNewGameAssignments(auto,{...context,choices:choices.map(c=>({...c,available:false}))}),/unavailable/);
 });
-check('UI-INTENT formal pointer only changes the next auto game, explicit remains pinned',()=>{
- const c=structuredClone(catalog),release={...RELEASES.find(r=>r.releaseRef==='ohuo-1030-b-v1')!,releaseRef:'fixture-formal-v2',proposalPolicyRef:'fixture-policy-v2'};
+check('UI-INTENT formal pointer selects canonical future product; registered explicit remains pinned',()=>{
+ const c=structuredClone(catalog),release={...RELEASES.find(r=>r.releaseRef==='ohuo-1030-b-v1')!,releaseRef:'ohuo-v1.1.0-1101',proposalPolicyRef:'fixture-policy-v2'};
  const policy={...policies[1],policyId:'fixture-policy-v2',weightsSHA256:'c'.repeat(64)};
  c.models.push({...c.models[0],releaseRef:release.releaseRef,policyId:policy.policyId,weightsSHA256:policy.weightsSHA256,version:'1.1.0',displayVersion:'v1.1.0',effectiveDate:'2026-11-01'});c.formalLocalReleaseRef=release.releaseRef;
  const old=resolveNewGameAssignments(auto,context),before=JSON.stringify(old),explicit=validateNewGameSettings({...auto,aiSelection:{kind:'explicit',seats:old}});
  const nextContext={...context,catalog:c,releases:[...RELEASES,release],policies:[...policies,policy],choices:[...choices,{release,available:true}]};
+ const hybridRelease={...RELEASES.find(r=>r.mode==='hybrid')!,releaseRef:`${release.releaseRef}-hybrid`,proposalPolicyRef:policy.policyId,remoteFallbackPolicyRef:policy.policyId,parentRelease:release.releaseRef};
+ validateProductModelCatalog(c,nextContext.policies,[...nextContext.releases,hybridRelease]);
+ for(const bad of [{...hybridRelease,releaseRef:'ohuo-1101-h-v2'},{...hybridRelease,parentRelease:'ohuo-1030-b-v1'}])assert.throws(()=>validateProductModelCatalog(c,nextContext.policies,[...nextContext.releases,bad]));
+ const noncanonical={...c,formalLocalReleaseRef:'ohuo-1101-b-v2',models:[c.models[0],{...c.models[1],releaseRef:'ohuo-1101-b-v2'}]};
+ assert.throws(()=>validateProductModelCatalog(noncanonical,nextContext.policies,[...RELEASES,{...release,releaseRef:'ohuo-1101-b-v2'}]));
  assert.equal((resolveNewGameAssignments(auto,nextContext)[1] as any).releaseRef,release.releaseRef);
- assert.equal((resolveNewGameAssignments(explicit,nextContext)[1] as any).releaseRef,'ohuo-1030-b-v1');assert.equal(JSON.stringify(old),before);
+ assert.equal((resolveNewGameAssignments(explicit,nextContext)[1] as {releaseRef:string}).releaseRef,'ohuo-1030-b-v1');assert.equal(JSON.stringify(old),before);
 });
 check('UI-IDENTITY full policy identity participates in frozen aggregation',()=>{
  const p=policies[1],r=RELEASES.find(r=>r.releaseRef==='ohuo-1030-b-v1')!;
- const ai={controller:'ai',releaseRef:r.releaseRef,mode:r.mode,release:r,policyIdentity:{policyId:p.policyId,weightsSHA256:p.weightsSHA256,encoderVersion:'one'}} as FrozenAISeat;
- assert(!sameAIChoice(ai,{...ai,policyIdentity:{...ai.policyIdentity,encoderVersion:'two'}}));
+ const ai={controller:'ai',releaseRef:r.releaseRef,mode:r.mode,release:r,policyIdentity:{...selectionPolicyIdentity(p),encoderVersion:'one'}} as FrozenAISeat;
+ assert(!sameAIChoice(ai,{...ai,policyIdentity:{...ai.policyIdentity,encoderVersion:'two'}},context));
+ assert.equal(describeSeatChoice(ai,context).productTier,undefined);
+ assert.equal(describeSeatChoice({...ai,policyIdentity:{policyId:p.policyId,weightsSHA256:p.weightsSHA256}} as FrozenAISeat,context).productTier,undefined);
 });
 check('UI-INTENT provider binding persistence is public exact-reference only',()=>{
  const data=new Map<string,string>(),storage={getItem:(k:string)=>data.get(k)??null,setItem:(k:string,v:string)=>{data.set(k,v);}};
@@ -103,7 +114,7 @@ let invoked=0;await assert.rejects(()=>resolveNewGameSeats(auto,{...context,choi
 // It is generated in memory and has its own hash/id; never claims to be the registered C bytes.
 const fixtureBytes=new Uint8Array(policies[1].parameterCount*4),fixtureSHA=createHash('sha256').update(fixtureBytes).digest('hex');
 const fixturePolicy={...policies[1],policyId:'s31-synthetic-policy',weightsSHA256:fixtureSHA};
-const fixtureRelease={...RELEASES.find(r=>r.releaseRef==='ohuo-1030-b-v1')!,releaseRef:'s31-synthetic-release',proposalPolicyRef:fixturePolicy.policyId,remoteFallbackPolicyRef:fixturePolicy.policyId};
+const fixtureRelease={...RELEASES.find(r=>r.releaseRef==='ohuo-1030-b-v1')!,releaseRef:'ohuo-v1.1.0-1101',proposalPolicyRef:fixturePolicy.policyId,remoteFallbackPolicyRef:fixturePolicy.policyId};
 const fixtureCatalog={schema:'ohuo-product-model-catalog-v1',formalLocalReleaseRef:fixtureRelease.releaseRef,models:[{...catalog.models[0],releaseRef:fixtureRelease.releaseRef,policyId:fixturePolicy.policyId,weightsSHA256:fixtureSHA,version:'1.1.0',displayVersion:'v1.1.0',effectiveDate:'2026-11-01'}]};
 const fixtureContext={catalog:fixtureCatalog,policies:[fixturePolicy],releases:[fixtureRelease],choices:[{release:fixtureRelease,available:true}],profiles:[]};
 const loadFixture=()=>resolvePolicy(fixturePolicy.policyId,{registry:{schemaVersion:'gd-model-index-v1',defaultPolicyRef:fixturePolicy.policyId,policies:[fixturePolicy]},site:'browser',readWeights:async()=>fixtureBytes,sha256:bytes=>createHash('sha256').update(bytes).digest('hex')});

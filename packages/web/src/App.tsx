@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { DEFAULT_RULES, RANK_NAME, type RuleOptions } from '@gd/engine';
-import { loadWebSeats, loadSavedWebSeats, loadSavedWebPolicy, webReleaseChoices, webPolicyDescriptors } from './game/policy';
+import { captureWebDirectory, getWebSelectionContext, loadSavedWebSeats, loadSavedWebPolicy } from './game/policy';
 import type { GameRecord } from '@gd/engine';
 import { MatchController } from './game/controller';
 import { fixtureControllerStub } from './ui/gp/fixture';
@@ -21,7 +21,6 @@ const DevAISelectionAudit = import.meta.env.DEV ? lazy(()=>import('./ui/DevAISel
 const DevTableAudit = import.meta.env.DEV ? lazy(()=>import('./ui/gt/DevTableAudit')) : null;
 
 export type AppSettings = NewGameSettings;
-const selectionContext={policies:webPolicyDescriptors,choices:webReleaseChoices};
 function initialSettings():{value:NewGameSettings|null;error:string|null} {
   try{return {value:loadNewGameSettings(),error:null};}
   catch(error){return {value:null,error:`新局偏好未加载，原值保留：${String(error)}`};}
@@ -29,6 +28,13 @@ function initialSettings():{value:NewGameSettings|null;error:string|null} {
 
 export function App() {
   if(DevAISelectionAudit&&new URLSearchParams(window.location.search).has('aiselectionaudit'))return <Suspense fallback={<p>正在加载隔离验收夹具…</p>}><DevAISelectionAudit/></Suspense>;
+  if (import.meta.env.DEV) {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('gtfixture') || params.has('gpfixture')) return <TablePage
+      controller={fixtureControllerStub}
+      onExit={() => {}} onReview={() => {}} onNavStats={() => {}} onNavReview={() => {}} onOpenSettings={() => {}}
+    />;
+  }
   return <PlayerApp/>;
 }
 function PlayerApp() {
@@ -43,6 +49,7 @@ function PlayerApp() {
   const [homeTick, setHomeTick] = useState(0);
   const [policyError, setPolicyError] = useState<string | null>(null);
   const loadGeneration = useRef(0);
+  const selectionContext=getWebSelectionContext();
 
   const startMatch = useCallback(async () => {
     if(!settings){setPolicyError(settingsState.error);return;}
@@ -53,7 +60,8 @@ function PlayerApp() {
     setPolicyError(null);
     let c: MatchController;
     try {
-      const seats = await resolveNewGameSeats(next,selectionContext,loadWebSeats);
+      const captured=captureWebDirectory();
+      const seats = await resolveNewGameSeats(next,captured.context,captured.loadSeats);
       if (operation !== loadGeneration.current) return;
       c = new MatchController({ difficulty: 1, rules, seats });
     } catch (error) { if(operation === loadGeneration.current)setPolicyError(`政策加载失败，未开始比赛：${String(error)}`); return; }
@@ -73,7 +81,7 @@ function PlayerApp() {
   };
   const commitAI=(aiSelection:AISelection,profiles:readonly PublicProfile[])=>{
     const next=validateNewGameSettings({...(settings??newGameSettingsFromLegacy()),aiSelection});
-    resolveNewGameAssignments(next,{...selectionContext,profiles});commitSettings(next);setPublicProfiles([...profiles]);
+    resolveNewGameAssignments(next,{...captureWebDirectory().context,profiles});commitSettings(next);setPublicProfiles([...profiles]);
   };
   useEffect(()=>{
     if(!settings||settings.aiSelection.kind!=='explicit'||!settings.aiSelection.seats.some(s=>s.controller==='ai'&&s.mode==='hybrid'))return;

@@ -2,13 +2,17 @@
  * rescoring, or reconstruction of moves from remote text. */
 import { canPass, isWild, legalCombos, type GameState } from '@gd/engine';
 import type { NeuralDecider, NeuralDecision } from '../nn/neuralSeat';
+import { resolveCandidatePolicy, candidatePolicyForBundle, FIRST_TARGET_CANDIDATE_SPEC, type CandidatePolicySpec } from '../candidate-spec';
+import { appendTargetCoverage } from './candidateCoverage';
 import { assertActiveActor, buildObservation, type ObservationInput } from './observation';
 import { canonicalActionId, resolveLegalMove } from './legality';
 import { CANDIDATE_SPEC, deepFreeze, faceCounts, freezeCopy, halt, publicCombo, type CandidateBundle, type DecisionBundle, type DecisionKey, type ExpansionResult, type FrozenCandidate, type OfferedCandidateView, type SelectionResult } from './protocol';
 
-export interface FreezeCandidatesInput { state: GameState; actorSeat: number; decisionId: string; decision: NeuralDecision }
-export function freezeDecisionCandidates({ state, actorSeat, decisionId, decision }: FreezeCandidatesInput): CandidateBundle {
+export interface FreezeCandidatesInput { state: GameState; actorSeat: number; decisionId: string; decision: NeuralDecision; candidatePolicy?: CandidatePolicySpec }
+export function freezeDecisionCandidates({ state, actorSeat, decisionId, decision, candidatePolicy }: FreezeCandidatesInput): CandidateBundle {
   assertActiveActor(state, actorSeat);
+  const policy = resolveCandidatePolicy(candidatePolicy);
+  if (resolveCandidatePolicy(decision.candidatePolicy) !== policy) halt('decision/candidate specification mismatch');
   if (typeof decisionId !== 'string' || !decisionId.trim()) halt('decision identity required');
   const rows = decision.ranking;
   if (!rows?.length || rows.length !== decision.nCands || decision.explored) halt('full greedy B ranking required');
@@ -55,18 +59,23 @@ export function freezeDecisionCandidates({ state, actorSeat, decisionId, decisio
   // Exception: a singleton ranking is not proof of a singleton original legal
   // enumeration (e.g. old compatibility folding or a truncated injected pool).
   // Verify only that shortcut, without scoring/reranking or changing B/C.
-  const isUniqueLegalAction = pool.length === 1 && legalCombos(state).length + (canPass(state) ? 1 : 0) === 1;
+  const isUniqueLegalAction = pool.length === 1 && legalCombos(state, policy.enumSpec.enumerationMode).length + (canPass(state) ? 1 : 0) === 1;
+  if (policy.candidateSpec === FIRST_TARGET_CANDIDATE_SPEC) {
+    const covered = appendTargetCoverage(state, actorSeat, pool, initialCandidateIds);
+    return freezeCopy({ candidateSpec: policy.candidateSpec, enumSpec: policy.enumSpec, decisionId, pool, ...covered,
+      offeredIds: [...covered.initialCandidateIds], fallbackActionId: pool[0].actionId, expansionCount: 0, isUniqueLegalAction });
+  }
   return freezeCopy({ candidateSpec: CANDIDATE_SPEC, decisionId, pool, initialCandidateIds,
     offeredIds: [...initialCandidateIds], fallbackActionId: pool[0].actionId, expansionCount: 0, isUniqueLegalAction });
 }
 
 /** Owner must keep the decider's public tracker synchronized. This boundary
  * invokes its frozen B decision exactly once and never reads other-seat cards. */
-export function createDecisionBundle(input: ObservationInput & { key: DecisionKey; decider: Pick<NeuralDecider, 'seat' | 'decide'> }): DecisionBundle {
+export function createDecisionBundle(input: ObservationInput & { key: DecisionKey; decider: Pick<NeuralDecider, 'seat' | 'decide'>; candidatePolicy?: CandidatePolicySpec }): DecisionBundle {
   const { key, state, actorSeat, matchId, decider } = input;
   if (key.matchId !== matchId || key.gameNo !== state.match.gameNo || key.moveNo !== state.moveNo || key.actorSeat !== actorSeat || decider.seat !== actorSeat || !Number.isSafeInteger(key.requestSeq) || key.requestSeq < 0 || !['string', 'number'].includes(typeof key.controllerOrRunnerGeneration)) halt('decision key/decider identity mismatch');
   const observation = buildObservation(input);
-  const candidates = freezeDecisionCandidates({ ...input, decision: decider.decide(state, { wantRanking: true }) });
+  const candidates = freezeDecisionCandidates({ ...input, decision: decider.decide(state, { wantRanking: true, candidatePolicy: input.candidatePolicy }) });
   return deepFreeze({ ...candidates, observation, key: freezeCopy({
     controllerOrRunnerGeneration: key.controllerOrRunnerGeneration, matchId: key.matchId, gameNo: key.gameNo,
     moveNo: key.moveNo, actorSeat: key.actorSeat, requestSeq: key.requestSeq,
@@ -84,7 +93,7 @@ export function offeredCandidateView(bundle: CandidateBundle): OfferedCandidateV
     return { actionId: c.actionId, action: publicCombo(c.canonical), remainingHand: c.remainingHand };
   });
   const groups = new Map<string, OfferedCandidateView['expandableGroups'][number]>();
-  if (bundle.expansionCount === 0) for (const c of bundle.pool) {
+  if (candidatePolicyForBundle(bundle).candidateSpec !== FIRST_TARGET_CANDIDATE_SPEC && bundle.expansionCount === 0) for (const c of bundle.pool) {
     if (bundle.offeredIds.includes(c.actionId)) continue;
     const [kind, size, wildConsumption] = c.groupKey.split(':');
     const group = groups.get(c.groupId);
@@ -97,6 +106,7 @@ export function offeredCandidateView(bundle: CandidateBundle): OfferedCandidateV
  * its frozen choose/expand response contract. Never send DecisionBundle itself. */
 export function decisionRequestView(bundle: DecisionBundle) {
   return deepFreeze({ observation: bundle.observation, candidateSpec: bundle.candidateSpec,
+    ...(bundle.enumSpec ? { enumSpec: bundle.enumSpec } : {}),
     expansionCount: bundle.expansionCount, ...offeredCandidateView(bundle) });
 }
 export function selectOfferedAction(bundle: CandidateBundle, decisionId: string, actionId: string): SelectionResult {
@@ -108,6 +118,7 @@ export function selectOfferedAction(bundle: CandidateBundle, decisionId: string,
 }
 export function expandDecisionCandidates<T extends CandidateBundle>(bundle: T, decisionId: string, groupId: string): ExpansionResult<T> {
   if (decisionId !== bundle.decisionId) return { status: 'remote_failure', reason: 'decision_id_mismatch' };
+  if (candidatePolicyForBundle(bundle).candidateSpec === FIRST_TARGET_CANDIDATE_SPEC) return { status: 'remote_failure', reason: 'expansion_disabled_for_candidate_spec' };
   if (bundle.expansionCount !== 0) return { status: 'remote_failure', reason: 'expansion_already_used' };
   const extra = bundle.pool.filter(c => c.groupId === groupId && !bundle.offeredIds.includes(c.actionId)).slice(0, 4);
   if (!extra.length) return { status: 'remote_failure', reason: 'group_id_not_expandable' };

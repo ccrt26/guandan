@@ -4,6 +4,7 @@ import {isMainThread,parentPort,workerData} from 'node:worker_threads';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
+import {fixedReference,strictObject} from './task-schema.mjs';
 import {DEFAULT_RULES,type GameState} from '@gd/engine';
 import {resolveNodePolicy} from './policy-loader';
 import {runCompleteMatch,type PolicySpec,type PublicStep} from '../review6/match-play';
@@ -16,12 +17,15 @@ import {createMatchStore,captureInitialCandidateInputs,publicMatchOutcome} from 
 if(!isMainThread){
  const job=workerData;
  try{
-  if(!job?.row||!Array.isArray(job.row.seats)||job.row.seats.some((s:any)=>s.mode!=='local')||!isDeepStrictEqual(job.identity.rules,DEFAULT_RULES)||!Number.isFinite(job.deadlineEpochMs))throw Error('fixed local job required');
+  const inputWorkload=job?.executionBoundary?.mode==='input-workload-only';
+  if(inputWorkload){strictObject(job.executionBoundary,'executionBoundary',['mode','resourcePolicyRef']);fixedReference(job.executionBoundary.resourcePolicyRef,'executionBoundary.resourcePolicyRef');if(Object.hasOwn(job,'deadlineEpochMs'))throw Error('input-workload local match cannot carry an artificial deadline');}
+  else if(job?.executionBoundary!==undefined)throw Error('unsupported local match execution boundary');
+  if(!job?.row||!Array.isArray(job.row.seats)||job.row.seats.some((s:any)=>s.mode!=='local')||!isDeepStrictEqual(job.identity.rules,DEFAULT_RULES)||!inputWorkload&&!Number.isFinite(job.deadlineEpochMs))throw Error('fixed local job required');
   const policies=await Promise.all(job.policyRefs.map((ref:string)=>resolveNodePolicy(ref,job.policyRepositoryRoot)));
   if(policies.some((p:any,i:number)=>!isDeepStrictEqual(p.identity,job.policyIdentities[i])))throw Error('worker loaded different policy');
   const store=createMatchStore(job.outputRoot,job.identity),specs:PolicySpec[]=policies.map((p:any)=>({policyId:p.identity.policyId,kind:'neural'}));
   let sequence=0,bundle:DecisionBundle|null=null,decisionStarted=0;
-  const matchStartedAt=performance.now();const result=runCompleteMatch({seed:job.row.seed,policies:specs,actingSeat:job.row.actor,dealMode:'indexed-deal-v1',dealNamespace:job.row.dealNamespace,rngMode:'counter-per-decision',maxGames:job.row.maxGames,maxMovesPerGame:job.row.maxMovesPerGame,deadlineMonotonicMs:performance.now()+Math.max(0,job.deadlineEpochMs-Date.now()),
+  const matchStartedAt=performance.now();const result=runCompleteMatch({seed:job.row.seed,policies:specs,actingSeat:job.row.actor,dealMode:'indexed-deal-v1',dealNamespace:job.row.dealNamespace,rngMode:'counter-per-decision',maxGames:job.row.maxGames,maxMovesPerGame:job.row.maxMovesPerGame,...(inputWorkload?{}:{deadlineMonotonicMs:performance.now()+Math.max(0,job.deadlineEpochMs-Date.now())}),
    seatFactory:(_spec,seat)=>{const decider=policies[seat].createDecider(seat);let history:PublicStep[]=[];
     return{policyId:policies[seat].identity.policyId,newGame(_state,prefix){history=[...prefix];decider.newGame();for(const p of prefix)decider.observe(p.events);},observe(events,priorTarget){history.push({events,priorTarget});decider.observe(events);},decide(state){
      decisionStarted=performance.now();const key={controllerOrRunnerGeneration:job.identity.runId,matchId:job.row.matchId,gameNo:state.match.gameNo,moveNo:state.moveNo,actorSeat:seat,requestSeq:sequence++};

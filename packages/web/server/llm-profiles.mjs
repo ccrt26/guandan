@@ -87,6 +87,15 @@ export function createProfileStore({filePath=DEFAULT_PROFILE_PATH}={}) {
   }
   return {
     list() { return read().profiles.map(publicSnapshot); },
+    // One store snapshot for server-only freshness checks; never exposes a credential.
+    metadata() { return read().profiles.map(record => ({ profile: publicSnapshot(record), credentialRevision: record.credentialRevision })); },
+    // Server-only receipt transaction: same lock as save, never held during a provider request.
+    withLock(callback) {
+      const lock=`${file}.lock`;let descriptor;
+      try { descriptor=openSync(lock,'wx',0o600); } catch(error) { fail(error.code==='EEXIST'?'profile_store_busy':'private_store_unavailable'); }
+      try { return callback(read().profiles.map(record=>({profile:publicSnapshot(record),credentialRevision:record.credentialRevision}))); }
+      finally { closeSync(descriptor);unlinkSync(lock); }
+    },
     resolve(reference) {
       keys(reference,['profileId','revision','snapshotHash'],'invalid_profile_reference');
       if(!text(reference.profileId,80)||!Number.isSafeInteger(reference.revision)||reference.revision<1||typeof reference.snapshotHash!=='string'||!/^[0-9a-f]{64}$/.test(reference.snapshotHash)) fail('invalid_profile_reference');

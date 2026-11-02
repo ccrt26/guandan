@@ -4,6 +4,8 @@ import { buildDeck, makeLevelCtx, stageTeamOf, teammateOf, type Card, type Combo
 import { necessaryDeclarationKey } from './legality';
 import { OBSERVATION_SCHEMA, DecisionHaltedError, faceCounts, freezeCopy, halt, publicCombo, type FaceCount, type Observation, type PublicEvent, type PublicHistoryPrefix, type PublicTransfer } from './protocol';
 
+import { buildPublicHighCardMemory, type PublicHighCardMemory } from '../nn/publicMemory';
+
 export function assertActiveActor(state: GameState, actorSeat: number): void {
   if (!Number.isInteger(actorSeat) || actorSeat < 0 || actorSeat > 3 || actorSeat !== state.turn) halt('actor must equal active turn');
   if (state.over || state.result !== null || state.match.winner !== null || state.pendingReturns.length) halt('observation requires active play after returns');
@@ -72,6 +74,23 @@ export function buildObservation(input: ObservationInput): Observation {
     halt(`public observation/state conflict: ${String(error)}`);
   }
 }
+/** Explicit new opt-in envelope; never add memory keys to the strict historical
+ * ohuo-public-observation-v1 wire object. S33/S35 must select this new contract.
+ * The memory sees only the validated public projection, never the input state. */
+export interface ObservationWithPublicMemory {
+  readonly schema: 'ohuo-public-observation-memory-v1';
+  readonly observation: Observation;
+  readonly publicHighCardMemory: PublicHighCardMemory;
+}
+export function buildObservationWithPublicMemory(input: ObservationInput): ObservationWithPublicMemory {
+  const observation = buildObservation(input);
+  const { matchId, gameNo, moveNo, publicPrefix, effectiveLevelRanks } = observation;
+  const publicHighCardMemory = buildPublicHighCardMemory(
+    { matchId, gameNo, throughMoveNo: moveNo, steps: publicPrefix },
+    { matchId, gameNo }, effectiveLevelRanks);
+  return Object.freeze({ schema: 'ohuo-public-observation-memory-v1', observation, publicHighCardMemory });
+}
+
 function projectObservation({ state, actorSeat, decisionId, matchId, history }: ObservationInput): Observation {
   assertActiveActor(state, actorSeat);
   if (typeof decisionId !== 'string' || !decisionId.trim() || typeof matchId !== 'string' || !matchId.trim()) halt('decision/match identity required');

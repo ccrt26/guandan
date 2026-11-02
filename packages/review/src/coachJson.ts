@@ -8,6 +8,13 @@ import { displaySeatLabel, SEAT_DISPLAY_VERSION } from './seatDisplay';
  */
 import type { ClaimLevel, DecisionReview } from './decisionReview';
 
+/** External display sidecar; never part of DecisionReview's scientific schema. */
+export type ReviewPolicyDisplayLabels=Readonly<Record<string,{proposalPolicyId:string;weightHash:string;label:string}>>;
+export function reviewPolicyDisplayLabel(evidence:DecisionReview,labels:ReviewPolicyDisplayLabels={}):string {
+  const label=labels[evidence.decisionId],pair=evidence.policy;
+  return label&&pair&&pair.weightHash!==null&&label.proposalPolicyId===pair.proposalPolicyId&&label.weightHash===pair.weightHash?label.label:'本地分析模型（产品身份未核验）';
+}
+
 export interface CoachLesson {
   decisionId: string;
   actionIds: string[];
@@ -115,7 +122,7 @@ function entailedSurface(text: string, evidences: DecisionReview[], kind: 'summa
 }
 
 /** 把证据对象渲染成"程序事实卡"文本（LLM 输入与页面展示共用） */
-export function renderFactCards(evidences: DecisionReview[], viewerSeat = evidences[0]?.seat): string {
+export function renderFactCards(evidences: DecisionReview[], viewerSeat = evidences[0]?.seat, policyLabels:ReviewPolicyDisplayLabels={}): string {
   if (!Number.isInteger(viewerSeat) || viewerSeat! < 0 || viewerSeat! > 3) throw new Error('valid viewer seat required');
   const seatNames = [0, 1, 2, 3].map(seat => { const label = displaySeatLabel(seat, viewerSeat!); return `${label.label}（${label.relation}）`; });
   const blocks: string[] = [];
@@ -132,7 +139,8 @@ export function renderFactCards(evidences: DecisionReview[], viewerSeat = eviden
     }
     if (e.candidates && e.candidates.n > 1) {
       const top3 = e.candidates.ranking.slice(0, 3);
-      lines.push(`- 模型排序（${e.policy?.proposalPolicyId}，权重 ${e.policy?.weightHash ?? '?'}，建议非事实）：${top3.map((r) => `[${r.actionId}] ${r.text}(${r.score})`).join('、')}${e.actual.coverage.index >= 0 ? `；实际动作排第 ${e.actual.coverage.index + 1}` : `；实际动作${e.actual.coverage.status === 'same_cards_diff_decl' ? '同牌异声明' : '未覆盖'}`}`);
+      lines.push(`- 技术来源：政策 ${e.policy?.proposalPolicyId??'未记录'}；权重 ${e.policy?.weightHash??'未记录'}`);
+      lines.push(`- 模型排序（${reviewPolicyDisplayLabel(e,policyLabels)}，建议非事实）：${top3.map((r) => `[${r.actionId}] ${r.text}(${r.score})`).join('、')}${e.actual.coverage.index >= 0 ? `；实际动作排第 ${e.actual.coverage.index + 1}` : `；实际动作${e.actual.coverage.status === 'same_cards_diff_decl' ? '同牌异声明' : '未覆盖'}`}`);
     } else {
       lines.push(`- 模型层：${e.candidates ? '候选唯一（含被迫让牌），无排序意义' : 'unavailable'}`);
     }
@@ -161,6 +169,7 @@ export function buildCoachJsonMessages(
   evidences: DecisionReview[],
   overview: string[],
   viewerSeat = evidences[0]?.seat,
+  policyLabels:ReviewPolicyDisplayLabels={},
 ): Array<{ role: 'system' | 'user'; content: string }> {
   const system = `你是一位掼蛋教练，根据程序生成的证据卡给学生做短篇复盘讲解。
 
@@ -188,7 +197,7 @@ export function buildCoachJsonMessages(
 ${overview.map((o) => `- ${o}`).join('\n')}
 
 ## 证据卡（每张卡对应一条 lesson）
-${renderFactCards(evidences,viewerSeat)}`;
+${renderFactCards(evidences,viewerSeat,policyLabels)}`;
   return [
     { role: 'system', content: system },
     { role: 'user', content: user },

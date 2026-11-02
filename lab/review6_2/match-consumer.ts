@@ -1,3 +1,5 @@
+import {runFirstRoundNewTest,firstRoundEvaluationCheckpoint,validateFirstRoundNewTestTask} from './first-round-evaluation-consumer';
+import {validateFirstRoundRegistryPolicy,resolveFirstRoundRegistryPolicy} from './first-round-registry-policy';
 /** Fixed B07 host integration. No server/listener, arbitrary commands, learner,
  * task-supplied modules, default model, or automatic research authorization. */
 import {readFileSync,realpathSync,writeFileSync,renameSync} from 'node:fs';
@@ -10,9 +12,13 @@ import {createTaskController} from './task-control.mjs';
 import {fail,strictObject,digest,validateIdentifier,validateSourceFamily,fixedReference} from './task-schema.mjs';
 import {resolveNodePolicy,POLICY_REPOSITORY_ROOT} from './policy-loader';
 import {loadStudentRelease} from './distill-policy';
+import {validateFirstRoundParentEnvelope,resolveFirstRoundParent} from './first-round-parent';
+import {rerankStudent423InitialCandidates} from '../../packages/ai/src/hybrid/student';
 import {frozenTeacherSnapshot} from './teacher-snapshot';
+import {resolveCandidateReleaseRef} from '../../packages/ai/src/policy/candidate-release';
+import {FIRST_TARGET_CANDIDATE_SPEC,type CandidatePolicySpec} from '../../packages/ai/src/candidate-spec';
 import {RELEASES,type ProfileRevisionRef} from '../../packages/ai/src/policy/seats';
-import {LEGACY_O_POLICY_REF,type ResolvedPolicy} from '../../packages/ai/src/policy/resolve';
+import {LEGACY_O_POLICY_REF,validateStudentScorerDescriptor,type ResolvedPolicy} from '../../packages/ai/src/policy/resolve';
 import {describeRules} from '../../packages/ai/src/hybrid/observation';
 import {type DecisionBundle} from '../../packages/ai/src/hybrid/protocol';
 import {type RemoteRequest} from '../../packages/ai/src/hybrid/remote-selector';
@@ -24,15 +30,17 @@ import {createMatchStore,loadMatchStore,replayConfirmedMatch,publicMatchOutcome,
 const zeroCost={providerRequests:0,optimizerSteps:0,matchAttempts:0,labelDecisions:0};
 const actualScope=(apiCalls=false)=>({localExecution:true,apiCalls,parameterUpdates:false,deployment:false});
 const bounded=(v:any,name:string)=>{if(!Number.isSafeInteger(v)||v<1)throw Error(`finite positive ${name} required`);};
-const sha=(bytes:Buffer)=>createHash('sha256').update(bytes).digest('hex');
+const sha=(bytes:Buffer|string)=>createHash('sha256').update(bytes).digest('hex');
 export interface MatchQueueRow {matchId:string;layoutId:string;sourceFamilyId:string;split:string;seed:number;dealNamespace:string;roundFamilyIds:string[];actor:number;metric:string;group:number;side:number;variant:string;maxGames:number;maxMovesPerGame:number;seats:Array<{releaseRef:string;mode:'local'|'hybrid';profileRevisionRef:ProfileRevisionRef|null}>}
-interface PreparedSeat {student?:Awaited<ReturnType<typeof loadStudentRelease>>;release:any;policy:ResolvedPolicy;profileRevisionRef:ProfileRevisionRef|null;frozenProfileStore?:any;profileSnapshot?:any}
-interface Prepared {queue:any;rows:Array<MatchQueueRow&{runtimeSeats:PreparedSeat[]}>;rules:RuleOptions;sourceIndexPath:string;sourceIndexSHA256:string;sourceIndex:any}
+interface PreparedSeat {registryPolicy?:any;registryRole?:'partner'|'opponent';studentCapture?:any;firstRoundCapture?:any;deferredStudent?:any;s0Release?:any;policyRef?:string;candidatePolicy?:CandidatePolicySpec;student?:Awaited<ReturnType<typeof loadStudentRelease>>;release:any;policy:ResolvedPolicy;profileRevisionRef:ProfileRevisionRef|null;frozenProfileStore?:any;profileSnapshot?:any}
+interface Prepared {firstRound?:any;queue:any;rows:Array<MatchQueueRow&{runtimeSeats:PreparedSeat[]}>;rules:RuleOptions;sourceIndexPath:string;sourceIndexSHA256:string;sourceIndex:any}
 interface RunCheckpoint {schema:'ohuo-match-run-v1';taskSHA256:string;queueRef:string;cursor:number;active:null|{matchId:string;kind:'local'|'hybrid';recordRef:MatchStoreRef|null;partialResult?:any};matches:Array<{matchId:string;recordRef:MatchStoreRef;result:any}>;executionUnknown:boolean}
 
 /** The caller supplies authority/reference adapters, NOT the match algorithm. */
 export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_REPOSITORY_ROOT,profileStore}: {root:string;adapter:any;policyRepositoryRoot?:string;profileStore?:any}){
  const prepare=async({task,refs,inputs}:any):Promise<Prepared>=>{
+  if(['ohuo-first-round-new-test-contract-v1','ohuo-common-view-new-test-contract-r2'].includes(refs.get(task.scientificContract.decisionRuleRef)?.schema)){const p=inputs.firstRoundNewTestExecution;if(p?.kind!=='first-round-new-test'||!isDeepStrictEqual(p.contract,refs.get(task.scientificContract.decisionRuleRef)))throw Error('verified new-test host execution required');validateFirstRoundNewTestTask(task,p.contract,'research');return p as any;}
+  const comparison=refs.get(task.scientificContract.comparisonRef),firstRound=comparison?.schema==='ohuo-first-round-comparison-v1'?prepareFirstRoundComparison(comparison,refs,inputs,task):undefined;
   const rules=validateMatchRules(refs.get(task.rulesRef));
   const queue=refs.get(task.seatLayoutPlan);strictObject(queue,'matchQueue',['schema','namespace','sourceIndexRef','rows']);
   if(queue.rows?.length>10000||queue.schema!=='ohuo-complete-match-queue-v1'||queue.namespace!==task.sourcePlan.namespace||queue.sourceIndexRef!==task.sourcePlan.sourceIndexRef||!Array.isArray(queue.rows)||!queue.rows.length)throw Error('fixed complete-match queue identity/limit mismatch');
@@ -62,12 +70,27 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
    for(const seat of row.seats){
     strictObject(seat,'seat',['releaseRef','mode','profileRevisionRef']);if(!task.releaseRefs.includes(seat.releaseRef))throw Error('seat release not in frozen task');
     const frozen=refs.get(seat.releaseRef);
-    if(frozen?.schema==='ohuo-student-task-release-v1'){runtimeSeats.push(await prepareStudentSeat({frozen,releasePath:inputs.studentReleasePaths?.[seat.releaseRef],repositoryRoot:policyRepositoryRoot,seat,taskKind:task.taskKind}));continue;}
-    strictObject(frozen,'releaseRef',['schema','release','policyIdentity']);
-    const release=RELEASES.find(r=>r.releaseRef===frozen.release?.releaseRef);
-    if(frozen.schema!=='ohuo-release-ref-v1'||!release||!isDeepStrictEqual(frozen.release,release)||seat.mode!==release.mode||release.localSelector!=='proposal'||release.tier!=='hard')throw Error('unsupported or changed frozen release');
-    if(!policies.has(release.proposalPolicyRef))policies.set(release.proposalPolicyRef,await resolveNodePolicy(release.proposalPolicyRef,policyRepositoryRoot));
-    const policy=policies.get(release.proposalPolicyRef)!;if(!isDeepStrictEqual(JSON.parse(JSON.stringify(policy.identity)),frozen.policyIdentity))throw Error('loaded policy identity differs from task');
+    if(frozen?.schema==='ohuo-first-round-registry-policy-ref-v1'){
+     const physicalSeat=row.seats.indexOf(seat),role=physicalSeat===(row.actor+2)%4?'partner':'opponent';
+     if(!firstRound||physicalSeat===row.actor||seat.mode!=='local'||seat.profileRevisionRef!==null)throw Error('first-round registry peers only, never evaluated actor');
+     const metadata=validateFirstRoundRegistryPolicy({envelope:frozen,readEvidence:firstRound.readEvidence,repositoryRoot:policyRepositoryRoot,role});
+     runtimeSeats.push({registryPolicy:structuredClone(frozen),registryRole:role,release:{releaseRef:seat.releaseRef,mode:'local',localSelector:'proposal',proposalPolicyRef:metadata.identity.policyId,tier:'hard',status:'development'},policy:{identity:metadata.identity,encoder:metadata.encoder} as ResolvedPolicy,profileRevisionRef:null});continue;
+    }
+    if(frozen?.schema==='ohuo-first-round-s0-release-ref-v1'){
+     if(!firstRound||task.taskKind!=='evaluate'||seat.mode!=='local'||seat.profileRevisionRef!==null)throw Error('explicit first-round S0 evaluation contract required');
+     strictObject(frozen,'firstRoundS0Release',['schema','policyId','proposalRef','studentParentRef']);
+     if(frozen.proposalRef!==firstRound.proposalRef||frozen.studentParentRef!==firstRound.studentParentRef||frozen.policyId!==firstRoundS0PolicyId(frozen.proposalRef,frozen.studentParentRef))throw Error('S0 composite identity differs');
+     runtimeSeats.push({s0Release:structuredClone(frozen),release:{...firstRound.proposer.release,releaseRef:seat.releaseRef,localSelector:'student'},policy:null as any,policyRef:firstRound.proposer.release.proposalPolicyRef,candidatePolicy:firstRound.proposer.candidatePolicy,profileRevisionRef:null});continue;
+    }
+    if(frozen?.schema==='ohuo-student-task-release-v1'){
+     const args={frozen,releasePath:inputs.studentReleasePaths?.[seat.releaseRef],repositoryRoot:policyRepositoryRoot,seat,taskKind:task.taskKind,readEvidence:inputs.readFirstRoundEvidence};
+     if(firstRound){if(task.taskKind!=='evaluate'||seat.mode!=='local'||seat.profileRevisionRef!==null||typeof args.releasePath!=='string')throw Error('explicit first-round student evaluation required');runtimeSeats.push({deferredStudent:args,release:{mode:'local'},policy:null as any,candidatePolicy:firstRound.proposer.candidatePolicy,profileRevisionRef:null});}
+     else runtimeSeats.push(await prepareStudentSeat(args));continue;
+    }
+    const {release,candidatePolicy}=resolveCandidateReleaseRef(frozen,ref=>refs.has(ref)?refs.get(ref):firstRound?inputs.readFirstRoundReference?.(ref):undefined,RELEASES);
+    if(seat.mode!==release.mode||release.localSelector!=='proposal'||release.tier!=='hard')throw Error('unsupported or changed frozen release');
+    if(!firstRound&&!policies.has(release.proposalPolicyRef))policies.set(release.proposalPolicyRef,await resolveNodePolicy(release.proposalPolicyRef,policyRepositoryRoot));
+    const policy=firstRound?{identity:structuredClone(frozen.policyIdentity)} as ResolvedPolicy:policies.get(release.proposalPolicyRef)!;if(!isDeepStrictEqual(JSON.parse(JSON.stringify(policy.identity)),frozen.policyIdentity))throw Error('loaded policy identity differs from task');
     let frozenProfileStore:any,profileSnapshot:any;
     const prompt=refs.get(task.promptRef);strictObject(prompt,'promptRef',['schema','promptRef']);if(prompt.schema!=='ohuo-prompt-ref-v1'||prompt.promptRef!==release.promptRef)throw Error('task prompt differs from fixed release');
     if(seat.mode==='hybrid'){
@@ -77,17 +100,22 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
      frozenProfileStore={resolve:(candidate:any)=>{if(!isDeepStrictEqual(candidate,reference))throw Error('profile reference differs');return structuredClone(record);}};
      profileSnapshot=frozenTeacherSnapshot(createProfileSelector({store:frozenProfileStore,reference,fetchImpl:()=>{throw Error('preflight cannot send');}}).profile,record);
     }else if(seat.mode!=='local'||seat.profileRevisionRef!==null)throw Error('local seat cannot hide API settings');
-    runtimeSeats.push({release,policy,profileRevisionRef:seat.profileRevisionRef,...(frozenProfileStore?{frozenProfileStore,profileSnapshot}:{})});
+    runtimeSeats.push({release,policy,...(firstRound?{policyRef:release.proposalPolicyRef}:{}),...(candidatePolicy?{candidatePolicy}:{}),profileRevisionRef:seat.profileRevisionRef,...(frozenProfileStore?{frozenProfileStore,profileSnapshot}:{})});
    }
    if(!requiresAsyncMatch(runtimeSeats)&&!isDeepStrictEqual(rules,DEFAULT_RULES))throw Error('legacy synchronous path supports exact DEFAULT_RULES only');
    rows.push({...structuredClone(row),runtimeSeats});
   }
   if(task.taskKind==='collect'&&rows.some(r=>r.seats.some(s=>s.mode!=='local')))throw Error('collect generation uses local complete matches only');
-  return {queue,rows,rules:structuredClone(rules),sourceIndexPath:realpathSync(inputs.sourceIndexPath),sourceIndexSHA256:sourceRef.fileSHA256,sourceIndex};
+  return {...(firstRound?{firstRound}:{}),queue,rows,rules:structuredClone(rules),sourceIndexPath:realpathSync(inputs.sourceIndexPath),sourceIndexSHA256:sourceRef.fileSHA256,sourceIndex};
  };
- const validateCheckpoint=(c:RunCheckpoint)=>!!c&&c.schema==='ohuo-match-run-v1'&&typeof c.taskSHA256==='string'&&typeof c.queueRef==='string'&&Number.isSafeInteger(c.cursor)&&c.cursor>=0&&Array.isArray(c.matches)&&c.matches.length===c.cursor&&typeof c.executionUnknown==='boolean'&&(c.active===null||!!c.active&&typeof c.active.matchId==='string'&&['local','hybrid'].includes(c.active.kind));
+ const validateCheckpoint=(c:RunCheckpoint)=>firstRoundEvaluationCheckpoint(c)||!!c&&c.schema==='ohuo-match-run-v1'&&typeof c.taskSHA256==='string'&&typeof c.queueRef==='string'&&Number.isSafeInteger(c.cursor)&&c.cursor>=0&&Array.isArray(c.matches)&&c.matches.length===c.cursor&&typeof c.executionUnknown==='boolean'&&(c.active===null||!!c.active&&typeof c.active.matchId==='string'&&['local','hybrid'].includes(c.active.kind));
  const run=async(ctx:any)=>{
+  if(ctx.executionInputs.kind==='first-round-new-test')return runFirstRoundNewTest(ctx);
   const {task,signal,reserve,settleReservation,saveCheckpoint,executionInputs:p,deadlineMonotonicMs}=ctx as {task:any;signal:AbortSignal;reserve:any;settleReservation:any;saveCheckpoint:any;executionInputs:Prepared;deadlineMonotonicMs:number};
+  const inputWorkload=task.limits.mode==='input-derived-workload-v1';
+  if(inputWorkload){if(ctx.executionBoundary?.mode!=='input-workload-only'||Object.hasOwn(ctx,'deadlineMonotonicMs'))throw Error('explicit input-workload execution boundary required');fixedReference(ctx.executionBoundary.resourcePolicyRef,'executionBoundary.resourcePolicyRef');}
+  else if(ctx.executionBoundary!==undefined)throw Error('legacy match cannot inherit revised execution boundary');
+  const deadlineReached=()=>!inputWorkload&&performance.now()>=deadlineMonotonicMs;
   let cp:RunCheckpoint=ctx.checkpoint?structuredClone(ctx.checkpoint):{schema:'ohuo-match-run-v1',taskSHA256:digest(task),queueRef:task.seatLayoutPlan,cursor:0,active:null,matches:[],executionUnknown:false};
   let sequence=ctx.checkpointSequence,apiInvoked=false,cleanupConfirmed=true;
   const writeSummary=()=>{
@@ -100,12 +128,13 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
   const drain=async()=>{for(const meter of meters)await meter.drain();};
   try{
    if(cp.taskSHA256!==digest(task)||cp.queueRef!==task.seatLayoutPlan||cp.executionUnknown||cp.cursor>p.rows.length||cp.active&&(cp.active.matchId!==p.rows[cp.cursor]?.matchId||cp.active.kind==='local'||cp.active.recordRef===null))throw Error('execution_uncertain: incomplete or mismatched recovery boundary');
+   if(p.firstRound)await materializeFirstRoundSeats(p,policyRepositoryRoot);
    for(const past of cp.matches)loadMatchStore(past.recordRef,task.outputRoot);
    for(;cp.cursor<p.rows.length;){
-    if(signal.aborted||performance.now()>=deadlineMonotonicMs)break;
+    if(signal.aborted||deadlineReached())break;
     if(sha(readFileSync(p.sourceIndexPath))!==p.sourceIndexSHA256)throw Error('source index changed after freeze');
     const row=p.rows[cp.cursor],hybrid=requiresAsyncMatch(row.runtimeSeats);
-    const identity={runId:task.runId,matchId:row.matchId,sourceRef:task.sourcePlan.sourceIndexRef,layoutRef:task.seatLayoutPlan,policyIds:row.runtimeSeats.map(actualSeatPolicyId),rules:p.rules,sourceFamilyId:row.sourceFamilyId,split:row.split,evaluatedActor:row.actor,seatSnapshots:row.runtimeSeats.map((s,i)=>({releaseRef:row.seats[i].releaseRef,release:s.release,policyIdentity:JSON.parse(JSON.stringify(s.policy.identity)),...(s.student?{studentRelease:s.student.release,studentReleaseSHA256:s.student.releaseSHA256}:{}),profileRevisionRef:s.profileRevisionRef,...(s.profileSnapshot?{profileSnapshot:s.profileSnapshot}:{})}))};
+    const identity={runId:task.runId,matchId:row.matchId,sourceRef:task.sourcePlan.sourceIndexRef,layoutRef:task.seatLayoutPlan,policyIds:row.runtimeSeats.map(actualSeatPolicyId),rules:p.rules,sourceFamilyId:row.sourceFamilyId,split:row.split,evaluatedActor:row.actor,seatSnapshots:row.runtimeSeats.map((s,i)=>firstRoundSeatSnapshot(row.seats[i].releaseRef,s))};
     let store:any;
     if(cp.active){store=loadMatchStore(cp.active.recordRef!,task.outputRoot);const saved=store.recorder.snapshot();for(const field of ['runId','matchId','sourceRef','layoutRef','policyIds','rules','seatSnapshots','sourceFamilyId','split','evaluatedActor'] as const)if(!isDeepStrictEqual(saved.record[field],identity[field]))throw Error('recovery record identity differs');const replay=replayConfirmedMatch(saved.record,saved.privateSources);if(replay.executionUnknown||!replay.state)throw Error('execution_uncertain: no confirmed replay origin');}
     else{
@@ -117,7 +146,7 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
     }
     let result:any,recordRef:MatchStoreRef;
     if(!hybrid){
-     const value=await runOwnedLocalMatch({row,identity,policyRepositoryRoot,sourceIndexPath:p.sourceIndexPath,sourceIndexSHA256:p.sourceIndexSHA256,policyIdentities:row.runtimeSeats.map(s=>s.policy.identity),policyRefs:row.runtimeSeats.map(s=>s.release.proposalPolicyRef),outputRoot:task.outputRoot,deadlineEpochMs:Date.now()+Math.max(0,deadlineMonotonicMs-performance.now())});
+     const value=await runOwnedLocalMatch({row,identity,policyRepositoryRoot,sourceIndexPath:p.sourceIndexPath,sourceIndexSHA256:p.sourceIndexSHA256,policyIdentities:row.runtimeSeats.map(s=>s.policy.identity),policyRefs:row.runtimeSeats.map(s=>s.release.proposalPolicyRef),outputRoot:task.outputRoot,...(inputWorkload?{executionBoundary:ctx.executionBoundary}:{deadlineEpochMs:Date.now()+Math.max(0,deadlineMonotonicMs-performance.now())})});
      result=value.result;recordRef=value.recordRef;
     }else{
      const requestForDecision=(seat:number,bundle:DecisionBundle,cancel:(reason:string)=>void):RemoteRequest=>{
@@ -126,8 +155,8 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
       return meter.request;
      };
      const snapshot=store.recorder.snapshot();
-     result=await runCompleteMatchAsync({...identity,generation:`${task.runId}-resume-${sequence}`,seed:row.seed,dealNamespace:row.dealNamespace,maxGames:row.maxGames,maxMovesPerGame:row.maxMovesPerGame,actor:row.actor,signal,deadlineMonotonicMs,recorder:store.recorder,
-      ...(snapshot.record.games.length?{resume:snapshot}:{}),seats:row.runtimeSeats.map(s=>({policyId:actualSeatPolicyId(s),source:s.student?'S' as const:s.policy.identity.policyId===LEGACY_O_POLICY_REF?'O' as const:'B' as const,mode:s.release.mode,decider:s.policy.createDecider(row.runtimeSeats.indexOf(s)),encoder:s.policy.encoder,policyIdentity:s.policy.identity,...(s.student?{localSelector:s.student.selectInitialAction}:{})})),requestForDecision,
+     result=await runCompleteMatchAsync({...identity,generation:`${task.runId}-resume-${sequence}`,seed:row.seed,dealNamespace:row.dealNamespace,maxGames:row.maxGames,maxMovesPerGame:row.maxMovesPerGame,actor:row.actor,signal,...(inputWorkload?{executionBoundary:ctx.executionBoundary}:{deadlineMonotonicMs}),recorder:store.recorder,
+      ...(snapshot.record.games.length?{resume:snapshot}:{}),seats:row.runtimeSeats.map(s=>({policyId:actualSeatPolicyId(s),source:s.student||s.s0Release?'S' as const:s.policy.identity.policyId===LEGACY_O_POLICY_REF?'O' as const:'B' as const,mode:s.release.mode,decider:s.policy.createDecider(row.runtimeSeats.indexOf(s)),encoder:s.policy.encoder,policyIdentity:s.policy.identity,...(s.candidatePolicy?{candidatePolicy:s.candidatePolicy}:{}),...(s.studentCapture?{studentCapture:s.studentCapture}:{}),...(s.student?{localSelector:s.student.selectInitialAction}:s.s0Release?{localSelector:({bundle,studentInputs}:any)=>{if(!studentInputs)throw Error('S0 capture required');return rerankStudent423InitialCandidates(bundle,studentInputs,s.studentCapture.network).actionId;}}:{})})),requestForDecision,
       beforeGame:state=>assertFrozenRound(row,state,p.sourceIndex,p.sourceIndexPath,p.sourceIndexSHA256),
       afterBoundary:async()=>{cp.active!.recordRef=store.ref();await checkpoint();},drain});
      recordRef=store.ref();
@@ -141,7 +170,7 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
      await checkpoint();break; // same source/match resumes; no second match attempt.
     }
     cp.matches.push({matchId:row.matchId,recordRef,result:{...result,layoutId:row.layoutId,sourceFamilyId:row.sourceFamilyId,actor:row.actor,metric:row.metric,group:row.group,side:row.side,variant:row.variant}});cp.cursor++;cp.active=null;await checkpoint();
-    if(signal.aborted||performance.now()>=deadlineMonotonicMs||result.incompleteReason==='execution_uncertain')break;
+    if(signal.aborted||deadlineReached()||result.incompleteReason==='execution_uncertain')break;
    }
    return {completed:cp.cursor===p.rows.length,cleanupConfirmed,actualScope:actualScope(apiInvoked),stopReason:signal.aborted?(typeof signal.reason==='string'?signal.reason:'user_stop'):'run_boundary',artifactRefs:[writeSummary(),...cp.matches.map(m=>m.recordRef)]};
   }catch(error){
@@ -213,13 +242,72 @@ export function assertFrozenRoundPlan(row:Pick<MatchQueueRow,'roundFamilyIds'|'m
 }
 
 /** Complete S identity is separate from its fixed B proposal identity. */
-export async function prepareStudentSeat({frozen,releasePath,repositoryRoot,seat,taskKind}:any):Promise<PreparedSeat>{
+export async function prepareStudentSeat({frozen,releasePath,repositoryRoot,seat,taskKind,readEvidence}:any):Promise<PreparedSeat>{
  strictObject(frozen,'studentRelease',['schema','policyId','releaseSHA256']);
  if(frozen.schema!=='ohuo-student-task-release-v1'||taskKind!=='evaluate'||seat.mode!=='local'||seat.profileRevisionRef!==null||typeof releasePath!=='string')throw Error('student requires explicit local evaluation release');
- const student=await loadStudentRelease(releasePath,frozen.releaseSHA256,repositoryRoot);
+ const student=await loadStudentRelease(releasePath,frozen.releaseSHA256,repositoryRoot,{readEvidence});
  if(student.release.policyId!==frozen.policyId)throw Error('student actual policy identity mismatch');
  const release={releaseRef:seat.releaseRef,mode:'local',proposalPolicyRef:student.basePolicy.identity.policyId,localSelector:'student',candidateSpecRef:student.release.candidateSpecRef,tier:'hard',status:'development'};
- return {student,release,policy:student.basePolicy,profileRevisionRef:null};
+ return {student,release,policy:student.basePolicy,...(student.studentCapture?{studentCapture:student.studentCapture}:{}),...(student.candidatePolicy?{candidatePolicy:student.candidatePolicy}:{}),profileRevisionRef:null};
 }
-export function requiresAsyncMatch(seats:Array<{release:{mode:string};student?:unknown}>){return seats.some(s=>s.release.mode==='hybrid'||!!s.student);}
-function actualSeatPolicyId(seat:PreparedSeat){return seat.student?.release.policyId??seat.policy.identity.policyId;}
+export function requiresAsyncMatch(seats:Array<{release:{mode:string};student?:unknown;candidatePolicy?:CandidatePolicySpec}>){return seats.some(s=>s.release.mode==='hybrid'||!!s.student||s.candidatePolicy?.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC);}
+function actualSeatPolicyId(seat:PreparedSeat){return seat.student?.release.policyId??seat.s0Release?.policyId??seat.policy.identity.policyId;}
+function firstRoundSeatSnapshot(releaseRef:string,s:PreparedSeat){return {releaseRef,release:s.release,...(s.registryPolicy?{registryPolicy:s.registryPolicy}:{}),...(s.candidatePolicy?{candidatePolicy:s.candidatePolicy}:{}),policyIdentity:JSON.parse(JSON.stringify(s.policy.identity)),...(s.firstRoundCapture?{firstRoundCapture:s.firstRoundCapture}:{}),...(s.s0Release?{s0Release:s.s0Release}:{}),...(s.student?{studentRelease:s.student.release,studentReleaseSHA256:s.student.releaseSHA256}:{}),profileRevisionRef:s.profileRevisionRef,...(s.profileSnapshot?{profileSnapshot:s.profileSnapshot}:{})};}
+
+
+/** Named first-round binding through an existing fixed comparison reference;
+ * no TaskFile extension, registry/default change or checkpoint fabricated for S0. */
+export function firstRoundS0PolicyId(proposalRef:string,studentParentRef:string){return 'first-round-s0-'+digest({proposalRef,studentParentRef}).slice(0,16);}
+/** Metadata-only exact B08 layout projection. The source producer uses the
+ * same snapshot serializer as the real match recorder; no queue-hash alias,
+ * model load, fake Task, acceptance or observed result is manufactured. */
+export function freezeFirstRoundQueueLayouts({queue,queueRef,comparisonRef,rules,readReference,readEvidence,repositoryRoot,studentReleaseFileRef=null}:any){
+ fixedReference(queueRef,'queueRef');fixedReference(comparisonRef,'comparisonRef');
+ if(digest(queue)!==queueRef.split(':').at(-1)||queue.schema!=='ohuo-complete-match-queue-v1'||!Array.isArray(queue.rows))throw Error('fixed first-round queue identity required');
+ const comparison=readReference(comparisonRef);strictObject(comparison,'firstRoundComparison',['schema','proposalRef','studentParentRef']);if(comparison.schema!=='ohuo-first-round-comparison-v1')throw Error('first-round comparison required');
+ const proposer=resolveCandidateReleaseRef(readReference(comparison.proposalRef),readReference,RELEASES),parent=validateFirstRoundParentEnvelope({parentRef:comparison.studentParentRef,envelope:readReference(comparison.studentParentRef),readEvidence});
+ if(!isDeepStrictEqual(parent.basePolicyIdentity,proposer.policyIdentity)||proposer.candidatePolicy?.candidateSpec!==FIRST_TARGET_CANDIDATE_SPEC||proposer.release.mode!=='local')throw Error('first-round layout B/S0 metadata differs');
+ const frozenRules=validateMatchRules(rules),layoutIdentitySHA256:Record<string,string>={};
+ for(const row of queue.rows){
+  if(row.seats?.length!==4||![0,1].includes(row.actor)||row.actor!==row.side)throw Error('fixed first-round physical layout required');
+  const seats:PreparedSeat[]=row.seats.map((entry:any,i:number)=>{
+   if(entry.mode!=='local'||entry.profileRevisionRef!==null)throw Error('first-round layout must remain local');fixedReference(entry.releaseRef,'seat.releaseRef');const value=readReference(entry.releaseRef);
+   if(i!==row.actor){const role=i===(row.actor+2)%4?'partner':'opponent',metadata=validateFirstRoundRegistryPolicy({envelope:value,readEvidence,repositoryRoot,role});return{registryPolicy:structuredClone(value),registryRole:role,release:{releaseRef:entry.releaseRef,mode:'local',localSelector:'proposal',proposalPolicyRef:metadata.identity.policyId,tier:'hard',status:'development'},policy:{identity:metadata.identity,encoder:metadata.encoder} as ResolvedPolicy,profileRevisionRef:null};}
+   const common={policy:{identity:proposer.policyIdentity} as ResolvedPolicy,candidatePolicy:proposer.candidatePolicy,profileRevisionRef:null,firstRoundCapture:{studentParentRef:comparison.studentParentRef,scorer:parent.scorer,migrationReceiptRef:parent.migrationReceiptRef}};
+   if(entry.releaseRef===comparison.proposalRef)return{...common,release:proposer.release};
+   if(value?.schema==='ohuo-first-round-s0-release-ref-v1'){
+    strictObject(value,'firstRoundS0Release',['schema','policyId','proposalRef','studentParentRef']);if(value.proposalRef!==comparison.proposalRef||value.studentParentRef!==comparison.studentParentRef||value.policyId!==firstRoundS0PolicyId(value.proposalRef,value.studentParentRef))throw Error('S0 layout identity differs');return{...common,s0Release:structuredClone(value),release:{...proposer.release,releaseRef:entry.releaseRef,localSelector:'student'}};
+   }
+   strictObject(value,'studentTaskRelease',['schema','policyId','releaseSHA256']);if(value.schema!=='ohuo-student-task-release-v1'||!studentReleaseFileRef||studentReleaseFileRef.sha256!==value.releaseSHA256)throw Error('actual selected S1 metadata required');
+   const raw=Buffer.from(readEvidence(studentReleaseFileRef));if(sha(raw)!==value.releaseSHA256)throw Error('selected S1 file SHA mismatch');const release=JSON.parse(raw.toString());
+   strictObject(release,'firstRoundRelease',['schema','trainingKind','policyId','proposer','proposalRef','learningParent','scorer','candidateSpecRef','candidatePolicy','tieBreakId','checkpoint','dataset','recipe','selection']);validateStudentScorerDescriptor(release.scorer);
+   if(release.schema!=='ohuo-student-release-first-round-v3'||release.trainingKind!=='supervised_rerank'||release.policyId!==value.policyId||release.proposalRef!==comparison.proposalRef||release.proposer?.policyRef!==proposer.policyIdentity.policyId||!isDeepStrictEqual(release.proposer.identity,proposer.policyIdentity)||!isDeepStrictEqual(release.learningParent,{ref:comparison.studentParentRef,scorer:parent.scorer,migrationReceiptRef:parent.migrationReceiptRef})||release.candidateSpecRef!==FIRST_TARGET_CANDIDATE_SPEC||!isDeepStrictEqual(release.candidatePolicy,proposer.candidatePolicy)||release.tieBreakId!=='first-candidate-v1')throw Error('selected S1 layout identity differs');
+   return{...common,student:{release,releaseSHA256:value.releaseSHA256} as any,release:{releaseRef:entry.releaseRef,mode:'local',proposalPolicyRef:proposer.policyIdentity.policyId,localSelector:'student',candidateSpecRef:release.candidateSpecRef,tier:'hard',status:'development'}};
+  });
+  const hash=sha(JSON.stringify({sourceRef:queue.sourceIndexRef,layoutRef:queueRef,policyIds:seats.map(actualSeatPolicyId),rules:frozenRules,seatSnapshots:seats.map((s,i)=>firstRoundSeatSnapshot(row.seats[i].releaseRef,s))}));
+  if(Object.hasOwn(layoutIdentitySHA256,row.layoutId)&&layoutIdentitySHA256[row.layoutId]!==hash)throw Error('same layoutId has conflicting full identity');layoutIdentitySHA256[row.layoutId]=hash;
+ }
+ return {layoutIdentitySHA256,modelLoads:0,observedMatches:0};
+}
+export function prepareFirstRoundComparison(comparison:any,refs:any,inputs:any,task:any){
+ strictObject(comparison,'firstRoundComparison',['schema','proposalRef','studentParentRef']);
+ for(const k of ['proposalRef','studentParentRef'])fixedReference(comparison[k],k);
+ if(typeof inputs.readFirstRoundEvidence!=='function')throw Error('verified first-round evidence reader required');
+ const lookup=(ref:string)=>refs.has(ref)?refs.get(ref):inputs.readFirstRoundReference?.(ref);
+ const proposer=resolveCandidateReleaseRef(lookup(comparison.proposalRef),lookup,RELEASES);
+ if(proposer.candidatePolicy?.candidateSpec!==FIRST_TARGET_CANDIDATE_SPEC||proposer.release.mode!=='local'||proposer.release.localSelector!=='proposal'||proposer.release.tier!=='hard'||!task.releaseRefs.includes(comparison.proposalRef)||task.taskKind==='collect'&&task.parentPolicyRef!==comparison.proposalRef)throw Error('first-round B proposal binding differs');
+ const envelope=lookup(comparison.studentParentRef),parent=validateFirstRoundParentEnvelope({parentRef:comparison.studentParentRef,envelope,readEvidence:inputs.readFirstRoundEvidence});
+ if(!isDeepStrictEqual(parent.basePolicyIdentity,proposer.policyIdentity))throw Error('first-round S0 migration source differs from B');
+ return {...structuredClone(comparison),proposer,envelope,readEvidence:inputs.readFirstRoundEvidence};
+}
+async function materializeFirstRoundSeats(p:Prepared,repositoryRoot:string){
+ const f=p.firstRound,parent=await resolveFirstRoundParent({parentRef:f.studentParentRef,envelope:f.envelope,readEvidence:f.readEvidence,repositoryRoot}),policies=new Map<string,ResolvedPolicy>();
+ for(const row of p.rows)for(let i=0;i<row.runtimeSeats.length;i++){
+  let seat=row.runtimeSeats[i];
+  if(seat.deferredStudent){seat=await prepareStudentSeat(seat.deferredStudent);row.runtimeSeats[i]=seat;if(seat.student!.release.schema!=='ohuo-student-release-first-round-v3'||seat.student!.release.proposalRef!==f.proposalRef||seat.student!.release.learningParent.ref!==f.studentParentRef)throw Error('selected first-round release composite differs');}
+  else if(seat.registryPolicy){const key=digest(seat.registryPolicy);if(!policies.has(key))policies.set(key,await resolveFirstRoundRegistryPolicy({envelope:seat.registryPolicy,readEvidence:f.readEvidence,repositoryRoot,role:seat.registryRole!}));const actual=policies.get(key)!;if(!isDeepStrictEqual(JSON.parse(JSON.stringify(actual.identity)),seat.policy.identity))throw Error('first-round actual peer identity differs');seat.policy=actual;}
+  else {const ref=seat.policyRef!;if(!policies.has(ref))policies.set(ref,await resolveNodePolicy(ref,repositoryRoot));const actual=policies.get(ref)!;if(!isDeepStrictEqual(JSON.parse(JSON.stringify(actual.identity)),seat.s0Release?f.proposer.policyIdentity:seat.policy.identity))throw Error('first-round actual loaded proposal differs');seat.policy=actual;}
+  if(i===row.actor){if(!isDeepStrictEqual(JSON.parse(JSON.stringify(seat.policy.identity)),f.proposer.policyIdentity)||seat.candidatePolicy?.candidateSpec!==FIRST_TARGET_CANDIDATE_SPEC)throw Error('first-round evaluated actor proposal differs');seat.studentCapture=parent.studentCapture;seat.firstRoundCapture={studentParentRef:f.studentParentRef,scorer:parent.scorer,migrationReceiptRef:parent.migrationReceiptRef};}
+  else if(seat.student||seat.s0Release)throw Error('first-round partners/opponents cannot silently switch to student');
+ }
+}

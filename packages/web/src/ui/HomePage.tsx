@@ -8,12 +8,12 @@ import { BrainIcon } from './AISelectionModal';
 import { PreviewBackdrop } from './PreviewBackdrop';
 import { RANK_NAME } from '@gd/engine';
 
-// D1 三档（NeuralTier）：难度只作用于两个对手，队友固定满血新 AI（相对难度，非人类段位）
+// 仅开放当前标准档；内部完整政策身份由统一选择适配核验，不按旧三档弱化。
 // 档位→预览资产映射：easy→0 / standard→1 / hard→2（复用三档预览图）
-const TIERS: { key: NeuralTier; assetTier: 0 | 1 | 2; no: string; name: string; hint: string }[] = [
-  { key: 'easy', assetTier: 0, no: '01', name: NEURAL_TIER_LABELS.easy, hint: '对手会在几步差不多的选择里犹豫' },
-  { key: 'standard', assetTier: 1, no: '02', name: NEURAL_TIER_LABELS.standard, hint: '对手更果断，偶有松着' },
-  { key: 'hard', assetTier: 2, no: '03', name: NEURAL_TIER_LABELS.hard, hint: '满血新 AI，读牌与残局' },
+const TIERS: { key: NeuralTier; assetTier: 0 | 1 | 2; no: string; name: string }[] = [
+  { key: 'easy', assetTier: 0, no: '01', name: NEURAL_TIER_LABELS.easy },
+  { key: 'standard', assetTier: 1, no: '02', name: NEURAL_TIER_LABELS.standard },
+  { key: 'hard', assetTier: 2, no: '03', name: NEURAL_TIER_LABELS.hard },
 ];
 
 const PASSA: { key: AppSettings['passA']; name: string; hint?: string }[] = [
@@ -23,9 +23,9 @@ const PASSA: { key: AppSettings['passA']; name: string; hint?: string }[] = [
 ];
 
 const PREVIEW_COPY: Record<NeuralTier, { title: string; sub: string }> = {
-  easy: { title: '轻松训练', sub: '对手近并列随机 · 容错空间大' },
+  easy: { title: '轻松训练', sub: '尚未开放' },
   standard: { title: '标准训练', sub: '记牌判断 · 同伴配合 · 出牌规划' },
-  hard: { title: '挑战训练', sub: '满血新 AI · 读牌判断 · 残局推演' },
+  hard: { title: '挑战训练', sub: '尚未开放' },
 };
 
 export function HomePage({

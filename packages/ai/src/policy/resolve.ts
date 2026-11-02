@@ -2,7 +2,7 @@
  * runtime adapters supply only registered bytes and SHA-256, never fallback. */
 import { MLP } from '../nn/mlp';
 import { NeuralDecider, type EncoderOpts } from '../nn/neuralSeat';
-import { validatePolicyIndex, policyEncoder, type PolicyDescriptor } from './descriptor';
+import { validatePolicyIndex, validateStudentScorerDescriptor, policyEncoder, type PolicyDescriptor } from './descriptor';
 export * from './descriptor';
 
 export interface PolicyRuntime {
@@ -107,4 +107,26 @@ export function resolveRecordedPolicy(aiPolicies: readonly string[] | undefined)
     if (!selected.weightsSHA256) delete selected.weightsSHA256;
   }
   return selected ? { ...selected, referenceOnly: false } : { policyRef: LEGACY_O_POLICY_REF, tier: 'hard', referenceOnly: true };
+}
+
+/** Explicit scorer-only load: no registry default, proposal enumeration, tier,
+ * product release or createDecider. New/old dimensional identities never coerce. */
+export interface ResolvedStudentScorer {
+  readonly descriptor: import('./descriptor').StudentScorerDescriptor;
+  createNetwork(): MLP;
+}
+export async function resolveStudentScorer(value: unknown, runtime: Omit<PolicyRuntime, 'registry'>): Promise<ResolvedStudentScorer> {
+  const descriptor = validateStudentScorerDescriptor(value);
+  if (runtime.site !== 'node' && runtime.site !== 'browser') throw Error('unsupported student runtime');
+  const location = runtime.site === 'node' ? descriptor.weightsPathOrUrl.nodePath : descriptor.weightsPathOrUrl.assetUrl;
+  if (!location) throw Error(`student has no registered ${runtime.site} weights location`);
+  const bytes = new Uint8Array(await runtime.readWeights(location));
+  if (bytes.byteLength !== descriptor.parameterCount * 4) throw Error('student weights byte length mismatch');
+  if (await runtime.sha256(bytes) !== descriptor.weightsSHA256) throw Error('student weights SHA256 mismatch');
+  const flat = new Float32Array(descriptor.parameterCount), view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  for (let i = 0; i < flat.length; i++) {
+    flat[i] = view.getFloat32(i * 4, true);
+    if (!Number.isFinite(flat[i])) throw Error(`non-finite student weight at ${i}`);
+  }
+  return Object.freeze({ descriptor, createNetwork: () => { const net = new MLP(1, 423); net.setWeights(flat); return net; } });
 }

@@ -8,10 +8,12 @@ import {gtFixtureVM} from '../src/ui/gt/fixture';
 import {fixtureVM} from '../src/ui/gp/fixture';
 import {buildGameTableVM} from '../src/ui/gt/viewmodel';
 import {DecisionFactsPanel} from '../src/ui/DecisionFactsPanel';
+import {projectReviewModelDisplay} from '../src/game/review-model-display';
+import {selectionPolicyIdentity} from '../src/game/ai-selection';
 import {RecordedSeats} from '../src/ui/RecordedSeats';
 import {ExchangeHistory} from '../src/ui/gt/ExchangeHistory';
 // Rendering only: policy loading is an effect and must never execute in this finite fixture.
-vi.mock('../src/game/policy',()=>({loadRecordedWebPolicy:()=>{throw Error('UI-MAP must not load weights');}}));
+vi.mock('../src/game/policy',async()=>{const {readFileSync}=await import('node:fs');return {webPolicyDescriptors:JSON.parse(readFileSync(new URL('../../../lab/model-index.json',import.meta.url),'utf8')).policies,loadRecordedWebPolicy:()=>{throw Error('UI-MAP must not load weights');}};});
 const render=(component:React.ReactElement)=>renderToStaticMarkup(component);
 it('UI-MAP gp/gt actual rendered names and ARIA use 2/3/4 without changing CSS geometry',()=>{
  const gt=gtFixtureVM('normal');gt.passes={north:true,west:true,east:true,self:true};
@@ -61,16 +63,17 @@ it('UI-MAP frozen model labels use the product name without rewriting recorded i
  const {RELEASES}=await import('../../ai/src/policy/seats');
  const {MatchController}=await import('../src/game/controller');
  const release=RELEASES.find(r=>r.releaseRef==='ohuo-1030-b-v1')!;
- const ai:any={controller:'ai',releaseRef:release.releaseRef,release,mode:'local',policyIdentity:{policyId:'r62-p8c-control-u1400-greedy',weightsSHA256:'d05c52bbd28883760da11f042be2d110fd3b3a9affd97edd7aed43c9421eb081'}};
+ const {webPolicyDescriptors}=await import('../src/game/policy');
+ const ai:any={controller:'ai',releaseRef:release.releaseRef,release,mode:'local',policyIdentity:selectionPolicyIdentity(webPolicyDescriptors.find(p=>p.policyId===release.proposalPolicyRef)!)};
  const record:any={humanSeat:null,seatConfig:{schemaVersion:2,seats:[ai,ai,ai,ai]}};
  const before=JSON.stringify(record),html=render(React.createElement(RecordedSeats,{record}));
  expect(html).toContain('ohuo-v1-1031');expect(html).toContain('技术来源');expect(html).not.toContain('真人');
- const labels=Object.getOwnPropertyDescriptor(MatchController.prototype,'seatLabels')!.get!.call({opts:{seats:{snapshot:record.seatConfig}}});
+ const labels=Object.getOwnPropertyDescriptor(MatchController.prototype,'seatLabels')!.get!.call({opts:{seats:{snapshot:record.seatConfig,runtime:Array.from({length:4},()=>({policy:{descriptor:webPolicyDescriptors.find(p=>p.policyId===release.proposalPolicyRef)!}}))}}});
  expect(labels).toEqual(Array(4).fill('ohuo-v1-1031'));
  expect(JSON.stringify(record)).toBe(before);
 });
 
-it('UI-MAP coach choices expose only exact bound GLM/DeepSeek and never auto-follow a changed reference',async()=>{
+it('UI-MAP coach SSR keeps shared catalog pending and exact saved choice; browser binding never gates availability',async()=>{
  const {VerifiedReportTab}=await import('../src/ui/VerifiedReportTab');
  const {providerPresetFields}=await import('../src/game/provider-presets');
  const storage=await import('../src/game/storage');
@@ -83,14 +86,16 @@ it('UI-MAP coach choices expose only exact bound GLM/DeepSeek and never auto-fol
  try {
   storage.saveProviderBindings({schema:'ohuo-provider-bindings-v1',glm:storage.profileReference(profiles[0]),deepseek:storage.profileReference(profiles[1])});
   storage.saveChatProfileReference(storage.profileReference(profiles[0]));
-  const props={record:{id:'coach-map',humanSeat:null} as GameRecord,viewerSeat:3,evidence:[],onJump:()=>{}};
+  const modelDisplay=projectReviewModelDisplay([],{analysisPolicy:null,analysisSeat:null,frozenSeats:undefined,referenceOnly:false});
+  const props={record:{id:'coach-map',humanSeat:null} as GameRecord,viewerSeat:3,evidence:modelDisplay.displayEvidences,modelDisplay,onJump:()=>{}};
   const before=JSON.stringify([...data]),html=render(React.createElement(VerifiedReportTab,props));
   const choices=[...html.matchAll(/<option[^>]*>(.*?)<\/option>/g)].map(m=>m[1]);
-  expect(choices).toEqual(['请选择已保存版本，不自动选第一项','GLM','DeepSeek']);
+  expect(choices).toEqual(['请选择已保存版本，不自动选第一项','Long GLM private nickname（保留已选版本）','GLM','DeepSeek']);
+  expect(html).toContain('连接配置服务未就绪');
   expect(html).not.toContain('DO_NOT_OFFER_UNBOUND');expect(JSON.stringify([...data])).toBe(before);
   storage.saveProviderBindings({schema:'ohuo-provider-bindings-v1',glm:{...storage.profileReference(profiles[0]),revision:9},deepseek:storage.profileReference(profiles[1])});
   const stale=JSON.stringify([...data]),changed=render(React.createElement(VerifiedReportTab,props));
-  expect(changed).toContain('provider_binding_unavailable');expect(changed).toContain('不会自动绑定新版本');
+  expect(changed).toBe(html);expect(changed).not.toContain('provider_binding_unavailable');
   expect(JSON.stringify([...data])).toBe(stale);expect(storage.loadChatProfileReference()).toEqual(storage.profileReference(profiles[0]));
    expect(warn.mock.calls.every(args=>String(args[0]).includes('useLayoutEffect'))).toBe(true);
  } finally {warn.mockRestore();vi.unstubAllGlobals();}
@@ -122,4 +127,20 @@ it('UI-MAP recap ignores legacy cardinal names and honors the explicit viewing s
  const html=render(React.createElement(TrickRecap,{moveNo:'2',mv,ctx:makeLevelCtx([2,2]),seatNames:['南家','东家','北家','西家'],viewerSeat:1,onJump:()=>{}}));
  expect(html).toContain('4号（观察席）');expect(html).toContain('3号（队友）');expect(html).toContain('1号（对手）');
  expect(html).not.toMatch(/南家|东家|北家|西家/);
+});
+
+it('UI-MAP shared review filters expose seven actual choices without reading records',async()=>{
+ const storage=await import('../src/game/storage');const list=vi.spyOn(storage,'listRecords').mockImplementation(()=>{throw Error('filter must not read records');}),load=vi.spyOn(storage,'loadRecord').mockImplementation(()=>{throw Error('filter must not load records');});
+ try{
+  const {ReviewFilters}=await import('../src/ui/ReviewPicker');
+  const onResult=vi.fn(),onToggleFavorite=vi.fn(),onDifficulty=vi.fn();
+  const props={result:'all' as const,favOnly:false,difficulty:'all' as const,visibleValidCount:0,onResult,onToggleFavorite,onDifficulty};
+  const nodes=(node:any):any[]=>Array.isArray(node)?node.flatMap(nodes):!node||typeof node!=='object'?[]:[node,...nodes(node.props?.children)];
+  const tree=ReviewFilters(props),groups=nodes(tree).filter(n=>n.props?.role==='radiogroup'),difficulty=groups.find(n=>n.props['aria-label']==='按对手强度筛选');
+  const buttons=nodes(difficulty).filter(n=>n.type==='button');expect(buttons.map(n=>n.props.children)).toEqual(['不限','标准','历史初级','历史中级','历史高级','混合历史','未记录/未核验']);
+  for(const b of buttons)b.props.onClick();expect(onDifficulty.mock.calls.map(c=>c[0])).toEqual(['all','standard',0,1,2,'mixed','unverified']);
+  const selected=nodes(ReviewFilters({...props,difficulty:'unverified'})).filter(n=>n.type==='button'&&n.props.children==='未记录/未核验');expect(selected[0].props['aria-checked']).toBe(true);
+  nodes(groups.find(n=>n.props['aria-label']==='按结果筛选')).filter(n=>n.type==='button').forEach(n=>n.props.onClick());expect(onResult.mock.calls.map(c=>c[0])).toEqual(['all','win','loss']);nodes(tree).find(n=>n.props?.role==='switch').props.onClick();expect(onToggleFavorite).toHaveBeenCalledTimes(1);
+  expect(render(React.createElement(ReviewFilters,props))).toContain('未记录/未核验');expect(list).not.toHaveBeenCalled();expect(load).not.toHaveBeenCalled();
+ }finally{list.mockRestore();load.mockRestore();}
 });

@@ -1,4 +1,3 @@
-import { displaySeatLabel } from '@gd/review';
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { canPass, isReturnableCard, type GameRecord , describeCombo } from '@gd/engine';
 import './seat-config.css';
@@ -41,13 +40,44 @@ export function TablePage({
     setToast(text);
     toastTimer.current = setTimeout(() => setToast(null), 2800);
   }, []);
-  useEffect(() => () => { if (toastTimer.current) clearTimeout(toastTimer.current); }, [showToast]);
+  const toastScope = useRef({ controller, gameNo: state?.match.gameNo });
+  const seenDecision = useRef<MatchController['lastDecision']>(null);
+  useEffect(() => {
+    toastScope.current = { controller, gameNo: state?.match.gameNo };
+    seenDecision.current = null;
+    setToast(null);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = null;
+    return () => { if (toastTimer.current) clearTimeout(toastTimer.current); toastTimer.current = null; };
+  }, [controller, state?.match.gameNo]);
 
   const params = new URLSearchParams(window.location.search);
   const isFixture = import.meta.env.DEV && (params.has('gtfixture') || params.has('gpfixture'));
-  const fixturePhase: GTPhase = isFixture && params.get('gtstate') === 'tribute' ? 'tribute-result' : 'normal';
+  const fixturePhase: GTPhase = isFixture && params.get('gtstate') === 'tribute' ? 'tribute-result'
+    : isFixture && params.get('gtstate') === 'return-pick' ? 'return-pick' : 'normal';
+  const fixtureCounts = isFixture && params.get('gtcounts') === 'boundary';
   const gpHandRaw = isFixture ? params.get('gthand') : null;
   const gpHandN = gpHandRaw === null ? null : Number(gpHandRaw);
+
+  useEffect(() => {
+    const outcome = controller.lastDecision;
+    if (isFixture || !outcome || seenDecision.current === outcome) return;
+    seenDecision.current = outcome;
+    if (outcome.decisionKey.gameNo !== state?.match.gameNo || outcome.status !== 'fallback') return;
+    if (outcome.source === 'remote_failure') showToast('外部模型本次未能完成决定，已由本地AI接手。');
+    else if (outcome.source === 'local_override') showToast('上一手由本地AI接手（历史记录）');
+  }, [controller, controller.lastDecision, state?.match.gameNo, isFixture, showToast]);
+  const decisionError = isFixture ? null : controller.decisionError;
+  const configurationError = decisionError && new Set(['revision_conflict','profile_not_found','invalid_profile_reference',
+    'private_store_unavailable','private_store_requires_0600_regular_file','invalid_private_store','unsupported_protocol',
+    'local_same_origin_required','configured_ai_missing']).has(decisionError);
+  const scopedToast = toastScope.current.controller === controller && toastScope.current.gameNo === state?.match.gameNo ? toast : null;
+  const runtimeToast = decisionError
+    ? decisionError === 'execution_uncertain' ? '牌局已暂停，出牌结果尚未确认，请勿重复出牌。'
+      : configurationError ? '牌局已暂停，请检查设置后再继续。'
+      : '牌局已暂停，暂时无法完成本手决定，请返回检查。'
+    : scopedToast ?? (!isFixture && controller.waitingRemote ? '正在等待外部模型决定…' : null);
+  const runtimeToastRole = decisionError ? 'alert' : 'status';
 
   const ctx = state?.ctx ?? null;
   const toBeat = state?.lastCombo ?? null;
@@ -191,12 +221,14 @@ export function TablePage({
       const hand = gpHandN === null || Number.isNaN(gpHandN)
         ? base.hand
         : Array.from({ length: Math.max(0, gpHandN) }, (_, i) => base.hand[i % base.hand.length]).map((c, i) => ({ ...c, instanceId: `gtn-${i}` }));
-      return { ...base, hand, selectedIds: [...fxSelected] };
+      const players = fixtureCounts ? base.players.map(player => ({ ...player, remaining: player.seat === 'north' ? 0
+        : player.seat === 'west' ? 9 : player.seat === 'east' ? 27 : player.remaining })) : base.players;
+      return { ...base, players, hand, selectedIds: [...fxSelected] };
     }
     if (!state) return null;
     return buildGameTableVM(controller, state, { selection: selected, validCombo, returnCard });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version, isFixture, fixturePhase, fxSelected, controller, state, selected, validCombo, returnCard]);
+  }, [version, isFixture, fixturePhase, fixtureCounts, gpHandN, fxSelected, controller, state, selected, validCombo, returnCard]);
 
   if (!vm) return controller.exchangeError ? <main className="gt-recovery" role="alert">
     <h1>暂时无法恢复牌局</h1><p>{controller.exchangeError}</p>
@@ -205,16 +237,11 @@ export function TablePage({
 
   return (
     <>
-    {!isFixture && <aside className="seat-runtime" aria-label="四席冻结身份">
-      <details><summary>四席冻结身份</summary>{controller.seatLabels?.map((label,seat)=><div key={seat}>{displaySeatLabel(seat).label}：{label}</div>)}</details>
-      {controller.waitingRemote && <div role="status">等待本手决定，不会因等待重发。<button onClick={()=>controller.useLocalForPending()}>本手改用已缓存本地B</button><button onClick={onExit}>停止并离桌</button></div>}
-      {controller.decisionError && <p role="alert">牌局已暂停：{controller.decisionError}。请离桌检查配置后恢复；执行结果未知的存档不能续出。</p>}
-      {controller.lastDecision?.source==='local_override'&&<p>上一手由缓存本地B接手；四席配置未改变。</p>}
-    </aside>}
     <GameTable
       vm={vm}
       overlay={historyOpen && !isFixture ? <ExchangeHistory entries={controller.exchangeHistory} onClose={()=>setHistoryOpen(false)} /> : null}
-      toast={toast}
+      toast={runtimeToast}
+      toastRole={runtimeToastRole}
       demo={isFixture}
       onSelect={(instanceId) => {
         setHintIdx(-1);

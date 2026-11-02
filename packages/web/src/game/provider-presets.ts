@@ -1,3 +1,4 @@
+import type { ConnectionSummary, ConnectionErrorCategory, ProviderStateView } from './llm-profiles';
 import type { ProfileFields, PublicProfile, ProviderBindings } from './storage';
 
 export type ProviderId = 'glm' | 'deepseek';
@@ -70,35 +71,46 @@ export function resolveProviderBinding(provider: ProviderId, bindings: ProviderB
 
 export interface ProviderAvailability {
   presetConfigured: true;
-  state: 'checking' | 'ready' | 'unlinked' | 'pending' | 'invalid';
-  /** Present only for an exact saved binding; ready is structural eligibility, not authentication. */
+  state: 'checking' | 'ready' | 'missing' | 'incompatible' | 'ambiguous' | 'invalid';
+  /** Backend exact reference for new choices; never rewrites an existing seat or match reference. */
   profile: PublicProfile | null;
   reason: string;
 }
-/** Public-only presentation. Missing bindings do not imply missing credentials or absent browser legacy. */
-export function describeProviderAvailability(provider: ProviderId, bindings: ProviderBindings,
-  profiles: readonly PublicProfile[] | null): ProviderAvailability {
+const connectionErrorText: Record<ConnectionErrorCategory,string> = {
+  authentication_rejected:'认证被拒绝，请检查已保存凭据', billing_or_balance:'账户余额或计费状态受限', authorization_rejected:'访问权限被拒绝',
+  rate_or_capacity:'请求限流或服务容量受限', quota_plan_or_rate_limit:'额度、套餐或请求频率受限', content_rejected:'测试内容被供应商拒绝',
+  request_or_model_rejected:'请求或模型配置被拒绝', endpoint_not_found:'接口地址不可用', provider_failure:'供应商服务失败', http_rejected:'供应商拒绝了请求',
+  response_too_large:'响应超过诊断大小上限', invalid_json_response:'响应JSON格式不完整或无效', invalid_protocol_response:'响应协议不完整或无效',
+  timeout_unknown:'超时，供应商处理状态未知', network_error:'网络连接失败',
+};
+export function describeProviderConnection(connection: ConnectionSummary): string {
+  // Fixed UTC rendering, not this browser's locale/timezone; preserve the historical test time.
+  const time = connection.testedAt ? `（${connection.testedAt.slice(0,19).replace('T',' ')} UTC）` : '';
+  const scope = '；原生接口诊断，非网页业务调用验收。';
+  const failure = connection.errorCategory ? `；${connectionErrorText[connection.errorCategory]}` : ''; 
+  switch (connection.state) {
+    case 'passed': return `连接诊断通过${time}${scope}`;
+    case 'failed': return `上次连接诊断失败${time}${failure}${scope}`;
+    case 'incomplete': return `上次连接诊断未完成${time}${failure}${scope}`;
+    case 'stale': return `配置或凭据已变更，当前配置未测试；保留上次记录${time}${failure}${scope}`;
+    case 'untested': return '当前配置未测试。';
+    case 'unknown': return '连接诊断记录不可用，状态未知。';
+  }
+}
+/** All browsers use the same read-only backend selector; legacy binding storage is not consulted. */
+export function describeProviderAvailability(provider: ProviderId, view: ProviderStateView | null): ProviderAvailability {
   const result = (state: ProviderAvailability['state'], reason: string, profile: PublicProfile | null = null): ProviderAvailability =>
     ({ presetConfigured: true, state, profile, reason });
-  if (profiles === null) return result('checking', '预设已配置；正在读取已保存连接，API状态尚未确认。');
-  const reference = bindings[provider];
-  let source: PublicProfile | undefined;
-  if (reference) {
-    const matches = profiles.filter(p => p.profileId === reference.profileId && p.revision === reference.revision && p.snapshotHash === reference.snapshotHash);
-    if (matches.length !== 1) return result('invalid', '预设已配置；原关联版本不再匹配，请在AI设置确认，不自动改绑。');
-    source = matches[0];
-  } else {
-    const sources = profiles.filter(p => isProviderEndpoint(provider, p.baseUrl));
-    if (sources.length > 1) return result('pending', '预设已配置；已有多份API连接，待确认准确关联，原配置保留。');
-    source = sources[0];
-  }
-  if (!source) return result('unlinked', provider === 'glm'
-    ? '预设已配置；API配置待确认关联，请在AI设置识别已有配置，已保存密钥无需重填。'
-    : '预设已配置；API待填写或确认关联，尚未测试连接。');
-  try { validateProviderRoute(provider, source); }
-  catch { return result('pending', '预设已配置；旧API配置保留，原路由或协议支持待确认，不自动迁移。'); }
-  try { validateProviderPreset(provider, source); }
-  catch { return result('pending', '预设已配置；旧API配置已保存，请在AI设置确认预设与关联，无需重新输入已保存密钥。'); }
-  if (!reference) return result('unlinked', '预设已配置；API已保存，请在AI设置确认关联，无需重新输入密钥。');
-  return result('ready', '预设已配置；API已保存并关联（未测试）。', source);
+  if (!view) return result('checking', '预设已配置；正在读取共享连接状态。');
+  const state = view.providers[provider];
+  if (state.availability === 'missing') return result('missing', '预设已配置；后台未找到已保存连接。');
+  if (state.availability === 'ambiguous') return result('ambiguous', '存在多份有效连接，旧配置保留，待定位准确版本；未自动选择。');
+  if (state.availability === 'incompatible') return result('incompatible', '旧配置保留：当前模型、路由、协议或参数不符合此预设；不会自动迁移或新建替代连接。' +
+    (state.connection.state === 'stale' ? describeProviderConnection(state.connection) : ''));
+  const ref = state.reference;
+  const matches = view.profiles.filter(p => !!ref && p.profileId === ref.profileId && p.revision === ref.revision && p.snapshotHash === ref.snapshotHash);
+  if (matches.length !== 1) return result('invalid', '共享连接引用不匹配，请重新读取；未自动选择。');
+  try { validateProviderPreset(provider, matches[0]); }
+  catch { return result('invalid', '共享连接不符合已核预设；旧配置保留，未自动选择。'); }
+  return result('ready', `已配置 · ${describeProviderConnection(state.connection)}`, matches[0]);
 }

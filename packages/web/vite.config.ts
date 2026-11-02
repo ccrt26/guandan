@@ -1,26 +1,14 @@
-import { defineConfig, type Plugin } from 'vite';
-import { readFileSync } from 'node:fs';
-import { projectPublicIndex } from '../ai/src/policy/public-index';
+import { defineConfig } from 'vite';
+import { policyIndexPlugin } from './policy-index-plugin';
 import react from '@vitejs/plugin-react';
 import { taskOutput, assertBuildOutput } from '../../scripts/project-paths.mjs';
 import { fileURLToPath } from 'node:url';
 
 const r = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 
-/** Single-source virtual projection; no Node paths are included in the module. */
-export function policyIndexPlugin(): Plugin {
-  const source = r('../../lab/model-index.json');
-  const id = '\0virtual:gd-model-index';
-  return {
-    name: 'registered-model-index',
-    buildStart() { this.addWatchFile(source); },
-    resolveId(name) { return name === 'virtual:gd-model-index' ? id : null; },
-    load(name) { return name === id ? `export default ${JSON.stringify(projectPublicIndex(JSON.parse(readFileSync(source, 'utf8'))))};` : null; },
-  };
-}
 export default defineConfig({
   root: r('.'),
-  plugins: [react(), policyIndexPlugin(), {
+  plugins: [react(), policyIndexPlugin({indexFile:r('../../lab/model-index.json'),catalogFile:r('./src/game/local-model-releases.json'),releasesFile:r('../ai/src/policy/releases.json')}), {
     name: 'task-build-output',
     configResolved(config) {
       if (config.command === 'build') assertBuildOutput(config.root, config.build);

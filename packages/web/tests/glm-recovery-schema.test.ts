@@ -19,7 +19,11 @@ it('GLM recovery: exact preserved route builds and validates its distinct max re
  const p=providerPresetFields('glm',{profileId:'fake-glm-restored',nickname:'GLM'},{protocol:'anthropic-messages',baseUrl:'https://open.bigmodel.cn/api/anthropic'});
  expect(p).toEqual(fields());expect(()=>validateProviderPreset('glm',p)).not.toThrow();
  const publicP={...p,revision:1,snapshotHash:'a'.repeat(64)};
- expect(describeProviderAvailability('glm',{schema:'ohuo-provider-bindings-v1',glm:null,deepseek:null},[publicP]).reason).toContain('API已保存');
+ const status=describeProviderAvailability('glm',{schema:'ohuo-provider-state-v1',profiles:[publicP],providers:{
+  glm:{availability:'ready',reference:{profileId:publicP.profileId,revision:publicP.revision,snapshotHash:publicP.snapshotHash},connection:{state:'untested',reason:'no_receipt'}},
+  deepseek:{availability:'missing',reference:null,connection:{state:'unknown',reason:'provider_not_ready'}},
+ }});
+ expect(status).toMatchObject({state:'ready',profile:publicP});expect(status.reason).toContain('当前配置未测试');
 });
 it('GLM recovery: schema rejects cross-protocol effort, undeclared effort and extra nested keys',()=>{
  const s=store();for(const change of [

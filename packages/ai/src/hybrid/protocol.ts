@@ -1,5 +1,7 @@
 /** Browser/Node-neutral B02 data boundary. Local bundles are NOT request bodies. */
 import type { Card, Combo, ComboKind, EngineEvent, GameResult, RuleOptions, Suit } from '@gd/engine';
+import type { CandidatePolicySpec, EnumSpec } from '../candidate-spec';
+import type { CandidateCoverage } from './candidateCoverage';
 
 export const OBSERVATION_SCHEMA = 'ohuo-public-observation-v1' as const;
 export const CANDIDATE_SPEC = 'ohuo-frozen-c8-expand4-v1' as const;
@@ -96,7 +98,10 @@ export interface FrozenCandidate {
   remainingHand: FaceCount[];
 }
 export interface CandidateBundle {
-  candidateSpec: typeof CANDIDATE_SPEC;
+  candidateSpec: CandidatePolicySpec['candidateSpec'];
+  /** New contract requires explicit enum identity; absent on historical bundles. */
+  enumSpec?: EnumSpec;
+  coverage?: CandidateCoverage;
   decisionId: string;
   pool: readonly FrozenCandidate[];
   initialCandidateIds: readonly string[];

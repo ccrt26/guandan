@@ -36,7 +36,9 @@
 .gt-avatar {display:inline-flex;width:calc(50px * var(--ui-scale));height:calc(50px * var(--ui-scale));border-radius:50%;border:calc(1px * var(--ui-scale)) solid #DACCA8;background:#17201D url('/sp/user.svg') center/calc(36px * var(--ui-scale)) no-repeat;flex:none;}
 .gt-player-name {font-size:calc(22px * var(--ui-scale));font-weight:600;}
 .gt-player-count {font-size:calc(28px * var(--ui-scale));font-weight:600;}
-.gt-player-count i,.gt-self-label i {font-style:normal;font-size:calc(18px * var(--ui-scale));font-weight:400;color:#F8F4EA;}
+.gt-card-count {display:inline-flex;align-items:baseline;column-gap:calc(4.5px * var(--ui-scale));line-height:1;white-space:nowrap;flex:0 0 auto;}
+.gt-count-number {font:inherit;line-height:1;}
+.gt-count-unit {font-family:inherit;font-style:normal;font-size:calc(18px * var(--ui-scale));font-weight:600;line-height:1;color:#F8F4EA;}
 .gt-passpill {position:absolute;z-index:12;display:flex;align-items:center;justify-content:center;height:calc(48px * var(--ui-scale));border-radius:calc(24px * var(--ui-scale));border:calc(1.5px * var(--ui-scale)) solid #DECB9C66;background:#101E16;color:#F8F4EA;font-size:calc(22px * var(--ui-scale));font-weight:500;box-shadow:0 calc(2px * var(--ui-scale)) calc(6px * var(--ui-scale)) #0002;}
 .gt-played {position:absolute;z-index:10;}
 .gt-played .gt-card {position:absolute;top:0;}

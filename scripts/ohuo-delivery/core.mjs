@@ -143,14 +143,52 @@ export function sealPlan(ctx) {
 export function checkSignature(check) {
   return sha256(canonical(Object.fromEntries(Object.entries(check).filter(([k]) => !['reuseEvidenceRef', 'authorizationRefs', 'directImpactReason'].includes(k)))));
 }
-function parentFiles(ctx) {
-  const parent = ctx.m.acceptedParentRef;
-  if (parent?.commit === ctx.m.baseCommit) return [];
-  if (!parent?.receiptRef) fail('acceptedParentRef must identify fixed base commit or accepted parent receipt');
-  const evidence = jsonReference(ctx, parent.receiptRef);
-  if (evidence.kind !== 'functional-acceptance' || evidence.functionalStatus !== 'accepted' || !evidence.acceptedCodeRef?.files || evidence.acceptedCodeRef.baseCommit !== ctx.m.baseCommit) fail('parent receipt is not an accepted source identity');
-  if (!same(parent.sourceRef, evidence.acceptedCodeRef)) fail('accepted parent source reference mismatch');
-  return evidence.acceptedCodeRef.files;
+export function parentFiles(ctx) {
+  // Resolve only existing-file before identities omitted by a narrow parent receipt.
+  // New-file (null before) checks retain the original direct-parent/Git absence rule;
+  // this is not a reconstruction of a complete historical source snapshot.
+  const needed = new Set(ctx.m.changedFiles.filter(f => f.beforeSHA256 !== null).map(f => f.path));
+  const files = new Map(), visited = new Set();
+  let parent = ctx.m.acceptedParentRef;
+  while (parent?.commit !== ctx.m.baseCommit) {
+    if (!parent?.receiptRef) fail('acceptedParentRef must identify fixed base commit or accepted parent receipt');
+    if (visited.has(parent.receiptRef.path)) fail('accepted parent receipt cycle');
+    visited.add(parent.receiptRef.path);
+    const evidence = jsonReference(ctx, parent.receiptRef);
+    if (evidence.kind !== 'functional-acceptance' || evidence.functionalStatus !== 'accepted' || !Array.isArray(evidence.acceptedCodeRef?.files) || evidence.acceptedCodeRef.baseCommit !== ctx.m.baseCommit) fail('parent receipt is not an accepted source identity');
+    if (!same(parent.sourceRef, evidence.acceptedCodeRef)) fail('accepted parent source reference mismatch');
+    const seen = new Set();
+    for (const ref of evidence.acceptedCodeRef.files) {
+      relativePath(ref.path);
+      if (!validSHA(ref.sha256) || seen.has(ref.path)) fail('invalid or duplicate accepted parent source identity');
+      seen.add(ref.path);
+      // Keep the closest accepted identity, even if it disagrees with this batch's before.
+      if (!files.has(ref.path) && (visited.size === 1 || needed.has(ref.path))) files.set(ref.path, ref);
+      needed.delete(ref.path);
+    }
+    if (!needed.size) break;
+    // A receipt commits to the batch intent, not its mutable result fields. Only
+    // authenticate/read a prior manifest when another parent edge is necessary.
+    const dir = `deliverables/ohuo-batches/${evidence.batchId}`;
+    if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(evidence.batchId) || path.posix.dirname(parent.receiptRef.path) !== dir) fail('accepted parent receipt batch path mismatch');
+    const batchPath = `${dir}/engineering-batch.json`;
+    inScope(ctx.m, batchPath);
+    const full = safePath(ctx.root, batchPath);
+    if (!fs.statSync(full).isFile()) fail('accepted parent batch must be a regular file');
+    let batch;
+    try { batch = JSON.parse(fs.readFileSync(full, 'utf8')); }
+    catch { fail('invalid accepted parent batch JSON'); }
+    if (!validSHA(evidence.acceptedIntentHash) || intentHash(batch) !== evidence.acceptedIntentHash) fail('accepted parent batch intent mismatch');
+    if (batch.schemaVersion !== 1 || batch.batchId !== evidence.batchId || batch.revision !== evidence.revision || batch.baseCommit !== ctx.m.baseCommit || !same(batch.checkPlan?.sourceRef, evidence.acceptedCodeRef) || !Array.isArray(batch.changedFiles)) fail('accepted parent batch source identity mismatch');
+    // A nearer accepted deletion must not resurrect an older source identity.
+    for (const f of batch.changedFiles) if (f.afterSHA256 === null && needed.has(f.path)) {
+      files.set(f.path, { path: f.path, sha256: null });
+      needed.delete(f.path);
+    }
+    if (!needed.size) break;
+    parent = batch.acceptedParentRef;
+  }
+  return [...files.values()];
 }
 function verifyBeforeIdentity(ctx, f, parents) {
   if (f.beforeSHA256 !== null && !validSHA(f.beforeSHA256)) fail('beforeSHA256 must be null or digest');

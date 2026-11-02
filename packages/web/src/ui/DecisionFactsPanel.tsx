@@ -1,8 +1,9 @@
+import {reviewPolicyDisplayLabel,type ReviewPolicyDisplayLabels} from '../../../review/src/coachJson';
 import {buildDecisionFactsV3,displaySeatLabel,displaySeatCounts,type DecisionReview} from '@gd/review';
 import type {GameRecord} from '@gd/engine';
 
 export const REVIEW_PREVIEW_ID='review6-facts-ui-20261028-03';
-export function DecisionFactsPanel({record,moveNo,viewerSeat,identity,evidence}:{record:GameRecord;moveNo:number;viewerSeat:number;identity:Record<string,unknown>;evidence:DecisionReview|null}) {
+export function DecisionFactsPanel({record,moveNo,viewerSeat,identity,evidence,policyLabels={}}:{record:GameRecord;moveNo:number;viewerSeat:number;identity:Record<string,unknown>;evidence:DecisionReview|null;policyLabels?:ReviewPolicyDisplayLabels}) {
   let facts:ReturnType<typeof buildDecisionFactsV3>;
   try{facts=buildDecisionFactsV3(record,moveNo,viewerSeat,identity);}catch(error){return <p role="alert">该手事实核验不足：{(error as Error).message}</p>;}
   function exportIncident(){
@@ -22,9 +23,9 @@ export function DecisionFactsPanel({record,moveNo,viewerSeat,identity,evidence}:
     {facts.bombComparison&&<p>四炸 / 五炸规则比较：{facts.bombComparison.fourCanBeatCurrent&&facts.bombComparison.fiveCanBeatCurrent?'两者都能压当前目标':'领出时无待压目标'}；{facts.bombComparison.fiveBeatsFour?'五炸强度大于四炸':'按当前规则分别比较'}。行动后分别剩 {facts.bombComparison.fourRemaining} / {facts.bombComparison.fiveRemaining} 张。余手用途尚未验证，不据此判定哪种打法更好。</p>}
     <p>建议范围：{facts.expressionScope}</p>
     <p>启发式偏好：{evidence?.heuristic.topActionId?evidence.actionTexts[evidence.heuristic.topActionId]:'未提供'}（尚未验证优劣）；来源 {evidence?.heuristic.sourceId??'未提供'}</p>
-    <p>网络首选：{evidence?.candidates?.ranking[0]?.text??'未加载，未测'}；来源 {evidence?.policy?.proposalPolicyId??'无网络来源'}</p>
+    <p>网络首选：{evidence?.candidates?.ranking[0]?.text??'未加载，未测'}；来源 {evidence?reviewPolicyDisplayLabel(evidence,policyLabels):'无网络来源'}</p>
     <p>经验证搜索建议：未运行。</p>
     <button className="btn-ghost btn-small" onClick={exportIncident}>导出本手事故包与原谱</button>
-    <details><summary>动作身份与可见信息边界</summary><p>{facts.actualActionId}</p><p>{facts.revealedFacts.actorHandVisibility}</p><p>观察指纹：{facts.observationHash}</p><p>六类预登记断言：{facts.assertions.filter(a=>a.checked).length} / {facts.expectedAssertionIds.length} 已核</p></details>
+    <details><summary>动作身份与可见信息边界</summary><p>技术来源：内部政策 {evidence?.policy?.proposalPolicyId??'未记录'}；权重 {evidence?.policy?.weightHash??'未记录'}</p><p>{facts.actualActionId}</p><p>{facts.revealedFacts.actorHandVisibility}</p><p>观察指纹：{facts.observationHash}</p><p>六类预登记断言：{facts.assertions.filter(a=>a.checked).length} / {facts.expectedAssertionIds.length} 已核</p></details>
   </section>;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import type {GameRecord} from '@gd/engine';
 import {displaySeatLabel,type ActualSeatController} from '@gd/review';
+import {webPolicyDescriptors} from '../game/policy';
 import {describeSeatChoice} from '../game/ai-selection';
 import type {FrozenAISeat,SeatSnapshot} from '../../../ai/src/policy/seats';
 export function recordSeatSnapshot(record:GameRecord):SeatSnapshot|undefined {
@@ -20,7 +21,7 @@ export function recordSeatController(record:GameRecord,seat:number):ActualSeatCo
 }
 /** A bad frozen identity is reported, never replaced with today's choice. */
 export function recordedModelName(seat:FrozenAISeat):string {
- try{return describeSeatChoice(seat).shortName;}catch(error){return `身份未核验：${(error as Error).message}`;}
+ try{return describeSeatChoice(seat,{policies:webPolicyDescriptors}).shortName;}catch(error){return `身份未核验：${(error as Error).message}`;}
 }
 /** Display the saved identities as evidence; never resolve today's profiles. */
 export function RecordedSeats({record}:{record:GameRecord}) {

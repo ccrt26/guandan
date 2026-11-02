@@ -1,3 +1,5 @@
+import {isFirstRoundRecipe,validateFirstRoundRecipe} from './first-round-contract.mjs';
+import * as firstRoundContract from './first-round-contract.mjs';
 import {createHash} from 'node:crypto';
 
 export class TaskError extends Error {
@@ -38,6 +40,23 @@ export function validateLimits(limits,path='limits'){
  for(const k of Object.values(LIMITS))integer(limits[k],`${path}.${k}`);
  integer(limits.maxRunSeconds,`${path}.maxRunSeconds`,1);
 }
+export const isInputWorkloadLimits=limits=>limits?.mode==='input-derived-workload-v1';
+export const isScientificObservationLimits=limits=>limits?.mode==='scientific-observation-v1';
+export const isWorkloadLimits=limits=>isInputWorkloadLimits(limits)||isScientificObservationLimits(limits);
+export function validateWorkloadLimits(limits,path='limits'){
+ const observing=isScientificObservationLimits(limits);
+ if(!isWorkloadLimits(limits))fail('unsupported_schema',path,'explicit input workload or scientific observation required');
+ strictObject(limits,path,['mode',...Object.values(LIMITS).filter(k=>!observing||k!=='maxOptimizerSteps')]);
+ for(const k of Object.values(LIMITS).filter(k=>!observing||k!=='maxOptimizerSteps')){integer(limits[k],`${path}.${k}`);if(observing&&limits[k]!==0)fail('unsupported_scope',`${path}.${k}`,'learning observation cannot make provider, label or match operations');}
+}
+export function validateResourcePolicy(policy){
+ strictObject(policy,'resourcePolicy',['ref','value']);fixedReference(policy.ref,'resourcePolicy.ref');
+ const v=policy.value;strictObject(v,'resourcePolicy.value',['schema','mode','protocolRevisionRef','planRef','budgetRef','authorizationRef','controlRoot']);
+ if(v.schema!=='ohuo-round-resource-policy-v1'||v.mode!=='input-workload-only')fail('resource_policy_invalid','resourcePolicy','only the named record-only round policy is supported');
+ for(const k of ['protocolRevisionRef','planRef','budgetRef','authorizationRef'])fixedReference(v[k],`resourcePolicy.${k}`);text(v.controlRoot,'resourcePolicy.controlRoot');
+ if(policy.ref.split(':').at(-1)!==digest(v))fail('resource_policy_invalid','resourcePolicy.ref','exact canonical policy identity required');
+ return policy;
+}
 export function validateCost(cost){strictObject(cost,'cost',COUNTERS);for(const k of COUNTERS)integer(cost[k],`cost.${k}`);}
 const TOP=['schemaVersion','taskId','experimentId','attemptId','planVersion','planRef','parentTaskId','retryReasonRef','researchBatchId','budgetRef','authorizationRef','taskKind','capabilityRef','sourceRevision','runtimeRef','parentPolicyRef','releaseRefs','rulesRef','sourcePlan','splitRefs','seatLayoutPlan','actorSampleRule','datasetRefs','labelPolicyRef','promptRef','scientificContract','planScope','learnerRecipe','operationScope','limits','allowedBranches','stopPolicy','outputSpec','outputRoot','runId','taskStatus','unresolved'];
 const SIMPLE_REFS=['planRef','budgetRef','authorizationRef','capabilityRef','sourceRevision','runtimeRef','parentPolicyRef','rulesRef','seatLayoutPlan','labelPolicyRef','promptRef','stopPolicy'];
@@ -64,16 +83,28 @@ export function validateTask(t){
  strictObject(t.operationScope,'operationScope',['localExecution','apiCalls','parameterUpdates','deployment']);
  for(const [k,v] of Object.entries(t.operationScope))if(typeof v!=='boolean')fail('invalid_field',`operationScope.${k}`,'boolean required');
  if(t.operationScope.deployment)fail('unsupported_scope','operationScope.deployment','M0 cannot deploy');
- validateLimits(t.limits);
+ if(isWorkloadLimits(t.limits))validateWorkloadLimits(t.limits);else validateLimits(t.limits);
+ if(isScientificObservationLimits(t.limits)&&t.taskKind!=='supervised_training')fail('unsupported_scope','limits.mode','only the named r2 learner can use scientific stopping');
  list(t.allowedBranches,'allowedBranches',(b,p)=>{
   strictObject(b,p,['branchId','conditionRef','evidenceRef','change','maxUses','restartFrom','inheritBudgetRef']);id(b.branchId,`${p}.branchId`);fixedReference(b.conditionRef,`${p}.conditionRef`);fixedReference(b.evidenceRef,`${p}.evidenceRef`);
   strictObject(b.change,`${p}.change`,['learningRate']);if(b.change.learningRate!==.00003||b.maxUses!==1||b.restartFrom!=='fixed-parent'||b.inheritBudgetRef!==true)fail('unsupported_branch',p,'only frozen single numerical branch shape is recognized, not authorized');
  });
  if(t.taskKind==='supervised_training'){
+  if(isWorkloadLimits(t.limits)){
+   if(typeof firstRoundContract.isFirstRoundR2Recipe!=='function'||typeof firstRoundContract.validateFirstRoundR2Recipe!=='function'||!firstRoundContract.isFirstRoundR2Recipe(t.learnerRecipe))fail('unsupported_recipe','learnerRecipe','reviewed r2 scientific learning recipe required');
+   try{firstRoundContract.validateFirstRoundR2Recipe(t.learnerRecipe);}catch{fail('unsupported_recipe','learnerRecipe','exact r2 scientific stopping recipe required');}
+   if(isInputWorkloadLimits(t.limits)&&t.limits.maxOptimizerSteps!==1)fail('unsupported_recipe','limits.maxOptimizerSteps','the finite r2 calibration is one numerical check; formal learning uses scientific-observation');
+  }else if(firstRoundContract.isFirstRoundR2Recipe?.(t.learnerRecipe)){
+   fail('unsupported_recipe','limits.mode','r2 learning requires the approved explicit workload mode');
+  }else if(isFirstRoundRecipe(t.learnerRecipe)){
+   try{validateFirstRoundRecipe(t.learnerRecipe);}catch{fail('unsupported_recipe','learnerRecipe','exact first-round fixed64 recipe required');}
+   if(![1,64].includes(t.limits.maxOptimizerSteps))fail('unsupported_recipe','limits.maxOptimizerSteps','first-round calibration1 or formal64 bound required; host binds the phase');
+  }else{
   const expected={recipeId:'supervised-rerank-v1',optimizer:'RMSprop',alpha:.9,eps:.00001,momentum:0,centered:false,weightDecay:0,temperature:1,keepWeight:1,demoBatch:32,keepBatch:32,maxEpochs:3,initialization:'fixed-parent-new-optimizer'};
   strictObject(t.learnerRecipe,'learnerRecipe',[...Object.keys(expected),'learningRate']);
   for(const [k,v] of Object.entries(expected))if(t.learnerRecipe[k]!==v)fail('unsupported_recipe',`learnerRecipe.${k}`,'only frozen v5.2 recipe can be described; learner remains planned');
   if(![.0001,.00003].includes(t.learnerRecipe.learningRate))fail('unsupported_recipe','learnerRecipe.learningRate','unapproved recipe value');
+  }
   if(!t.operationScope.parameterUpdates)fail('invalid_field','operationScope.parameterUpdates','training must explicitly request updates');
  }else if(t.learnerRecipe!==null||t.operationScope.parameterUpdates)fail('forbidden_field','learnerRecipe','non-training tasks cannot imply a learner');
  if(t.taskKind==='supervised_training'){strictObject(t.outputSpec,'outputSpec',['trainingKind','proposalPolicyRef','releaseStatus']);enumeration(t.outputSpec.trainingKind,'outputSpec.trainingKind',['supervised_rerank']);fixedReference(t.outputSpec.proposalPolicyRef,'outputSpec.proposalPolicyRef');}

@@ -1,11 +1,12 @@
 /** Product intent/identity adapter only. Does not mutate research defaults or frozen release schemas. */
 import type { RuleOptions } from '@gd/engine';
 import type { PolicyDescriptor } from '../../../ai/src/policy/descriptor';
-import { RELEASES, type ReleaseDescriptor, type SeatAssignment, type FrozenAISeat } from '../../../ai/src/policy/seats';
+import { type ReleaseDescriptor, type SeatAssignment, type FrozenAISeat } from '../../../ai/src/policy/seats';
 import { freezeCopy } from '../../../ai/src/hybrid/protocol';
 import { freezeSeatAssignments, isResolvedFourSeats, type ResolvedFourSeats } from './seats';
 import type { PublicProfile } from './llm-profiles';
 import productCatalog from './local-model-releases.json';
+import {currentProductIntent} from './product-directory';
 
 export interface ProductModel {releaseRef:string;policyId:string;weightsSHA256:string;name:'ohuo';version:string;displayVersion:string;effectiveDate:string}
 export interface ProductModelCatalog {schema:'ohuo-product-model-catalog-v1';formalLocalReleaseRef:string;models:readonly ProductModel[]}
@@ -26,23 +27,32 @@ const canonical=(value:unknown):string=>JSON.stringify(value,(_,v)=>plain(v)?Obj
 const text=(v:unknown):v is string=>typeof v==='string'&&v.length>0&&v===v.trim();
 const semver=/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
 /** Policy descriptors are the existing registry objects, never a second weight catalog. */
-export function validateProductModelCatalog(value:unknown=productCatalog,policies?:readonly PolicyDescriptor[],releases=RELEASES):ProductModelCatalog {
+export function validateProductModelCatalog(value:unknown=currentProductIntent().catalog,policies?:readonly PolicyDescriptor[],releases=currentProductIntent().releases):ProductModelCatalog {
  exact(value,['schema','formalLocalReleaseRef','models'],'product_model_catalog');
  if(value.schema!=='ohuo-product-model-catalog-v1'||!text(value.formalLocalReleaseRef)||!Array.isArray(value.models)||!value.models.length)throw Error('invalid_product_model_catalog');
- const refs=new Set<string>(),versions=new Set<string>();
+ const refs=new Set<string>(),versions=new Set<string>(),identities=new Set<string>();
  const models=value.models.map(raw=>{
   exact(raw,['releaseRef','policyId','weightsSHA256','name','version','displayVersion','effectiveDate'],'product_model');
   if(!['releaseRef','policyId','weightsSHA256','version','displayVersion','effectiveDate'].every(k=>text(raw[k]))||raw.name!=='ohuo')throw Error('invalid_product_model');
   const m=raw as unknown as ProductModel;
   if(!/^[a-f0-9]{64}$/.test(m.weightsSHA256)||!semver.test(m.version)||!/^\d{4}-\d{2}-\d{2}$/.test(m.effectiveDate)||Number.isNaN(Date.parse(m.effectiveDate))||new Date(m.effectiveDate).toISOString().slice(0,10)!==m.effectiveDate)throw Error('invalid_product_version_or_date');
-  const initial=m.releaseRef==='ohuo-1030-b-v1'&&m.version==='1.0.0'&&m.effectiveDate==='2026-10-31';
+  const initial=m.releaseRef==='ohuo-1030-b-v1';
+  if(initial&&canonical(m)!==canonical(productCatalog.models.find(p=>p.releaseRef===m.releaseRef)))throw Error('initial_product_identity_mismatch');
   if(m.displayVersion!==(initial?'v1':`v${m.version}`))throw Error('invalid_display_version');
-  if(refs.has(m.releaseRef)||versions.has(m.version))throw Error('duplicate_product_identity');refs.add(m.releaseRef);versions.add(m.version);
+  if(!initial&&m.releaseRef!==publicModelName(m))throw Error('noncanonical_product_release');
+  const modelIdentity=canonical([m.policyId,m.weightsSHA256]);
+  if(refs.has(m.releaseRef)||versions.has(m.version)||identities.has(modelIdentity))throw Error('duplicate_product_identity');refs.add(m.releaseRef);versions.add(m.version);identities.add(modelIdentity);
   const release=releases.find(r=>r.releaseRef===m.releaseRef);
-  if(!release||release.mode!=='local'||release.proposalPolicyRef!==m.policyId)throw Error('product_release_identity_mismatch');
-  if(policies){const policy=policies.find(p=>p.policyId===m.policyId);if(!policy||policy.weightsSHA256!==m.weightsSHA256)throw Error('product_policy_identity_mismatch');}
+  if(!release||release.mode!=='local'||release.proposalPolicyRef!==m.policyId||release.tier!=='hard')throw Error('product_release_identity_mismatch');
+  if(policies){const policy=policies.find(p=>p.policyId===m.policyId);if(!policy||policy.weightsSHA256!==m.weightsSHA256||policy.epsilon!==0||policy.tierSpecId!=='none')throw Error('product_policy_identity_mismatch');}
   return {...m};
  });
+ for(const release of releases.filter(r=>r.mode==='hybrid')){
+  const model=models.find(m=>m.releaseRef===release.parentRelease||m.policyId===release.proposalPolicyRef);
+  if(!model)continue; // Unregistered historical releases are not new product choices.
+  const expected=model.releaseRef==='ohuo-1030-b-v1'?'ohuo-1030-h-v1':`${model.releaseRef}-hybrid`;
+  if(release.releaseRef!==expected||release.parentRelease!==model.releaseRef||release.proposalPolicyRef!==model.policyId||release.tier!=='hard')throw Error('product_hybrid_identity_mismatch');
+ }
  if(!models.some(m=>m.releaseRef===value.formalLocalReleaseRef))throw Error('formal_local_release_unavailable');
  return freezeCopy({schema:'ohuo-product-model-catalog-v1',formalLocalReleaseRef:value.formalLocalReleaseRef,models});
 }
@@ -61,24 +71,32 @@ export function validateNewGameSettings(value:unknown):NewGameSettings {
 export function newGameSettingsFromLegacy(legacy:{passA?:RuleOptions['passA'];seats?:readonly SeatAssignment[]}={}):NewGameSettings {
  return validateNewGameSettings({schema:'ohuo-new-game-settings-v1',passA:legacy.passA??'head3',aiSelection:legacy.seats?{kind:'explicit',seats:legacy.seats}:{kind:'auto_latest'}});
 }
-function catalogFor(context:SelectionContext) {return validateProductModelCatalog(context.catalog??productCatalog,context.policies,context.releases??RELEASES);}
+function publicModelName(model:ProductModel):string {return `${model.name}-${model.displayVersion}-${model.effectiveDate.slice(5).replace('-','')}`;}
+function catalogFor(context:SelectionContext) {return validateProductModelCatalog(context.catalog??currentProductIntent().catalog,context.policies,context.releases??currentProductIntent().releases);}
+export const HISTORICAL_SELECTION_NOTICE='历史选择，当前仅提供标准档，请恢复默认后确认';
+/** Product admission only; frozen save/resume does not call this gate. */
+export function isNewGameRelease(release:ReleaseDescriptor,context:SelectionContext):boolean {
+ const catalog=catalogFor(context),model=catalog.models.find(m=>m.releaseRef===catalog.formalLocalReleaseRef)!;
+ return release.tier==='hard'&&release.proposalPolicyRef===model.policyId&&(release.mode==='local'?release.releaseRef===model.releaseRef:release.parentRelease===model.releaseRef);
+}
 function assignmentsFor(settings:NewGameSettings,context:SelectionContext):readonly SeatAssignment[] {
  if(settings.aiSelection.kind==='explicit')return settings.aiSelection.seats;
  const catalog=catalogFor(context);
  return freezeSeatAssignments([{controller:'human'},...Array.from({length:3},()=>({controller:'ai',releaseRef:catalog.formalLocalReleaseRef,mode:'local'}))]);
 }
 export function resolveNewGameAssignments(value:unknown,context:SelectionContext):readonly SeatAssignment[] {
- const settings=validateNewGameSettings(value),catalog=catalogFor(context),releases=context.releases??RELEASES;
+ const settings=validateNewGameSettings(value),catalog=catalogFor(context),releases=context.releases??currentProductIntent().releases;
  const assignments=assignmentsFor(settings,context);
  for(const seat of assignments){
   if(seat.controller==='human')continue;
   const release=releases.find(r=>r.releaseRef===seat.releaseRef);
   if(!release||release.mode!==seat.mode)throw Error(`release_unavailable:${seat.releaseRef}`);
+  const model=catalog.models.find(m=>m.releaseRef===(release.mode==='local'?release.releaseRef:release.parentRelease));
+  if(!model||model.policyId!==release.proposalPolicyRef)throw Error(HISTORICAL_SELECTION_NOTICE);
   if(context.choices&&!context.choices.some(c=>c.available&&c.release.releaseRef===seat.releaseRef))throw Error(`asset_unavailable:${seat.releaseRef}`);
   const policy=context.policies?.find(p=>p.policyId===release.proposalPolicyRef);
   if(context.policies&&(!policy||!policy.weightsPathOrUrl.assetUrl))throw Error(`policy_asset_unavailable:${release.proposalPolicyRef}`);
-  if(settings.aiSelection.kind==='auto_latest'){
-   const model=catalog.models.find(m=>m.releaseRef===seat.releaseRef)!;
+  {
    if(!policy||policy.weightsSHA256!==model.weightsSHA256||policy.tierSpecId!=='none'||policy.epsilon!==0||release.tier!=='hard')throw Error('formal_native_policy_unavailable');
   }
   if(seat.mode==='hybrid'&&context.profiles&&!context.profiles.some(p=>sameProfile(p,seat.profileRevisionRef)))throw Error('profile_reference_unavailable');
@@ -104,11 +122,18 @@ export async function resolveNewGameSeats(value:unknown,context:SelectionContext
  return resolved;
 }
 function sameOptionalProfile(a:FrozenAISeat['profileRevisionRef'],b:FrozenAISeat['profileRevisionRef']){return !a&&!b||!!a&&sameProfile(a,b);}
-export interface SeatChoiceDescription {shortName:string;detail:string;identity:string}
+export interface SeatChoiceDescription {shortName:string;detail:string;identity:string;localModelName?:string;productTier?:'standard'}
+/** The descriptor's full resolved identity, not a short-name or policy-id comparison. */
+export function selectionPolicyIdentity(policy:PolicyDescriptor) {
+ return {policyId:policy.policyId,modelVersion:policy.modelVersion,weightsSHA256:policy.weightsSHA256,inputDim:policy.inputDim,
+  encoderVersion:policy.encoder.encoderVersion,candidateVersion:policy.candidateSpecId,passEncoding:policy.encoder.passEncoding,
+  candidateCompat:policy.candidateSpecId==='cand-dedup-v2'?'v2':undefined,architectureId:policy.architectureId,
+  weightsLayoutVersion:policy.weightsLayoutVersion,epsilon:policy.epsilon,tieBreakId:policy.tieBreakId,tierSpecId:policy.tierSpecId};
+}
 /** Frozen records use their frozen profile/identity, never today's mutable profile service. */
 export function describeSeatChoice(seat:SeatAssignment|FrozenAISeat,context:SelectionContext={}):SeatChoiceDescription {
  if(seat.controller==='human')return {shortName:'你（真人）',detail:'真人',identity:'human'};
- const releases=context.releases??RELEASES,catalog=catalogFor(context);
+ const releases=context.releases??currentProductIntent().releases,catalog=catalogFor(context);
  const frozen='policyIdentity' in seat;
  const release=frozen?seat.release:releases.find(r=>r.releaseRef===seat.releaseRef);
  if(!release||release.releaseRef!==seat.releaseRef||release.mode!==seat.mode)throw Error('release_identity_unavailable');
@@ -122,7 +147,11 @@ export function describeSeatChoice(seat:SeatAssignment|FrozenAISeat,context:Sele
  }
  const model=catalog.models.find(m=>m.releaseRef===localRef);
  if(model&&(model.policyId!==policy.policyId||model.weightsSHA256!==policy.weightsSHA256))throw Error('product_frozen_identity_mismatch');
- const localName=model?`${model.name}-${model.displayVersion}-${model.effectiveDate.slice(5).replace('-','')}`:release.label;
+ const policyIdentity='encoder' in policy?selectionPolicyIdentity(policy):policy;
+ const registered=context.policies?.find(p=>p.policyId===policy.policyId),registeredRelease=releases.find(r=>r.releaseRef===release.releaseRef);
+ const verified=!!model&&!!registered&&release.tier==='hard'&&policy.epsilon===0&&policy.tierSpecId==='none'
+  &&canonical(policyIdentity)===canonical(selectionPolicyIdentity(registered))&&canonical(release)===canonical(registeredRelease);
+ const localName=verified?publicModelName(model!):`${release.label}（产品身份未核验）`;
  let shortName=localName,profile:PublicProfile|undefined;
  if(seat.mode==='hybrid'){
   profile=frozen?seat.profileSnapshot as PublicProfile|undefined:context.profiles?.find(p=>sameProfile(p,seat.profileRevisionRef));
@@ -131,15 +160,11 @@ export function describeSeatChoice(seat:SeatAssignment|FrozenAISeat,context:Sele
   const brand=profile.requestedModel==='deepseek-flash'?'DeepSeek':profile.requestedModel==='glm-5.3'?'GLM':profile.nickname;
   shortName=`${localName} + ${brand}`;
  }
- const policyIdentity='encoder' in policy?{
-  policyId:policy.policyId,modelVersion:policy.modelVersion,weightsSHA256:policy.weightsSHA256,inputDim:policy.inputDim,
-  encoderVersion:policy.encoder.encoderVersion,candidateVersion:policy.candidateSpecId,passEncoding:policy.encoder.passEncoding,
-  candidateCompat:policy.candidateSpecId==='cand-dedup-v2'?'v2':undefined,architectureId:policy.architectureId,
-  weightsLayoutVersion:policy.weightsLayoutVersion,epsilon:policy.epsilon,tieBreakId:policy.tieBreakId,tierSpecId:policy.tierSpecId,
- }:policy;
  const identity=canonical({releaseRef:seat.releaseRef,mode:seat.mode,policyIdentity,profileRevisionRef:seat.profileRevisionRef??null});
- const detail=[shortName,`release: ${seat.releaseRef}`,`policy: ${policy.policyId}`,`SHA256: ${policy.weightsSHA256}`,`实际策略: ${release.tier}`,...(profile?[`连接: ${profile.nickname}`,`requestedModel: ${profile.requestedModel}`,`profileId: ${profile.profileId}`,`revision: ${profile.revision}`,`snapshotHash: ${profile.snapshotHash}`]:[])].join('\n');
- return {shortName,detail,identity};
+ const detail=[...(verified?[`模型：${publicModelName(model!)}`,`release: ${publicModelName(model!)}`,`版本：${model!.version}`,`正式生效：${model!.effectiveDate}`,'实际策略：标准',...(profile?['标准指本地模型档位']:[]),`配合方式：${profile?`本地模型 + ${shortName.slice(localName.length+3)}`:'本地模型独立出牌'}`]:[shortName,'实际策略：历史配置（产品档位未核验）']),
+  '技术来源（兼容旧存档和排错，不是模型名称或档位）',`内部发布引用：${seat.releaseRef}`,`内部政策引用：${policy.policyId}`,`权重校验值：${policy.weightsSHA256}`,
+  ...(profile?[`连接: ${profile.nickname}`,`requestedModel: ${profile.requestedModel}`,`profileId: ${profile.profileId}`,`revision: ${profile.revision}`,`snapshotHash: ${profile.snapshotHash}`]:[])].join('\n');
+ return {shortName,detail,identity,...(verified?{localModelName:publicModelName(model!),productTier:'standard' as const}:{})};
 }
 export function sameAIChoice(a:SeatAssignment|FrozenAISeat,b:SeatAssignment|FrozenAISeat,context:SelectionContext={}):boolean {return describeSeatChoice(a,context).identity===describeSeatChoice(b,context).identity;}
 export function setDraftSeat(value:NewGameSettings,engineSeat:number,seat:SeatAssignment,context:SelectionContext):NewGameSettings {

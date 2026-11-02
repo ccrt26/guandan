@@ -86,7 +86,7 @@ function loadNetwork(spec:PolicySpec,execution:InferenceExecution='original'){
  if(!networks.has(key)){const raw=readFileSync(spec.weightsPath),flat=new Float32Array(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength)),model=new MLP(1,spec.inputDim);if(model.paramCount!==flat.length||!flat.every(Number.isFinite))throw new Error('malformed frozen policy');model.setWeights(flat);const executor=installInferenceExecution(model,execution);inferenceDiagnostics.set(key,executor);networks.set(key,model);}
  return networks.get(key)!;
 }
-function driverFor(spec:PolicySpec,seat:number,options:MatchPlayOptions):SeatDriver{
+export function driverFor(spec:PolicySpec,seat:number,options:MatchPlayOptions):SeatDriver{
  if(!spec.policyId)throw new Error('policyId required for every seat');
  let history:PublicStep[]=[],gameNo=0,ordinal=0,random=mulberry32(0),heuristic:ReturnType<typeof createAI>|null=null;
  const decider=spec.kind==='neural'?new NeuralDecider(seat,loadNetwork(spec,options.inferenceExecution??'original'),spec.epsilon??0,()=>random(),spec.encoder):null;

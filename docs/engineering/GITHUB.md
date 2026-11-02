@@ -1,6 +1,6 @@
 # 源码与 GitHub 同步范围
 
-当前仓库默认分支 main。同步入口是 https://github.com/ccrt26/guandan 。以下记录2026年10月30日此次Git整理的操作范围：当时保存有效源码、目录治理和必要规范，整合P13公开摘要；网页AI为原clean2完整政策，没有切换C1400，也没有启动新功能或学习。本段是历史记录，不表示此后 ohuo 软件的授权或默认状态；现行正式 5.2.6 v14、事实索引及具名批次入口见 [AGENTS](../../AGENTS.md#current-software-delivery)。
+当前仓库默认分支 main。同步入口是 https://github.com/ccrt26/guandan 。以下记录2026年10月30日此次Git整理的操作范围：当时保存有效源码、目录治理和必要规范，整合P13公开摘要；网页AI为原clean2完整政策，没有切换C1400，也没有启动新功能或学习。本段是历史记录，不表示此后 ohuo 软件的授权或默认状态；现行正式 5.2.7 方案 v18、独立需求文档 v0、事实索引及具名批次入口见 [AGENTS](../../AGENTS.md#current-software-delivery)。
 
 2026年10月30日当次入库范围：四个packages的源码、必要资源/许可、当时运行权重及配置模板、程序和研究测试、研究实现/协议配置、退役工具原文、项目目录与工程说明。该历史范围不授权上传后续新增权重或私有数据。研究代码是源码，完整运行仍依赖本机未公开的牌谱、协议工件和检查点；不能把 clone 成功当作完整恢复或新能力验收。
 
@@ -13,17 +13,17 @@
 
 原本本地UI分支是同一祖先链，其源码贡献已进入当前工作树。旧本地Git历史含历史数据/私人工具配置，不接到GitHub新提交的父链。本机治理目录保留原refs映射、修改patch和完整Git bundle；GitHub主线基于实际远端main及摘要提交前进。
 
-## 当前源码发布与恢复待办
+## Git 当前同步授权
 
-最新软件修改尚未 commit/push，远端是否具备最新 accepted 源码恢复身份也未核；旧 `47a7ec3cec0a1efd9729c62ad8ad230b765d26c6` 只是已核源码起点，Library/Space 归档、云恢复树和本地 `accepted-code.json` 均不证明已推 GitHub。当前父沿事实索引的 `sourceBaseline.acceptedCurrentProjectCodeRef`，最终发布范围须包含实际最后接受的源差异与审过的四说明，不能预写尚未接受的 preparer 结果。
+2026年11月2日，用户明确要求把本地最新程序推送到 GitHub，并授权判断现有分支是否可以合并；随后明确要求移除旧“Git 由用户自行处理”的限制。本次已授权暂存、提交和推送经核对的程序源码与必要工程说明。此前暂停 Git 操作的约束已撤销；原本地提交 `3165152b7501d7d6b9c411a90225a6f1450040a3` 与历史拒绝记录保留。旧 `47a7ec3cec0a1efd9729c62ad8ad230b765d26c6` 是历史源码起点，不用它覆盖真实已接受源码或用户 dirty。Git 同步不阻既定软件、四说明同步或其他独立工作。
 
-原 Mac 单一 Git writer 按原发布授权与明确文件清单完成以下步骤；本文件不新增发布授权，也不要求重新批准已涵盖范围：
+Library/Space 归档、云恢复树和本地 `accepted-code.json` 不等于已推 GitHub；正式来源仍沿当前事实索引与各批不可变接收凭据。本次同步结果以实际远端提交读回为准，源码同步范围与恢复边界如下：
 
-1. 只读核项目根、branch、HEAD、upstream、实际 remote 身份及用户 dirty：`git rev-parse --show-toplevel`、`git branch --show-current`、`git rev-parse HEAD`、`git status --short`。远端地址仅报告已脱敏身份，保护原用户修改，不 reset/clean 或强推。
-2. 对明确清单逐项核 `git ls-files -- <path>`、`git check-ignore -v -- <path>` 与 staged/unstaged diff；`.gitignore` 的存在不能证明已跟踪秘密未入库。只发布已批准源码、必要工程说明和无密钥模板，不 `git add -A` 或整树打包。真实 `.env.llm-profiles.json`、`.env*`/lock/temp、密钥、签名 URL、用户存档、真实权重/checkpoint/optimizer、研究数据、临时截图日志与交付归档排除；既有公开 tag/资源不删、不改历史。
-3. 原 writer 沿既有可公开远端祖先定向提交/推送，保留实际 commit、parent、branch/tree 与文件清单。由 `git ls-remote --heads <已核remote> <已核branch>` 或原等价入口读回 exact commit，再从该固定远端 commit 在 `lab/out/<task-id>/` 受控恢复已列文件，逐字节对齐 accepted sourceRef 与四说明 after SHA。只本地 `git show HEAD`、只列 tar 成员或“已上传归档”不足以报远端恢复完成。
+- 只考虑明确列出的源码、必要工程说明和无密钥模板；`.gitignore` 存在不证明已跟踪秘密未入库。真实 `.env.llm-profiles.json`、`.env*`/lock/temp、密钥、签名 URL、用户存档、真实权重/checkpoint/optimizer、研究数据、临时截图日志与交付归档均排除；不 `git add .` / `git add -A` 或整树打包，既有公开 tag/资源不删、不改历史。
+- 保护当前 branch/HEAD、已核 remote 身份与用户修改，不 reset/clean、强推或接入含私密的旧本地父链。未来如用户要求核远端恢复，须绑定实际 commit、parent/branch/tree 和明确文件清单，读回 exact remote commit，再在 `lab/out/<task-id>/` 受控恢复所列字节，与真实 accepted sourceRef/四说明 after SHA 对齐；不能只凭本地 HEAD 或归档成功报完成。
+- 源码 clone 不替代 C1400/O/P13 模型、优化器、数据与私有配置的原恢复链；当前正式 C 权重的精确既有原件见 [README恢复入口](../../README.md#formal-weight-recovery)，不为每个代码批再复制/入Git。必要恢复资产与活动文件继续保留，临时物按同任务 `fileCloseoutRef` 实际收尾。
 
-恢复验证只涉及上述源码/模板/说明，不安装依赖、不重跑已闭软件或真实 API/模型/训练。真实 C1400/O/P13 模型、优化器、数据与私有配置仍依原保护/恢复链，clone 不能替代；临时恢复文件沿同任务 `fileCloseoutRef` 收尾。缺权限、冲突或实际远端回件只阻相应发布步骤，不阻独立说明准备或软件接收。
+本次 Git 同步按用户上述授权执行；实际发布/远端恢复未核如实记录，不改历史拒绝证据，也不把 Git 状态设为软件暂停条件。
 
 ## 检查范围
 

@@ -144,6 +144,11 @@ export interface DecisionReview {
   actionTexts: Record<string, string>;
 }
 
+/** Display-only deterministic model sentence; IDs and scientific policy fields remain unchanged. */
+export function renderModelPreferenceClaimText(modelLabel:string,top:{text:string;score:number},moveNo:number,recordId:string):string {
+  return `模型（${modelLabel}）首选 ${top.text}（评分 ${top.score}），这是偏好排序不是对错判定（第${moveNo}手，${recordId}）`;
+}
+
 /** 双 lane FNV-1a：确定性身份哈希（非密码学） */
 export function fnvId(s: string): string {
   let h1 = 0x811c9dc5, h2 = 0x01000193;
@@ -493,7 +498,7 @@ export function buildDecisionReviews(
         claimId: fnvId(`pp-${decisionId}-model`), kind: 'policy_preference', decisionId,
         subjectActionId: top.actionId, contrastActionId: actualCanonical.actionId,
         factIds: [ctxId], scope: 'model_preference',
-        text: claimText(`模型（${opts.modelVersion ?? 'unknown'}）首选 ${top.text}（评分 ${top.score}），这是偏好排序不是对错判定`),
+        text: renderModelPreferenceClaimText(`技术政策 ${opts.modelVersion ?? 'unknown'}，产品名未核验`,top,mv.moveNo,recordId),
       });
     }
     if (heurTopActionId && !degraded) {

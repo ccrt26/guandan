@@ -77,7 +77,7 @@ function PlayerPill({ name, count, cls, showCount, rect }: { name: string; count
     <div className={`gt-player ${cls}`} style={rectStyle(rect)} aria-label={`${name}${showCount ? `，剩余 ${count} 张` : ''}`}>
       <span className="gt-avatar" aria-hidden="true" />
       <span className="gt-player-name">{name}</span>
-      {showCount && <span className="gt-player-count">{count} <i>张</i></span>}
+      {showCount && <span className="gt-player-count gt-card-count"><span className="gt-count-number">{count}</span><span className="gt-count-unit">张</span></span>}
     </div>
   );
 }
@@ -86,6 +86,7 @@ export interface GameTableProps {
   vm: GameTableVM;
   hintInfo?: { heur: string; neural: string | null } | null;
   toast?: string | null;
+  toastRole?: 'status' | 'alert';
   overlay?: ReactNode;
   /** fixture 视觉样例：面板标题带「· 示例」（生产不显示，规格§五） */
   demo?: boolean;
@@ -105,7 +106,7 @@ export interface GameTableProps {
 }
 
 export function GameTable({
-  vm, hintInfo, toast, overlay, demo, onSelect, onPlay, onPass, onHint, onAck, ackBusy, onBack, onNav, onSettings, onEscape, onImageError, onHistory,
+  vm, hintInfo, toast, toastRole = 'status', overlay, demo, onSelect, onPlay, onPass, onHint, onAck, ackBusy, onBack, onNav, onSettings, onEscape, onImageError, onHistory,
 }: GameTableProps) {
   const tribute = vm.phase === 'tribute-result';
   const rootRef = useRef<HTMLDivElement>(null);
@@ -221,7 +222,7 @@ export function GameTable({
         <div className="gt-self-label" style={rectStyle(layout.selfLabel)} aria-label={`${SEAT_DISPLAY.self}手牌`}>
           <span className="gt-avatar" aria-hidden="true" />
           <span>{SEAT_DISPLAY.self}手牌</span>
-          {!tribute && <b>{n} <i>张</i></b>}
+          {!tribute && <b className="gt-card-count"><span className="gt-count-number">{n}</span><span className="gt-count-unit">张</span></b>}
         </div>
 
         <div className="gt-hand" style={rectStyle(layout.hand)} aria-label={`${SEAT_DISPLAY.self}手牌${tribute || !vm.selectable ? '（只读）' : '，可选中'}`}>
@@ -251,7 +252,7 @@ export function GameTable({
           })}
         </div>
 
-        {toast && <div className="gt-toast" role="status">{toast}</div>}
+        {toast && <div className="gt-toast" role={toastRole}>{toast}</div>}
         {overlay}
       </main>
 

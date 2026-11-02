@@ -2,7 +2,7 @@ import type { Card, Combo, EngineEvent, GameResult, RuleOptions, TrickPlay } fro
 import { BIG_JOKER, RANK_A } from './types';
 import { deal, dealInitialHands } from './deck';
 import { RNG, randomSeed } from './rng';
-import { beats, enumerateCombos, removeCards } from './combo';
+import { beats, enumerateCombos, removeCards, type EnumerationMode } from './combo';
 import { makeLevelCtx, rankOrder, type LevelCtx } from './rank';
 
 export const TEAM_OF: readonly [0, 1, 0, 1] = [0, 1, 0, 1];
@@ -243,9 +243,9 @@ function isWildCard(card: Card, ctx: LevelCtx): boolean {
 export type Move = { pass: true } | { pass: false; combo: Combo };
 
 /** 当前玩家全部合法动作（不含 Pass） */
-export function legalCombos(state: GameState): Combo[] {
+export function legalCombos(state: GameState, enumerationMode: EnumerationMode = 'legacy_best_pair'): Combo[] {
   const hand = state.hands[state.turn];
-  const all = enumerateCombos(hand, state.ctx, state.match.opts);
+  const all = enumerateCombos(hand, state.ctx, state.match.opts, enumerationMode);
   if (!state.lastCombo) return all;
   return all.filter((c) => beats(c, state.lastCombo));
 }

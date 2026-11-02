@@ -9,12 +9,12 @@ const root=fileURLToPath(new URL('../../../',import.meta.url));
 const ai='packages/ai/tests/decide-b05.test.ts',controller='packages/web/tests/controller-b05.test.ts';
 const cases={
  'pending-once':{files:[ai,controller],pattern:'pending_once|real controller pending',count:2},
- 'failure-once':{files:[ai,controller],pattern:'failure_once|local override|profile conflict',count:4},
+ 'failure-once':{files:[ai,controller],pattern:'failure_once|manual override unavailable|profile conflict|failure_gate',count:5},
  'cancel-late':{files:[ai,controller],pattern:'cancel_late|missing schema2 execution marker|lost ownership cancels',count:4},
  'execution-uncertain':{files:[ai,controller],pattern:'execution_uncertain',count:2},
  'restore-refs':{files:[controller,'packages/web/tests/seats-b05.test.ts'],pattern:'four frozen seats|missing referenced policy|registered same-shape|default O tiers|recorder identity',count:5},
  'seat-config':{files:[controller,'packages/web/tests/seats-b05.test.ts','packages/web/tests/seat-ui-b05.test.ts','packages/web/tests/record-seats-b05.test.ts'],pattern:'four seats reject|private profile|configured all-AI returns|four-seat UI|replay labels|AI-only record',count:6},
- 'proxy-boundary':{files:[ai,'packages/web/tests/play-route-b05.test.ts'],pattern:'same-origin route|route abort|browser propagates|browser lost|missing receipt',count:5},
+ 'proxy-boundary':{files:[ai,'packages/web/tests/play-route-b05.test.ts'],pattern:'same-origin route|route abort|browser propagates|browser lost|missing receipt|terminal-origin',count:6},
 };
 // Applied to Vitest's node API as Vite InlineConfig, not a loaded config-file field.
 export const controllerViteOverrides = Object.freeze({envFile:false,envPrefix:[]});

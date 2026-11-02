@@ -1,3 +1,4 @@
+import {createHash} from 'node:crypto';
 /** B04 wire boundary for the B02 public projection. No I/O or local GameState. */
 export const RESPONSE_CONTRACT_VERSION = 'ohuo-choose-expand-v1';
 export const MAX_INPUT_BYTES = 256 * 1024;
@@ -47,15 +48,18 @@ function observation(v) {
 /** Exact recursive schema validation prevents unknown nested state/secret fields.
  * The trusted producer remains B02; this is a wire boundary, not a second engine. */
 export function freezeRequestView(input) {
-  object(input,{observation,candidateSpec:one(['ohuo-frozen-c8-expand4-v1']),expansionCount:one([0,1]),
+  const newSpec=input?.candidateSpec==='first-target-offer12-v1';
+  object(input,{observation,candidateSpec:one([newSpec?'first-target-offer12-v1':'ohuo-frozen-c8-expand4-v1']),expansionCount:one(newSpec?[0]:[0,1]),
+    ...(newSpec?{enumSpec:v=>object(v,{id:one(['full-house-attachment-ranks-v1']),enumerationMode:one(['all_supported_attachment_ranks'])})}:{}),
     candidates:array(x=>object(x,{actionId:text(80),action:nullable(combo),remainingHand:faces}),12,1),
     expandableGroups:array(x=>object(x,{groupId:text(80),kind:one([...kinds,'pass']),size:integer(0,27),wildConsumption:integer(0,4),remainingCount:integer(1)}),200),
   });
-  if(input.candidates.length>(input.expansionCount===0?8:12)||input.expansionCount===1&&input.expandableGroups.length||new Set(input.candidates.map(x=>x.actionId)).size!==input.candidates.length||new Set(input.expandableGroups.map(x=>x.groupId)).size!==input.expandableGroups.length)fail('invalid_request');
+  if(input.candidates.length>(newSpec?12:input.expansionCount===0?8:12)||(newSpec||input.expansionCount===1)&&input.expandableGroups.length||new Set(input.candidates.map(x=>x.actionId)).size!==input.candidates.length||new Set(input.expandableGroups.map(x=>x.groupId)).size!==input.expandableGroups.length)fail('invalid_request');
   const bytes=JSON.stringify(input);if(new TextEncoder().encode(bytes).length>MAX_INPUT_BYTES)fail('input_too_large');
   return JSON.parse(bytes);
 }
-export function responseContract() {
+export function responseContract(view) {
+  if(view?.candidateSpec==='first-target-offer12-v1')return 'ohuo-choose-only-v2\nReturn only a single JSON object. Choose exactly an actionId displayed in this request: {"kind":"choose","decisionId":"...","actionId":"..."}. An optional note must be at most 240 characters. This complete initial candidate specification forbids expansion and out-of-set actions. Do not output markdown, hidden reasoning, or additional fields. Use only the supplied rules and public information; passing does not imply inability.';
   return `${RESPONSE_CONTRACT_VERSION}\nReturn only a single JSON object. Choose exactly an actionId displayed in this request: {"kind":"choose","decisionId":"...","actionId":"..."}. An optional note must be at most 240 characters. Only when expansionCount=0, you may instead request one listed group: {"kind":"expand","decisionId":"...","groupId":"..."}. After expansion you must choose. Do not output markdown, hidden reasoning, or additional fields. Use only the supplied rules and public information; passing does not imply inability.`;
 }
 export function parseSelection(textValue, view) {
@@ -68,8 +72,50 @@ export function parseSelection(textValue, view) {
     if(typeof v.actionId!=='string'||!view.candidates.some(c=>c.actionId===v.actionId))fail('action_id_not_offered');
     if('note' in v&&(typeof v.note!=='string'||v.note.length>240))fail('invalid_response_shape');
   } else {
+    if(view.candidateSpec==='first-target-offer12-v1')fail('expansion_disabled_for_candidate_spec');
     if(view.expansionCount!==0)fail('expansion_already_used');
     if(typeof v.groupId!=='string'||!view.expandableGroups.some(g=>g.groupId===v.groupId))fail('group_id_not_expandable');
   }
   return v;
+}
+
+/** r2 local envelope. Only modelPayloadBytes and the constant response contract
+ * cross the provider boundary. Local decision IDs/maps never enter messages. */
+export const COMMON_VIEW_WIRE_SCHEMA='ohuo-common-view-request-r2';
+export const COMMON_VIEW_RESPONSE_ID='common-view-r2';
+export const COMMON_VIEW_RESPONSE_CONTRACT='Return only one JSON object: {"kind":"choose","decisionId":"common-view-r2","actionId":"c0","note":"optional short reason"}. Choose an address listed in the supplied candidates; no expansion. A short reason of at most 120 characters is preferred; the accepted maximum remains 240. Do not output markdown or extra fields. Current leadership does not mean the trick is won; do not invent information absent from the supplied view.';
+export const COMMON_VIEW_SYSTEM_PROMPT_SHA256=createHash('sha256').update(COMMON_VIEW_RESPONSE_CONTRACT,'utf8').digest('hex');
+const commonCard=v=>object(v,{card:x=>{if(typeof x!=='string'||!(/^(?:[SHDC](?:[2-9]|1[0-4])|SJ|BJ)$/.test(x)))fail('invalid_request');},count:integer(1,2)});
+const commonCards=array(commonCard,54);
+const commonKind=nullable(one(kinds));
+const relative=one(['partner','lower','upper']);
+const commonAction=v=>object(v,{pass:bool,cards:commonCards,kind:commonKind,comparisonRank:integer(0,41),size:integer(0,10),wildCount:integer(0,2)});
+function commonState(v){
+ const other=x=>object(x,{remainingCards:integer(0,27),reportedLow:bool,finishOrder:nullable(integer(1,4))});
+ const recent=array(x=>object(x,{unknown:bool,pass:bool,kind:commonKind,comparisonRank:integer(0,41),size:integer(0,10)}),3,3);
+ const memory=x=>object(x,{J:integer(0,8),Q:integer(0,8),K:integer(0,8),LEVEL_OTHER:integer(0,8),SJ:integer(0,2),BJ:integer(0,2)});
+ object(v,{myHand:commonCards,unplayedOutsideOwnHand:commonCards,currentTarget:x=>object(x,{cards:commonCards,leadingSeat:nullable(relative),kind:commonKind,comparisonRank:integer(0,41),size:integer(0,10)}),otherSeats:x=>object(x,{partner:other,lower:other,upper:other}),recentMoves:x=>object(x,{partner:recent,lower:recent,upper:recent}),levels:x=>object(x,{own:integer(2,14),opponent:integer(2,14),effectiveRank:nullable(integer(2,14)),ownTeamOnStage:bool}),ownWildCount:integer(0,2),encodedTributeBits:x=>object(x,{resistance:bool,selfIsTributeGiver:bool}),publicHighCardMemory:x=>object(x,{self:memory,partner:memory,upper:memory,lower:memory})});
+}
+export function freezeCommonViewRequest(input){
+ object(input,{schema:one([COMMON_VIEW_WIRE_SCHEMA]),decisionId:text(),modelPayloadBytes:text(MAX_INPUT_BYTES),addressMap:array(x=>object(x,{address:text(80),actionId:text(80),equivalentActionIds:array(text(80),12,1)}),12,1)});
+ if(new TextEncoder().encode(input.modelPayloadBytes).length>MAX_INPUT_BYTES)fail('input_too_large');
+ let payload;try{payload=JSON.parse(input.modelPayloadBytes);}catch{fail('invalid_request');}
+ object(payload,{schema:one(['first-round-common-view-r2']),rules:array(text(512),6,6),state:commonState,candidates:array(x=>object(x,{address:text(80),action:commonAction}),12,1)});
+ if(JSON.stringify(payload)!==input.modelPayloadBytes||payload.candidates.length!==input.addressMap.length||payload.candidates.some((c,i)=>c.address!==`c${i}`||input.addressMap[i].address!==c.address||!input.addressMap[i].equivalentActionIds.includes(input.addressMap[i].actionId))||new Set(input.addressMap.flatMap(x=>x.equivalentActionIds)).size!==input.addressMap.flatMap(x=>x.equivalentActionIds).length)fail('invalid_request');
+ const expectedRules=[
+ '仅根据本视图从给定候选地址选动作，不补造任何玩家持牌。',
+ '当前领先不等于已经赢得本墩；PASS只是选择不出牌，不证明不能压。',
+ '三带二比较三张主体的比较点数，不比较带牌。',
+ 'unplayedOutsideOwnHand仅为尚未公开打出且不在本人手中的总量，不含归属信息。',
+ 'recentMoves仅保存各相对玩家最近三次动作（新到旧）；缺失历史未知。',
+ 'publicHighCardMemory为编码已保存的出牌累计，不表示剩余持有者；LEVEL_OTHER保留原编码类别，不补全贡还归属。'];
+ if(JSON.stringify(payload.rules)!==JSON.stringify(expectedRules))fail('invalid_request');
+ return JSON.parse(JSON.stringify(input));
+}
+export function parseCommonViewSelection(textValue,view){
+ let v;try{v=JSON.parse(textValue);}catch{fail('invalid_response_json');}
+ if(!plain(v)||v.kind!=='choose'||Object.keys(v).some(k=>!['kind','decisionId','actionId','note'].includes(k))||typeof v.decisionId!=='string'||typeof v.actionId!=='string'||('note'in v&&(typeof v.note!=='string'||v.note.length>240)))fail('invalid_response_shape');
+ if(v.decisionId!==COMMON_VIEW_RESPONSE_ID)fail('decision_id_mismatch');
+ const mapped=view.addressMap.find(x=>x.address===v.actionId);if(!mapped)fail('action_id_not_offered');
+ return {...v,decisionId:view.decisionId,actionId:mapped.actionId};
 }

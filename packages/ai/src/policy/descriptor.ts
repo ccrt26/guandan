@@ -89,3 +89,56 @@ export function policyEncoder(d: PolicyDescriptor): Readonly<EncoderOpts> {
   return Object.freeze({ schema: d.encoder.schema, ...(d.encoder.ctxFill !== 'none' ? { ctxFill: d.encoder.ctxFill } : {}),
     passEncoding: d.encoder.passEncoding, ...(d.candidateSpecId === 'cand-dedup-v2' ? { candidateCompat: 'v2' as const } : {}) });
 }
+
+/** Independent scorer contract: it is not a proposal policy or an index entry.
+ * Keep this module runtime-free (also imported by configuration tooling). */
+export const STUDENT_SCORER_ENCODER = Object.freeze({
+  schema: 'student-input399plus24-v1' as const,
+  encoderVersion: 'student-input399plus24-v1' as const,
+  inputLayout: 'legacy399_then_publicMemory24' as const,
+  baseEncoderRef: Object.freeze({ schema: 'v2' as const, ctxFill: 'rule-context' as const,
+    passEncoding: 'action64' as const, encoderVersion: 'gd-lab-schema-v4' as const }),
+  segments: Object.freeze([
+    Object.freeze({ role: 'legacy-state', offset: 0, length: 331 }),
+    Object.freeze({ role: 'legacy-action', offset: 331, length: 68 }),
+    Object.freeze({ role: 'public-memory', offset: 399, length: 24 }),
+  ]),
+  memorySchemaId: 'public-high-card-memory-v1' as const,
+  relativeSeatOrder: Object.freeze(['self', 'partner', 'upper', 'lower']),
+  slotOrder: Object.freeze(['J', 'Q', 'K', 'LEVEL_OTHER', 'SJ', 'BJ']),
+  normalizationDivisors: Object.freeze([8, 8, 8, 8, 2, 2]),
+});
+export interface StudentScorerDescriptor {
+  readonly schema: 'ohuo-student-scorer-v1';
+  readonly policyId: string;
+  readonly modelVersion: string;
+  readonly architectureId: 'mlp-tanh-256x256-scalar-v1';
+  readonly weightsLayoutVersion: 'f32le-layer-w-row-major-then-b-v1';
+  readonly parameterCount: 174593;
+  readonly inputDim: 423;
+  readonly weightsPathOrUrl: { readonly nodePath?: string; readonly assetUrl?: string };
+  readonly weightsSHA256: string;
+  readonly encoder: typeof STUDENT_SCORER_ENCODER;
+  readonly tieBreakId: 'first-candidate-v1';
+}
+function exactContract(value: unknown, expected: unknown): boolean {
+  if (expected === null || typeof expected !== 'object') return value === expected;
+  if (!value || typeof value !== 'object' || Array.isArray(value) !== Array.isArray(expected)) return false;
+  const actual = value as Record<string, unknown>, want = expected as Record<string, unknown>;
+  const names = Object.keys(want);
+  return Object.keys(actual).length === names.length && names.every(k => Object.hasOwn(actual, k) && exactContract(actual[k], want[k]));
+}
+export function validateStudentScorerDescriptor(value: unknown): StudentScorerDescriptor {
+  const d = object(value, 'student scorer descriptor');
+  keys(d, ['schema','policyId','modelVersion','architectureId','weightsLayoutVersion','parameterCount','inputDim','weightsPathOrUrl','weightsSHA256','encoder','tieBreakId'], 'student descriptor');
+  if (d.schema !== 'ohuo-student-scorer-v1' || d.inputDim !== 423 || d.parameterCount !== 174593) throw Error('student schema/dimension/parameter mismatch');
+  text(d.policyId, 'student policyId'); text(d.modelVersion, 'student modelVersion');
+  if (d.architectureId !== 'mlp-tanh-256x256-scalar-v1' || d.weightsLayoutVersion !== 'f32le-layer-w-row-major-then-b-v1' || d.tieBreakId !== 'first-candidate-v1') throw Error('unsupported student architecture/layout/tie-break');
+  if (!exactContract(d.encoder, STUDENT_SCORER_ENCODER)) throw Error('student encoder contract mismatch');
+  if (typeof d.weightsSHA256 !== 'string' || !/^[a-f0-9]{64}$/.test(d.weightsSHA256)) throw Error('invalid student weights SHA256');
+  const location = object(d.weightsPathOrUrl, 'student weights location');
+  keys(location, ['nodePath','assetUrl'], 'student weights location');
+  if (location.nodePath !== undefined) relativeLocation(location.nodePath, 'nodePath');
+  if (location.assetUrl !== undefined) relativeLocation(location.assetUrl, 'assetUrl');
+  return Object.freeze({ ...d, encoder: STUDENT_SCORER_ENCODER, weightsPathOrUrl: Object.freeze({ ...location }) }) as unknown as StudentScorerDescriptor;
+}

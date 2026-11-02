@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react';
 import type { GameRecord } from '@gd/engine';
 import { normalizeRecord, validateRecord } from '@gd/review';
-import { DIFFICULTY_NAME } from '@gd/ai';
+import {webPolicyDescriptors} from '../game/policy';
+import {recordSeatSnapshot} from './RecordedSeats';
+import {projectRecordProductTier,type RecordProductTier} from '../game/review-model-display';
 import { listRecords, loadRecord, setRecordFavorite } from '../game/storage';
 
 const teamOf = (seat: number) => (seat % 2 === 0 ? 0 : 1);
 type ResultFilter = 'all' | 'win' | 'loss';
-type DiffFilter = 'all' | 0 | 1 | 2;
+type DiffFilter = 'all' | 'standard' | 'mixed' | 'unverified' | 0 | 1 | 2;
 
 interface Row {
   meta: import('../game/storage').RecordMeta;
@@ -14,6 +16,7 @@ interface Row {
   ok: boolean;
   reason: string;
   fav: boolean;
+  productTier:RecordProductTier;
 }
 
 /** Same compact heading used by the real picker and its memory-only visual fixture. */
@@ -23,6 +26,51 @@ export function ReviewHeading(){return (<header className="tz-head">
           <p>回看每一步，理解每次选择。</p>
         </div>
       </header>);}
+
+export interface ReviewFiltersProps {
+  result: ResultFilter;
+  favOnly: boolean;
+  difficulty: DiffFilter;
+  visibleValidCount: number;
+  onResult: (value: ResultFilter) => void;
+  onToggleFavorite: () => void;
+  onDifficulty: (value: DiffFilter) => void;
+}
+/** Same presentation in production and the existing memory-only DEV audit; no record access. */
+export function ReviewFilters({result,favOnly,difficulty,visibleValidCount,onResult,onToggleFavorite,onDifficulty}:ReviewFiltersProps) {
+  return (
+        <div className="rv-filterbar">
+          <div className="rv-fgroup">
+            <span className="rv-flab">结果</span>
+            <div className="rv-seg" role="radiogroup" aria-label="按结果筛选">
+              {([['all', '全部'], ['win', '胜'], ['loss', '负']] as const).map(([v, label]) => (
+                <button key={v} type="button" role="radio" aria-checked={result === v} className={result === v ? 'on' : ''} onClick={() => onResult(v)}>{label}</button>
+              ))}
+            </div>
+          </div>
+          <em className="rv-vsep" aria-hidden />
+          <div className="rv-fgroup rv-fav">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
+              <path d="m12 3.6 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.6Z" />
+            </svg>
+            <span className="rv-flab">仅收藏</span>
+            <button type="button" role="switch" aria-checked={favOnly} aria-label="仅看收藏" className={`tz-switch${favOnly ? ' on' : ''}`} onClick={onToggleFavorite}>
+              <i />
+            </button>
+          </div>
+          <em className="rv-vsep" aria-hidden />
+          <div className="rv-fgroup">
+            <span className="rv-flab">难度</span>
+            <div className="rv-seg" role="radiogroup" aria-label="按对手强度筛选">
+              {([['all', '不限'], ['standard', '标准'], [0, '历史初级'], [1, '历史中级'], [2, '历史高级'], ['mixed', '混合历史'], ['unverified', '未记录/未核验']] as const).map(([v, label]) => (
+                <button key={String(v)} type="button" role="radio" aria-checked={difficulty === v} className={difficulty === v ? 'on' : ''} onClick={() => onDifficulty(v as DiffFilter)}>{label}</button>
+              ))}
+            </div>
+          </div>
+          <span className="rv-count"><b>{visibleValidCount}</b> 场</span>
+        </div>
+  );
+}
 
 /** 复盘选择页（主从式）：左列表选局，右石墨灰摘要卡；单一 selectedReviewId 状态源 */
 export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
@@ -44,7 +92,7 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
     } else {
       reason = '记录数据缺失';
     }
-    return { meta: m, rec, ok, reason, fav: m.favorite === true };
+    return { meta: m, rec, ok, reason, fav: m.favorite === true, productTier:projectRecordProductTier(rec?recordSeatSnapshot(rec):undefined,{policies:webPolicyDescriptors},m.difficulties) };
   }), [tick]);
 
   const visible = useMemo(() => {
@@ -54,7 +102,7 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
       if (result === 'win' && !winOf(r.meta)) return false;
       if (result === 'loss' && winOf(r.meta)) return false;
       if (favOnly && !r.fav) return false;
-      if (difficulty !== 'all' && !(r.meta.difficulties.includes(difficulty))) return false;
+      if (difficulty !== 'all' && (typeof difficulty==='number'?!r.productTier.historicalTiers.includes(difficulty):r.productTier.kind!==difficulty)) return false;
       return true;
     });
     // 收藏置顶，组内时间倒序；失效记录沉底
@@ -91,7 +139,7 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
   };
 
   const rankText = (rank: number) => `第${['一', '二', '三', '四'][rank - 1]}名`;
-  const diffText = (m: Row['meta']) => DIFFICULTY_NAME[(m.difficulties.find((d) => d !== null) ?? 1) as 0 | 1 | 2];
+  const diffText = (row:Row) => row.productTier.label;
 
   return (
     <div className="tz rv">
@@ -99,36 +147,7 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
 
       <main className="tz-console rv-console">
         {/* 筛选横条 */}
-        <div className="rv-filterbar">
-          <div className="rv-fgroup">
-            <span className="rv-flab">结果</span>
-            <div className="rv-seg" role="radiogroup" aria-label="按结果筛选">
-              {([['all', '全部'], ['win', '胜'], ['loss', '负']] as const).map(([v, label]) => (
-                <button key={v} type="button" role="radio" aria-checked={result === v} className={result === v ? 'on' : ''} onClick={() => setResult(v)}>{label}</button>
-              ))}
-            </div>
-          </div>
-          <em className="rv-vsep" aria-hidden />
-          <div className="rv-fgroup rv-fav">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-              <path d="m12 3.6 2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.6Z" />
-            </svg>
-            <span className="rv-flab">仅收藏</span>
-            <button type="button" role="switch" aria-checked={favOnly} aria-label="仅看收藏" className={`tz-switch${favOnly ? ' on' : ''}`} onClick={() => setFavOnly((v) => !v)}>
-              <i />
-            </button>
-          </div>
-          <em className="rv-vsep" aria-hidden />
-          <div className="rv-fgroup">
-            <span className="rv-flab">难度</span>
-            <div className="rv-seg" role="radiogroup" aria-label="按对手强度筛选">
-              {([['all', '不限'], [0, '初级'], [1, '中级'], [2, '高级']] as const).map(([v, label]) => (
-                <button key={String(v)} type="button" role="radio" aria-checked={difficulty === v} className={difficulty === v ? 'on' : ''} onClick={() => setDifficulty(v as DiffFilter)}>{label}</button>
-              ))}
-            </div>
-          </div>
-          <span className="rv-count"><b>{visible.filter((r) => r.ok).length}</b> 场</span>
-        </div>
+        <ReviewFilters result={result} favOnly={favOnly} difficulty={difficulty} visibleValidCount={visible.filter((r) => r.ok).length} onResult={setResult} onToggleFavorite={() => setFavOnly(v => !v)} onDifficulty={setDifficulty} />
 
         {/* 主体：左列表 + 右摘要 */}
         <div className="rv-body">
@@ -176,7 +195,7 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
                   </span>
                   <span className="rv-meta">
                     {r.ok
-                      ? <span className="rv-badge">{diffText(r.meta)} · {r.meta.moves} 手</span>
+                      ? <span className="rv-badge">{diffText(r)} · {r.meta.moves} 手</span>
                       : <span className="rv-badd" title={r.reason}>无法复盘：{r.reason}</span>}
                   </span>
                   <span className="rv-chev" aria-hidden>›</span>
@@ -198,7 +217,7 @@ export function ReviewPicker({ onOpen }: { onOpen: (r: GameRecord) => void }) {
                   <b className="rv-bigrank">{selected.meta.spectatorOnly ? '四席AI · 无真人' : rankText(selected.meta.humanRank)}</b>
                 </div>
                 <div className="rv-metaline">
-                  <div><i>难度</i><b>{diffText(selected.meta)}</b></div>
+                  <div><i>难度</i><b>{diffText(selected)}</b></div>
                   <em aria-hidden />
                   <div><i>手数</i><b>{selected.meta.moves} 手</b></div>
                 </div>

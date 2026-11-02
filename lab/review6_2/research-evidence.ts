@@ -1,3 +1,8 @@
+import {isFirstRoundRecipe,firstRoundTrainingShape} from './first-round-contract.mjs';
+import {validateFirstRoundParentEnvelope,validateFirstRoundDatasetMetadata} from './first-round-parent';
+import {resolveCandidateReleaseRef} from '../../packages/ai/src/policy/candidate-release';
+import {RELEASES} from '../../packages/ai/src/policy/seats';
+import {selectFirstRoundCheckpoint} from './first-round-selection.mjs';
 /** Compact local M8 export, not a Library uploader or scientific decision.
  * Export is whitelist-only; source journals/private data are never copied. */
 import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
@@ -6,7 +11,7 @@ import {pathToFileURL} from 'node:url';
 import {isDeepStrictEqual as equal} from 'node:util';
 import {canonical,digest,referenceOf,fixedReference,strictObject,validateIdentifier,validateTask,COUNTERS,LIMITS,validateLimits,validateCost} from './task-schema.mjs';
 import {checkedOutput} from '../../scripts/project-paths.mjs';
-import {ROOT,sha256,fixedRef,readFixedJSON,readB07Run,summarizePaired,runFrozenInterval,type PairedPlan,type FixedRef} from './paired-summary';
+import {ROOT,sha256,fixedRef,readFixedJSON,readB07Run,readB07PublicRecord,summarizePaired,runFrozenInterval,type PairedPlan,type FixedRef} from './paired-summary';
 import {inspectNumericalRecoveryEvidence} from './numerical-recovery';
 const CONTEXT_EVIDENCE=['planContext','priorDecision','acceptedProgram','allTaskRuns','selectionHistory','sourceIndex'];
 export const QUESTION_EVIDENCE={
@@ -115,7 +120,8 @@ export function rebuildEvidence(spec:any,output:string,pythonPath:string){
  summary.cost.requestReconciliation={journalKnown:summary.cost.upstreamRequests.known,ledgerConfirmed,ledgerReservedOrUnknown:ledgerUnknown,status:ledgerConfirmed===null||ledgerUnknown===null||ledgerUnknown>0||summary.cost.upstreamRequests.unknown?'unknown':ledgerConfirmed===summary.cost.upstreamRequests.known?'reconciled':'mismatch'};
  if(unavailableRuns.length||summary.cost.requestReconciliation.status!=='reconciled'||runs.some(r=>r.run.executionUnknown)){summary.cost.upstreamRequests.total=null;summary.deviations.push('unsettled_or_unknown_run_execution');}
  if(summary.cost.requestReconciliation.status==='mismatch')summary.deviations.push('ledger_journal_request_mismatch');
- const inputConflicts=validateHandoffBindings(plan,summary,facts).issues.filter(x=>x.evidenceId==='allTaskRuns');
+ const inputBindings=validateHandoffBindings(plan,summary,facts),inputConflicts=inputBindings.issues.filter(x=>x.evidenceId==='allTaskRuns');
+ if(inputBindings.firstRoundPlanExecution){summary.execution=inputBindings.firstRoundPlanExecution;summary.cost.countScope=unavailableRuns.length?'observed-confirmation-queue-records-only':'all-confirmation-queue-records';}
  if(inputConflicts.length){summary.actual.notStartedMatches=null;summary.deviations.push('handoff_actual_run_binding_conflict');for(const metric of [summary.cost.decisionWaitMs,summary.cost.matchWallMs,summary.cost.activeMatchLoopMs,summary.cost.upstreamRequests,summary.cost.mainRequests,summary.cost.expansionRequests,...Object.values(summary.cost.usage)] as any[]){metric.unknown+=1;metric.total=null;}summary.cost.countScope='observed-records-only';summary.cost.requestReconciliation={...summary.cost.requestReconciliation,ledgerConfirmed:null,ledgerReservedOrUnknown:null,status:'unknown'};}
  if(summary.primary.independentBlocks>=2){summary.primary.interval=runFrozenInterval(summary.primary.input,output,pythonPath);summary.primary.intervalStatus='computed_frozen_kernel';}
  const manifest=writeEvidencePackage(output,plan,summary,facts,runs.map(r=>r.run));return {summary,manifest};
@@ -175,12 +181,50 @@ function matchesRunSnapshot(snapshot:any,r:any,c:EvidenceCatalog,source:FixedRef
 function actionKey(a:any){return canonical([a.clauseRef,a.branchRef]);}
 function rootIds(plan:any){return list(plan.controlRoots).map((r:any)=>typeof r==='string'?r:r.rootInstanceId);}
 function canonicalPlan(c:EvidenceCatalog,plan:PackagePlan,planRef:string){const f=c.file(plan.refs.plan),original=c.read(f);fixedReference(planRef,'original planRef');if(!Number.isSafeInteger(original.planVersion)||original.planVersion<1)throw Error('approved_plan_version_missing');if(planRef.slice(planRef.lastIndexOf(':')+1)!==digest(original))throw Error('approved_plan_canonical_identity_conflict');return {original,planRef};}
+/** Explicit first-round public source projection. Every Task keeps its own
+ * fixed namespace/index. A mixed formal train/dev queue is validated in full,
+ * then projected by the original Task's split and root allocation. */
+function firstRoundSourceIndexes(c:EvidenceCatalog,tasks:any[],endpoint:FixedRef){
+ const usage=new Map<string,string>();
+ const note=(index:any,family:string,scope:string,split:string)=>{
+  const value=index.families[family];if(!value||value.split!==split)throw Error('first_round_source_family_split_conflict');
+  for(const ancestor of [family,...(value.ancestors??[])]){const prior=usage.get(ancestor);if(prior&&prior!==scope)throw Error('first_round_source_ancestor_scope_conflict');usage.set(ancestor,scope);}
+ };
+ for(const t of tasks){
+  // B08's endpoint F uses the canonical source ref ID but hashes raw index
+  // bytes; the canonical wrapper is a distinct file. Select by BOTH ID and
+  // canonical digest rather than accidentally reading the raw F as wrapper.
+  const r=t.sourcePlan.sourceIndexRef,id=r.slice(0,r.lastIndexOf('@sha256:')),candidates=c.files.filter(f=>(f.id===id||f.id===r)&&digest(c.read(f))===r.slice(r.lastIndexOf(':')+1));
+  if(candidates.length!==1)throw Error('first_round_source_index_canonical_reference');
+  const reference=c.read(candidates[0]),comparison=c.get(t.scientificContract.comparisonRef),named=comparison.schema==='ohuo-first-round-comparison-v1';
+  if(!named&&reference.fileSHA256!==endpoint.sha256)throw Error('task_source_index_conflict');
+  if(reference.schema!=='ohuo-source-index-ref-v1'||reference.namespace!==t.sourcePlan.namespace||! /^[a-f0-9]{64}$/.test(reference.fileSHA256))throw Error('first_round_source_index_reference_conflict');
+  const files=c.files.filter(f=>f.sha256===reference.fileSHA256);if(!files.length)throw Error('first_round_source_index_bytes_missing');const index=c.read(files[0]);
+  if(index.version!==1||!index.families)throw Error('first_round_source_index_structure_missing');
+  const split=t.sourcePlan.split==='confirm'?'sealed':t.sourcePlan.split,scope=canonical([t.sourcePlan.namespace,t.sourcePlan.split]),seen=new Set<string>();
+  for(const family of t.sourcePlan.familyIds){note(index,family,scope,split);for(const ancestor of [family,...(index.families[family].ancestors??[])]){if(seen.has(ancestor))throw Error('source_ancestor_overlap');seen.add(ancestor);}}
+  const queue=c.get(t.seatLayoutPlan);if(queue.schema!=='ohuo-complete-match-queue-v1')continue;
+  if(queue.sourceIndexRef!==t.sourcePlan.sourceIndexRef||named&&queue.namespace!==t.sourcePlan.namespace)throw Error('queue_task_source_reference_conflict');
+  const rows=list(queue.rows),owned=rows.filter(r=>r.split===t.sourcePlan.split&&t.sourcePlan.familyIds.includes(r.sourceFamilyId));
+  if(!owned.length)throw Error('first_round_source_queue_projection_empty');
+  for(const row of rows){
+   if(!named&&row.split!==t.sourcePlan.split)throw Error('queue_ancestry_split_conflict');
+   if(!['train','dev','confirm','fixture'].includes(row.split)||!Array.isArray(row.roundFamilyIds)||row.roundFamilyIds.length!==row.maxGames||row.roundFamilyIds[0]!==row.sourceFamilyId)throw Error('first_round_source_queue_ancestry');
+   for(const family of row.roundFamilyIds)note(index,family,canonical([t.sourcePlan.namespace,row.split]),row.split==='confirm'?'sealed':row.split);
+  }
+  if(t.sourcePlan.familyIds.some((id:string)=>!owned.some(r=>r.roundFamilyIds.includes(id))))throw Error('first_round_source_task_allocation');
+  const cap=c.get(t.capabilityRef),rule=c.get(t.scientificContract.decisionRuleRef);
+  if(cap.id==='B07.complete-match.v1'&&rule.schema!=='ohuo-first-round-new-test-contract-v1'&&owned.some(r=>r.roundFamilyIds.some((id:string)=>!t.sourcePlan.familyIds.includes(id))))throw Error('first_round_source_task_future_ancestry');
+ }
+}
+
 /** SHA is transport identity, not semantic acceptance. Issues stay named and
  * recoverable; unstructured scientific interpretation is never certified. */
 export function validateHandoffBindings(plan:PackagePlan,summary:any,facts:EvidenceFacts){
  const c=new EvidenceCatalog(facts),issues:BindingIssue[]=c.issues.flatMap(issue=>{const labels=facts.requiredEvidence.filter(r=>r.source?.id===issue.evidenceId);return labels.length?labels.map(r=>({...issue,evidenceId:r.id})):[issue];});
  const check=(id:string,fn:()=>void)=>{if(requirement(facts,id)?.status!=='received')return;try{fn();}catch(e:any){issues.push({evidenceId:id,missingKind:'INVALID_OR_CONTAMINATED',reason:e.message});}};
- let context:any=null,approved:any=null,planRef:string|null=null,tasks:any[]=[],states:any[]=[],runs:any[]=[];
+ let context:any=null,approved:any=null,planRef:string|null=null,tasks:any[]=[],states:any[]=[],runs:any[]=[],firstRoundPlanExecution:any=null;
+ const firstRoundPaired=plan.question==='student_match'&&(()=>{try{return c.get(plan.refs.conditions).schema==='ohuo-first-round-confirmation-rule-v1';}catch{return false;}})();
  check('planContext',()=>{
   context=received(c,facts,'planContext');({original:approved,planRef}=canonicalPlan(c,plan,context.planRef));
   if(context.planRef!==planRef||context.planVersion!==approved.planVersion)throw Error('plan_context_identity_conflict');
@@ -217,8 +261,18 @@ export function validateHandoffBindings(plan:PackagePlan,summary:any,facts:Evide
   }
   if(!sameSet(observed,publicRuns.map(r=>r.runId)))throw Error('all_attempts_bidirectional_set_conflict');
   if(plan.question!=='plan_closeout'){
-   if(summary.sourceInputs?.runInventory?.sha256!==a.runInventoryRef.sha256||!sameSet(list(summary.sourceInputs?.runs),expected))throw Error('actual_run_inventory_binding_conflict');
-   const actual=list(summary.runFacts);if(!sameSet(actual.map(r=>[r.runId,r.source?.sha256]),expected.map(r=>[r.runId,r.sha256])))throw Error('actual_rebuilt_run_set_conflict');
+   // The first-round paired estimator sees ONLY this frozen confirmation
+   // queue's complete all-attempt inventory. Above, the original all-plan
+   // control roots/run inventory remain bidirectional and are never filtered.
+   let analysisExpected=expected;
+   if(firstRoundPaired){
+    const queueRef=summary.sourceInputs?.queue?.id,scope=runs.filter(r=>r.task.seatLayoutPlan===queueRef&&c.get(r.task.capabilityRef).id==='B07.complete-match.v1'&&c.get(r.task.scientificContract.decisionRuleRef).schema!=='ohuo-first-round-new-test-contract-v1');
+    analysisExpected=expected.filter(r=>scope.some(x=>x.runId===r.runId));
+    const files=c.files.filter(f=>f.sha256===summary.sourceInputs?.runInventory?.sha256);if(!files.length)throw Error('first_round_analysis_inventory_unavailable');const projected=c.read(files[0]);
+    if(projected.schema!=='ohuo-run-inventory-v1'||!sameSet(list(projected.runs),analysisExpected)||!sameSet(list(summary.sourceInputs?.runs),analysisExpected))throw Error('first_round_analysis_inventory_projection_conflict');
+    firstRoundPlanExecution={scope:'all_registered_plan_runs_not_only_paired_confirmation',runInventoryRef:a.runInventoryRef,runs:runs.map(r=>({runId:r.runId,taskId:r.task.taskId,status:r.status,cleanupConfirmed:r.cleanupConfirmed===true,executionUnknown:r.executionUnknown===true||r.observationStatus==='unknown'||r.checkpoint?.executionUnknown===true||r.checkpoint?.active!=null,stopReason:r.stopReason??null,failureReason:r.failureReason??null,consumption:consumptionFromCommittedState(states,r.task)}))};
+   }else if(summary.sourceInputs?.runInventory?.sha256!==a.runInventoryRef.sha256||!sameSet(list(summary.sourceInputs?.runs),expected))throw Error('actual_run_inventory_binding_conflict');
+   const actual=list(summary.runFacts);if(!sameSet(actual.map(r=>[r.runId,r.source?.sha256]),analysisExpected.map(r=>[r.runId,r.sha256])))throw Error('actual_rebuilt_run_set_conflict');
    for(const r of actual){const stateRun=runs.find(x=>x.runId===r.runId);if(!stateRun||r.taskId!==stateRun.task.taskId||r.taskSHA256!==stateRun.taskSHA256||r.queueRef!==undefined&&(r.queueRef!==stateRun.task.seatLayoutPlan||r.queueRef!==summary.sourceInputs.queue?.id))throw Error('actual_rebuilt_run_task_identity_conflict');}
   }
  });
@@ -264,6 +318,9 @@ export function validateHandoffBindings(plan:PackagePlan,summary:any,facts:Evide
   if(!context)throw Error('plan_context_unavailable');const index=received(c,facts,'sourceIndex'),file=c.file(requirement(facts,'sourceIndex')!.source);
   if(index.version!==1||!index.families)throw Error('source_index_structure_missing');
   if(plan.refs.sourceIndex&&!equal(c.ref(plan.refs.sourceIndex),requirement(facts,'sourceIndex')?.source))throw Error('frozen_source_index_reference_conflict');
+  // Named first-round Tasks can span pilot/formal/new/confirmation namespaces.
+  // Legacy callers retain the original single-index, same-split strict path.
+  if(tasks.some(t=>c.get(t.scientificContract.comparisonRef).schema==='ohuo-first-round-comparison-v1')){firstRoundSourceIndexes(c,tasks,{id:file.id,sha256:file.sha256});return;}
   const usage=new Map<string,string>();
   for(const t of tasks){const ref=c.get(t.sourcePlan.sourceIndexRef);if(ref.fileSHA256!==file.sha256||ref.namespace!==t.sourcePlan.namespace)throw Error('task_source_index_conflict');
    const seen=new Set<string>();for(const id of t.sourcePlan.familyIds){const family=index.families[id],split=t.sourcePlan.split==='confirm'?'sealed':t.sourcePlan.split;if(!family||family.split!==split)throw Error('source_family_split_conflict');for(const ancestor of [id,...(family.ancestors??[])]){if(seen.has(ancestor))throw Error('source_ancestor_overlap');seen.add(ancestor);if(usage.has(ancestor)&&usage.get(ancestor)!==split)throw Error('source_ancestor_cross_split_conflict');usage.set(ancestor,split);}}
@@ -273,7 +330,7 @@ export function validateHandoffBindings(plan:PackagePlan,summary:any,facts:Evide
  check('newDistribution',()=>validateDistribution(c,received(c,facts,'newDistribution'),tasks,received(c,facts,'selectionHistory'),states,c.ref(requirement(facts,'newDistribution')?.source)));
  // Candidate without a receipt is NOT_DUE, not a claimed missing execution file.
  for(const issue of issues)if(issue.evidenceId==='acceptedProgram'&&issue.reason==='candidate_has_no_actual_acceptance')issue.missingKind='NOT_YET_EXECUTED';
- return {issues,files:c.files,context,approved,planRef,tasks,states,runs,numericalRecovery};
+ return {issues,files:c.files,context,approved,planRef,tasks,states,runs,numericalRecovery,firstRoundPlanExecution};
 }
 /** The optional numericalRecovery evidence label names the same fixed host-v2
  * metadata, not a caller-supplied verified boolean or a second bindings store.
@@ -356,7 +413,9 @@ function numericalRecoveryEvidence(c:EvidenceCatalog,facts:EvidenceFacts,planRef
    if(r.status!=='selected'||list(r.issues).length||r.trainingRunId!==task.runId)throw Error('historical_formal_completion_incomplete');
    const request=get(r.requestRef),action=actions.find((a:any)=>a.clauseRef===request.clauseRef&&a.branchRef===request.branchRef),rule=action&&get(action.acceptanceRuleRef),parent=get(task.parentPolicyRef),ib=binding(taskRef),data=get(task.datasetRefs[0]);
    strict(request,['schema','planRef','planVersion','clauseRef','branchRef','trainingTaskRef','trainingRunId','summaryRef','reviewRef','parentPolicyRef','policyId','outputPath']);
-   if(request.schema!=='ohuo-student-finalization-request-v1'||request.planRef!==task.planRef||request.planVersion!==task.planVersion||request.trainingTaskRef!==taskRef||request.trainingRunId!==task.runId||!equal(request.summaryRef,r.summaryRef)||!equal(request.reviewRef,r.reviewRef)||!action?.expectedArtifactKinds.includes('ohuo-student-finalization-receipt-v1')||rule.schema!=='ohuo-stage-action-rule-v1'||rule.stage!==5||rule.phase!=='formal'||ib.trainingPhase!=='formal'||parent.schema!=='ohuo-parent-policy-ref-v1'||request.parentPolicyRef!==parent.policyRef||request.outputPath!==logical(task.outputRoot)+'/student-release.json'||r.releaseRef?.id!==request.outputPath)throw Error('historical_formal_request_conflict');
+   const firstRound=isFirstRoundRecipe(task.learnerRecipe),parent423=firstRound?validateFirstRoundParentEnvelope({parentRef:task.parentPolicyRef,envelope:parent,readEvidence:f=>evidence(f).bytes}):null,proposal=firstRound?resolveCandidateReleaseRef(get(task.outputSpec.proposalPolicyRef),get,RELEASES):null,proposalPolicyRef=firstRound?proposal!.release.proposalPolicyRef:parent.policyRef,proposalIdentity=firstRound?proposal!.policyIdentity:parent.policyIdentity;
+
+   if(request.schema!=='ohuo-student-finalization-request-v1'||request.planRef!==task.planRef||request.planVersion!==task.planVersion||request.trainingTaskRef!==taskRef||request.trainingRunId!==task.runId||!equal(request.summaryRef,r.summaryRef)||!equal(request.reviewRef,r.reviewRef)||!action?.expectedArtifactKinds.includes('ohuo-student-finalization-receipt-v1')||rule.schema!=='ohuo-stage-action-rule-v1'||rule.stage!==5||rule.phase!=='formal'||ib.trainingPhase!=='formal'||(!firstRound&&parent.schema!=='ohuo-parent-policy-ref-v1')||request.parentPolicyRef!==proposalPolicyRef||request.outputPath!==logical(task.outputRoot)+'/student-release.json'||r.releaseRef?.id!==request.outputPath)throw Error('historical_formal_request_conflict');
    // Same versioned structural gate as H.prerequisiteReceipt, with original
    // exact-key parsing and explicit public F resolution; no new receipt kind.
    const prerequisiteShape=(receipt:any)=>{
@@ -396,22 +455,25 @@ function numericalRecoveryEvidence(c:EvidenceCatalog,facts:EvidenceFacts,planRef
    const hasFile=(kind:string,ref:any)=>prerequisites.find(x=>x.kind===kind).receipt.evidence_refs.some((f:any)=>equal(f,ref));
    if(!hasFile('complete-formal-training',r.summaryRef)||!hasFile('allowed-checkpoints',r.summaryRef)||!hasFile('frozen-behavior-review',r.reviewRef)||!prerequisites.find(x=>x.kind==='budget-scope').receipt.evidence_refs.some((f:any)=>digest(c.get(f))===task.budgetRef.split(':').at(-1)))throw Error('historical_formal_prerequisite_input_conflict');
    const summary=c.get(r.summaryRef),review=c.get(r.reviewRef),selection=c.get(r.selectionRef),release=c.get(r.releaseRef),manifest=c.read(file({path:logical(ib.datasetDirectory)+'/manifest.json',sha256:data.manifestSHA256})),run=state.runs[task.runId],ledger=state.budgets[task.budgetRef];
-   const frozen={dataset:task.datasetRefs[0],manifestSHA256:data.manifestSHA256,teacher:task.labelPolicyRef,B:task.parentPolicyRef,parentIdentity:parent.policyIdentity,encoder:manifest.plan?.identities?.encoderVersion,candidate:manifest.plan?.identities?.candidateSpecRef,prompt:task.promptRef,recipe:task.learnerRecipe,sourceRevision:task.sourceRevision,runtimeRef:task.runtimeRef,phase:'formal',seed:ib.seed};
-   if(!equal(parent.policyIdentity,manifest.plan?.identities?.basePolicy)||!run||run.status!=='completed'||run.cleanupConfirmed!==true||run.executionUnknown===true||run.observationStatus==='unknown'||run.checkpoint?.executionUnknown===true||run.checkpoint?.active!=null||ledger?.activeRunId===run.runId||!equal(run.task,task)||run.taskRef!==taskRef||run.taskSHA256!==digest(task)||state.tasks[task.taskId]!==run.runId)throw Error('historical_formal_run_incomplete');
+   const identities=manifest.plan?.identities;
+   if(firstRound){validateFirstRoundDatasetMetadata(manifest,'research');if(identities.studentParentRef!==task.parentPolicyRef||!equal(identities.studentScorer,parent423!.parentIdentity)||!equal(identities.basePolicy,parent423!.basePolicyIdentity)||!equal(identities.migrationReceiptRef,parent423!.migrationReceiptRef)||!equal(identities.candidatePolicy,proposal!.candidatePolicy))throw Error('historical_formal_first_round_parent_conflict');}
+   const frozen=firstRound?{dataset:task.datasetRefs[0],manifestSHA256:data.manifestSHA256,teacher:task.labelPolicyRef,B:task.outputSpec.proposalPolicyRef,parent:task.parentPolicyRef,parentIdentity:identities.studentScorer,proposalIdentity:identities.basePolicy,inputContract:identities.encoderConfig,encoder:identities.encoderVersion,candidate:identities.candidateSpecRef,candidatePolicy:identities.candidatePolicy,prompt:task.promptRef,recipe:task.learnerRecipe,sourceRevision:task.sourceRevision,runtimeRef:task.runtimeRef,phase:'formal',seed:ib.seed}:{dataset:task.datasetRefs[0],manifestSHA256:data.manifestSHA256,teacher:task.labelPolicyRef,B:task.parentPolicyRef,parentIdentity:parent.policyIdentity,encoder:manifest.plan?.identities?.encoderVersion,candidate:manifest.plan?.identities?.candidateSpecRef,prompt:task.promptRef,recipe:task.learnerRecipe,sourceRevision:task.sourceRevision,runtimeRef:task.runtimeRef,phase:'formal',seed:ib.seed};
+   if(!equal(proposalIdentity,manifest.plan?.identities?.basePolicy)||!run||run.status!=='completed'||run.cleanupConfirmed!==true||run.executionUnknown===true||run.observationStatus==='unknown'||run.checkpoint?.executionUnknown===true||run.checkpoint?.active!=null||ledger?.activeRunId===run.runId||!equal(run.task,task)||run.taskRef!==taskRef||run.taskSHA256!==digest(task)||state.tasks[task.taskId]!==run.runId)throw Error('historical_formal_run_incomplete');
    const costs=consumptionFromCommittedState([state],task);if(COUNTERS.some(k=>costs.reserved[k]||costs.reservedUnknown[k]))throw Error('historical_formal_unresolved_consumption');
    // The original §36C boundary is fixed by dataset/Task, not by the
    // summary's self-reported max. This only reconciles completed facts; no
    // qualification, exposure or checkpoint-selection algorithm runs here.
    const Ndemo=manifest.qualification?.Ndemo,recipe=task.learnerRecipe;
-   if(!Number.isSafeInteger(Ndemo)||Ndemo<1||recipe.demoBatch!==32||recipe.keepBatch!==32||recipe.maxEpochs!==3)throw Error('historical_formal_boundary_unavailable');
-   const Uepoch=Math.ceil(Ndemo/recipe.demoBatch),total=recipe.maxEpochs*Uepoch;
-   if(!Number.isSafeInteger(total)||summary.plan?.Uepoch!==Uepoch||summary.plan.maxEpochs!==recipe.maxEpochs||summary.plan.maxOptimizerSteps!==total||summary.plan.effectiveBatch!==recipe.demoBatch+recipe.keepBatch||summary.actual?.optimizerSteps!==total||list(run.committed).length!==total)throw Error('historical_formal_boundary_incomplete');
+   if(!firstRound&&(!Number.isSafeInteger(Ndemo)||Ndemo<1||recipe.demoBatch!==32||recipe.keepBatch!==32||recipe.maxEpochs!==3))throw Error('historical_formal_boundary_unavailable');
+   const shape=firstRound?firstRoundTrainingShape(recipe,'formal',Ndemo,manifest.qualification?.Nkeep):null,Uepoch=firstRound?shape!.Uepoch:Math.ceil(Ndemo/recipe.demoBatch),total=firstRound?shape!.maxOptimizerSteps:recipe.maxEpochs*Uepoch;
+   if(!Number.isSafeInteger(total)||summary.plan?.Uepoch!==Uepoch||(firstRound?(summary.plan.maxUpdates!==64||Object.hasOwn(summary.plan,'maxEpochs')||!equal(summary.plan.milestoneUpdates,[0,16,32,64])):summary.plan.maxEpochs!==recipe.maxEpochs)||summary.plan.maxOptimizerSteps!==total||summary.plan.effectiveBatch!==(firstRound?2*Ndemo:recipe.demoBatch+recipe.keepBatch)||summary.actual?.optimizerSteps!==total||list(run.committed).length!==total)throw Error('historical_formal_boundary_incomplete');
    const cp=c.read(c.file({path:logical(run.checkpointRef)}));
    if(digest(cp)!==run.checkpointSHA256||!equal(cp,run.checkpoint)||summary.schema!=='ohuo-supervised-summary-v1'||summary.trainingKind!=='supervised_rerank'||summary.runId!==run.runId||summary.taskSHA256!==digest(task)||!equal(summary.frozenRefs,frozen)||summary.plan?.phase!=='formal'||!equal(summary.plan.recipe,task.learnerRecipe)||summary.actual?.realTraining!==true||summary.actual.providerRequests!==0||!Number.isSafeInteger(summary.actual.optimizerSteps)||summary.actual.optimizerSteps<1||summary.actual.optimizerSteps!==summary.plan.maxOptimizerSteps||summary.actual.optimizerSteps!==cp.optimizerSteps||summary.actual.optimizerSteps!==costs.confirmed.optimizerSteps||!equal(summary.actual.latestCompleteCheckpoint,cp.studentCheckpoint)||!list(run.consumerArtifactRefs).some(ref=>equal(c.ref(ref),r.summaryRef)))throw Error('historical_formal_summary_conflict');
    // Follow only original committed digests, never a directory/latest scan.
    for(const [index,id] of list(run.committed).entries()){const reservation=ledger.reservations[id],committed=c.read(c.file({path:logical(task.outputRoot)+'/checkpoint-'+reservation.checkpointSHA256+'.json'}));if(reservation.runId!==run.runId||reservation.status!=='committed'||!equal(reservation.cost,{providerRequests:0,optimizerSteps:1,matchAttempts:0,labelDecisions:0})||digest(committed)!==reservation.checkpointSHA256||committed.taskSHA256!==digest(task)||committed.datasetSHA256!==data.manifestSHA256||committed.optimizerSteps!==index+1||committed.studentCheckpoint?.optimizerSteps!==index+1)throw Error('historical_formal_commit_conflict');}
    const selected=selection.selected;
-   if(selection.schema!=='ohuo-student-selection-v1'||selection.rule!=='section-15-unique-checkpoint'||selection.status!=='selected'||!equal(selection.summary,r.summaryRef)||!equal(selection.behaviorReview,r.reviewRef)||!list(summary.selection?.allowedCheckpoints).some(m=>equal(m.checkpoint,selected))||!list(cp.milestones).some(m=>equal(m.checkpoint,selected))||review.schema!=='ohuo-distill-behavior-review-v1'||review.taskSHA256!==digest(task)||!list(review.reviews).some(row=>row.checkpointSHA256===selected?.manifestSHA256&&row.status==='accepted')||release.schema!=='ohuo-student-release-v1'||release.trainingKind!=='supervised_rerank'||release.policyId!==request.policyId||!equal(release.selection,r.selectionRef)||release.proposer?.policyRef!==parent.policyRef||!equal(release.proposer?.identity,parent.policyIdentity)||release.checkpoint?.sha256!==selected?.manifestSHA256||release.checkpoint?.path!==logical(task.outputRoot)+'/'+selected?.path+'/manifest.json')throw Error('historical_formal_selection_conflict');
+   if(selection.schema!=='ohuo-student-selection-v1'||selection.rule!==(firstRound?'nav-r15-first-round-unique-checkpoint':'section-15-unique-checkpoint')||selection.status!=='selected'||!equal(selection.summary,r.summaryRef)||!equal(selection.behaviorReview,r.reviewRef)||!list(summary.selection?.allowedCheckpoints).some(m=>equal(m.checkpoint,selected))||!list(cp.milestones).some(m=>equal(m.checkpoint,selected))||review.schema!=='ohuo-distill-behavior-review-v1'||review.taskSHA256!==digest(task)||!list(review.reviews).some(row=>row.checkpointSHA256===selected?.manifestSHA256&&row.status==='accepted')||release.schema!==(firstRound?'ohuo-student-release-first-round-v3':'ohuo-student-release-v1')||release.trainingKind!=='supervised_rerank'||release.policyId!==request.policyId||!equal(release.selection,r.selectionRef)||release.proposer?.policyRef!==proposalPolicyRef||!equal(release.proposer?.identity,proposalIdentity)||release.checkpoint?.sha256!==selected?.manifestSHA256||release.checkpoint?.path!==logical(task.outputRoot)+'/'+selected?.path+'/manifest.json')throw Error('historical_formal_selection_conflict');
+   if(firstRound){const actual=selectFirstRoundCheckpoint(summary.selection.allowedCheckpoints,review.reviews);if(!equal(actual,(({status,selected,reason,eligible})=>({status,selected,reason,eligible}))(selection))||!equal(list(cp.milestones).map(m=>m.checkpoint?.optimizerSteps),[0,16,32,64])||release.proposalRef!==task.outputSpec.proposalPolicyRef||release.learningParent?.ref!==task.parentPolicyRef||!equal(release.learningParent.scorer,parent423!.parentIdentity)||!equal(release.learningParent.migrationReceiptRef,parent423!.migrationReceiptRef)||!equal(release.candidatePolicy,proposal!.candidatePolicy)||release.scorer?.inputDim!==423)throw Error('historical_formal_first_round_selection_conflict');}
    for(const row of list(review.reviews))c.file(row.evidence);c.file({path:release.checkpoint.path,sha256:release.checkpoint.sha256});
    return {completionRef:doc.ref,requestRef:r.requestRef,prerequisiteReceiptRefs:prerequisites.map(x=>x.receiptRef),summaryRef:r.summaryRef,reviewRef:r.reviewRef,selectionRef:r.selectionRef,releaseRef:r.releaseRef};
   };
@@ -463,6 +525,64 @@ function consumptionFromCommittedState(states:any[],task:any){
  }
  if(!equal(allConfirmed,ledger.used))throw Error('distribution_consumption_used_mismatch');return view;
 }
+/** Public-only binding for the named R16 union. The trusted source producer
+ * performed private 423/replay checks; this exporter binds its immutable union
+ * and original source/consumer journals, never rereads private labels/states or
+ * certifies teacher agreement as truth. S0 AND S1 may supply the chosen origin. */
+function validateFirstRoundDistribution(c:EvidenceCatalog,s:any,t:any,tasks:any[],history:any,states:any[],selection:any){
+ const rule=c.get(t.scientificContract.decisionRuleRef);strict(rule,['schema','sourceSpecRef','selectionRef','comparisonRef','primaryLabelPolicyRef']);
+ if(rule.schema!=='ohuo-first-round-new-test-label-contract-v1'||rule.selectionRef!==s.selectionRef||rule.comparisonRef!==t.scientificContract.comparisonRef||rule.primaryLabelPolicyRef!==t.labelPolicyRef||t.taskKind!=='collect'||t.sourcePlan.split!=='confirm'||t.operationScope.apiCalls!==true||t.operationScope.parameterUpdates||t.operationScope.deployment||t.limits.maxMatchAttempts!==0||t.limits.maxOptimizerSteps!==0)throw Error('first_round_distribution_task_contract');
+ const spec=c.get(rule.sourceSpecRef),plan=c.get(spec.selectionPlanRef),queue=c.get(spec.queueRef),comparison=c.get(spec.comparisonRef);
+ if(spec.schema!=='ohuo-first-round-new-test-source-v1'||spec.planRef!==t.planRef||spec.budgetRef!==t.budgetRef||spec.queueRef!==t.seatLayoutPlan||spec.sourceIndexRef!==t.sourcePlan.sourceIndexRef||spec.comparisonRef!==rule.comparisonRef||comparison.schema!=='ohuo-first-round-comparison-v1'||comparison.proposalRef!==t.parentPolicyRef||queue.schema!=='ohuo-complete-match-queue-v1'||queue.sourceIndexRef!==spec.sourceIndexRef||queue.namespace!==t.sourcePlan.namespace)throw Error('first_round_distribution_source_contract');
+ if(selection.schema!=='ohuo-first-round-new-test-selection-result-v1'||!equal(selection.plan,plan)||plan.schema!=='ohuo-first-round-new-test-selection-v1'||plan.purpose!=='first-round-independent-new-test'||plan.sourceIndexRef!==spec.sourceIndexRef||plan.comparisonRef!==spec.comparisonRef||plan.s0Ref!==spec.s0Ref||plan.s1Ref!==spec.s1Ref||plan.maxQuestionsPerFamily!==8||selection.verification!=='reproduced'||selection.trainingEligible!==false||selection.returnToTraining!==false||list(plan.familyIds).length<1||plan.familyIds.length>2||!unique(plan.familyIds))throw Error('first_round_distribution_union_identity');
+ if(!(selection.qualification?.eligible===true&&equal(selection.qualification.reasons,[])||plan.familyIds.length===1&&selection.qualification?.eligible===false&&equal(selection.qualification.reasons,['single_source_diagnostic_only'])))throw Error('first_round_distribution_union_qualification');
+ const commits=c.files.flatMap(f=>{try{const v=c.read(f);return v.schema==='ohuo-first-round-new-test-selection-commit-v1'&&v.selectionRef===s.selectionRef&&v.sourceSpecRef===rule.sourceSpecRef?[v]:[];}catch{return [];}});
+ if(commits.length!==1)throw Error('first_round_distribution_union_commit_missing');const commit=commits[0],request=c.get(commit.specRef);strict(commit,['schema','specRef','selectionRef','sourceSpecRef','files']);strict(request,['schema','planRef','clauseRef','branchRef','sourceIndexRef','queueRef','sourceRunRefs','targetDefinitionRef','selectionRuleRef','quotaBasisRef','purpose','actingReleaseRef','outputId','sourceSpecRef']);
+ if(request.schema!=='ohuo-first-round-new-test-selection-spec-v1'||request.purpose!=='distribution_diagnostic'||request.sourceSpecRef!==rule.sourceSpecRef||request.planRef!==t.planRef||request.queueRef!==spec.queueRef||request.sourceIndexRef!==spec.sourceIndexRef||request.actingReleaseRef!==spec.s1Ref||request.selectionRuleRef!==spec.selectionPlanRef||!equal(request.sourceRunRefs,spec.sourceRunRefs)||list(commit.files).length!==2)throw Error('first_round_distribution_union_producer');
+ const target='lab/out/'+request.outputId;if(!sameSet(commit.files.map((f:any)=>f.path),[target+'/selection.json',target+'/spec.json']))throw Error('first_round_distribution_union_files');
+ for(const f of commit.files)if(!equal(c.get(f),f.path.endsWith('/selection.json')?selection:request))throw Error('first_round_distribution_union_committed_bytes');
+ const sourceTasks=list(spec.sourceTaskRefs).map(r=>({ref:r,task:c.get(r)}));if(!sourceTasks.length||!unique(sourceTasks.map(x=>x.ref)))throw Error('first_round_distribution_source_tasks');
+ for(const x of sourceTasks)if(!tasks.some(o=>equal(o,x.task))||x.task.planRef!==t.planRef||x.task.budgetRef!==t.budgetRef||x.task.taskKind!=='evaluate'||x.task.seatLayoutPlan!==spec.queueRef||x.task.sourcePlan.sourceIndexRef!==spec.sourceIndexRef||x.task.sourcePlan.split!=='confirm'||x.task.scientificContract.comparisonRef!==spec.comparisonRef||c.get(x.task.capabilityRef).id!=='B07.complete-match.v1')throw Error('first_round_distribution_original_source_task');
+ const runs=states.flatMap(state=>Object.values(state.runs??{})).filter((r:any)=>spec.sourceTaskRefs.includes(r.taskRef)) as any[];
+ const snapshots=list(spec.sourceRunRefs).map(r=>c.get(r));if(!sameSet(runs.map(r=>r.runId),snapshots.map(r=>r.runId))||sourceTasks.some(x=>!runs.some(r=>r.taskRef===x.ref)))throw Error('first_round_distribution_source_run_inventory');
+ for(const run of runs){const saved=snapshots.find(s=>s.runId===run.runId);if(!['task','taskRef','taskSHA256','checkpoint','checkpointSHA256','checkpointRef','status','cleanupConfirmed'].every(k=>equal(run[k],saved[k]))||run.taskSHA256!==digest(run.task)||run.status!=='completed'||run.cleanupConfirmed!==true||run.executionUnknown===true||run.observationStatus==='unknown'||run.checkpoint?.schema!=='ohuo-match-run-v1'||run.checkpoint.active!==null||run.checkpoint.executionUnknown!==false||run.checkpoint.queueRef!==spec.queueRef||run.checkpointSHA256!==digest(run.checkpoint)||run.checkpoint.cursor!==list(run.checkpoint.matches).length)throw Error('first_round_distribution_source_run_binding');
+  const consumption=consumptionFromCommittedState(states,run.task),state=states.find(state=>state.runs?.[run.runId]?.taskSHA256===run.taskSHA256);if(COUNTERS.some(k=>consumption.reserved[k]||consumption.reservedUnknown[k])||consumption.confirmed.matchAttempts<run.checkpoint.matches.length||state.budgets[run.task.budgetRef].activeRunId===run.runId||!equal(c.get({path:run.checkpointRef}),run.checkpoint))throw Error('first_round_distribution_source_execution_unknown');}
+ const s0=c.get(spec.s0Ref),student=c.get(spec.s1Ref),releases=c.files.filter(f=>f.sha256===student.releaseSHA256),proposer=c.get(comparison.proposalRef),teacher=c.get(t.labelPolicyRef);
+ if(s0.schema!=='ohuo-first-round-s0-release-ref-v1'||s0.proposalRef!==comparison.proposalRef||s0.studentParentRef!==comparison.studentParentRef||s0.policyId!=='first-round-s0-'+digest({proposalRef:s0.proposalRef,studentParentRef:s0.studentParentRef}).slice(0,16)||student.schema!=='ohuo-student-task-release-v1'||!releases.length||history.selectedStudentRef!==spec.s1Ref)throw Error('first_round_distribution_composite_identity');
+ const release=c.read(releases[0]),selected=c.get(release.selection);
+ if(release.schema!=='ohuo-student-release-first-round-v3'||release.trainingKind!=='supervised_rerank'||release.policyId!==student.policyId||release.proposalRef!==comparison.proposalRef||release.learningParent?.ref!==comparison.studentParentRef||release.scorer?.inputDim!==423||!equal(release.proposer?.identity,proposer.policyIdentity)||selected.schema!=='ohuo-student-selection-v1'||selected.rule!=='nav-r15-first-round-unique-checkpoint'||selected.status!=='selected'||selected.selected?.manifestSHA256!==release.checkpoint?.sha256)throw Error('first_round_distribution_selected_S1');
+ const decisions:any[]=[],denominators=list(selection.denominators),sourceOwners=new Map<string,string>(),familyOwners=new Map<string,string>(),layouts=new Set<string>();
+ if(list(queue.rows).length!==plan.familyIds.length*12||denominators.length!==queue.rows.length)throw Error('first_round_distribution_source_population');
+ for(const q of queue.rows){
+  const layout=canonical([q.sourceFamilyId,q.variant,q.group,q.side]);if(layouts.has(layout)||!plan.familyIds.includes(q.sourceFamilyId)||!['S0','S1'].includes(q.variant)||![0,1,2].includes(q.group)||![0,1].includes(q.side)||q.actor!==q.side||q.split!=='confirm'||q.maxGames!==80||q.maxMovesPerGame!==2500||q.roundFamilyIds.length!==80||q.roundFamilyIds[0]!==q.sourceFamilyId||q.seats[q.actor]?.releaseRef!==(q.variant==='S0'?spec.s0Ref:spec.s1Ref))throw Error('first_round_distribution_original_layout');layouts.add(layout);
+  const matches=runs.flatMap(run=>run.checkpoint.matches.filter((m:any)=>m.matchId===q.matchId).map((m:any)=>({run,m})));if(matches.length!==1)throw Error('first_round_distribution_source_attempt_ambiguity');const {run,m}=matches[0];
+  if(!run.task.sourcePlan.familyIds.includes(q.sourceFamilyId)||q.roundFamilyIds.some((f:string)=>!run.task.sourcePlan.familyIds.includes(f)))throw Error('first_round_distribution_source_task_ancestry');
+  const id=c.get({path:join(m.recordRef.directory,'identity.json'),sha256:m.recordRef.identitySHA256}),eventFile=c.file({path:join(m.recordRef.directory,'events.jsonl'),sha256:m.recordRef.journalSHA256}),bytes=readFileSync(eventFile.localPath);
+  const original=readB07PublicRecord(run.task.outputRoot,{runId:run.runId,queueRef:spec.queueRef},m);
+  if(!original.recordVerified||!original.complete||original.issues.length||bytes.length!==m.recordRef.journalBytes||id.sourceFamilyId!==q.sourceFamilyId||id.sourceRef!==spec.sourceIndexRef||id.layoutRef!==spec.queueRef||id.runId!==run.runId||id.matchId!==q.matchId||id.split!=='confirm'||id.evaluatedActor!==q.actor)throw Error('first_round_distribution_public_source_record');
+  const events=bytes.toString().split('\n').filter(Boolean).map(line=>JSON.parse(line)),games=events.filter(e=>e.type==='game').map(e=>e.value),terminal=new Map<string,any>();for(const e of events)if(e.type==='decision')terminal.set(canonical(e.value.key),e.value);
+  const denom=denominators.filter(d=>d.familyId===q.sourceFamilyId&&d.reachedBy===q.variant&&d.group===q.group&&d.side===q.side);if(denom.length!==1||denom[0].status!=='completed'||denom[0].sourceSHA256!==games[0]?.sourceSHA256||!equal(denom[0].sourceFacts,games.map(g=>({familyId:g.sourceFamilyId,sourceSHA256:g.sourceSHA256}))))throw Error('first_round_distribution_source_facts');
+  for(const [i,g] of games.entries()){if(g.gameNo!==i+1||g.sourceFamilyId!==q.roundFamilyIds[i]||! /^[a-f0-9]{64}$/.test(g.sourceSHA256)||plan.excludedFamilyIds.includes(g.sourceFamilyId)||plan.excludedSourceSHA256.includes(g.sourceSHA256)||sourceOwners.has(g.sourceSHA256)&&sourceOwners.get(g.sourceSHA256)!==q.sourceFamilyId||familyOwners.has(g.sourceFamilyId)&&familyOwners.get(g.sourceFamilyId)!==q.sourceFamilyId)throw Error('first_round_distribution_actual_source_independence');sourceOwners.set(g.sourceSHA256,q.sourceFamilyId);familyOwners.set(g.sourceFamilyId,q.sourceFamilyId);}
+  const seat=id.seatSnapshots?.[q.actor];if(seat?.releaseRef!==q.seats[q.actor].releaseRef||id.policyIds[q.actor]!==(q.variant==='S0'?s0.policyId:student.policyId)||seat.firstRoundCapture?.studentParentRef!==comparison.studentParentRef||seat.firstRoundCapture?.scorer?.inputDim!==423||!equal(seat.policyIdentity,proposer.policyIdentity)||(q.variant==='S0'?!equal(seat.s0Release,s0):seat.studentReleaseSHA256!==student.releaseSHA256||!equal(seat.studentRelease,release)))throw Error('first_round_distribution_public_composite_capture');
+  for(const d of terminal.values())if(d.key.actorSeat===q.actor&&d.executionKind==='confirmed'){
+   if(d.policyId!==id.policyIds[q.actor]||d.actualSource!=='S')throw Error('first_round_distribution_actual_composite_action');
+   decisions.push({q,seat,d,decisionId:`${q.matchId}-g${d.key.gameNo}-m${d.key.moveNo}-q${d.key.requestSeq}`});
+  }
+ }
+ const questions=list(selection.questions);if(!unique(questions.map(q=>q.questionId))||questions.some(q=>!plan.familyIds.includes(q.familyId))||plan.familyIds.some((f:string)=>questions.filter(q=>q.familyId===f).length>8))throw Error('first_round_distribution_union_question_scope');
+ for(const q of questions){if(!list(q.origins).length||q.candidateSpec!=='first-target-offer12-v1'||! /^[a-f0-9]{64}$/.test(q.featuresSHA256))throw Error('first_round_distribution_union_candidate_identity');for(const o of q.origins){const matches=decisions.filter(d=>d.q.sourceFamilyId===q.familyId&&d.decisionId===o.questionId&&d.d.trainingInputSHA256===o.inputSHA256&&d.q.variant===o.reachedBy&&d.q.group===o.group&&d.q.side===o.side&&equal(d.d.initialCandidateIds,o.candidateIds));if(matches.length!==1)throw Error('first_round_distribution_union_original_origin');}}
+ const owned=questions.filter(q=>t.sourcePlan.familyIds.includes(q.familyId));if(owned.length!==s.total||s.total>16||t.limits.maxLabelDecisions!==s.total||t.limits.maxProviderRequests<1||t.limits.maxProviderRequests>s.total||t.sourcePlan.familyIds.some((f:string)=>!owned.some(q=>q.familyId===f))||!unique(s.rows.map((r:any)=>r.key)))throw Error('first_round_distribution_owned_union');
+ for(const [i,r] of s.rows.entries()){
+  strict(r,['key','inputSHA256','familyId','blockFamilyId','split','actorSeat','actingPolicyId','proposalPolicyIdentity','actingReleaseRef','studentReleaseSHA256','scorerWeightsSHA256','studentCheckpointSHA256','actualActionId','teacherActionId','teacherReleaseRef','inInitialCandidateSet','actionAgreement','status','reason','labelKind','requestCount','resultRef']);
+  const question=owned[i],origin=question.origins[0],source=decisions.find(d=>d.q.sourceFamilyId===question.familyId&&d.decisionId===origin.questionId&&d.d.trainingInputSHA256===origin.inputSHA256)!;const {q,seat,d}=source;
+  if(!equal(r.key,d.key)||r.inputSHA256!==d.trainingInputSHA256||r.blockFamilyId!==q.sourceFamilyId||r.familyId!==q.roundFamilyIds[d.key.gameNo-1]||r.split!=='confirm'||r.actorSeat!==q.actor||r.actingPolicyId!==d.policyId||r.actingReleaseRef!==seat.releaseRef||!t.releaseRefs.includes(r.actingReleaseRef)||r.actualActionId!==d.actualActionId||!equal(r.proposalPolicyIdentity,proposer.policyIdentity)||r.teacherReleaseRef!==teacher.releaseRef)throw Error('first_round_distribution_original_row');
+  if(r.studentReleaseSHA256!==(seat.studentReleaseSHA256??null)||r.scorerWeightsSHA256!==(seat.studentRelease?.scorer?.weightsSHA256??null)||r.studentCheckpointSHA256!==(seat.studentRelease?.checkpoint?.sha256??null))throw Error('first_round_distribution_actual_scorer_identity');
+  for(const k of ['actualActionId','status'])nonempty(r[k]);if(r.requestCount!==null&&(!Number.isSafeInteger(r.requestCount)||r.requestCount<0)||![null,true,false].includes(r.inInitialCandidateSet)||!['offline_suggested',null].includes(r.labelKind)||![null,true,false].includes(r.actionAgreement)||r.teacherActionId!==null&&r.actionAgreement!==(r.actualActionId===r.teacherActionId))throw Error('first_round_distribution_transfer_fact');
+  strict(r.resultRef,['path','sha256']);if(!r.resultRef||! /^[a-f0-9]{64}$/.test(r.resultRef.sha256)||typeof r.resultRef.path!=='string')throw Error('distribution_private_result_index_missing');
+  // Provenance only: never read or export r.resultRef private teacher labels.
+ }
+}
+
 function validateDistribution(c:EvidenceCatalog,s:any,tasks:any[],history:any,states:any[],source:FixedRef){
  strict(s,['schema','runId','taskSHA256','selectionRef','purpose','cursor','total','rows','executionUnknown','consumption','interpretation']);
  const t=tasks.find(t=>t.runId===s.runId&&digest(t)===s.taskSHA256);if(!t||s.schema!=='ohuo-offline-label-summary-v1'||s.purpose!=='distribution_diagnostic'||!t.datasetRefs.includes(s.selectionRef))throw Error('distribution_summary_task_identity_conflict');
@@ -473,7 +593,8 @@ function validateDistribution(c:EvidenceCatalog,s:any,tasks:any[],history:any,st
  // own exact public bytes to the same frozen run, not just matching headers.
  const committedRun=states.find(state=>state.runs?.[t.runId]?.taskSHA256===digest(t)).runs[t.runId];
  if(!list(committedRun.consumerArtifactRefs).some((ref:any)=>{try{return c.file(ref).sha256===source.sha256;}catch{return false;}}))throw Error('distribution_summary_state_artifact_conflict');
- const selection=c.get(s.selectionRef),queue=c.get(t.seatLayoutPlan),proposer=c.get(t.parentPolicyRef),teacher=c.get(t.labelPolicyRef);
+ const selection=c.get(s.selectionRef);if(selection.schema==='ohuo-first-round-new-test-selection-result-v1'){validateFirstRoundDistribution(c,s,t,tasks,history,states,selection);return;}
+ const queue=c.get(t.seatLayoutPlan),proposer=c.get(t.parentPolicyRef),teacher=c.get(t.labelPolicyRef);
  if(selection.schema!=='ohuo-offline-label-selection-v1'||selection.purpose!==s.purpose||selection.selectedCount!==s.total||list(selection.rows).length!==s.total||selection.queueRef!==t.seatLayoutPlan||selection.sourceIndexRef!==t.sourcePlan.sourceIndexRef||queue.sourceIndexRef!==selection.sourceIndexRef)throw Error('distribution_frozen_selection_conflict');
  if(!unique(s.rows.map((r:any)=>r.key)))throw Error('distribution_duplicate_decision');
  for(const [i,r] of s.rows.entries()){
