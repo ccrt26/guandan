@@ -78,3 +78,27 @@ export function buildCommonTeacherView(rows:readonly CommonViewRow[],schema:Comm
  const addressMap=groups.map((g,i)=>{const actionIds=g.rows.map(r=>r.actionId).sort();return{address:`c${i}`,actionId:actionIds[0],equivalentActionIds:actionIds};});
  return {modelPayload,modelPayloadBytes,viewSHA256:createHash('sha256').update(modelPayloadBytes).digest('hex'),fieldMap:COMMON_VIEW_FIELD_MAP,addressMap};
 }
+
+/** Shared natural/designed used-decision identity. Opaque local action IDs and
+ * interchangeable physical-copy IDs are deliberately absent. The caller must
+ * derive each effect with the original necessaryDeclarationKey after legality
+ * validation, never from a designer-supplied equivalence claim. This function
+ * does not load history, reserve a question, or confer teaching eligibility. */
+export function normalizedCommonDecisionIdentity(view:ReturnType<typeof buildCommonTeacherView>,ruleOptions:unknown,candidateSpec:string,effectByActionId:ReadonlyMap<string,string>){
+ const hash=(value:string)=>createHash('sha256').update(value).digest('hex');
+ if(!view||typeof view.modelPayloadBytes!=='string'||view.modelPayloadBytes!==JSON.stringify(view.modelPayload)||view.viewSHA256!==hash(view.modelPayloadBytes)||view.modelPayload?.schema!=='first-round-common-view-r2'||!Array.isArray(view.modelPayload.candidates)||view.modelPayload.candidates.length<1||view.modelPayload.candidates.length>12||!Array.isArray(view.addressMap)||view.addressMap.length!==view.modelPayload.candidates.length)throw Error('normalized_common_view');
+ const ruleKeys=['levelMode','passA','pairSeqMin','pairSeqMax','trioSeqMin','trioSeqMax','flushLen','straightLen'];
+ const options=ruleOptions as Record<string,unknown>;
+ if(!options||typeof options!=='object'||Array.isArray(options)||Object.keys(options).sort().join(',')!==[...ruleKeys].sort().join(',')||typeof options.levelMode!=='string'||typeof options.passA!=='string'||ruleKeys.slice(2).some(k=>!Number.isSafeInteger(options[k])))throw Error('normalized_common_rules');
+ if(typeof candidateSpec!=='string'||!candidateSpec.trim()||!(effectByActionId instanceof Map))throw Error('normalized_common_effect');
+ const seen=new Set<string>();
+ const mapping=view.addressMap.map((row,index)=>{
+  if(row.address!==`c${index}`||view.modelPayload.candidates[index].address!==row.address||!Array.isArray(row.equivalentActionIds)||!row.equivalentActionIds.length||new Set(row.equivalentActionIds).size!==row.equivalentActionIds.length||row.actionId!==[...row.equivalentActionIds].sort()[0])throw Error('normalized_common_view');
+  const effects=new Set(row.equivalentActionIds.map(id=>{const effect=effectByActionId.get(id);if(seen.has(id)||typeof effect!=='string'||!effect)throw Error('normalized_common_effect');seen.add(id);return effect;}));
+  if(effects.size!==1)throw Error('normalized_common_effect');
+  return {address:row.address,effect:[...effects][0]};
+ });
+ if(effectByActionId.size!==seen.size)throw Error('normalized_common_effect');
+ const identity={schema:'ohuo-normalized-common-decision-v1' as const,ruleOptions:Object.fromEntries(ruleKeys.map(k=>[k,options[k]])),candidateSpec,modelPayloadBytes:view.modelPayloadBytes,mapping};
+ return {schema:identity.schema,sha256:hash(JSON.stringify(identity))};
+}

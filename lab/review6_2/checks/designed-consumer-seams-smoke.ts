@@ -1,0 +1,23 @@
+/** Bounded structural seam only. No provider, model, dataset or research run. */
+import assert from 'node:assert/strict';
+import * as label from '../offline-label-consumer';
+import * as selection from '../offline-selection';
+assert.equal(typeof label.offlineSnapshotActing,'function','missing explicit designed terminal source-kind seam');
+assert.equal(typeof selection.readUsedCommonDecisionCatalog,'function','missing fixed-host used catalog reader');
+const natural:any={row:{actorSeat:2},record:{seatSnapshots:[{}, {}, {releaseRef:'natural-peer'}]},decision:{policyId:'B',actualActionId:'action-real',actualMove:{pass:true}}};
+assert.deepEqual(label.offlineSnapshotActing(natural),{sourceKind:'natural-recorded',acting:{policyId:'B',seatSnapshot:{releaseRef:'natural-peer'},actionId:'action-real',move:{pass:true}}});
+const designed:any={row:{sourceKind:'designed-synthetic',sourceRef:'registered-source',actorSeat:2},input:{policyId:'B'},designedSource:{sourceKind:'designed-synthetic'}};
+assert.deepEqual(label.offlineSnapshotActing(designed),{sourceKind:'designed-synthetic',acting:{policyId:null,seatSnapshot:null,actionId:null,move:null}});
+assert.throws(()=>label.offlineSnapshotActing({...designed,decision:{actualActionId:'fabricated'}}),/designed_target_must_be_unexecuted/);
+assert.throws(()=>label.offlineSnapshotActing({...designed,record:{}}),/designed_target_must_be_unexecuted/);
+assert.throws(()=>label.offlineSnapshotActing({...designed,row:{...designed.row,sourceKind:'unknown'}}),/offline_source_kind_unrecognized/);
+await assert.rejects(selection.readUsedCommonDecisionCatalog('/directory-that-does-not-exist'),/ENOENT/);
+console.log('PASS designed structural terminal source-kind/null-action seam and fail-closed fixed-host entry; no runtime/provider/model execution');
+const {verifyFirstRoundHardChecks}=await import('../first-round-screen-consumer');
+const hard={schema:'ohuo-first-round-hard-check-v1',inputSHA256:'source-input',labelTerminalRef:{},reviewerRef:'reviewer',decision:'diagnostic',rationale:'diagnostic only',checks:{},publicFacts:[],representationNotes:'not admitted',limitations:[]};
+const snapshot:any={...designed,row:{...designed.row,inputSHA256:'source-input'}};
+const terminal={source:snapshot.row,acting:{policyId:null,seatSnapshot:null,actionId:null,move:null}};
+assert.equal(verifyFirstRoundHardChecks({hard,terminal,snapshot,reviewerRef:'reviewer'}),'diagnostic');
+assert.throws(()=>verifyFirstRoundHardChecks({hard,terminal:{...terminal,source:{...snapshot.row,sourceKind:'natural-recorded'}},snapshot,reviewerRef:'reviewer'}),/designed_screen_source_kind_binding/);
+assert.throws(()=>verifyFirstRoundHardChecks({hard,terminal:{...terminal,acting:{...terminal.acting,actionId:'fake-action'}},snapshot,reviewerRef:'reviewer'}),/designed_screen_unexecuted_target/);
+console.log('PASS designed source kind and unexecuted target preserved into diagnostic hard-check seam; qualification unchanged');

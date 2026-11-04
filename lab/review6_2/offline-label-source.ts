@@ -1,4 +1,4 @@
-import {buildCommonTeacherView} from './first-round-common-view';
+import {buildCommonTeacherView,normalizedCommonDecisionIdentity} from './first-round-common-view';
 import {necessaryDeclarationKey} from '../review6/action-effect';
 /** Read an originally captured decision, never re-enumerate/rescore a pool.
  * Replay reconstructs only prior confirmed history; teacher choices never step. */
@@ -10,7 +10,7 @@ import {PublicTracker} from '../../packages/ai/src/nn/schema';
 import {buildObservation} from '../../packages/ai/src/hybrid/observation';
 import {canonicalActionId,resolveLegalMove} from '../../packages/ai/src/hybrid/legality';
 import {freezeCopy,type DecisionBundle,type DecisionKey,type PublicHistoryPrefix} from '../../packages/ai/src/hybrid/protocol';
-import {selectRemoteDecision,type RemoteRequest} from '../../packages/ai/src/hybrid/remote-selector';
+import {selectRemoteDecision,type RemoteRequest,type ProjectRulesTeacherRequestView} from '../../packages/ai/src/hybrid/remote-selector';
 import {prepareOfflineLabel,type DecisionInput,type DatasetIdentities} from './distill-data';
 import {candidatePolicyForBundle,resolveCandidatePolicy,FIRST_TARGET_CANDIDATE_SPEC} from '../../packages/ai/src/candidate-spec';
 /** Shared by recorded reload and offline population selection; no enumeration. */
@@ -52,8 +52,15 @@ export function readOfflineSnapshot(row:SelectedRecordedDecision,cache=new Map<s
  return {row,record,decision,input,bundle,state,history};
 }
 export type OfflineSnapshot=ReturnType<typeof readOfflineSnapshot>;
+/** Causal learner-input core shared by recorded and designed sources. Source
+ * admission stays with their own readers; no record/decision is synthesized. */
+export interface OfflineSnapshotCore {
+ row:Pick<SelectedRecordedDecision,'key'|'inputSHA256'|'familyId'|'split'|'actorSeat'|'blockFamilyId'>;
+ input:OfflineSnapshot['input'];bundle:OfflineSnapshot['bundle'];
+ state:OfflineSnapshot['state'];history:OfflineSnapshot['history'];
+}
 /** Exactly the captured learner input, never raw observation/history or Q values. */
-export function commonViewForSnapshot(snapshot:OfflineSnapshot){
+export function commonViewForSnapshot(snapshot:OfflineSnapshotCore){
  const captured=snapshot.input.studentInputs;
  if(snapshot.input.schema!=='ohuo-decision-input-first-round-v3'||!captured||captured.inputDim!==423||!isDeepStrictEqual(captured.candidateIds,snapshot.bundle.initialCandidateIds)||captured.candidateFeatures.length!==captured.candidateIds.length)throw Error('common_view_capture_identity');
  return buildCommonTeacherView(captured.candidateIds.map((actionId,index)=>{
@@ -64,13 +71,22 @@ export function commonViewForSnapshot(snapshot:OfflineSnapshot){
  }),{inputDim:423,passEncoding:'action64'});
 }
 export type CommonTeacherView=ReturnType<typeof commonViewForSnapshot>;
+/** Used history must come from the original host catalog/selection chain. This
+ * helper only reconstructs one normalized public decision; a supplied digest
+ * or list is not a completeness proof for that history. */
+export function commonDecisionIdentityForSnapshot(snapshot:OfflineSnapshotCore){
+ const view=commonViewForSnapshot(snapshot),effects=new Map<string,string>();
+ for(const id of snapshot.bundle.initialCandidateIds){const candidate=snapshot.bundle.pool.find(c=>c.actionId===id);if(!candidate)throw Error('common_view_candidate_identity');effects.set(id,necessaryDeclarationKey(candidate.canonical,snapshot.state.ctx));}
+ return normalizedCommonDecisionIdentity(view,snapshot.state.match.opts,snapshot.bundle.candidateSpec,effects);
+}
 /** Selection only: no PendingDecision, owner.apply, policy forward or fallback.
  * This guard is explicit because B04's pure selector does not skip unique. */
-export async function queryOfflineTeacher({snapshot,teacher,request,signal,commonView}:{snapshot:OfflineSnapshot;commonView?:CommonTeacherView;teacher:DatasetIdentities['teacher'];request:RemoteRequest;signal:AbortSignal}){
+export async function queryOfflineTeacher({snapshot,teacher,request,signal,commonView,projectRulesPrompt}:{snapshot:OfflineSnapshotCore;projectRulesPrompt?:Pick<ProjectRulesTeacherRequestView,'schema'|'promptId'|'systemPromptSHA256'|'ruleOptions'>;commonView?:CommonTeacherView;teacher:DatasetIdentities['teacher'];request:RemoteRequest;signal:AbortSignal}){
  if(snapshot.bundle.isUniqueLegalAction)return {status:'excluded_unique' as const,remote:null,offlineLabel:null};
  const projection=commonView?commonViewForSnapshot(snapshot):undefined;
  if(commonView&&!isDeepStrictEqual(projection,commonView))throw Error('common_view_projection_changed');
- const remote=await selectRemoteDecision({bundle:snapshot.bundle,request,signal,...(projection?{requestProjection:()=>({schema:'ohuo-common-view-request-r2' as const,decisionId:snapshot.bundle.decisionId,modelPayloadBytes:projection.modelPayloadBytes,addressMap:projection.addressMap})}:{})});
+ if(projectRulesPrompt&&(!projection||projectRulesPrompt.schema!=='ohuo-common-view-project-rules-request-v1'||!isDeepStrictEqual(snapshot.state.match.opts,projectRulesPrompt.ruleOptions)))throw Error('project_rules_source_options');
+ const remote=await selectRemoteDecision({bundle:snapshot.bundle,request,signal,...(projection?{requestProjection:()=>({...(projectRulesPrompt?{schema:projectRulesPrompt.schema,promptId:projectRulesPrompt.promptId,systemPromptSHA256:projectRulesPrompt.systemPromptSHA256,ruleOptions:projectRulesPrompt.ruleOptions}:{schema:'ohuo-common-view-request-r2' as const}),decisionId:snapshot.bundle.decisionId,modelPayloadBytes:projection.modelPayloadBytes,addressMap:projection.addressMap})}:{})});
  const offlineLabel=prepareOfflineLabel({input:snapshot.input,remote,state:snapshot.state,history:snapshot.history,teacher});
  return {status:remote.status,remote,offlineLabel};
 }

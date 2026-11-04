@@ -142,6 +142,155 @@ def first_round_direction(row):
     return next(iter(directions))
 
 
+def validate_designed_augmentation(value):
+    # Exact mirror of designed-provenance.mjs; metadata is not source evidence.
+    keys = {'schema', 'previousDatasetRef', 'selectionRef', 'ordinarySelectionRef'}
+    require(isinstance(value, dict) and set(value) == keys and
+            value['schema'] == 'ohuo-designed-augmentation-v1', 'designed_augmentation')
+    for key in ('previousDatasetRef', 'selectionRef', 'ordinarySelectionRef'):
+        ref = value[key]
+        require(isinstance(ref, str) and re.fullmatch(r'.+@sha256:[a-f0-9]{64}', ref) and
+                not re.search(r'(^|[/:_-])latest($|[/:@_-])', ref, re.I), 'designed_augmentation')
+    require(value['selectionRef'] != value['ordinarySelectionRef'], 'designed_augmentation')
+    return value
+
+
+def validate_designed_provenance(value):
+    keys = {'sourceKind', 'sourceRef', 'sourceIndexRef', 'sourceSHA256', 'replaySHA256', 'inputSHA256', 'samplingRef'}
+    require(isinstance(value, dict) and set(value) == keys and
+            value['sourceKind'] == 'designed-synthetic', 'designed_provenance')
+    for key in ('sourceRef', 'sourceIndexRef', 'samplingRef'):
+        ref = value[key]
+        require(isinstance(ref, str) and re.fullmatch(r'.+@sha256:[a-f0-9]{64}', ref) and
+                not re.search(r'(^|[/:_-])latest($|[/:@_-])', ref, re.I), 'designed_provenance')
+    require(all(isinstance(value[key], str) and re.fullmatch(r'[a-f0-9]{64}', value[key])
+                for key in ('sourceSHA256', 'replaySHA256', 'inputSHA256')), 'designed_provenance')
+    return value
+
+
+def validate_first_round_research_protocol(value):
+    # Shared original R2 predicate for both the recipe and designed-plan readers.
+    require(isinstance(value, dict) and set(value) == {'id', 'revisionRef'} and
+            value['id'] == 'first-round-common-view-r2' and isinstance(value['revisionRef'], str) and
+            re.fullmatch(r'.+@sha256:[a-f0-9]{64}', value['revisionRef']), 'r2 dataset explicit protocol')
+    return value
+
+
+def validate_designed_augmentation_plan(plan):
+    require(plan.get('schema') == FIRST_ROUND_PLAN_SCHEMA, 'designed first-round plan required')
+    augmentation = validate_designed_augmentation(plan.get('designedAugmentation'))
+    validate_first_round_research_protocol(plan.get('researchProtocol'))
+    require('cumulativeSampling' not in plan, 'designed augmentation requires r2 only')
+    return augmentation
+
+
+def validate_first_round_designed_binding(plan, row, retained=None):
+    augmentation = None
+    if 'designedAugmentation' in plan:
+        augmentation = validate_designed_augmentation_plan(plan)
+    provenance = row.get('provenance')
+    if isinstance(provenance, dict) and 'sourceKind' in provenance:
+        validate_designed_provenance(provenance)
+        require(augmentation is not None, 'designed plan required')
+        if retained is not None and row.get('decisionId') in retained:
+            require(row == retained[row['decisionId']], 'designed retained_changed')
+            return
+        require(provenance['samplingRef'] == plan.get('samplingRef'), 'designed sampling reference')
+        require(provenance['sourceIndexRef'] == plan.get('sourceIndexRef'), 'designed source index reference')
+
+
+def validate_designed_evidence(evidence, plan, samples, exclusions, raw_lines):
+    # Reader integrity only. H/freezer still own the original source/ledger join.
+    # Retention hashes use original UTF-8 JSONL bytes, never Python float rendering.
+    def need(ok, reason):
+        require(ok, 'designed_evidence_' + reason)
+    def hex_sha(value):
+        return isinstance(value, str) and re.fullmatch(r'[a-f0-9]{64}', value)
+    def fixed(value):
+        return isinstance(value, str) and re.fullmatch(r'.+@sha256:[a-f0-9]{64}', value) and not re.search(r'(^|[/:_-])latest($|[/:@_-])', value, re.I)
+    def exact(value, keys):
+        return isinstance(value, dict) and set(value) == set(keys)
+    def file_ref(value):
+        return exact(value, ('id', 'sha256')) and isinstance(value['id'], str) and value['id'].strip() and not re.search(r'(^|[/:_-])latest($|[/:@_-])', value['id'], re.I) and hex_sha(value['sha256'])
+    def identified(rows):
+        return all(isinstance(r, dict) and isinstance(r.get('decisionId'), str) and r['decisionId'] for r in rows) and len({r['decisionId'] for r in rows}) == len(rows)
+    a = validate_designed_augmentation_plan(plan)
+    fields = {'schema', 'previousDatasetRef', 'previousManifestSHA256', 'previousSamplesSHA256', 'retainedSamples',
+              'selectionRef', 'productionRef', 'populationRef', 'selectedMetadataRef', 'exclusionsRef',
+              'preselectedDemoMetadata', 'ordinarySelectionRef', 'ordinaryProductionRef', 'ordinaryPopulationRef',
+              'ordinaryCandidateMetadata', 'newDemoIds', 'addedKeepIds'}
+    e = evidence
+    need(exact(e, fields) and e['schema'] == 'ohuo-designed-augmentation-evidence-v1', 'shape')
+    need(all(e[key] == a[key] for key in ('previousDatasetRef', 'selectionRef', 'ordinarySelectionRef')) and
+         e['productionRef'] == plan.get('samplingRef'), 'plan')
+    need(all(hex_sha(e[key]) for key in ('previousManifestSHA256', 'previousSamplesSHA256')) and
+         all(file_ref(e[key]) for key in ('populationRef', 'selectedMetadataRef', 'exclusionsRef', 'ordinaryPopulationRef')) and
+         fixed(e['productionRef']) and fixed(e['ordinaryProductionRef']) and fixed(plan.get('sourceIndexRef')), 'references')
+    need(all(isinstance(e[key], list) for key in ('retainedSamples', 'preselectedDemoMetadata', 'ordinaryCandidateMetadata', 'newDemoIds', 'addedKeepIds')) and
+         isinstance(samples, list) and isinstance(exclusions, list) and isinstance(raw_lines, list) and len(raw_lines) == len(samples), 'arrays')
+    need(all(identified(rows) for rows in (samples, e['retainedSamples'], e['preselectedDemoMetadata'], e['ordinaryCandidateMetadata'])) and
+         all(all(isinstance(i, str) and i for i in e[key]) and len(set(e[key])) == len(e[key]) for key in ('newDemoIds', 'addedKeepIds')), 'duplicate')
+    need(all(isinstance(line, bytes) and read_json(line) == row for line, row in zip(raw_lines, samples)), 'sample_bytes')
+    by_id = {row['decisionId']: (row, line) for row, line in zip(samples, raw_lines)}
+    retained = {}
+    prior_lines = []
+    for r in e['retainedSamples']:
+        need(exact(r, ('decisionId', 'sampleSHA256')) and hex_sha(r['sampleSHA256']), 'retained_shape')
+        pair = by_id.get(r['decisionId'])
+        need(pair is not None and sha(pair[1]) == r['sampleSHA256'], 'retained_changed')
+        retained[r['decisionId']] = read_json(pair[1])
+        prior_lines.append(pair[1])
+    need([s['decisionId'] for s in samples[:len(retained)]] == [r['decisionId'] for r in e['retainedSamples']], 'retained_order')
+    need(sha(b''.join(line + b'\n' for line in prior_lines)) == e['previousSamplesSHA256'], 'retained_file_hash')
+    demo = {}
+    for m in e['preselectedDemoMetadata']:
+        need(exact(m, ('decisionId', 'key', 'inputSHA256', 'sourceRef', 'sourceIndexRef', 'sourceSHA256', 'replaySHA256', 'sourceFamily')) and
+             isinstance(m['sourceFamily'], str) and m['sourceFamily'] and isinstance(m['key'], dict) and
+             all(hex_sha(m[k]) for k in ('inputSHA256', 'sourceSHA256', 'replaySHA256')) and
+             fixed(m['sourceRef']) and fixed(m['sourceIndexRef']) and m['sourceIndexRef'] == plan['sourceIndexRef'] and m['decisionId'] not in retained, 'demo_metadata')
+        demo[m['decisionId']] = m
+    ordinary = {}
+    for rank, m in enumerate(e['ordinaryCandidateMetadata']):
+        need(exact(m, ('decisionId', 'key', 'inputSHA256', 'rank', 'sourceFamily', 'sourceRef', 'contextSHA256')) and
+             type(m['rank']) is int and m['rank'] == rank and isinstance(m['sourceFamily'], str) and m['sourceFamily'] and
+             isinstance(m['key'], dict) and fixed(m['sourceRef']) and hex_sha(m['inputSHA256']) and hex_sha(m['contextSHA256']), 'ordinary_metadata')
+        ordinary[m['decisionId']] = m
+    new_demo_ids, added_keep_ids = [], []
+    for row in samples:
+        if row['decisionId'] in retained:
+            continue
+        p = row.get('provenance')
+        if row.get('sampleKind') == 'demo':
+            m = demo.get(row['decisionId'])
+            validate_designed_provenance(p)
+            need(m is not None and row.get('split') == 'train' and row.get('sampleClass') == 'target' and
+                 row.get('executionKind') == 'offline_suggested' and row.get('sourceFamily') == m['sourceFamily'] and
+                 row.get('sourceRef') == m['sourceRef'] and row.get('key') == m['key'] and
+                 all(p[k] == m[k] for k in ('inputSHA256', 'sourceRef', 'sourceIndexRef', 'sourceSHA256', 'replaySHA256')) and
+                 p['samplingRef'] == plan['samplingRef'], 'demo_binding')
+            new_demo_ids.append(row['decisionId'])
+        else:
+            m = ordinary.get(row['decisionId'])
+            need(m is not None and row.get('sampleKind') == 'keep' and row.get('split') == 'train' and row.get('sampleClass') == 'ordinary' and
+                 isinstance(p, dict) and 'sourceKind' not in p and p.get('samplingRef') == plan['samplingRef'] and
+                 p.get('inputSHA256') == m['inputSHA256'] and all(row.get(k) == m[k] for k in ('sourceFamily', 'sourceRef', 'contextSHA256', 'key')), 'keep_binding')
+            added_keep_ids.append(row['decisionId'])
+    need(new_demo_ids == e['newDemoIds'] and added_keep_ids == e['addedKeepIds'], 'growth')
+    for m in demo.values():
+        failed = [x for x in exclusions if isinstance(x, dict) and x.get('sourceKind') == 'designed-synthetic' and
+                  x.get('decisionId') == m['decisionId'] and x.get('sourceRef') == m['sourceRef'] and x.get('sourceSHA256') == m['sourceSHA256']]
+        need(len(failed) == (0 if m['decisionId'] in new_demo_ids else 1), 'full_denominator')
+        if failed:
+            need(isinstance(failed[0].get('reason'), str) and failed[0]['reason'].strip(), 'full_denominator')
+    old_keep = [r['decisionId'] for r in samples[:len(retained)] if r.get('split') == 'train' and r.get('sampleKind') == 'keep']
+    need([m['decisionId'] for m in e['ordinaryCandidateMetadata'][:len(old_keep)]] == old_keep, 'retained_keep_prefix')
+    eligible = [m['decisionId'] for m in e['ordinaryCandidateMetadata'] if m['decisionId'] not in set(old_keep)]
+    need(added_keep_ids == eligible[:len(added_keep_ids)], 'keep_prefix')
+    train_demo_count = sum(s.get('split') == 'train' and s.get('sampleKind') == 'demo' for s in samples)
+    need(len(added_keep_ids) <= train_demo_count - len(old_keep), 'keep_count')
+    return retained
+
+
 def validate_first_round_row(row, input_contract):
     require(input_contract == STUDENT_INPUT_CONTRACT, 'first-round explicit423 required')
     keys = {'schema', 'sampleKind', 'sampleClass', 'decisionId', 'sourceFamily', 'sourceRef', 'split', 'key',
@@ -153,6 +302,19 @@ def validate_first_round_row(row, input_contract):
                      'evidenceGrade', 'direction', 'validationRef'))
     require(set(row) == keys, 'first-round sample fields')
     require(row['schema'] == FIRST_ROUND_SAMPLE_SCHEMA and candidate_contract(row), 'first-round sample schema')
+    provenance = row['provenance']
+    require(isinstance(provenance, dict), 'first-round provenance')
+    if 'sourceKind' in provenance:
+        validate_designed_provenance(provenance)
+        require(row['split'] == 'train' and row['sampleKind'] == 'demo' and row['sampleClass'] == 'target' and
+                row.get('executionKind') == 'offline_suggested', 'designed sample branch')
+        require(provenance['sourceRef'] == row['sourceRef'], 'designed source reference')
+    else:
+        require(set(provenance) == {'inputSHA256', 'recordSHA256', 'matchSHA256', 'samplingRef'} and
+                all(isinstance(provenance[key], str) and re.fullmatch(r'[a-f0-9]{64}', provenance[key])
+                    for key in ('inputSHA256', 'recordSHA256', 'matchSHA256')) and
+                isinstance(provenance['samplingRef'], str) and
+                re.fullmatch(r'.+@sha256:[a-f0-9]{64}', provenance['samplingRef']), 'first-round natural provenance')
     require(isinstance(row['studentParentRef'], str) and
             re.fullmatch(r'.+@sha256:[a-f0-9]{64}', row['studentParentRef']), 'first-round student parent reference')
     require(len(row['candidateCanonicalIds']) == len(row['candidateIds']) and
@@ -311,7 +473,10 @@ def load_frozen_dataset(reference, expected_identities, *, synthetic=False, inpu
     if first_round:
         validate_first_round_identities(expected_identities, input_contract)
         require(m['plan'].get('schema') == FIRST_ROUND_PLAN_SCHEMA, 'first-round plan schema')
+        if 'designedAugmentation' in m['plan']:
+            validate_designed_augmentation_plan(m['plan'])
     else:
+        require('designedAugmentation' not in m['plan'], 'designed first-round plan required')
         require(input_contract is None, 'legacy dataset input contract')
         require(m.get('schema') == ('ohuo-distill-dataset-candidate-v3' if fresh else 'ohuo-distill-dataset-v2'), 'dataset schema')
     if fresh and not first_round:
@@ -325,6 +490,13 @@ def load_frozen_dataset(reference, expected_identities, *, synthetic=False, inpu
     require(not data or data.endswith(b'\n'), 'incomplete sample line')
     rows = [read_json(line) for line in data.splitlines()]
     require(len(rows) == m['samples']['decisions'], 'decision count mismatch')
+    retained = None
+    if first_round and 'designedAugmentation' in m['plan']:
+        retained = validate_designed_evidence(m.get('designedEvidence'), m['plan'], rows, m.get('exclusions'),
+                                             data.split(b'\n')[:-1] if data else [])
+        require(not m['qualification']['eligible'] or m['designedEvidence']['newDemoIds'], 'designed no new valid demo')
+    else:
+        require('designedEvidence' not in m, 'designed unexpected evidence')
     if synthetic:
         require(m['plan']['purpose'] == 'engineering_fixture' and (not first_round or m['qualification']['eligible'] is False), 'synthetic fixture required')
     else:
@@ -339,6 +511,7 @@ def load_frozen_dataset(reference, expected_identities, *, synthetic=False, inpu
                 (FIRST_ROUND_SAMPLE_SCHEMA if first_round else 'ohuo-distill-decision-candidate-v3' if fresh else 'ohuo-distill-decision-v2'), 'sample schema')
         if first_round:
             require(row['studentParentRef'] == expected_identities['studentParentRef'], 'sample student parent changed')
+            validate_first_round_designed_binding(m['plan'], row, retained)
         require(row['decisionId'] not in ids and row['contextSHA256'] not in contexts, 'duplicate context/decision')
         ids.add(row['decisionId']); contexts.add(row['contextSHA256'])
         family = families.get(row['sourceFamily'])
@@ -355,7 +528,7 @@ def load_frozen_dataset(reference, expected_identities, *, synthetic=False, inpu
     if first_round:
         protocol = m['plan'].get('researchProtocol')
         if r2:
-            require(isinstance(protocol, dict) and set(protocol) == {'id', 'revisionRef'} and protocol['id'] == 'first-round-common-view-r2' and re.fullmatch(r'.+@sha256:[a-f0-9]{64}', protocol.get('revisionRef', '')), 'r2 dataset explicit protocol')
+            validate_first_round_research_protocol(protocol)
         else:
             require(protocol is None, 'r2 dataset requires matching recipe')
         validate_first_round_dataset_rows(rows, m['plan']['families'], not synthetic, r2)

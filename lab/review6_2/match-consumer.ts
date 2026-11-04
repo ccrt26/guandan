@@ -1,3 +1,4 @@
+import {createProfileDesigner,type DesignedRemoteRequest} from './designed-source-request';
 import {runFirstRoundNewTest,firstRoundEvaluationCheckpoint,validateFirstRoundNewTestTask} from './first-round-evaluation-consumer';
 import {validateFirstRoundRegistryPolicy,resolveFirstRoundRegistryPolicy} from './first-round-registry-policy';
 /** Fixed B07 host integration. No server/listener, arbitrary commands, learner,
@@ -201,15 +202,20 @@ export async function awaitOwnedMatchWorker(worker:Worker){
 
 /** Actual Node send boundary, distinct from B04's adapter-invocation count.
  * Injected fetch exists only as a trusted host/test dependency, never TaskFile. */
-export function createMeteredRemote({store,reference,reserve,settleReservation,cancel,keyPrefix,ownerSignal,onSent=()=>{},fetchImpl=globalThis.fetch}:any):{request:RemoteRequest;drain:()=>Promise<void>}{
+export function createMeteredRemote(options:{role:'designer'}&Record<string,any>):{request:DesignedRemoteRequest;drain:()=>Promise<void>};
+export function createMeteredRemote(options:{role?:'selection'}&Record<string,any>):{request:RemoteRequest;drain:()=>Promise<void>};
+export function createMeteredRemote({role='selection',store,reference,reserve,settleReservation,cancel,keyPrefix,ownerSignal,onSent=()=>{},fetchImpl=globalThis.fetch}:any):{request:any;drain:()=>Promise<void>}{
+ if(!['selection','designer'].includes(role))throw Error('unsupported metered request role');
+ // Fixed code roles only: no task/profile/JSON-provided factory or callback.
+ const createSelector=role==='designer'?createProfileDesigner:createProfileSelector;
  const active=new Set<Promise<unknown>>();let accountingError:unknown=null,ordinal=0;
  const drain=async()=>{while(active.size)await Promise.allSettled([...active]);if(accountingError)throw accountingError;};
- const request:RemoteRequest=async(view,signal)=>{
+ const request=async(view:any,signal:AbortSignal)=>{
   const requestNumber=++ordinal;let sent:0|1|null=0;
-  const selector=createProfileSelector({store,reference,fetchImpl:(...args:any[])=>{
+  const selector=createSelector({store,reference,fetchImpl:(...args:any[])=>{
    const work=(async()=>{
     let reservation:string;
-    try{reservation=await reserve(`${keyPrefix}-r${requestNumber}`,{...zeroCost,providerRequests:1,labelDecisions:requestNumber===1?1:0});}
+    try{reservation=await reserve(`${keyPrefix}-r${requestNumber}`,{...zeroCost,providerRequests:1,labelDecisions:role==='selection'&&requestNumber===1?1:0});}
     catch(error){cancel((error as any)?.reason==='run_boundary'?'run_boundary':'lost_ownership');throw error;}
     if(signal.aborted||ownerSignal.aborted){try{await settleReservation(reservation,{disposition:'not_sent',evidence:{kind:'confirmed_not_sent'}});}catch(error){accountingError=error;}throw Error('cancelled before upstream');}
     let response:Promise<Response>;

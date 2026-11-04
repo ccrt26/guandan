@@ -1,3 +1,4 @@
+import {PROJECT_RULES_TEACHER_WIRE_SCHEMA,PROJECT_RULES_TEACHER_PROMPT_ID,PROJECT_RULES_TEACHER_SYSTEM_SHA256,PROJECT_RULES_TEACHER_RESPONSE_ID,assertProjectRuleOptions} from './llm-project-rules-v541.mjs';
 import {createHash} from 'node:crypto';
 /** B04 wire boundary for the B02 public projection. No I/O or local GameState. */
 export const RESPONSE_CONTRACT_VERSION = 'ohuo-choose-expand-v1';
@@ -116,6 +117,20 @@ export function parseCommonViewSelection(textValue,view){
  let v;try{v=JSON.parse(textValue);}catch{fail('invalid_response_json');}
  if(!plain(v)||v.kind!=='choose'||Object.keys(v).some(k=>!['kind','decisionId','actionId','note'].includes(k))||typeof v.decisionId!=='string'||typeof v.actionId!=='string'||('note'in v&&(typeof v.note!=='string'||v.note.length>240)))fail('invalid_response_shape');
  if(v.decisionId!==COMMON_VIEW_RESPONSE_ID)fail('decision_id_mismatch');
+ const mapped=view.addressMap.find(x=>x.address===v.actionId);if(!mapped)fail('action_id_not_offered');
+ return {...v,decisionId:view.decisionId,actionId:mapped.actionId};
+}
+
+/** Explicit v5.4.1 envelope; the existing 423 payload/addresses remain strict. */
+export function freezeProjectRulesRequest(input){
+ object(input,{schema:one([PROJECT_RULES_TEACHER_WIRE_SCHEMA]),promptId:one([PROJECT_RULES_TEACHER_PROMPT_ID]),systemPromptSHA256:one([PROJECT_RULES_TEACHER_SYSTEM_SHA256]),ruleOptions:value=>{try{assertProjectRuleOptions(value);}catch{fail('invalid_request');}},decisionId:text(),modelPayloadBytes:text(MAX_INPUT_BYTES),addressMap:array(x=>object(x,{address:text(80),actionId:text(80),equivalentActionIds:array(text(80),12,1)}),12,1)});
+ freezeCommonViewRequest({schema:COMMON_VIEW_WIRE_SCHEMA,decisionId:input.decisionId,modelPayloadBytes:input.modelPayloadBytes,addressMap:input.addressMap});
+ return JSON.parse(JSON.stringify(input));
+}
+export function parseProjectRulesSelection(textValue,view){
+ let v;try{v=JSON.parse(textValue);}catch{fail('invalid_response_json');}
+ if(!plain(v)||Object.keys(v).length!==4||Object.keys(v).some(k=>!['kind','decisionId','actionId','note'].includes(k))||v.kind!=='choose'||typeof v.decisionId!=='string'||typeof v.actionId!=='string'||typeof v.note!=='string'||!v.note.trim())fail('invalid_response_shape');
+ if(v.decisionId!==PROJECT_RULES_TEACHER_RESPONSE_ID)fail('decision_id_mismatch');
  const mapped=view.addressMap.find(x=>x.address===v.actionId);if(!mapped)fail('action_id_not_offered');
  return {...v,decisionId:view.decisionId,actionId:mapped.actionId};
 }

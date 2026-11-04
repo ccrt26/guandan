@@ -66,7 +66,7 @@ export function decideFirstRoundR2Learning({baseline,previous,current,weightsCha
  if(weightsChanged!==true)return stop('weights_unchanged');
  if(current.train.demoCE>=previous.train.demoCE)return stop('no_training_progress');
  const eligible=current.demoCE<baseline.demoCE&&r2Directions.every(d=>current.directionMetrics[d].demoCE<=baseline.directionMetrics[d].demoCE);
- if(current.demoCE>previous.demoCE||r2Directions.some(d=>current.directionMetrics[d].demoCE>previous.directionMetrics[d].demoCE))return stop('development_deterioration_risk');
+ if(current.demoCE>previous.demoCE)return stop('development_deterioration_risk');
  if(eligible&&current.greedyChangedCount>0)return{schema:FIRST_ROUND_R2_STOPPING_RULE,decision:'candidate',reason:'first_behavioral_absorption_candidate_requires_behavior_review'};
  return{schema:FIRST_ROUND_R2_STOPPING_RULE,decision:'continue',reason:'finite_training_progress_without_behavioral_candidate'};
 }

@@ -1,3 +1,4 @@
+import type {RuleOptions} from '@gd/engine';
 /** B04 browser-neutral selector. No fs, credentials, network defaults,
  * model forward, move execution or fallback-policy selection. */
 import { decisionRequestView, expandDecisionCandidates, selectOfferedAction } from './candidates';
@@ -34,7 +35,9 @@ export type RemoteRequestResult =
   | { status: 'cancelled'; reason: string; summary: RemoteRequestSummary };
 /** Transport must resolve cancellation with its actual send-count summary. */
 export interface CommonTeacherRequestView {schema:'ohuo-common-view-request-r2';decisionId:string;modelPayloadBytes:string;addressMap:readonly {address:string;actionId:string;equivalentActionIds:readonly string[]}[]}
-export type RemoteRequestView = ReturnType<typeof decisionRequestView>|CommonTeacherRequestView;
+export interface ProjectRulesTeacherRequestView extends Omit<CommonTeacherRequestView,'schema'> {schema:'ohuo-common-view-project-rules-request-v1';promptId:string;systemPromptSHA256:string;ruleOptions:Readonly<RuleOptions>}
+export type CommonTeacherRequestProjection=CommonTeacherRequestView|ProjectRulesTeacherRequestView;
+export type RemoteRequestView = ReturnType<typeof decisionRequestView>|CommonTeacherRequestProjection;
 export type RemoteRequest = (view: RemoteRequestView, signal: AbortSignal) => Promise<RemoteRequestResult>;
 interface TerminalCommon { decisionKey: DecisionKey; offeredIds: readonly string[]; requestCount: number | null; elapsedMs: number; attempts: readonly RemoteRequestSummary[] }
 export type RemoteDecisionResult = TerminalCommon & (
@@ -57,7 +60,7 @@ function validBundle(b: DecisionBundle): boolean {
 }
 /** One initial request, optional B02 expansion, one final choose. Returned
  * selected is NOT authority to step: M4 must recheck ownership/key/legal move. */
-export async function selectRemoteDecision({bundle,request,signal,requestProjection}: {bundle: DecisionBundle; request: RemoteRequest; signal: AbortSignal; requestProjection?:(bundle:DecisionBundle)=>CommonTeacherRequestView}): Promise<RemoteDecisionResult> {
+export async function selectRemoteDecision({bundle,request,signal,requestProjection}: {bundle: DecisionBundle; request: RemoteRequest; signal: AbortSignal; requestProjection?:(bundle:DecisionBundle)=>CommonTeacherRequestProjection}): Promise<RemoteDecisionResult> {
   const startedAt = performance.now();
   let current = bundle,accountingUnknown=false;
   const attempts: RemoteRequestSummary[] = [];
@@ -80,8 +83,10 @@ export async function selectRemoteDecision({bundle,request,signal,requestProject
     if (signal.aborted || result.status === 'cancelled') return cancelled();
     if (result.status === 'remote_failure') return {...common(),status:'remote_failure',reason:result.reason};
     const response = result.response;
+    const projectRules='schema' in view&&view.schema==='ohuo-common-view-project-rules-request-v1';
+    if(projectRules&&(response?.kind!=='choose'||typeof response.note!=='string'||!response.note.trim()))return {...common(),status:'halted',reason:'invalid_response_shape'};
     const fields = response?.kind === 'choose' ? ['kind','decisionId','actionId','note'] : response?.kind === 'expand' ? ['kind','decisionId','groupId'] : [];
-    if (!response || !fields.length || Object.keys(response).some(k=>!fields.includes(k)) || ('note' in response && (typeof response.note !== 'string' || response.note.length > 240))) return {...common(),status:'halted',reason:'invalid_response_shape'};
+    if (!response || !fields.length || Object.keys(response).some(k=>!fields.includes(k)) || ('note' in response && (typeof response.note !== 'string' || !projectRules && response.note.length > 240))) return {...common(),status:'halted',reason:'invalid_response_shape'};
     try {
       if (response.kind === 'choose') {
         const choice = selectOfferedAction(current,response.decisionId,response.actionId);

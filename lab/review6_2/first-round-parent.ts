@@ -1,4 +1,5 @@
 import {isFirstRoundR2DatasetPlan} from './first-round-contract.mjs';
+import {validateDesignedAugmentation} from './designed-provenance.mjs';
 /** Narrow first-round S0 identity adapter. Metadata checks are admission-safe;
  * only resolveFirstRoundParent reads model bytes, inside an owned timed run. */
 import {readFileSync,realpathSync} from 'node:fs';
@@ -34,7 +35,11 @@ export async function resolveFirstRoundParent(options:FirstRoundParentOptions&{r
 /** Exact small-round metadata, never substitutes for the freezer's full proof. */
 export function validateFirstRoundDatasetMetadata(manifest:any,mode:'research'|'offline_synthetic'){
  if(manifest?.schema!=='ohuo-distill-dataset-first-round-v4'||manifest.plan?.schema!=='ohuo-distill-plan-first-round-v3'||(mode==='research'?(manifest.plan.purpose!=='first-round-partner-control'||manifest.qualification?.eligible!==true):(manifest.plan.purpose!=='engineering_fixture'||manifest.qualification?.eligible!==false)))throw Error('first-round dataset purpose/qualification mismatch');
- isFirstRoundR2DatasetPlan(manifest.plan);
+ const r2=isFirstRoundR2DatasetPlan(manifest.plan);
+ if(Object.hasOwn(manifest.plan,'designedAugmentation')){
+  validateDesignedAugmentation(manifest.plan.designedAugmentation);
+  if(!r2||Object.hasOwn(manifest.plan,'cumulativeSampling'))throw Error('designed_augmentation_requires_r2_only');
+ }
  const ids=manifest.plan.identities,scorer=validateStudentScorerDescriptor(ids?.studentScorer);fixedReference(ids.studentParentRef,'studentParentRef');
  if(!same(ids.encoderConfig,json(STUDENT_SCORER_ENCODER))||ids.encoderVersion!==STUDENT_SCORER_ENCODER.encoderVersion||!same(ids.proposalEncoderConfig,{schema:'v2',ctxFill:'rule-context',passEncoding:'action64'})||ids.candidateSpecRef!==FIRST_TARGET_CANDIDATE_SPEC||resolveCandidatePolicy(ids.candidatePolicy).candidateSpec!==FIRST_TARGET_CANDIDATE_SPEC||scorer.inputDim!==423||ids.basePolicy?.inputDim!==399)throw Error('first-round dataset scorer/proposal/input identity mismatch');
  return ids;

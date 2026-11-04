@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import * as p from '../designed-provenance.mjs';
+assert.deepEqual(process.argv.slice(2),['--case','dataset.designed-provenance']);
+const ref=n=>n+'@sha256:'+'a'.repeat(64),hex='b'.repeat(64);
+const augmentation={schema:'ohuo-designed-augmentation-v1',previousDatasetRef:ref('old'),selectionRef:ref('designed'),ordinarySelectionRef:ref('ordinary')};
+assert.deepEqual(p.validateDesignedAugmentation(augmentation),augmentation);
+const provenance={sourceKind:'designed-synthetic',sourceRef:ref('source'),sourceIndexRef:ref('index'),sourceSHA256:hex,replaySHA256:hex,inputSHA256:hex,samplingRef:ref('production')};
+assert.deepEqual(p.validateDesignedProvenance(provenance),provenance);
+for(const k of ['recordSHA256','matchSHA256','naturalSeed','actualActionId'])assert.throws(()=>p.validateDesignedProvenance({...provenance,[k]:hex}),/designed_provenance/);
+assert.throws(()=>p.validateDesignedProvenance({...provenance,sourceKind:'natural'}),/designed_provenance/);
+assert.throws(()=>p.validateDesignedProvenance({...provenance,sourceSHA256:'bad'}),/designed_provenance/);
+assert.throws(()=>p.validateDesignedAugmentation({...augmentation,previousDatasetRef:null}),/designed_augmentation/);
+assert.throws(()=>p.validateDesignedAugmentation({...augmentation,allowEmptyDev:true}),/designed_augmentation/);
+const old={decisionId:'natural',split:'dev',provenance:{recordSHA256:hex,matchSHA256:hex,inputSHA256:hex,samplingRef:ref('old')}};
+const prior=[old],current=[structuredClone(old)];p.assertRetainedSamples(prior,current);
+assert.throws(()=>p.assertRetainedSamples(prior,[{...old,split:'train'}]),/designed_previous_sample_changed/);
+assert.throws(()=>p.assertRetainedSamples(prior,[]),/designed_previous_sample_changed/);
+console.log(JSON.stringify({case:'dataset.designed-provenance',status:'passed',providerRequests:0,modelForwardCalls:0,datasetFrozen:false}));
