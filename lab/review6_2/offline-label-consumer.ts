@@ -19,7 +19,7 @@ import {createProfileSelector} from '../../packages/web/server/llm-select.mjs';
 import {createMeteredRemote,validateMatchRules} from './match-consumer';
 import {frozenTeacherSnapshot} from './teacher-snapshot';
 import {hashJSON} from './match-record';
-import {readOfflineSnapshot,queryOfflineTeacher,commonViewForSnapshot,type SelectedRecordedDecision,type OfflineSnapshot} from './offline-label-source';
+import {readOfflineSnapshot,readOfflineSnapshots,queryOfflineTeacher,commonViewForSnapshot,type SelectedRecordedDecision,type OfflineSnapshot} from './offline-label-source';
 import type {DatasetIdentities} from './distill-data';
 import {verifyOfflineSelection,readSelectionSnapshot,DESIGNED_SELECTION_SPEC_SCHEMA,DESIGNED_SELECTION_RULE_SCHEMA,type SelectedDecision,type SelectionSnapshot} from './offline-selection';
 const sha=(v:Buffer|string)=>createHash('sha256').update(v).digest('hex');
@@ -118,6 +118,12 @@ export function createOfflineLabelConsumer({profileStore,mode='research',fetchIm
   const teacher={releaseRef:teacherRef.releaseRef,promptRef:prompt.promptRef,profileSnapshot:frozenTeacherSnapshot(selector.profile,privateRecord)};
   const confirmedRoots=newTest?[...new Set(inputs.firstRoundNewTest.questionSources.map((q:any)=>q.row.recordRoot))]:inputs.confirmedRecordRoots;if(!Array.isArray(confirmedRoots)||!designed&&!confirmedRoots.length)throw Error('independently verified original record roots required');
   const roots=confirmedRoots.map((p:any)=>realpathSync(p)),cache=new Map(),seen=new Set<string>(),counts=new Map<string,number>(),snapshots:SelectionSnapshot[]=[];
+  const naturalRowGuard=(row:SelectedRecordedDecision,seenRows:Set<string>)=>{
+   strictObject(row,'selected decision',['recordRef','recordRoot','key','inputSHA256','familyId','split','actorSeat',...(firstRound?['blockFamilyId']:[])]);
+   const id=hashJSON(row.key);if(seenRows.has(id)||!roots.includes(realpathSync(row.recordRoot))||row.split!==task.sourcePlan.split||!task.sourcePlan.familyIds.includes(row.blockFamilyId??row.familyId)||index.families?.[row.familyId]?.split!==(newTest?'sealed':row.split))throw Error('selection duplicate/root/family/split differs');seenRows.add(id);
+  };
+  let naturalSnapshots:Map<SelectedRecordedDecision,OfflineSnapshot>|undefined;
+  if(!designed){try{const rows=selection.rows as SelectedRecordedDecision[],seenRows=new Set<string>();for(const row of rows)naturalRowGuard(row,seenRows);const values=readOfflineSnapshots(rows,cache,newTest?{purpose:'first-round-new-test'}:undefined);naturalSnapshots=new Map(rows.map((row,i)=>[row,values[i]]));}catch{/* The original per-row path below owns the original first error. */}}
   for(const selectedRow of selection.rows as SelectedDecision[]){
    if('sourceKind'in selectedRow&&selectedRow.sourceKind==='designed-synthetic'){
     const row=selectedRow;strictObject(row,'designed selected decision',['sourceKind','sourceRef','questionId','key','inputSHA256','familyId','blockFamilyId','split','actorSeat']);
@@ -130,9 +136,8 @@ export function createOfflineLabelConsumer({profileStore,mode='research',fetchIm
    }
    if(designed)throw Error('designed_teacher_mixed_natural_source');
    const row=selectedRow as SelectedRecordedDecision;
-   strictObject(row,'selected decision',['recordRef','recordRoot','key','inputSHA256','familyId','split','actorSeat',...(firstRound?['blockFamilyId']:[])]);
-   const id=hashJSON(row.key);if(seen.has(id)||!roots.includes(realpathSync(row.recordRoot))||row.split!==task.sourcePlan.split||!task.sourcePlan.familyIds.includes(row.blockFamilyId??row.familyId)||index.families?.[row.familyId]?.split!==(newTest?'sealed':row.split))throw Error('selection duplicate/root/family/split differs');seen.add(id);
-   const s=readOfflineSnapshot(row,cache,newTest?{purpose:'first-round-new-test'}:undefined),sourceRows=queue.rows.filter((q:any)=>q.matchId===row.key.matchId),q=sourceRows[0];
+   naturalRowGuard(row,seen);
+   const s=naturalSnapshots?.get(row)??readOfflineSnapshot(row,cache,newTest?{purpose:'first-round-new-test'}:undefined),sourceRows=queue.rows.filter((q:any)=>q.matchId===row.key.matchId),q=sourceRows[0];
    if(sourceRows.length!==1||q.actor!==row.actorSeat||q.split!==row.split||q.roundFamilyIds?.[row.key.gameNo-1]!==row.familyId||firstRound&&q.sourceFamilyId!==row.blockFamilyId||s.record.sourceRef!==selection.sourceIndexRef||s.record.layoutRef!==selection.queueRef||!equal(s.record.rules,rules))throw Error('original queue/record/actor/game binding differs');
    const x=s.input.candidateInputs,seat=s.record.seatSnapshots?.[row.actorSeat] as any;
    if(candidatePolicyForBundle(s.bundle)!==resolveCandidatePolicy(proposer.candidatePolicy)||!x||!equal(x.policyIdentity,proposer.policyIdentity)||x.policyId!==proposer.policyIdentity.policyId||!equal(x.candidateIds,s.bundle.initialCandidateIds))throw Error('original proposal capture identity differs');

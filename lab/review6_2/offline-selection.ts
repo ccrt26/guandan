@@ -289,7 +289,7 @@ function enumerate(spec:OfflineSelectionSpec,t:OfflineSelectionTrustedInputs,x=i
   if(!sourceSettled){inventory.push({...base,status:'unknown',reason:'source_writer_or_execution_unsettled'});incomplete=true;continue;}
   const sourceRoot=run.task.outputRoot;rootLocation(sourceRoot,t.repositoryRoot);if(!existsSync(sourceRoot)){inventory.push({...base,status:'missing',reason:'source_record_root_missing'});incomplete=true;continue;}
   if(!t.confirmedRecordRoots.includes(sourceRoot)||realpathSync(sourceRoot)!==sourceRoot)fail('selection_record_root_untrusted');
-  let record:any;try{record=loadMatchStore(m.recordRef,run.task.outputRoot).recorder.snapshot().record;}catch(e){inventory.push({...base,status:'missing',reason:'source_record_unavailable:'+String((e as Error).message)});incomplete=true;continue;}
+  let record:any;try{const store=loadMatchStore(m.recordRef,run.task.outputRoot);cache.set(hashJSON([m.recordRef,run.task.outputRoot]),store);record=store.resume!.record;}catch(e){inventory.push({...base,status:'missing',reason:'source_record_unavailable:'+String((e as Error).message)});incomplete=true;continue;}
   if(record.matchId!==q.matchId||record.runId!==run.runId||record.sourceRef!==spec.sourceIndexRef||record.layoutRef!==spec.queueRef||record.split!==q.split||record.evaluatedActor!==q.actor||q.seats?.[q.actor]?.releaseRef!==spec.actingReleaseRef)fail('selection_record_queue_identity');
   if(x.firstRound)for(const game of record.games){
    const family=q.roundFamilyIds[game.gameNo-1];if(!family||game.sourceFamilyId!==family)fail('selection_game_family_identity');

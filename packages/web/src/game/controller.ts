@@ -147,6 +147,7 @@ export class MatchController {
   private requestSeq = 0;
   private snapshotEpoch = 0;
   private pendingDecision: PendingDecision | null = null;
+  private persistedApplyMarker: { decision: DecisionOutcome; owner: PendingDecision } | null = null;
   private publicSteps: PublicStep[] = [];
   private seatDeciders = new Map<number, NeuralDecider>();
   private tierRand: () => number = () => 0;
@@ -721,7 +722,9 @@ export class MatchController {
       }
     }
     if (!this.replaying) {
-      this.persistActiveGame();
+      const hasApplyingMarker = decision !== undefined && this.persistedApplyMarker?.decision === decision
+        && this.persistedApplyMarker.owner === this.pendingDecision && this.executionState === 'applying';
+      if (state.over || !hasApplyingMarker) this.persistActiveGame();
       this.notify();
     }
     return true;
@@ -827,7 +830,10 @@ export class MatchController {
           // Save a conservative crash marker BEFORE apply. A gap can never be guessed on restore.
           this.executionState = 'applying';
           if (!this.persistActiveGame()) throw Error('apply_marker_not_saved');
-          if (!this.step(move, outcome)) throw Error('apply_not_confirmed');
+          this.persistedApplyMarker = { decision: outcome, owner: pending };
+          try {
+            if (!this.step(move, outcome)) throw Error('apply_not_confirmed');
+          } finally { this.persistedApplyMarker = null; }
           this.executionState = 'confirmed';
           const persisted = this.state?.over
             ? this.match.winner !== null || this.persistMatchSave(this.matchSavePoint()) : this.persistActiveGame();

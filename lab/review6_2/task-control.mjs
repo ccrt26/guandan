@@ -21,9 +21,12 @@ function atomic(path,value){
  const temporary=`${path}.tmp-${process.pid}-${randomUUID()}`;
  writeFileSync(temporary,`${canonical(value)}\n`,{flag:'wx'});renameSync(temporary,path);
 }
-function readState(path){
+function checkStateFile(path){
  if(existsSync(path)&&lstatSync(path).isSymbolicLink())fail('state_invalid','stateRoot','ledger symlink forbidden');
  if(!existsSync(path))fail('budget_state_missing','stateRoot','pre-existing verified root ledger required; missing consumption is never initialized to zero');
+}
+function readState(path){
+ checkStateFile(path);
  let state;try{state=JSON.parse(readFileSync(path,'utf8'));}catch(e){fail('state_invalid','stateRoot',e.message);}
  if(state?.schemaVersion!==stateVersion||!state.tasks||!state.runs||!state.budgets||!state.batches)fail('state_invalid','stateRoot','incomplete committed state');
  return state;
@@ -85,10 +88,10 @@ export function createTaskController({root,adapter=null,consumers=[],screenReval
   }
   if(ledger.firstRoundAllocation)fail('resource_policy_conflict','allocation','record-only policy cannot reinterpret an existing allocation receipt');return current;
  };
- async function transact(fn){
-  const path=statePath();readState(path);
+ async function transact(fn,writeWhen=null){
+  const path=statePath();checkStateFile(path);
   let release;try{const {acquireSourceWriter}=await import('./writer-lock.ts');release=acquireSourceWriter(path);}catch(e){if(e instanceof TaskError)throw e;fail('control_busy','stateRoot',e.message);}
-  try{const s=readState(path);const result=fn(s);if(result instanceof Promise)fail('control_error','','state transaction must remain synchronous');atomic(path,s);return result;}finally{release();}
+  try{const s=readState(path);const result=fn(s);if(result instanceof Promise)fail('control_error','','state transaction must remain synchronous');if(writeWhen===null||writeWhen(result))atomic(path,s);return result;}finally{release();}
  }
  function snapshot(runId){
   const s=readState(statePath()),r=s.runs[runId];if(!r)fail('unknown_run','runId','run is not registered');
@@ -149,7 +152,14 @@ export function createTaskController({root,adapter=null,consumers=[],screenReval
   if(adapter?.productionPlanClosure===true){
    const o=plan.hostObservation;strictObject(o,'hostObservation',['planRef','planVersion','revision','closeoutSHA256','status']);
    if(o.planRef!==task.planRef||o.planVersion!==task.planVersion||o.status!==plan.status||!Number.isSafeInteger(o.revision)||o.revision<1||!/^[a-f0-9]{64}$/.test(o.closeoutSHA256))fail('plan_unverified','hostObservation','current fixed plan identity differs');
-   const result=await transact(s=>{const key=canonical([task.planRef,task.planVersion]),prior=s.hostPlanObservations?.[key];if(prior&&['completed','terminated'].includes(prior.status))return 'closed';if(prior&&(o.revision<prior.revision||o.revision===prior.revision&&o.closeoutSHA256!==prior.closeoutSHA256))return 'rollback';(s.hostPlanObservations??={})[key]={revision:o.revision,closeoutSHA256:o.closeoutSHA256,status:o.status};return o.status==='incomplete'?null:'closed';});
+   const {status:result}=await transact(s=>{
+    const key=canonical([task.planRef,task.planVersion]),prior=s.hostPlanObservations?.[key];
+    if(prior&&['completed','terminated'].includes(prior.status))return {status:'closed',changed:false};
+    if(prior&&(o.revision<prior.revision||o.revision===prior.revision&&o.closeoutSHA256!==prior.closeoutSHA256))return {status:'rollback',changed:false};
+    const changed=!prior||prior.revision!==o.revision||prior.closeoutSHA256!==o.closeoutSHA256||prior.status!==o.status;
+    if(changed)(s.hostPlanObservations??={})[key]={revision:o.revision,closeoutSHA256:o.closeoutSHA256,status:o.status};
+    return {status:o.status==='incomplete'?null:'closed',changed};
+   },result=>result.changed);
    if(result==='closed')fail('plan_closed','planScope','original plan is closed');if(result==='rollback')fail('plan_state_conflict','planScope','current closeout revision cannot roll back or change in place');
   }
   if(plan.status!=='incomplete')fail('plan_closed','planRef','closed plan cannot start/resume new computation');
@@ -257,7 +267,6 @@ export function createTaskController({root,adapter=null,consumers=[],screenReval
   if(reuseRunId)return snapshot(reuseRunId);
   const abort=new AbortController(),started=performance.now();
   const handle={abort,done:null};handles.set(task.runId,handle);
-  const checkpoint=readState(statePath()).runs[task.runId].checkpoint;
   const assertMutable=()=>{if(reconcileOnly)fail('reconcile_read_only','consumer','checkpoint mirror reconciliation cannot reserve, commit, settle or save new state');};
   const reserve=async(key,cost)=>{
    assertMutable();
@@ -322,7 +331,11 @@ export function createTaskController({root,adapter=null,consumers=[],screenReval
    try{const s=readState(statePath()),r=s.runs[task.runId],ledger=ledgerFor(s,task);if(pre.resourcePolicy&&canonical(policyFor(ledger,task.budgetRef,s))!==canonical(pre.resourcePolicy))throw Error('registered resource policy changed');if(r.status==='stopping')abort.abort('user_stop');else if(!pre.resourcePolicy&&(r.elapsedSeconds+(performance.now()-started)/1000>=task.limits.maxRunSeconds||ledger.elapsedSeconds+(performance.now()-started)/1000>=limitsFor(ledger,task.budgetRef).maxRunSeconds||(performance.now()-started)/1000>=pilotRemainingSeconds))abort.abort('run_boundary');}catch{abort.abort('lost_ownership');}
   },25);
   handle.done=(async()=>{
-   let outcome,error;try{outcome=await pre.consumer.run({task:JSON.parse(canonical(task)),outputRoot:output(task),...(screenRevalidation?{engineeringRevalidation:{requestSHA256:screenRevalidation.requestSHA256,executionSourceRef:screenRevalidation.sourceRef,purpose:'engineering-only-no-scientific-reuse'}}:{}),checkpoint,checkpointSequence:readState(statePath()).runs[task.runId].checkpointSequence??0,executionId:readState(statePath()).runs[task.runId].owner.token,signal:abort.signal,reconcileOnly,reserve,commit,settleReservation,saveCheckpoint,executionInputs:pre.executionInputs,getConsumption:()=>snapshot(task.runId).consumption,...(pre.resourcePolicy?{executionBoundary:{mode:'input-workload-only',resourcePolicyRef:pre.resourcePolicy.ref}}:{deadlineMonotonicMs:started+1000*Math.min(task.limits.maxRunSeconds-readState(statePath()).runs[task.runId].elapsedSeconds,pre.effectiveLimits.maxRunSeconds-readState(statePath()).budgets[task.budgetRef].elapsedSeconds,pilotRemainingSeconds)})});if(outcome?.cleanupConfirmed!==true)fail('ownership_unconfirmed','consumer','consumer did not confirm owned-process cleanup');}catch(e){error=e;}
+   let outcome,error;try{
+    const startState=readState(statePath()),run=startState.runs[task.runId],ledger=startState.budgets[task.budgetRef];
+    if(run.status==='stopping')abort.abort('user_stop');
+    outcome=await pre.consumer.run({task:JSON.parse(canonical(task)),outputRoot:output(task),...(screenRevalidation?{engineeringRevalidation:{requestSHA256:screenRevalidation.requestSHA256,executionSourceRef:screenRevalidation.sourceRef,purpose:'engineering-only-no-scientific-reuse'}}:{}),checkpoint:run.checkpoint,checkpointSequence:run.checkpointSequence??0,executionId:run.owner.token,signal:abort.signal,reconcileOnly,reserve,commit,settleReservation,saveCheckpoint,executionInputs:pre.executionInputs,getConsumption:()=>snapshot(task.runId).consumption,...(pre.resourcePolicy?{executionBoundary:{mode:'input-workload-only',resourcePolicyRef:pre.resourcePolicy.ref}}:{deadlineMonotonicMs:started+1000*Math.min(task.limits.maxRunSeconds-run.elapsedSeconds,pre.effectiveLimits.maxRunSeconds-ledger.elapsedSeconds,pilotRemainingSeconds)})});if(outcome?.cleanupConfirmed!==true)fail('ownership_unconfirmed','consumer','consumer did not confirm owned-process cleanup');
+   }catch(e){error=e;}
    clearInterval(timer);
    const cleanupConfirmed=outcome?.cleanupConfirmed===true||error?.cleanupConfirmed===true;
    try{

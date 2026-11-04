@@ -5,7 +5,6 @@ import{isDeepStrictEqual}from'node:util';
 import{createMatch,startGame,DEFAULT_RULES,applyMove,RNG,teamOf,buildDeck,makeLevelCtx,stageTeamOf,applyTribute,completeReturn,type Combo,type EngineEvent,type GameState,type GameResult}from'@gd/engine';
 import{MLP,NeuralDecider,createAI,mulberry32,deriveSeed,type EncoderOpts,type Difficulty}from'@gd/ai';
 import{resourceEffectKey}from'./data-replay';
-import{fileHash}from'./product-artifacts';
 import{necessaryDeclarationKey}from'./action-effect';
 import{PlanRuntime}from'./plan-dsl';
 import{createInferenceExecution,installInferenceExecution,INFERENCE_EXECUTIONS,type InferenceExecution}from'./exact-inference';
@@ -81,9 +80,10 @@ function loadNetwork(spec:PolicySpec,execution:InferenceExecution='original'){
  if(spec.inputDim===399&&!['zero','rule-context'].includes(spec.encoder.ctxFill!))throw new Error('399 encoder ctxFill context must be explicit');
  if(spec.inputDim===385&&spec.encoder.ctxFill!==undefined)throw new Error('385 encoder has no context extension');
  if(!Number.isFinite(spec.epsilon)||spec.epsilon!<0||spec.epsilon!>1)throw new Error('explicit finite frozen epsilon required');
- if(fileHash(spec.weightsPath)!==spec.weightsSHA256)throw new Error('policy weights changed');
+ const raw=readFileSync(spec.weightsPath);
+ if(createHash('sha256').update(raw).digest('hex')!==spec.weightsSHA256)throw new Error('policy weights changed');
  const key=spec.weightsSHA256+':'+spec.inputDim+':'+execution;
- if(!networks.has(key)){const raw=readFileSync(spec.weightsPath),flat=new Float32Array(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength)),model=new MLP(1,spec.inputDim);if(model.paramCount!==flat.length||!flat.every(Number.isFinite))throw new Error('malformed frozen policy');model.setWeights(flat);const executor=installInferenceExecution(model,execution);inferenceDiagnostics.set(key,executor);networks.set(key,model);}
+ if(!networks.has(key)){if(raw.byteLength%4)throw new Error('malformed frozen policy');const flat=new Float32Array(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength)),model=new MLP(1,spec.inputDim);if(model.paramCount!==flat.length||!flat.every(Number.isFinite))throw new Error('malformed frozen policy');model.setWeights(flat);const executor=installInferenceExecution(model,execution);inferenceDiagnostics.set(key,executor);networks.set(key,model);}
  return networks.get(key)!;
 }
 export function driverFor(spec:PolicySpec,seat:number,options:MatchPlayOptions):SeatDriver{

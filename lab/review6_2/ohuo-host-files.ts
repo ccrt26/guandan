@@ -44,6 +44,8 @@ const scope=(s:any)=>{strictObject(s,'scope',['localExecution','apiCalls','param
 export class FixedHostFiles {
  readonly manifest:any;readonly root:string;readonly productionPlanClosure=true;
  private references=new Map<string,any>();private evidence=new Map<string,any>();private bindings=new Map<string,any>();
+ private verifiedSourceOwner:string|null=null;
+ private verifiedSourceFiles=new Map<string,{signal:string,sha256:string}>();
  #selectionReproductionSession:object|null=null;
  #roundProofSession:object|null=null;
  #roundProofOwner:string|null=null;
@@ -77,6 +79,13 @@ export class FixedHostFiles {
  }
  private relativePath(p:any){if(!string(p)||isAbsolute(p)||p.split(/[\\/]/).some((s:string)=>!s||s==='.'||s==='..'))fail('invalid_host_path','path','explicit repo-relative nonsymlink path required');return resolve(this.repositoryRoot,p);}
  private regular(path:string,privateFile=false){const st=lstatSync(path);if(!st.isFile()||st.isSymbolicLink()||realpathSync(path)!==path||privateFile&&(st.mode&0o777)!==0o600||st.size>32*1024*1024)fail('invalid_host_file','path','bounded regular nonsymlink file with required privacy mode');return readFileSync(path);}
+ private fixedSourceSignal(path:string){const st=lstatSync(path,{bigint:true});if(!st.isFile()||st.isSymbolicLink()||realpathSync(path)!==path||st.size>32n*1024n*1024n)fail('invalid_host_file','path','bounded regular nonsymlink file with required privacy mode');return [st.dev,st.ino,st.mode,st.size,st.mtimeNs,st.ctimeNs].join(':');}
+ private verifyFixedSourceFile(f:any,owner:string){
+  this.fileShape(f);if(this.verifiedSourceOwner!==owner){this.verifiedSourceOwner=owner;this.verifiedSourceFiles=new Map();}
+  const path=this.relativePath(f.path),signal=this.fixedSourceSignal(path),prior=this.verifiedSourceFiles.get(path);
+  if(prior?.signal===signal&&prior.sha256===f.sha256)return;
+  this.verifiedSourceFiles.delete(path);this.readFile(f);this.verifiedSourceFiles.set(path,{signal,sha256:f.sha256});
+ }
  private jsonBytes(b:Buffer){try{return JSON.parse(b.toString('utf8'));}catch{fail('invalid_host_json','file','valid JSON required');}}
  private fileShape(f:any){strictObject(f,'fileRef',['path','sha256']);this.relativePath(f.path);if(!hash(f.sha256))fail('invalid_reference','fileRef.sha256','bytes SHA required');}
  directory(p:string){const full=this.relativePath(p);if(!lstatSync(full).isDirectory()||realpathSync(full)!==full)fail('invalid_host_path','directory','existing real directory required');return full;}
@@ -1104,9 +1113,9 @@ export class FixedHostFiles {
  private currentProducerSource(){
   if(this.screenRevalidation){this.screenRevalidation.assertLive();return this.screenRevalidation.sourceRef;}
   for(const name of ['ai','engine','review'])if(realpathSync(req.resolve('@gd/'+name))!==join(this.repositoryRoot,'packages',name,'src/index.ts'))fail('input_identity_unverified','workspace','actual workspace import resolves outside fixed source tree');
-  const matches:string[]=[];for(const [ref] of this.references){const value=this.resolveRef(ref);if(!value||!equal(Object.keys(value).sort(),['baseCommit','files'])||!Array.isArray(value.files))continue;
+  const actualFiles=new Map<string,{signal:string|null,sha256:string|null}>(),matches:string[]=[];for(const [ref] of this.references){const value=this.resolveRef(ref);if(!value||!equal(Object.keys(value).sort(),['baseCommit','files'])||!Array.isArray(value.files))continue;
    if(!/^[a-f0-9]{40}$/.test(value.baseCommit)||value.files.length>10000)continue;
-   const paths=new Set<string>();let current=true;for(const f of value.files){this.fileShape(f);if(paths.has(f.path))fail('input_identity_unverified','source.files','duplicate source');paths.add(f.path);const path=this.relativePath(f.path);if(!existsSync(path)||sha(this.regular(path))!==f.sha256)current=false;}
+   const paths=new Set<string>();let current=true;for(const f of value.files){this.fileShape(f);if(paths.has(f.path))fail('input_identity_unverified','source.files','duplicate source');paths.add(f.path);const path=this.relativePath(f.path),signal=existsSync(path)?this.fixedSourceSignal(path):null;let actual=actualFiles.get(path);if(!actual||actual.signal!==signal){actual={signal,sha256:signal===null?null:sha(this.regular(path))};actualFiles.set(path,actual);}if(actual.sha256!==f.sha256)current=false;}
    if(current&&[...HOST_SOURCE_FILES,...FIRST_ROUND_SOURCE_FILES].every(p=>paths.has(p)))matches.push(ref);
   }
   if(matches.length!==1)fail('input_identity_unverified','producerSourceRevision','one fixed actual full producer source manifest required; acceptance remains original external evidence');return matches[0];
@@ -1218,7 +1227,7 @@ export class FixedHostFiles {
  private verifyInputsScoped=async(task:any,refs:Map<string,any>)=>{
   const g=this.readGrant(),entry=this.taskEntry(task,g),b=this.bindings.get(entry.taskRef);if(!b)fail('input_identity_unverified','inputBindings','exact task input binding missing');this.checkExistingRoot();
   const source=this.screenRevalidation?this.resolveRef(this.screenRevalidation.sourceRef):refs.get(task.sourceRevision);strictObject(source,'sourceRevision',['baseCommit','files']);if(typeof source.baseCommit!=='string'||!/^[a-f0-9]{40}$/.test(source.baseCommit))fail('input_identity_unverified','sourceRevision','explicit base commit plus actual content SHA required');
-  const files=new Map<string,string>();for(const f of array(source.files,'source.files')){strictObject(f,'sourceFile',['path','sha256']);if(files.has(f.path))fail('input_identity_unverified','sourceRevision','duplicate source');this.readFile(f);files.set(f.path,f.sha256);}
+  const sourceOwner=canonical([digest(task),digest(source)]),files=new Map<string,string>();for(const f of array(source.files,'source.files')){strictObject(f,'sourceFile',['path','sha256']);if(files.has(f.path))fail('input_identity_unverified','sourceRevision','duplicate source');this.verifyFixedSourceFile(f,sourceOwner);files.set(f.path,f.sha256);}
   for(const name of ['ai','engine','review'])if(realpathSync(req.resolve('@gd/'+name))!==join(this.repositoryRoot,'packages',name,'src/index.ts'))fail('input_identity_unverified','workspace','actual workspace import resolves outside fixed source tree');
   const needed=[...HOST_SOURCE_FILES,...(task.taskKind==='supervised_training'?TRAINING_SOURCE_FILES:[]),...FIRST_ROUND_SOURCE_FILES];if(needed.some(p=>!files.has(p)))fail('input_identity_unverified','sourceRevision','fixed execution dependency missing from actual source manifest');
   const runtime=refs.get(task.runtimeRef);strictObject(runtime,'runtimeRef',['node','platform','arch','tsx','python']);

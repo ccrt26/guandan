@@ -461,6 +461,44 @@ def validate_decision(row, input_contract=None):
     return x, q
 
 
+def _same_static_value(before, current):
+    # Python equality alone treats False == 0 and True == 1. Preserve the
+    # original strict numeric/type rejection when mutable caller data changes.
+    if before is current: return True
+    if type(before) is not type(current): return False
+    if isinstance(before, dict):
+        return before.keys() == current.keys() and all(_same_static_value(value, current[key]) for key, value in before.items())
+    if isinstance(before, (list, tuple)):
+        return len(before) == len(current) and all(_same_static_value(a, b) for a, b in zip(before, current))
+    return before == current
+
+
+class _PreparedDecision:
+    """Private static inputs only; never scores, losses or an autograd graph."""
+    def __init__(self, row, input_contract, device='cpu', dtype=torch.float32):
+        x, q = validate_decision(row, input_contract)
+        self.row = copy.deepcopy(row); self.input_contract = copy.deepcopy(input_contract)
+        self.x = x.to(device=device, dtype=dtype); self.q = q.to(device=device, dtype=dtype)
+        require(torch.isfinite(self.x).all() and torch.isfinite(self.q).all(), 'nonfinite converted decision input')
+        self.mask = torch.ones(len(q), dtype=torch.bool, device=device)
+        self.targets = torch.tensor([row['candidateIds'].index(t) for t in row.get('targetIds', [])],
+                                    dtype=torch.long, device=device)
+
+    def matches(self, row, input_contract, device, dtype):
+        return _same_static_value(self.row, row) and _same_static_value(self.input_contract, input_contract) and self.x.device == torch.device(device) and self.x.dtype == dtype
+
+    def loss(self, scores, temperature):
+        require(temperature == 1, 'unsupported temperature')
+        scores = scores.reshape(-1)
+        require(scores.shape == self.q.shape, 'candidate score alignment')
+        s = scores[self.mask] / temperature
+        require(torch.isfinite(s).all(), 'nonfinite valid scores')
+        if self.row['sampleKind'] == 'demo':
+            return -torch.logsumexp(torch.log_softmax(s, dim=0)[self.targets], dim=0)
+        log_b = torch.log_softmax(self.q[self.mask] / temperature, dim=0)
+        return (log_b.exp() * (log_b - torch.log_softmax(s, dim=0))).sum()
+
+
 def load_frozen_dataset(reference, expected_identities, *, synthetic=False, input_contract=None, r2=False):
     directory = pathlib.Path(reference['directory'])
     require(directory.absolute() == directory.resolve(strict=True), 'dataset symlink/path')
@@ -505,8 +543,9 @@ def load_frozen_dataset(reference, expected_identities, *, synthetic=False, inpu
     counts = {'demo': 0, 'keep': 0, 'train': {'demo': 0, 'keep': 0}, 'dev': {'demo': 0, 'keep': 0}}
     ids, contexts = set(), set()
     families = {f['sourceFamily']: f for f in m['plan']['families']}
+    prepared_decisions = []
     for row in rows:
-        validate_decision(row, input_contract)
+        prepared_decisions.append(_PreparedDecision(row, input_contract))
         require(candidate_contract(row) == fresh and row.get('schema') ==
                 (FIRST_ROUND_SAMPLE_SCHEMA if first_round else 'ohuo-distill-decision-candidate-v3' if fresh else 'ohuo-distill-decision-v2'), 'sample schema')
         if first_round:
@@ -532,7 +571,7 @@ def load_frozen_dataset(reference, expected_identities, *, synthetic=False, inpu
         else:
             require(protocol is None, 'r2 dataset requires matching recipe')
         validate_first_round_dataset_rows(rows, m['plan']['families'], not synthetic, r2)
-    return {'manifest': m, 'samples': rows, 'reference': dict(reference)}
+    return {'manifest': m, 'samples': rows, 'reference': dict(reference), '_prepared_decisions': prepared_decisions}
 
 
 def decision_loss(scores, valid_mask, sample, temperature):
@@ -570,7 +609,7 @@ def make_epoch_order(rows, seed, epoch, cycle):
 
 
 class DistillLearner:
-    def __init__(self, samples, parent_flat, frozen_refs, seed, recipe=None, restart_ref=None, input_contract=None):
+    def __init__(self, samples, parent_flat, frozen_refs, seed, recipe=None, restart_ref=None, input_contract=None, *, _prepared_decisions=None):
         self.input_contract = copy.deepcopy(input_contract); self.input_dim = input_dimension(self.input_contract)
         if self.input_contract is not None:
             require(frozen_refs.get('inputContract') == self.input_contract, 'frozen student input identity required')
@@ -581,7 +620,12 @@ class DistillLearner:
         self.seed = seed; self.refs = copy.deepcopy(frozen_refs); self.restart_ref = copy.deepcopy(restart_ref)
         self.rows = copy.deepcopy(samples)
         require(len({r['decisionId'] for r in self.rows}) == len(self.rows), 'duplicate decision')
-        for row in self.rows: validate_decision(row, self.input_contract)
+        self._prepared_decisions = {}
+        for index, row in enumerate(self.rows):
+            prepared = _prepared_decisions[index] if _prepared_decisions is not None and index < len(_prepared_decisions) else None
+            if not isinstance(prepared, _PreparedDecision) or not prepared.matches(row, self.input_contract, 'cpu', torch.float32):
+                prepared = _PreparedDecision(row, self.input_contract)
+            self._prepared_decisions[id(row)] = prepared
         self.demo = [r for r in self.rows if r['split'] == 'train' and r['sampleKind'] == 'demo']
         self.keep = [r for r in self.rows if r['split'] == 'train' and r['sampleKind'] == 'keep']
         require(self.demo and self.keep, 'nonempty train demo/keep required')
@@ -607,6 +651,17 @@ class DistillLearner:
         self.exposures = {'demo': {r['decisionId']: 0 for r in self.demo}, 'keep': {r['decisionId']: 0 for r in self.keep}}
         self.last_step = None; self.metrics = []; self.physical_limit = 32
 
+    def _decision_inputs(self, row):
+        parameter = next(self.model.parameters())
+        prepared = self._prepared_decisions.get(id(row))
+        if prepared is None or not prepared.matches(row, self.input_contract, parameter.device, parameter.dtype):
+            fresh = _PreparedDecision(row, self.input_contract, parameter.device, parameter.dtype)
+            # Caller-supplied rows are validated every time; only owned frozen
+            # decisions occupy this bounded cache. A mutation is revalidated.
+            if prepared is not None: self._prepared_decisions[id(row)] = fresh
+            prepared = fresh
+        return prepared
+
     def next_batch(self):
         if self.first_round:
             if self.shape['maxOptimizerSteps'] is not None and self.optimizerSteps >= self.shape['maxOptimizerSteps']: return [], []
@@ -624,8 +679,8 @@ class DistillLearner:
         for source, out in ((demo, ds), (keep, ks)):
             for row in source:
                 require(row['split'] == 'train', 'only train enters gradients')
-                x, _ = validate_decision(row, self.input_contract); scores = self.model(x).reshape(-1)
-                out.append(decision_loss(scores, torch.ones_like(scores, dtype=torch.bool), row, self.recipe['temperature']))
+                prepared = self._decision_inputs(row); scores = self.model(prepared.x).reshape(-1)
+                out.append(prepared.loss(scores, self.recipe['temperature']))
         require(ds and ks, 'nonempty demo/keep microbatch')
         d, k = torch.stack(ds).sum(), torch.stack(ks).sum()
         return {'demo': d, 'keep': k, 'total_mean': d / len(ds) + self.recipe['keepWeight'] * k / len(ks)}
@@ -689,29 +744,32 @@ class DistillLearner:
         return {kind: {'unique': sum(n > 0 for n in values.values()), 'total': sum(values.values()),
                        'repeats': sum(max(0, n - 1) for n in values.values())} for kind, values in self.exposures.items()}
 
-    def evaluate_split(self, split, family=None):
+    def _evaluation_rows(self, split=None, family=None, check_initial=False):
+        with torch.no_grad():
+            for row in self.rows:
+                if split is not None and row['split'] != split or family is not None and row['sourceFamily'] != family: continue
+                prepared = self._decision_inputs(row); s = self.model(prepared.x).reshape(-1)
+                value = float(prepared.loss(s, self.recipe['temperature']))
+                require(math.isfinite(value), 'nonfinite dev metric')
+                best = min(range(len(s)), key=lambda i: (-float(s[i]), row['candidateOriginalIndices'][i]))
+                yield row, value, row['candidateIds'][best], float((s - prepared.q).abs().max()) if check_initial else None
+
+    def _summarize_evaluation(self, observations):
         demos, keeps, dis, changed = [], [], [], []; hits = 0
         directional = {name: {'values': [], 'hits': 0, 'families': set()} for name in ('pass', 'takeover')}
         greedy_changed = 0
-        with torch.no_grad():
-            for row in self.rows:
-                if row['split'] != split or family is not None and row['sourceFamily'] != family: continue
-                x, _ = validate_decision(row, self.input_contract); s = self.model(x).reshape(-1)
-                value = float(decision_loss(s, torch.ones_like(s, dtype=torch.bool), row, self.recipe['temperature']))
-                require(math.isfinite(value), 'nonfinite dev metric')
-                best = min(range(len(s)), key=lambda i: (-float(s[i]), row['candidateOriginalIndices'][i]))
-                action = row['candidateIds'][best]
-                if row['sampleKind'] == 'demo':
-                    demos.append(value)
-                    if self.first_round:
-                        direction = directional[first_round_direction(row)]
-                        direction['values'].append(value); direction['hits'] += action in row['targetIds']
-                        direction['families'].add(row['sourceFamily']); greedy_changed += action != row['baseActionId']
-                    if row.get('sampleClass') == 'target' and row['baseActionId'] not in row['targetIds']:
-                        dis.append(value); hits += action in row['targetIds']
-                else:
-                    keeps.append(value)
-                    if action != row['baseActionId']: changed.append(row['decisionId'])
+        for row, value, action, _ in observations:
+            if row['sampleKind'] == 'demo':
+                demos.append(value)
+                if self.first_round:
+                    direction = directional[first_round_direction(row)]
+                    direction['values'].append(value); direction['hits'] += action in row['targetIds']
+                    direction['families'].add(row['sourceFamily']); greedy_changed += action != row['baseActionId']
+                if row.get('sampleClass') == 'target' and row['baseActionId'] not in row['targetIds']:
+                    dis.append(value); hits += action in row['targetIds']
+            else:
+                keeps.append(value)
+                if action != row['baseActionId']: changed.append(row['decisionId'])
         avg = lambda xs: sum(xs) / len(xs) if xs else None
         result = {'optimizerSteps': self.optimizerSteps, 'completedEpochs': self.epoch, 'demoCE': avg(demos),
                 'keepKL': avg(keeps), 'totalObjective': avg(demos) + self.recipe['keepWeight'] * avg(keeps) if demos and keeps else None, 'demoCount': len(demos), 'targetDisagreementCE': avg(dis), 'targetDisagreementHits': hits,
@@ -725,18 +783,30 @@ class DistillLearner:
             result['greedyChangedCount'] = greedy_changed
         return result
 
+    def evaluate_split(self, split, family=None):
+        return self._summarize_evaluation(self._evaluation_rows(split, family))
+
     def evaluate_dev(self):
         return self.evaluate_split('dev')
 
-    def evaluate_milestone(self):
-        # Recompute the same full train set at update 0 and each epoch, not the
-        # last minibatch. Family diagnostics are separate from pooled means.
+    def evaluate_milestone(self, check_initial=False):
+        # One forward per row at these exact weights. Keep scalar observations
+        # only for this invocation; pooled and family folds retain row order.
+        observations = list(self._evaluation_rows(check_initial=check_initial))
+        equivalence = _initial_equivalence_from_observations(observations) if check_initial else None
+        grouped = {split: [] for split in ('train', 'dev')}
+        families = {split: defaultdict(list) for split in grouped}
+        for item in observations:
+            row = item[0]; grouped[row['split']].append(item)
+            families[row['split']][row['sourceFamily']].append(item)
         weights = array.array('f', self.model.flat().tolist())
         if sys.byteorder != 'little': weights.byteswap()
-        return {**self.evaluate_dev(), **({'weightsSHA256': sha(weights.tobytes())} if self.r2 else {}), 'train': self.evaluate_split('train'),
-                'families': {split: {family: self.evaluate_split(split, family)
-                    for family in sorted({r['sourceFamily'] for r in self.rows if r['split'] == split})}
-                    for split in ('train', 'dev')}}
+        return {**self._summarize_evaluation(grouped['dev']),
+                **({'weightsSHA256': sha(weights.tobytes())} if self.r2 else {}),
+                **({'equivalence': equivalence} if check_initial else {}),
+                'train': self._summarize_evaluation(grouped['train']),
+                'families': {split: {family: self._summarize_evaluation(families[split][family])
+                    for family in sorted(families[split])} for split in grouped}}
 
     def capture_state(self):
         return copy.deepcopy({'schema': 'ohuo-supervised-state-first-round-v2' if self.first_round else 'ohuo-supervised-state-student423-v1' if self.input_contract is not None else 'ohuo-supervised-state-v1',
@@ -799,25 +869,29 @@ class DistillLearner:
         for name in ('optimizerSteps', 'epoch', 'demoOrder', 'demoCursor', 'keepOrder', 'keepCursor', 'keepCycle', 'exposures', 'metrics'):
             setattr(self, name, copy.deepcopy(state[name]))
         self.last_step = copy.deepcopy(state['lastStep']); torch.set_rng_state(state['torchRNG']); random.setstate(state['pythonRNG'])
+        # Identity checks above remain mandatory. Reuse static inputs only if
+        # this learner's exact rows, input contract, device and dtype still match.
+        for row in self.rows: self._decision_inputs(row)
+
+
+def _initial_equivalence_from_observations(observations):
+    maximum = 0.
+    for row, _, action, difference in observations:
+        maximum = max(maximum, difference)
+        require(action == row['baseActionId'], 'update0 greedy differs from frozen B')
+    require(maximum <= 1e-5, 'update0 frozen rawQ differs from parent forward')
+    return {'maximumRawQAbsoluteDifference': maximum, 'decisions': len(observations), 'greedyIdentical': True, 'atol': 1e-5}
 
 
 def initial_equivalence(learner):
-    maximum = 0.
-    with torch.no_grad():
-        for row in learner.rows:
-            x, q = validate_decision(row, learner.input_contract); s = learner.model(x).reshape(-1)
-            maximum = max(maximum, float((s - q).abs().max()))
-            pick = min(range(len(s)), key=lambda i: (-float(s[i]), row['candidateOriginalIndices'][i]))
-            require(row['candidateIds'][pick] == row['baseActionId'], 'update0 greedy differs from frozen B')
-    require(maximum <= 1e-5, 'update0 frozen rawQ differs from parent forward')
-    return {'maximumRawQAbsoluteDifference': maximum, 'decisions': len(learner.rows), 'greedyIdentical': True, 'atol': 1e-5}
+    return _initial_equivalence_from_observations(list(learner._evaluation_rows(check_initial=True)))
 
 
 def worker_main():
     sys.modules.setdefault('distill_learner', sys.modules[__name__])
     from distill_checkpoint import commit_checkpoint, restore_checkpoint, publish_checkpoint
     torch.set_num_threads(2); torch.set_num_interop_threads(1); torch.use_deterministic_algorithms(True)
-    learner = None; run_dir = None
+    learner = None; run_dir = None; checkpoint_validation = {}
     def reply(value): print(json.dumps(value, separators=(',', ':'), allow_nan=False), flush=True)
     # Actual optional dependency identity is reported by this already-owned
     # worker. Missing NumPy is valid; a broken installed dependency is not.
@@ -847,10 +921,11 @@ def worker_main():
                             refs.get('proposalIdentity') == identities['basePolicy'] and
                             command['parentSHA256'] == identities['studentScorer']['weightsSHA256'], 'worker first-round parent binding')
                 flat = torch.frombuffer(bytearray(parent), dtype=torch.float32).clone()
-                learner = DistillLearner(data['samples'], flat, command['frozenRefs'], command['seed'], command['recipe'], command.get('restartRef'), command.get('inputContract'))
+                learner = DistillLearner(data['samples'], flat, command['frozenRefs'], command['seed'], command['recipe'], command.get('restartRef'), command.get('inputContract'), _prepared_decisions=data['_prepared_decisions'])
+                del data, parent, flat
                 run_dir = pathlib.Path(command['runDir']); require(run_dir.resolve() == run_dir.absolute(), 'run symlink')
-                if command.get('checkpoint') is not None: restore_checkpoint(run_dir, learner, command['checkpoint'])
-                else: learner.metrics.append({'kind': 'update0', 'equivalence': initial_equivalence(learner), **learner.evaluate_milestone()})
+                if command.get('checkpoint') is not None: restore_checkpoint(run_dir, learner, command['checkpoint'], _validation_cache=checkpoint_validation)
+                else: learner.metrics.append({'kind': 'update0', **learner.evaluate_milestone(check_initial=True)})
                 reply({'kind': 'initialized', 'optimizerSteps': learner.optimizerSteps, 'metrics': learner.metrics,
                        'exposure': learner.exposure_summary(), 'Uepoch': math.ceil(len(learner.demo) / 32)})
             elif kind == 'step':
@@ -866,7 +941,7 @@ def worker_main():
                 reply({'kind': 'saved', 'checkpoint': ref, 'metrics': learner.metrics, 'exposure': learner.exposure_summary()})
             elif kind == 'publish':
                 require(learner is not None and command['checkpoint']['optimizerSteps'] == learner.optimizerSteps, 'publish step sequence')
-                publish_checkpoint(run_dir, command['checkpoint']); reply({'kind': 'published'})
+                publish_checkpoint(run_dir, command['checkpoint'], _validation_cache=checkpoint_validation); reply({'kind': 'published'})
             elif kind == 'close': reply({'kind': 'closed'}); return
             else: raise ValueError('unsupported supervised command')
         except Exception as error:

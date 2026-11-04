@@ -1,5 +1,5 @@
 import {it,expect,vi,afterEach} from 'vitest';
-import {DEFAULT_RULES} from '@gd/engine';
+import {bestResponse,DEFAULT_RULES} from '@gd/engine';
 import {MatchController} from '../src/game/controller';
 import {resolveFourSeats} from '../src/game/seats';
 import {RELEASES} from '../../ai/src/policy/seats';
@@ -12,6 +12,14 @@ const controllers:MatchController[]=[];
 const receipt=(httpStatus=503)=>({...ref,credentialRevision:1,protocol:'openai-chat-completions',requestedModel:'fake',returnedModel:null,requestCount:1 as const,httpStatus,elapsedMs:0,upstreamChunks:0,upstreamEvents:0,contentEvents:0,keepaliveEvents:0,firstUpstreamMs:null,firstContentMs:null,usage:{}});
 const choose=(view:any)=>({status:'response',response:{kind:'choose',decisionId:view.observation.decisionId,actionId:view.candidates[0].actionId}});
 const settle=async()=>{for(let i=0;i<12;i++)await Promise.resolve();};
+function watchMatchWrites(failAt=0) {
+ const writes:any[]=[];const original=localStorage.setItem.bind(localStorage);
+ vi.spyOn(localStorage,'setItem').mockImplementation((key,value)=>{
+  if(key==='gd_match_current'){writes.push(JSON.parse(value));if(writes.length===failAt)throw Error('synthetic write failure');}
+  original(key,value);
+ });
+ return writes;
+}
 async function setup(mode:'local'|'hybrid'='hybrid') {
  vi.useFakeTimers();const map=new Map<string,string>();vi.stubGlobal('localStorage',{getItem:(k:string)=>map.get(k)??null,setItem:(k:string,v:string)=>map.set(k,v),removeItem:(k:string)=>map.delete(k)});
  const d={...index.policies[0],weightsSHA256:'0'.repeat(64)};
@@ -39,6 +47,61 @@ it('manual override unavailable: controller keeps remote authority',async()=>{
  const f=await setup();f.c.startGame();await vi.advanceTimersByTimeAsync(1);expect('useLocalForPending' in f.c).toBe(false);expect(f.c.state!.moveNo).toBe(0);expect(f.c.waitingRemote).toBe(true);
  f.respond(choose(f.views[0]));await settle();expect(f.c.state!.moveNo).toBe(1);expect(f.count()).toBe(1);
  const save=f.c.matchSavePoint();expect(save.activeGame!.decisionRecords).toHaveLength(1);expect(save.activeGame!.decisionRecords![0]).toMatchObject({status:'selected',source:'remote',actionId:f.views[0].candidates[0].actionId});expect(save.executionState).toBe('confirmed');
+});
+it('same pending owner persists one pre-apply marker and one confirmation for a normal action',async()=>{
+ const f=await setup();f.c.startGame();await vi.advanceTimersByTimeAsync(1);
+ const writes=watchMatchWrites(),notifications:any[]=[];
+ f.c.subscribe(()=>notifications.push({moveNo:f.c.state!.moveNo,executionState:f.c.matchSavePoint().executionState}));
+ f.respond(choose(f.views[0]));await settle();
+ expect(writes.map(save=>[save.executionState,save.activeGame.moves.length])).toEqual([['applying',0],['confirmed',1]]);
+ expect(f.c.state!.moveNo).toBe(1);expect(f.c.lastDecision).toMatchObject({status:'selected',source:'remote'});
+ expect(writes[0].activeGame.decisionRecords).toHaveLength(0);expect(writes[1].activeGame.decisionRecords).toHaveLength(1);
+ expect(notifications).toEqual([{moveNo:1,executionState:'applying'},{moveNo:1,executionState:'confirmed'},{moveNo:1,executionState:'confirmed'}]);
+});
+it('failed pre-apply marker commits zero actions and remains execution_uncertain',async()=>{
+ const f=await setup();f.c.startGame();await vi.advanceTimersByTimeAsync(1);const writes=watchMatchWrites(1);
+ f.respond(choose(f.views[0]));await settle();
+ expect(writes.map(save=>[save.executionState,save.activeGame.moves.length])).toEqual([['applying',0],['execution_uncertain',0]]);
+ expect(f.c.state!.moveNo).toBe(0);expect(f.c.lastDecision).toMatchObject({status:'halted',reason:'execution_uncertain'});
+ expect(loadCurrentMatch()!.executionState).toBe('execution_uncertain');
+ f.c.reviveIfStalled();await vi.advanceTimersByTimeAsync(1000);expect(f.count()).toBe(1);expect(f.c.state!.moveNo).toBe(0);
+});
+it('failed post-apply confirmation preserves one action and never applies another',async()=>{
+ const f=await setup();f.c.startGame();await vi.advanceTimersByTimeAsync(1);const writes=watchMatchWrites(2);
+ f.respond(choose(f.views[0]));await settle();
+ expect(writes.map(save=>[save.executionState,save.activeGame.moves.length])).toEqual([['applying',0],['confirmed',1],['execution_uncertain',1]]);
+ expect(f.c.state!.moveNo).toBe(1);expect(f.c.lastDecision).toMatchObject({status:'halted',reason:'execution_uncertain'});
+ expect(loadCurrentMatch()!.executionState).toBe('execution_uncertain');
+ f.c.reviveIfStalled();await vi.advanceTimersByTimeAsync(1000);expect(f.count()).toBe(1);expect(f.c.state!.moveNo).toBe(1);
+});
+it('late valid result after owner change cannot write or apply the old pending decision',async()=>{
+ const f=await setup();f.c.startGame();await vi.advanceTimersByTimeAsync(1);
+ const other={...loadCurrentMatch()!,snapshotRevision:'other-owner'};localStorage.setItem('gd_match_current',JSON.stringify(other));
+ const writes=watchMatchWrites();f.respond(choose(f.views[0]));await settle();
+ expect(f.c.state!.moveNo).toBe(0);expect(writes).toHaveLength(0);expect(loadCurrentMatch()).toEqual(other);
+ f.c.reviveIfStalled();await vi.advanceTimersByTimeAsync(1000);expect(f.count()).toBe(1);expect(f.c.state!.moveNo).toBe(0);
+});
+it('terminal pending action keeps game-end notification and confirmed match progress',async()=>{
+ const f=await setup();f.c.startGame();const state=f.c.state!;
+ // A bounded, fixed-seed single-card prefix preserves the real public-history guard.
+ let ready=false;
+ for(let n=0;n<512&&!state.over;n++){
+  const combo=state.hands[state.turn].map(card=>bestResponse([card],state.lastCombo,state.ctx,state.match.opts)).find(Boolean);
+  if(state.finished.length===2&&state.hands[state.turn].length===1&&combo){ready=true;break;}
+  expect((f.c as any).step(combo?{pass:false,combo}:{pass:true})).toBe(true);
+ }
+ expect(ready).toBe(true);const moveNo=state.moveNo;
+ const writes=watchMatchWrites(),notifications:any[]=[];
+ f.c.subscribe(()=>notifications.push({over:f.c.state!.over,executionState:f.c.matchSavePoint().executionState}));
+ await vi.advanceTimersByTimeAsync(1);expect(f.count()).toBe(1);
+ const view=f.views[0],closing=view.candidates.find((candidate:any)=>candidate.action!==null&&candidate.remainingHand.length===0);
+ expect(closing).toBeDefined();f.respond({status:'response',response:{kind:'choose',decisionId:view.observation.decisionId,actionId:closing.actionId}});await settle();
+ expect(f.c.decisionError).toBeNull();
+ expect(f.c.state!.over).toBe(true);expect(f.c.lastGameResult).not.toBeNull();expect(f.c.state!.moveNo).toBe(moveNo+1);expect(f.c.record).not.toBeNull();
+ expect(notifications).toContainEqual({over:true,executionState:'applying'});expect(notifications.at(-1)).toEqual({over:true,executionState:'confirmed'});
+ expect(writes.map(save=>save.executionState)).toEqual(['applying','applying','confirmed']);
+ expect(loadCurrentMatch()).toMatchObject({executionState:'confirmed',lastResult:f.c.lastGameResult});expect(loadCurrentMatch()!.activeGame).toBeUndefined();
+ expect(f.count()).toBe(1);expect(f.c.lastDecision).toMatchObject({status:'selected',source:'remote'});
 });
 it('missing schema2 execution marker rejects and resumed pending is new generation',async()=>{
  const f=await setup();f.c.startGame();await vi.advanceTimersByTimeAsync(1);const save=f.c.matchSavePoint();f.c.destroy();

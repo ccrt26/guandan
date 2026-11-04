@@ -41,6 +41,24 @@ export interface NeuralDecision {
   ranking?: Array<{ idx: number; score: number; combo: Combo | null }>;
 }
 
+// Single-use evidence for the immediate singleton freeze. It is not copied into
+// decisions/bundles, and never substitutes for validating the ranked actions.
+const enumerationCounts = new WeakMap<NeuralDecision, {
+  state: GameState; policy: CandidatePolicySpec; basis: string; count: number;
+  move: Move; ranking: NeuralDecision['ranking'];
+}>();
+function enumerationBasis(state: GameState): string {
+  // legalCombos/canPass use only this actor's cards and these public inputs.
+  return JSON.stringify([state.turn, state.moveNo, state.hands[state.turn],
+    [...state.ctx.ranks], state.ctx.levels, state.match.opts, state.lastCombo]);
+}
+export function takeDecisionEnumerationCount(decision: NeuralDecision, state: GameState, policy: CandidatePolicySpec): number | undefined {
+  const evidence = enumerationCounts.get(decision);
+  enumerationCounts.delete(decision);
+  if (evidence?.state === state && evidence.policy === policy && evidence.move === decision.move &&
+    evidence.ranking === decision.ranking && evidence.basis === enumerationBasis(state)) return evidence.count;
+}
+
 /** 候选生成器版本（T0 冻结/复盘证据引用；候选语义变更必须 bump）
  * v2（2026-10-27）：enumerateCombos 去重键=声明+资源角色（万能自然 r、代入 r→a、普通 r 分色），
  * 并补齐自然牌充足时的万能替代对子/三张变体（T0 小手牌穷举对照 0 缺失 0 多余）。
@@ -99,12 +117,15 @@ export class NeuralDecider {
   decide(state: GameState, opts?: { collectFeat?: boolean; wantRanking?: boolean; candidatePolicy?: CandidatePolicySpec }): NeuralDecision {
     const policy = resolveCandidatePolicy(opts?.candidatePolicy);
     if (policy.candidateSpec === FIRST_TARGET_CANDIDATE_SPEC && (this.encoder.candidateCompat || this.encoder.faultDropComboKeyPrefix?.length)) throw new Error('new candidate spec cannot use historical folding or injected truncation');
-    let cands = dedupCandidates(legalCombos(state, policy.enumSpec.enumerationMode), canPass(state));
+    const legal = legalCombos(state, policy.enumSpec.enumerationMode), passAllowed = canPass(state);
+    let cands = dedupCandidates(legal, passAllowed);
     if (this.encoder.candidateCompat === 'v2') cands = dedupCandidatesV2Compat(cands);
     if (this.encoder.faultDropComboKeyPrefix?.length) {
       cands = cands.filter((c) => !c.combo || !this.encoder.faultDropComboKeyPrefix!.some((p) => comboKey(c.combo!).startsWith(p)));
     }
     const n = cands.length;
+    const singletonEnumeration = opts?.wantRanking && n === 1
+      ? { state, policy, basis: enumerationBasis(state), count: legal.length + (passAllowed ? 1 : 0) } : undefined;
     const v2 = this.encoder.schema === 'v2';
     const dim = v2 ? INPUT_DIM_V2 : INPUT_DIM;
     const passAt = this.encoder.passEncoding ?? DEFAULT_PASS_ENCODING;
@@ -143,6 +164,7 @@ export class NeuralDecider {
         .map((c, idx) => ({ idx, score: scores[idx], combo: c.combo }))
         .sort((a, b) => b.score - a.score);
     }
+    if (singletonEnumeration) enumerationCounts.set(out, { ...singletonEnumeration, move, ranking: out.ranking });
     return out;
   }
 }

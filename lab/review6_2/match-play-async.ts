@@ -13,7 +13,7 @@ import {type RemoteRequest} from '../../packages/ai/src/hybrid/remote-selector';
 import {resourceEffectKey} from '../review6/data-replay';
 import type {CandidatePolicySpec} from '../../packages/ai/src/candidate-spec';
 import type {ResolvedPolicy} from '../../packages/ai/src/policy/resolve';
-import {MatchRecorder,replayConfirmedMatch,captureInitialCandidateInputs,captureStudentCandidateInputs,type StudentCapture,type StudentCandidateInputs,type RecordIdentity,type MatchRecord,type PrivateSources,type CandidateInputs} from './match-record';
+import {MatchRecorder,replayConfirmedMatch,replayMatchResume,captureInitialCandidateInputs,captureStudentCandidateInputs,type StudentCapture,type StudentCandidateInputs,type RecordIdentity,type MatchRecord,type PrivateSources,type CandidateInputs} from './match-record';
 
 export interface AsyncSeat {studentCapture?:StudentCapture;candidatePolicy?:CandidatePolicySpec;policyId:string;source:'B'|'S'|'O';mode:'local'|'hybrid';decider:Pick<NeuralDecider,'seat'|'decide'|'newGame'|'observe'>&Partial<Pick<NeuralDecider,'tracker'>>;encoder?:Readonly<EncoderOpts>;policyIdentity?:ResolvedPolicy['identity'];localSelector?:(input:{bundle:DecisionBundle;candidateInputs:CandidateInputs;studentInputs?:StudentCandidateInputs})=>string}
 export interface AsyncMatchOptions extends RecordIdentity {
@@ -32,7 +32,7 @@ export async function runCompleteMatchAsync(o:AsyncMatchOptions){
  if(o.seats.length!==4||!Number.isSafeInteger(o.seed)||!inputWorkload&&!Number.isFinite(o.deadlineMonotonicMs)||![o.maxGames,o.maxMovesPerGame].every(n=>Number.isSafeInteger(n)&&n>0)||!Number.isInteger(o.actor)||o.actor<0||o.actor>3)throw Error('finite fixed match inputs required');
  if(o.seats.some((s,i)=>s.policyId!==o.policyIds[i]||s.decider.seat!==i||s.mode==='hybrid'&&!o.requestForDecision||!!s.localSelector!==(s.source==='S')||s.localSelector&&s.mode!=='local'))throw Error('seat policy/mode identity mismatch');
  let state:GameState|null=null,match=createMatch({...o.rules},o.seed),stopReason:string|null=null,rootRoundResult:GameResult|null=null,pending:PendingDecision|null=null;
- if(o.resume){const replay=replayConfirmedMatch(o.resume.record,o.resume.privateSources);if(replay.executionUnknown||!replay.state||replay.complete)throw Error('nonrecoverable match checkpoint');state=replay.state;match=state.match;rootRoundResult=o.resume.record.decisions.flatMap(d=>d.events).find(e=>e.type==='gameEnd')?.result??null;if(state.over)state=null;}
+ if(o.resume){const replay=replayMatchResume(o.resume);if(replay.executionUnknown||!replay.state||replay.complete)throw Error('nonrecoverable match checkpoint');state=replay.state;match=state.match;rootRoundResult=o.resume.record.decisions.flatMap(d=>d.events).find(e=>e.type==='gameEnd')?.result??null;if(state.over)state=null;}
  let requestSeq=o.recorder.snapshot().record.decisions.length;
  const expired=()=>!inputWorkload&&performance.now()>=o.deadlineMonotonicMs!;
  const stop=()=>pending?.cancel(typeof o.signal.reason==='string'?o.signal.reason:'user_stop');
@@ -54,7 +54,7 @@ export async function runCompleteMatchAsync(o:AsyncMatchOptions){
     if(runtime.localSelector){
      try{
       if(!candidateInputs||candidateInputs.inputDim!==399||!isDeepStrictEqual(candidateInputs.policyIdentity,runtime.policyIdentity)||!isDeepStrictEqual(candidateInputs.candidateIds,bundle.initialCandidateIds))throw Error('S requires the exact B initial-C inputs');
-      localActionId=bundle.isUniqueLegalAction?bundle.fallbackActionId:runtime.localSelector({bundle,candidateInputs:freezeCopy(candidateInputs),...(studentInputs?{studentInputs:freezeCopy(studentInputs)}:{})});
+      localActionId=bundle.isUniqueLegalAction?bundle.fallbackActionId:runtime.localSelector({bundle,candidateInputs:freezeCopy(candidateInputs),...(studentInputs?{studentInputs}:{})});
       if(!bundle.initialCandidateIds.includes(localActionId))throw Error('S must choose initial C');
      }catch{stopReason='local_selector_invalid';o.recorder.finishDecision({key,status:'halted',reason:stopReason,elapsedMs:performance.now()-started,offeredIds:bundle.offeredIds,requests:[]});await o.afterBoundary?.();break;}
     }

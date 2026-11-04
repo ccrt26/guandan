@@ -5,13 +5,14 @@ import {isDeepStrictEqual} from 'node:util';
 import {applyMove,type GameState,type Move,type EngineEvent,type RuleOptions,type Combo} from '@gd/engine';
 import {encodeState,encodeStateV2,encodeAction,PublicTracker,STATE_DIM,STATE_DIM_V2,INPUT_DIM,INPUT_DIM_V2,encodeStudentInput399Plus24} from '../../packages/ai/src/nn/schema';
 import type {MLP} from '../../packages/ai/src/nn/mlp';
+import {captureStudent423InitialCandidates} from '../../packages/ai/src/hybrid/student';
 import {buildPublicHighCardMemory,type PublicHighCardMemory} from '../../packages/ai/src/nn/publicMemory';
 import {STUDENT_SCORER_ENCODER,validateStudentScorerDescriptor,type StudentScorerDescriptor} from '../../packages/ai/src/policy/descriptor';
 import type {EncoderOpts} from '../../packages/ai/src/nn/neuralSeat';
 import {candidatePolicyForBundle,resolveCandidatePolicy,FIRST_TARGET_CANDIDATE_SPEC,type CandidatePolicySpec} from '../../packages/ai/src/candidate-spec';
 import type {ResolvedPolicy} from '../../packages/ai/src/policy/resolve';
 import {resolveLegalMove} from '../../packages/ai/src/hybrid/legality';
-import {type DecisionKey,type DecisionBundle,type PublicHistoryPrefix} from '../../packages/ai/src/hybrid/protocol';
+import {freezeCopy,type DecisionKey,type DecisionBundle,type PublicHistoryPrefix} from '../../packages/ai/src/hybrid/protocol';
 
 export const hashJSON=(v:unknown)=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 export type SavedState=Omit<GameState,'ctx'>&{ctx:Omit<GameState['ctx'],'ranks'>&{ranks:number[]}};
@@ -57,7 +58,7 @@ export class MatchRecorder {
   this.sources={schema:'ohuo-private-replay-v1',matchId:identity.matchId,sourceRef:identity.sourceRef,games:[]};
  }
  static restore(record:MatchRecord,sources:PrivateSources,persist?:ConstructorParameters<typeof MatchRecorder>[1]){
-  replayConfirmedMatch(record,sources);const recorder=new MatchRecorder(record,persist);recorder.record=structuredClone(record);recorder.sources=structuredClone(sources);return recorder;
+  replayMatchResume({record,privateSources:sources});const recorder=new MatchRecorder(record,persist);recorder.record=structuredClone(record);recorder.sources=structuredClone(sources);return recorder;
  }
  snapshot(){return {record:structuredClone(this.record),privateSources:structuredClone(this.sources)};}
  private flush(type:'game'|'decision'|'summary',value:any,privateSource?:SavedState,privateDecision?:unknown){this.persist?.({type,value:structuredClone(value),...(privateSource?{privateSource}: {}),...(privateDecision?{privateDecision}: {})});}
@@ -123,6 +124,18 @@ export function replayConfirmedMatch(record:MatchRecord,sources:PrivateSources){
  if(record.summary?.complete&&(!complete||record.summary.winner!==last!.match.winner))throw Error('claimed result is not a complete engine match');
  return {confirmedActions,providerRequests,complete:!!complete,winner:complete?last!.match.winner:null,executionUnknown:unknown,state:last};
 }
+type MatchResume={record:MatchRecord;privateSources:PrivateSources};
+const verifiedResumes=new WeakMap<MatchRecord,{sources:PrivateSources;replay:ReturnType<typeof replayConfirmedMatch>}>();
+function verifyLoadedResume(snapshot:MatchResume):MatchResume{
+ const frozen=freezeCopy(snapshot),replay=replayConfirmedMatch(frozen.record,frozen.privateSources);
+ verifiedResumes.set(frozen.record,{sources:frozen.privateSources,replay});return frozen;
+}
+/** Only the exact immutable snapshot verified by this load can reuse its replay.
+ * Independent snapshots still replay fully. No mutable engine state is shared. */
+export function replayMatchResume(snapshot:MatchResume){
+ const verified=verifiedResumes.get(snapshot.record);
+ return verified?.sources===snapshot.privateSources?structuredClone(verified.replay):replayConfirmedMatch(snapshot.record,snapshot.privateSources);
+}
 
 // The journal is append-only. Checkpoints bind an exact byte prefix; orphaned
 // writes after a control checkpoint are unknown, never silently replayed twice.
@@ -144,8 +157,9 @@ function attachStore(directory:string,identity:RecordIdentity,identitySHA256:str
   if(change.privateDecision)writeFileSync(join(directory,`decision-${change.value.key.requestSeq}.private.json`),JSON.stringify(change.privateDecision),{flag:'wx',mode:0o600});
   const line=JSON.stringify({type:change.type,value:change.value})+'\n';appendFileSync(join(directory,'events.jsonl'),line);sha.update(line);journalBytes+=Buffer.byteLength(line);
  };
- const recorder=restored?MatchRecorder.restore(restored.record,restored.privateSources,persist):new MatchRecorder(identity,persist);
- return {recorder,ref:():MatchStoreRef=>({directory,identitySHA256,journalBytes,journalSHA256:sha.copy().digest('hex')})};
+ const resume=restored?verifyLoadedResume(restored):undefined;
+ const recorder=resume?MatchRecorder.restore(resume.record,resume.privateSources,persist):new MatchRecorder(identity,persist);
+ return {recorder,resume,ref:():MatchStoreRef=>({directory,identitySHA256,journalBytes,journalSHA256:sha.copy().digest('hex')})};
 }
 export function loadMatchStore(ref:MatchStoreRef,outputRoot:string){
  below(outputRoot,ref.directory);const identityPath=join(ref.directory,'identity.json'),journalPath=join(ref.directory,'events.jsonl');below(ref.directory,identityPath);below(ref.directory,journalPath);
@@ -153,6 +167,7 @@ export function loadMatchStore(ref:MatchStoreRef,outputRoot:string){
  const identity=JSON.parse(bytes.toString()) as RecordIdentity;
  const record:MatchRecord={...identity,schema:'ohuo-confirmed-match-v1',games:[],decisions:[],summary:null};
  const privateSources:PrivateSources={schema:'ohuo-private-replay-v1',matchId:identity.matchId,sourceRef:identity.sourceRef,games:[]};
+ const privateInputHashes=new Map<string,{sha256:string;identity:string}>(); // This journal load only; every event still binds its expected SHA.
  if(journal.length&&!journal.toString().endsWith('\n'))throw Error('execution_uncertain: partial event record');
  for(const line of journal.toString().split('\n').filter(Boolean)){
   const event=JSON.parse(line);if(Object.keys(event).sort().join(',')!=='type,value')throw Error('invalid journal event');
@@ -161,7 +176,12 @@ export function loadMatchStore(ref:MatchStoreRef,outputRoot:string){
    const path=join(ref.directory,`game-${event.value.gameNo}.private.json`);below(ref.directory,path);if((lstatSync(path).mode&0o777)!==0o600)throw Error('private replay requires 0600');
    privateSources.games.push({gameNo:event.value.gameNo,state:JSON.parse(readFileSync(path,'utf8'))});
   }else if(event.type==='decision'){
-   if(event.value.trainingInputSHA256){const path=join(ref.directory,`decision-${event.value.key.requestSeq}.private.json`);below(ref.directory,path);if((lstatSync(path).mode&0o777)!==0o600||hashJSON(JSON.parse(readFileSync(path,'utf8')))!==event.value.trainingInputSHA256)throw Error('private decision input changed');}
+   if(event.value.trainingInputSHA256){
+    const path=join(ref.directory,`decision-${event.value.key.requestSeq}.private.json`);below(ref.directory,path);const st=lstatSync(path,{bigint:true}),identity=[st.dev,st.ino,st.mode,st.size,st.mtimeNs,st.ctimeNs].join('|');
+    if((st.mode&0o777n)!==0o600n)throw Error('private decision input changed');let actual=privateInputHashes.get(path);
+    if(actual===undefined){actual={sha256:hashJSON(JSON.parse(readFileSync(path,'utf8'))),identity};privateInputHashes.set(path,actual);}
+    if(actual.identity!==identity||actual.sha256!==event.value.trainingInputSHA256)throw Error('private decision input changed');
+   }
    const index=record.decisions.findIndex(d=>keyOf(d.key)===keyOf(event.value.key));
    if(index<0){if(event.value.status!=='pending')throw Error('missing decision intent');record.decisions.push(event.value);}
    else{const prior=record.decisions[index];if(['cancelled','halted'].includes(prior.status)||prior.executionKind==='confirmed'&&!isDeepStrictEqual(prior.actualMove,event.value.actualMove))throw Error('terminal action journal conflict');record.decisions[index]=event.value;}
@@ -201,7 +221,5 @@ export function captureStudentCandidateInputs({bundle,state,tracker,candidateInp
  if(candidatePolicy.candidateSpec!==FIRST_TARGET_CANDIDATE_SPEC||candidateInputs.inputDim!==399||!isDeepStrictEqual(candidateInputs.candidateIds,bundle.initialCandidateIds)||resolveCandidatePolicy(candidateInputs.candidatePolicy)!==candidatePolicy||student.network.inputDim!==423||typeof student.studentParentRef!=='string'||!/@sha256:[a-f0-9]{64}$/.test(student.studentParentRef))throw Error('student capture identities');
  const memory=buildPublicHighCardMemory({matchId:obs.matchId,gameNo:obs.gameNo,throughMoveNo:obs.moveNo,steps:obs.publicPrefix},{matchId:bundle.key.matchId,gameNo:bundle.key.gameNo},obs.effectiveLevelRanks);
  const rows=bundle.initialCandidateIds.map((id,i)=>{const c=bundle.pool.find(c=>c.actionId===id);if(!c)throw Error('student same C mapping');const x=encodeStudentInput399Plus24(state,tracker,c.canonical,bundle.key,memory);if(!isDeepStrictEqual([...x.subarray(0,399)],candidateInputs.candidateFeatures[i]))throw Error('student legacy segment differs from proposal capture');return [...x];});
- const rawQ=[...student.network.forward(new Float32Array(rows.flat()),rows.length)];if(rawQ.length!==rows.length||rawQ.some(q=>!Number.isFinite(q)))throw Error('student actual forward nonfinite');
- let best=0;for(let i=1;i<rawQ.length;i++){const a=bundle.pool.find(c=>c.actionId===bundle.initialCandidateIds[i])!,b=bundle.pool.find(c=>c.actionId===bundle.initialCandidateIds[best])!;if(rawQ[i]>rawQ[best]||rawQ[i]===rawQ[best]&&a.originalIndex<b.originalIndex)best=i;}
- return{schema:'ohuo-student-candidate-input-v1',studentParentRef:student.studentParentRef,scorer,inputDim:423,inputContract:STUDENT_SCORER_ENCODER,candidatePolicy,candidateIds:[...bundle.initialCandidateIds],candidateFeatures:rows,rawQ,baseActionId:bundle.initialCandidateIds[best],publicHighCardMemory:memory};
+ return captureStudent423InitialCandidates(bundle,{schema:'ohuo-student-candidate-input-v1' as const,studentParentRef:student.studentParentRef,scorer,inputDim:423 as const,inputContract:STUDENT_SCORER_ENCODER,candidatePolicy,candidateIds:[...bundle.initialCandidateIds],candidateFeatures:rows,publicHighCardMemory:memory},student.network);
 }

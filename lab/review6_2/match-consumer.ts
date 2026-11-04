@@ -26,7 +26,7 @@ import {type RemoteRequest} from '../../packages/ai/src/hybrid/remote-selector';
 import {createProfileSelector} from '../../packages/web/server/llm-select.mjs';
 import {dealtFamilyBeforeExchange} from '../review6/training-ancestry';
 import {runCompleteMatchAsync} from './match-play-async';
-import {createMatchStore,loadMatchStore,replayConfirmedMatch,publicMatchOutcome,type MatchStoreRef} from './match-record';
+import {createMatchStore,loadMatchStore,replayMatchResume,publicMatchOutcome,type MatchStoreRef} from './match-record';
 
 const zeroCost={providerRequests:0,optimizerSteps:0,matchAttempts:0,labelDecisions:0};
 const actualScope=(apiCalls=false)=>({localExecution:true,apiCalls,parameterUpdates:false,deployment:false});
@@ -137,7 +137,7 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
     const row=p.rows[cp.cursor],hybrid=requiresAsyncMatch(row.runtimeSeats);
     const identity={runId:task.runId,matchId:row.matchId,sourceRef:task.sourcePlan.sourceIndexRef,layoutRef:task.seatLayoutPlan,policyIds:row.runtimeSeats.map(actualSeatPolicyId),rules:p.rules,sourceFamilyId:row.sourceFamilyId,split:row.split,evaluatedActor:row.actor,seatSnapshots:row.runtimeSeats.map((s,i)=>firstRoundSeatSnapshot(row.seats[i].releaseRef,s))};
     let store:any;
-    if(cp.active){store=loadMatchStore(cp.active.recordRef!,task.outputRoot);const saved=store.recorder.snapshot();for(const field of ['runId','matchId','sourceRef','layoutRef','policyIds','rules','seatSnapshots','sourceFamilyId','split','evaluatedActor'] as const)if(!isDeepStrictEqual(saved.record[field],identity[field]))throw Error('recovery record identity differs');const replay=replayConfirmedMatch(saved.record,saved.privateSources);if(replay.executionUnknown||!replay.state)throw Error('execution_uncertain: no confirmed replay origin');}
+    if(cp.active){store=loadMatchStore(cp.active.recordRef!,task.outputRoot);const saved=store.resume!;for(const field of ['runId','matchId','sourceRef','layoutRef','policyIds','rules','seatSnapshots','sourceFamilyId','split','evaluatedActor'] as const)if(!isDeepStrictEqual(saved.record[field],identity[field]))throw Error('recovery record identity differs');const replay=replayMatchResume(saved);if(replay.executionUnknown||!replay.state)throw Error('execution_uncertain: no confirmed replay origin');}
     else{
      const reservation=await reserve(`match-${cp.cursor}-${ctx.executionId}`,{...zeroCost,matchAttempts:1});
      if(signal.aborted){await settleReservation(reservation,{disposition:'not_sent',evidence:{kind:'confirmed_not_sent'}});break;}
@@ -155,7 +155,7 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
       meters.push(meter);
       return meter.request;
      };
-     const snapshot=store.recorder.snapshot();
+     const snapshot=store.resume??store.recorder.snapshot();
      result=await runCompleteMatchAsync({...identity,generation:`${task.runId}-resume-${sequence}`,seed:row.seed,dealNamespace:row.dealNamespace,maxGames:row.maxGames,maxMovesPerGame:row.maxMovesPerGame,actor:row.actor,signal,...(inputWorkload?{executionBoundary:ctx.executionBoundary}:{deadlineMonotonicMs}),recorder:store.recorder,
       ...(snapshot.record.games.length?{resume:snapshot}:{}),seats:row.runtimeSeats.map(s=>({policyId:actualSeatPolicyId(s),source:s.student||s.s0Release?'S' as const:s.policy.identity.policyId===LEGACY_O_POLICY_REF?'O' as const:'B' as const,mode:s.release.mode,decider:s.policy.createDecider(row.runtimeSeats.indexOf(s)),encoder:s.policy.encoder,policyIdentity:s.policy.identity,...(s.candidatePolicy?{candidatePolicy:s.candidatePolicy}:{}),...(s.studentCapture?{studentCapture:s.studentCapture}:{}),...(s.student?{localSelector:s.student.selectInitialAction}:s.s0Release?{localSelector:({bundle,studentInputs}:any)=>{if(!studentInputs)throw Error('S0 capture required');return rerankStudent423InitialCandidates(bundle,studentInputs,s.studentCapture.network).actionId;}}:{})})),requestForDecision,
       beforeGame:state=>assertFrozenRound(row,state,p.sourceIndex,p.sourceIndexPath,p.sourceIndexSHA256),

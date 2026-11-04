@@ -74,13 +74,19 @@ export function createProfileTextTransport({store,reference,fetchImpl=globalThis
   return Object.freeze({profile:publicProfile,request});
 }
 
-/** Existing selector remains byte/behavior-compatible; designer uses a distinct
+/** Designer uses a distinct
  * structured contract over this same transport, never parseSelection. */
 export function createProfileSelector(options) {
   return createProfileTextTransport(options,{
     prepare(input,profile) {
       const projectRules=input?.schema===PROJECT_RULES_TEACHER_WIRE_SCHEMA,commonView=projectRules||input?.schema===COMMON_VIEW_WIRE_SCHEMA;
-      const view=projectRules?freezeProjectRulesRequest(input):commonView?freezeCommonViewRequest(input):freezeRequestView(input),system=commonView?COMMON_VIEW_RESPONSE_CONTRACT:`${view.observation.rulesText}\n\n${responseContract(view)}`,dynamic=commonView?view.modelPayloadBytes:JSON.stringify(view);
+      const view=projectRules?freezeProjectRulesRequest(input):commonView?freezeCommonViewRequest(input):freezeRequestView(input),system=commonView?COMMON_VIEW_RESPONSE_CONTRACT:`${view.observation.rulesText}\n\n${responseContract(view)}`;
+      let dynamic=view.modelPayloadBytes;
+      if(!commonView){
+        // Keep the validated view intact for parsing/audit; rules are already in system.
+        const {rulesText,...observation}=view.observation;
+        dynamic=JSON.stringify({...view,observation});
+      }
       const common={...profile.requestOptions,model:profile.requestedModel,stream:true};
       const body=projectRules?serializeProjectRulesChat(profile,{role:'teacher',modelPayloadBytes:dynamic}):JSON.stringify(profile.protocol==='openai-chat-completions'?{...common,messages:[{role:'system',content:system},{role:'user',content:dynamic}]}:{...common,system,messages:[{role:'user',content:dynamic}]});
       return {view,body};

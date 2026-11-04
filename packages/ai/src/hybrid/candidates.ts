@@ -1,7 +1,7 @@
 /** Frozen local B proposal/C and explicit offered boundary. No API, execution,
  * rescoring, or reconstruction of moves from remote text. */
 import { canPass, isWild, legalCombos, type GameState } from '@gd/engine';
-import type { NeuralDecider, NeuralDecision } from '../nn/neuralSeat';
+import { takeDecisionEnumerationCount, type NeuralDecider, type NeuralDecision } from '../nn/neuralSeat';
 import { resolveCandidatePolicy, candidatePolicyForBundle, FIRST_TARGET_CANDIDATE_SPEC, type CandidatePolicySpec } from '../candidate-spec';
 import { appendTargetCoverage } from './candidateCoverage';
 import { assertActiveActor, buildObservation, type ObservationInput } from './observation';
@@ -38,8 +38,14 @@ export function freezeDecisionCandidates({ state, actorSeat, decisionId, decisio
         originalIndex: row.idx, rank, rawQ: row.score, groupId: groups.get(groupKey)!, groupKey,
         remainingHand: faceCounts(state.hands[actorSeat].filter(c => !ids.has(c.id))) });
     }
-    resolveLegalMove(state, decision.move);
-    const fallbackId = canonicalActionId(decision.move.pass ? null : decision.move.combo, state.ctx);
+    // The identical first move was fully checked above. A separately supplied
+    // move still needs its own physical/declaration validation before matching.
+    const firstIsSameMove = decision.move.pass
+      ? (!('combo' in decision.move) || decision.move.combo === undefined) && rows[0].combo === null
+      : rows[0].combo !== null && decision.move.combo === rows[0].combo;
+    if (!firstIsSameMove) resolveLegalMove(state, decision.move);
+    const fallbackId = firstIsSameMove ? pool[0].canonicalId
+      : canonicalActionId(decision.move.pass ? null : decision.move.combo, state.ctx);
     if (fallbackId !== pool[0].canonicalId) halt('B choice differs from frozen greedy ranking');
   } catch (error) {
     if (error instanceof Error && 'status' in error && error.status === 'halted') throw error;
@@ -58,8 +64,10 @@ export function freezeDecisionCandidates({ state, actorSeat, decisionId, decisio
   pool.forEach(add);
   // Exception: a singleton ranking is not proof of a singleton original legal
   // enumeration (e.g. old compatibility folding or a truncated injected pool).
-  // Verify only that shortcut, without scoring/reranking or changing B/C.
-  const isUniqueLegalAction = pool.length === 1 && legalCombos(state, policy.enumSpec.enumerationMode).length + (canPass(state) ? 1 : 0) === 1;
+  // Reuse the same decision's original count; external/cloned/stale decisions
+  // must still enumerate here, without scoring/reranking or changing B/C.
+  const isUniqueLegalAction = pool.length === 1 && (takeDecisionEnumerationCount(decision, state, policy)
+    ?? legalCombos(state, policy.enumSpec.enumerationMode).length + (canPass(state) ? 1 : 0)) === 1;
   if (policy.candidateSpec === FIRST_TARGET_CANDIDATE_SPEC) {
     const covered = appendTargetCoverage(state, actorSeat, pool, initialCandidateIds);
     return freezeCopy({ candidateSpec: policy.candidateSpec, enumSpec: policy.enumSpec, decisionId, pool, ...covered,
