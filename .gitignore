@@ -71,3 +71,27 @@ __pycache__/
 /lab/archive/legacy-through-20261030/initial-training/
 
 /packages/web/public/ai/ohuo/ohuo-1030-b-v1/weights.f32
+
+# Reviewed source dependencies inside otherwise local-only evidence/data roots.
+# Keep the exact original paths; do not expose adjacent receipts or datasets.
+!/deliverables/
+/deliverables/*
+!/deliverables/ohuo-batches/
+/deliverables/ohuo-batches/*
+!/deliverables/ohuo-batches/S31-PROVIDER-STATE/
+/deliverables/ohuo-batches/S31-PROVIDER-STATE/*
+!/deliverables/ohuo-batches/S31-PROVIDER-STATE/tools/
+/deliverables/ohuo-batches/S31-PROVIDER-STATE/tools/*
+!/deliverables/ohuo-batches/S31-PROVIDER-STATE/tools/import-connection-receipts.mjs
+
+!/lab/review6_1/
+/lab/review6_1/*
+!/lab/review6_1/data/
+/lab/review6_1/data/*
+!/lab/review6_1/data/no-H-policy-registry-001.json
+!/lab/review6_1/data/H-fit-source-002/
+/lab/review6_1/data/H-fit-source-002/*
+!/lab/review6_1/data/H-fit-source-002/human_proxy.py
+!/lab/review6_1/data/H-fit-source-002/network.py
+!/lab/review6_1/data/H-fit-source-002/human-fit.mjs
+!/lab/review6_1/data/H-fit-source-002/runtime.mjs

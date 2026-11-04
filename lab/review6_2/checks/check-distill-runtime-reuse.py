@@ -137,6 +137,7 @@ def static_inputs():
 
 def checkpoint_worker():
     output = ROOT / 'lab/out/v542-runtime-reduction-m2d3nt4l/learner'
+    output.mkdir(parents=True, exist_ok=True)
     root = pathlib.Path(tempfile.mkdtemp(prefix='worker-', dir=output))
     wrapper = root / 'owned-worker.py'
     wrapper.write_text("""import atexit,json,os,pathlib,sys

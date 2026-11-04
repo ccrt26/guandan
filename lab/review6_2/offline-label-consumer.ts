@@ -136,7 +136,9 @@ export function createOfflineLabelConsumer({profileStore,mode='research',fetchIm
    }
    if(designed)throw Error('designed_teacher_mixed_natural_source');
    const row=selectedRow as SelectedRecordedDecision;
-   naturalRowGuard(row,seen);
+   // The local map exists only after every guard and snapshot succeeded in
+   // this synchronous prepare. Failed batches leave the original seen intact.
+   if(!naturalSnapshots)naturalRowGuard(row,seen);
    const s=naturalSnapshots?.get(row)??readOfflineSnapshot(row,cache,newTest?{purpose:'first-round-new-test'}:undefined),sourceRows=queue.rows.filter((q:any)=>q.matchId===row.key.matchId),q=sourceRows[0];
    if(sourceRows.length!==1||q.actor!==row.actorSeat||q.split!==row.split||q.roundFamilyIds?.[row.key.gameNo-1]!==row.familyId||firstRound&&q.sourceFamilyId!==row.blockFamilyId||s.record.sourceRef!==selection.sourceIndexRef||s.record.layoutRef!==selection.queueRef||!equal(s.record.rules,rules))throw Error('original queue/record/actor/game binding differs');
    const x=s.input.candidateInputs,seat=s.record.seatSnapshots?.[row.actorSeat] as any;

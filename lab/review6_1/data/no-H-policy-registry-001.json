@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "r6-no-H-policy-registry-v1",
+  "at": "2026-10-28T14:56:39.082Z",
+  "selectedExperiment": "direct_teacher_no_h",
+  "policies": [
+    {
+      "policyId": "review6-clean-U0-399-action64-candv3",
+      "kind": "neural",
+      "weightsPath": "/Users/ccrt/game/guandan/lab/review6_1/data/H-features-001/clean-parent.f32",
+      "weightsSHA256": "d5ff100135d969591f92435d02f3af0ef3554fb99b3ac959c23d8ee26894ca01",
+      "inputDim": 399,
+      "encoder": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64"
+      },
+      "epsilon": 0
+    },
+    {
+      "policyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "kind": "neural",
+      "weightsPath": "/Users/ccrt/game/guandan/packages/web/public/ai/clean2.f32",
+      "weightsSHA256": "b8badb4b04290110c093c31219cec23880c837c4bc84e3a5828cc201a15dde55",
+      "inputDim": 385,
+      "encoder": {
+        "candidateCompat": "v2",
+        "passEncoding": "legacy-phys10"
+      },
+      "epsilon": 0
+    },
+    {
+      "policyId": "review6-train-heuristic0-counter-v1",
+      "kind": "heuristic",
+      "difficulty": 0
+    },
+    {
+      "policyId": "review6-train-heuristic1-counter-v1",
+      "kind": "heuristic",
+      "difficulty": 1
+    },
+    {
+      "policyId": "legacy-review5-control-p1-ck400-encv4-candv3",
+      "kind": "neural",
+      "weightsPath": "/Users/ccrt/game/guandan/lab/review5/artifacts/runs/r5-p1-control/ck-400/weights.f32",
+      "weightsSHA256": "825c33aa8861939efee8f0291f49bcabb3bb335d4854d6c6329a0fb8ece3a331",
+      "inputDim": 399,
+      "encoder": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64"
+      },
+      "epsilon": 0
+    },
+    {
+      "policyId": "legacy-review5-control-p2-ck400-encv4-candv3",
+      "kind": "neural",
+      "weightsPath": "/Users/ccrt/game/guandan/lab/review5/artifacts/runs/r5-p2-control/ck-400/weights.f32",
+      "weightsSHA256": "ebc8097fcb61f13c878bce050960bdbdd93b43d6ea78642b4b62320bacaec6ee",
+      "inputDim": 399,
+      "encoder": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64"
+      },
+      "epsilon": 0
+    },
+    {
+      "policyId": "legacy-review5-control-p3-ck400-encv4-candv3",
+      "kind": "neural",
+      "weightsPath": "/Users/ccrt/game/guandan/lab/review5/artifacts/runs/r5-p3-control/ck-400/weights.f32",
+      "weightsSHA256": "2ca0564b5323da231f3b41bd1cbe12bd0941aa9957e8de4d361203254bd5b846",
+      "inputDim": 399,
+      "encoder": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64"
+      },
+      "epsilon": 0
+    },
+    {
+      "policyId": "legacy-review5-treatment-p1-ck400-encv4-candv3",
+      "kind": "neural",
+      "weightsPath": "/Users/ccrt/game/guandan/lab/review5/artifacts/runs/r5-p1-treatment/ck-400/weights.f32",
+      "weightsSHA256": "d9bd7ff05056517683af49aa2fb897612d0508db79f1b958ae115ac03e690033",
+      "inputDim": 399,
+      "encoder": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64"
+      },
+      "epsilon": 0
+    },
+    {
+      "policyId": "legacy-review5-treatment-p2-ck400-encv4-candv3",
+      "kind": "neural",
+      "weightsPath": "/Users/ccrt/game/guandan/lab/review5/artifacts/runs/r5-p2-treatment/ck-400/weights.f32",
+      "weightsSHA256": "7f0af150cc709eaa8a05b6220cd9cf9c8d93d406302be4a968655b9754a54f56",
+      "inputDim": 399,
+      "encoder": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64"
+      },
+      "epsilon": 0
+    },
+    {
+      "policyId": "legacy-review5-treatment-p3-ck400-encv4-candv3",
+      "kind": "neural",
+      "weightsPath": "/Users/ccrt/game/guandan/lab/review5/artifacts/runs/r5-p3-treatment/ck-400/weights.f32",
+      "weightsSHA256": "a6e7d1fad5b07050986d5d56c1d57583cb556b2aaf4137b3d0b051b6b548c0ed",
+      "inputDim": 399,
+      "encoder": {
+        "schema": "v2",
+        "ctxFill": "rule-context",
+        "passEncoding": "action64"
+      },
+      "epsilon": 0
+    }
+  ],
+  "cleanStudent": "review6-clean-U0-399-action64-candv3",
+  "oldCompletePolicy": "frozenChampion-clean2-ck7051-encv1-candv2",
+  "trainingPool": [
+    "review6-clean-U0-399-action64-candv3",
+    "frozenChampion-clean2-ck7051-encv1-candv2",
+    "review6-train-heuristic0-counter-v1",
+    "review6-train-heuristic1-counter-v1"
+  ],
+  "developmentPartners": [
+    "legacy-review5-control-p1-ck400-encv4-candv3",
+    "legacy-review5-control-p2-ck400-encv4-candv3",
+    "legacy-review5-control-p3-ck400-encv4-candv3"
+  ],
+  "confirmationPartners": [
+    "legacy-review5-treatment-p1-ck400-encv4-candv3",
+    "legacy-review5-treatment-p2-ck400-encv4-candv3",
+    "legacy-review5-treatment-p3-ck400-encv4-candv3"
+  ],
+  "trainingOtherPartnerPool": [
+    "review6-train-heuristic0-counter-v1",
+    "review6-train-heuristic1-counter-v1"
+  ],
+  "trainingOtherPoolSelection": "fixed alternating global source match ordinal,50/50 within the original25percent other-partner bucket; both arms identical",
+  "profiles": {
+    "primary": {
+      "actingPolicyId": "review6-clean-U0-399-action64-candv3",
+      "partnerPolicyId": "review6-train-heuristic0-counter-v1",
+      "opponentPolicyIds": [
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "frozenChampion-clean2-ck7051-encv1-candv2"
+      ]
+    },
+    "secondary": {
+      "actingPolicyId": "frozenChampion-clean2-ck7051-encv1-candv2",
+      "partnerPolicyId": "review6-train-heuristic1-counter-v1",
+      "opponentPolicyIds": [
+        "frozenChampion-clean2-ck7051-encv1-candv2",
+        "frozenChampion-clean2-ck7051-encv1-candv2"
+      ]
+    }
+  },
+  "legacyM2Partner": {
+    "policyId": "legacy-M2-partner-heuristic-level1",
+    "kind": "heuristic",
+    "difficulty": 1,
+    "rngMode": "legacy-per-game"
+  },
+  "poolSelectionRule": "old REVIEW5 pair index1/2/3 at sharedck400: control cohort development, treatment cohort confirmation; fixed directory order, no new-cycle policy-result selection",
+  "sharedProvenance": "All are local nonhuman policies. Old and migrated U0 shareclean2 origin; six heldout partners share REVIEW5 architecture/data lineage and may contain its human-auxiliary training. Different weights are not independent algorithms or verified human styles. No qualified H or real human participant.",
+  "sourceFiles": [
+    {
+      "path": "/Users/ccrt/game/guandan/lab/review6/policy-registry.ts",
+      "sha256": "3aaf1e9b7a6e0ce4e4eafa73747b983479efb8b61d7dfd95373e67c8c2e59f2d"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/src/review5train.ts",
+      "sha256": "5ea4052e54400bc619f1baac94aca49910433a6241e17684dd889694aa363fdf"
+    },
+    {
+      "path": "/Users/ccrt/game/guandan/lab/src/review5eval.ts",
+      "sha256": "1747e1ea7fba711d39b37a5d1788a1228ccaf8bcfae58741a15eb637986ea6ca"
+    }
+  ],
+  "humanCompatibilityAccepted": false,
+  "productionProtocolFrozen": false
+}
