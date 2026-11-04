@@ -8,8 +8,9 @@ import {join} from 'node:path';
 import {createHash} from 'node:crypto';
 import {buildDeck,DEFAULT_RULES} from '@gd/engine';
 import {createDesignedSourceConsumer,verifyDesignedSourceInputs,DESIGNED_SOURCE_CAPABILITY} from '../designed-source-consumer';
+import {assertDesignedCandidateResponse} from '../designed-source-acceptance';
 import {PROJECT_RULES_DESIGN_PROMPT_ID,PROJECT_RULES_DESIGN_SYSTEM_SHA256,PROJECT_RULES_DESIGN_SYSTEM} from '../../../packages/web/server/llm-project-rules-v541.mjs';
-import {digest,referenceOf,validateTask} from '../task-schema.mjs';
+import {canonical,digest,referenceOf,validateTask} from '../task-schema.mjs';
 assert.deepEqual(process.argv.slice(2),['--case','source.designer-consumer']);
 const {dir,refs,fixed,sourceRevision,rulesRef,index,sourceIndexPath,sourceIndexRef,coverage,requestSpec,inventoryRef,contractRef,task,inputs,profileStore,publicProfile,reference}=createDesignedConsumerFixture();
 assert.equal(verifyDesignedSourceInputs({task,refs,inputs}).requests.length,1);
@@ -34,4 +35,26 @@ const pending=harness('pending'),unknown=createDesignedSourceConsumer({profileSt
 const never=harness('prewrite',{failSave:(_v:any,next:number)=>next===1});await assert.rejects(()=>consumer.run(never.ctx),(e:any)=>e.requestCount===0&&e.executionUnknown===false);assert.equal(sends,noResend);
 const terminal=harness('terminal',{failSave:(v:any)=>v.cursor===1});await assert.rejects(()=>consumer.run(terminal.ctx));assert.equal(terminal.persisted.active.phase,'terminal');const afterTerminal=sends;let recovered:any=null,recoverySequence=terminal.sequence;const recoveredResult=await consumer.run({...terminal.ctx,checkpoint:terminal.persisted,checkpointSequence:terminal.sequence,saveCheckpoint:async(v:any,s:number)=>{assert.equal(s,++recoverySequence);recovered=structuredClone(v);}});assert.equal(recoveredResult.completed,true);assert.equal(recovered.cursor,1);assert.equal(sends,afterTerminal);
 const damaged=structuredClone(h.persisted);damaged.rows[0].privateResponseText=raw;assert.equal(consumer.validateCheckpoint(damaged),false);
+// Exercise the production consumer's private candidate writer, not a manually
+// constructed raw file. Then use the exact byte boundary called by accept.
+const v2Spec={...requestSpec,firstGameOrigin:{leaderSeed:1,firstLeader:2,previousPublicPrefixFailure:{gameNo:1 as const,moveNo:0 as const,expectedActorSeat:1,declaredActorSeat:0}},comboDeclarationContract:'engine-combo-fields-v2' as const};
+const v2Refs=new Map(refs),v2Inventory={schema:'ohuo-designed-source-inventory-v1',requests:[v2Spec]},v2InventoryRef=referenceOf('synthetic/v2-inventory',v2Inventory);v2Refs.set(v2InventoryRef,v2Inventory);
+const v2Contract={...refs.get(contractRef),requestInventoryRef:v2InventoryRef},v2ContractRef=referenceOf('synthetic/v2-contract',v2Contract);v2Refs.set(v2ContractRef,v2Contract);
+const v2Source={...source,schema:'ohuo-designed-first-game-source-v2'},rawV2='\r\n  '+JSON.stringify(v2Source,null,2)+' \n',v2Consumer=createDesignedSourceConsumer({profileStore,fetchImpl:(async()=>{sends++;return sse(rawV2);}) as any}),v2=harness('v2-success');
+v2.ctx.task=validateTask({...v2.ctx.task,datasetRefs:[v2InventoryRef],scientificContract:{...task.scientificContract,decisionRuleRef:v2ContractRef}});
+v2.ctx.executionInputs=await v2Consumer.prepare({task:v2.ctx.task,refs:v2Refs,inputs:{...inputs,designerCatalog:v2Refs}});
+assert.equal((await v2Consumer.run(v2.ctx)).completed,true);
+const v2Row=v2.persisted.rows[0],v2Path=join(v2.ctx.task.outputRoot,v2Row.candidateSourceFile.relativePath),v2Bytes=readFileSync(v2Path),v2Query=JSON.parse(readFileSync(join(v2.ctx.task.outputRoot,v2Row.privateRef.relativePath),'utf8'));
+assert.equal(v2Bytes.toString('utf8'),rawV2);assert.equal(v2Row.candidateSourceFile.sha256,createHash('sha256').update(rawV2).digest('hex'));assert.equal(lstatSync(v2Path).mode&0o777,0o600);
+assert.deepEqual(v2Query.result.response,v2Source);assert.equal(v2Query.result.privateResponseText,rawV2);assertDesignedCandidateResponse(v2Bytes,v2Query.result);
+const canonicalV2=Buffer.from(canonical(v2Source));assert.notDeepEqual(canonicalV2,v2Bytes);assert.deepEqual(JSON.parse(canonicalV2.toString()),v2Source);
+assert.throws(()=>assertDesignedCandidateResponse(canonicalV2,v2Query.result),/candidate_raw_response_identity/,'same semantics cannot replace the original v2 bytes');
+assert.throws(()=>assertDesignedCandidateResponse(Buffer.from(canonical({...v2Source,questionId:'different'})),v2Query.result),/candidate_response_identity/);
+assertDesignedCandidateResponse(Buffer.from(canonical(source)),privateQuery.result); // v1 keeps its original canonical-file contract.
+const beforeV2Resume=sends;await v2Consumer.run({...v2.ctx,checkpoint:v2.persisted,checkpointSequence:v2.sequence});assert.equal(sends,beforeV2Resume);
+// Rebinding the file/hash to a canonical derivative must also fail recovery,
+// even though ordinary file hashing and parsed-object deep equality both pass.
+const canonicalHash=createHash('sha256').update(canonicalV2).digest('hex'),changedCheckpoint=structuredClone(v2.persisted),canonicalRelative=`designer-private/source-${canonicalHash}.json`;
+writeFileSync(join(v2.ctx.task.outputRoot,canonicalRelative),canonicalV2,{flag:'wx',mode:0o600});changedCheckpoint.rows[0].candidateSourceFile={relativePath:canonicalRelative,sha256:canonicalHash};
+await assert.rejects(()=>v2Consumer.run({...v2.ctx,checkpoint:changedCheckpoint,checkpointSequence:v2.sequence,saveCheckpoint:async()=>{}}),/candidate_raw_response_identity/);assert.equal(sends,beforeV2Resume);
 console.log(JSON.stringify({caseId:'source.designer-consumer',status:'passed',syntheticSSEInvocations:sends,providerRequests:0,realModelCalls:0,scientificRuns:0,originalHAdmission:false,private0600:true,noResend:true,designerLabels:0}));

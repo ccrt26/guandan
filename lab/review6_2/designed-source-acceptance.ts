@@ -13,9 +13,9 @@ import {FixedHostFiles} from './ohuo-host-files';
 import {designedFamilyOwnership as ownership,mergeDesignedSourceIndices,reserveDesignedFamilies,validateDesignedFamilyReservationSpec,verifyDesignedFamilyReservationLink} from './designed-family-reservation';
 import {acquireSourceWriter} from './writer-lock';
 import {canonical,digest,referenceOf,fixedReference,strictObject,validateIdentifier,validateSourceFamily} from './task-schema.mjs';
-import {parseDesignedFirstGameSource,createDesignedSourceReader,type DesignedSourceRuntime} from './designed-source';
+import {parseDesignedFirstGameSource,createDesignedSourceReader,DESIGNED_FIRST_GAME_V2_SCHEMA,type DesignedSourceRuntime} from './designed-source';
 import {isDesignedSourceCheckpoint} from './designed-source-consumer';
-import {prepareDesignedSourceRequest,queryDesignedSource} from './designed-source-request';
+import {prepareDesignedSourceRequest,queryDesignedSource,type DesignedRemoteResult} from './designed-source-request';
 import {readUsedCommonSelectionRows} from './offline-selection';
 import {readOfflineSnapshot,commonDecisionIdentityForSnapshot} from './offline-label-source';
 import {commonViewCoverageCell} from './first-round-source-batch.mjs';
@@ -31,6 +31,9 @@ function shape(s:any):asserts s is DesignedSourceAcceptanceSpec {strictObject(s,
 export {mergeDesignedSourceIndices} from './designed-family-reservation';
 /** Original engine computes actual deal-family identity; no natural seed claim. */
 export function inspectDesignedCandidateSource(raw:string){const source=parseDesignedFirstGameSource(raw),state=startGame(createMatch(structuredClone(source.rules),source.origin.leaderSeed),[],source.initialIds);return{source,sourceFamilyId:dealtFamilyBeforeExchange(state)};}
+/** The original terminal query was revalidated before this file boundary.
+ * v1 keeps its canonical candidate contract; v2 binds the exact response bytes. */
+export function assertDesignedCandidateResponse(raw:Buffer,result:DesignedRemoteResult){need(equal(JSON.parse(raw.toString('utf8')),result.response),'candidate_response_identity');if(result.response?.schema===DESIGNED_FIRST_GAME_V2_SCHEMA)need(typeof result.privateResponseText==='string'&&raw.equals(Buffer.from(result.privateResponseText,'utf8')),'candidate_raw_response_identity');}
 function appendFamily(index:any,source:any,familyId:string){const own=index.families[source.designFamilyId];need(Object.hasOwn(own??{},'rootFamilyId')&&Array.isArray(own.parentFamilyIds),'design_ownership_required');const root=own.rootFamilyId,active=new Set<string>();const visit=(id:string)=>{need(!active.has(id),'family_cycle');active.add(id);const o=ownership(id,index.families[id]);need(o.split==='train'&&o.rootFamilyId===root,'nontrain_or_foreign_root');for(const p of o.parentFamilyIds)visit(p);active.delete(id);};visit(source.designFamilyId);visit(root);if(Object.hasOwn(index.families,familyId)){const old=ownership(familyId,index.families[familyId]);need(old.split==='train'&&old.rootFamilyId===root,'deal_reuses_other_split_or_root');need(Object.hasOwn(index.families[familyId],'rootFamilyId'),'legacy_deal_cannot_be_reassigned');}else index.families[familyId]={split:'train',rootFamilyId:root,parentFamilyIds:[source.designFamilyId]};return root;}
 /** Local unregistered candidate graph; no source authority or publication. */
 export function isolateDesignedCandidateIndex(base:any,source:any,sourceFamilyId:string){const index=structuredClone(base),rootFamilyId=appendFamily(index,source,sourceFamilyId);return{index,rootFamilyId};}
@@ -117,7 +120,7 @@ export async function acceptDesignedSources({host,specRef}:{host:FixedHostFiles;
    const queryFile={path:relative(root,join(task.outputRoot,row.privateRef.relativePath)),sha256:row.privateRef.sha256},q=JSON.parse(regular(root,queryFile,true).toString());
    const reused=await queryDesignedSource({input:request,signal:new AbortController().signal,checkpoint:q,request:async()=>{throw Error('source acceptance cannot send');},onCheckpoint:async()=>{throw Error('source acceptance cannot rewrite query');}});need(reused.reused&&q.phase==='terminal'&&q.result.status===row.status&&q.result.summary.requestCount===row.requestCount,'query_terminal_identity');
    if(row.status!=='response'){outcomes.push({questionId:row.questionId,status:'not_generated',reason:row.reason,sourceRef:null});continue;}
-   const sourceFile={path:relative(root,join(task.outputRoot,row.candidateSourceFile.relativePath)),sha256:row.candidateSourceFile.sha256},raw=regular(root,sourceFile,true);need(equal(JSON.parse(raw.toString()),q.result.response),'candidate_response_identity');
+   const sourceFile={path:relative(root,join(task.outputRoot,row.candidateSourceFile.relativePath)),sha256:row.candidateSourceFile.sha256},raw=regular(root,sourceFile,true);assertDesignedCandidateResponse(raw,q.result);
    try{const {source,sourceFamilyId}=inspectDesignedCandidateSource(raw.toString());candidates.push({source,sourceFile,sourceFamilyId,request});}
    catch(error){if(isDesignedCandidateSourceFailure(error))outcomes.push({questionId:row.questionId,status:'rejected',reason:String((error as Error).message),sourceRef:null});else throw error;}
   }

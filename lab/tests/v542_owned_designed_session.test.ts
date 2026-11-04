@@ -1,7 +1,7 @@
 /** Small original designed selector/reader fixture with fake local networks.
  * The H action gates below are controllable seams, not runtime authorization. */
 import {afterEach,describe,expect,it,vi} from 'vitest';
-import {copyFileSync,mkdirSync,mkdtempSync,readFileSync,realpathSync,writeFileSync} from 'node:fs';
+import {copyFileSync,mkdirSync,mkdtempSync,readFileSync,realpathSync,renameSync,unlinkSync,writeFileSync} from 'node:fs';
 import {dirname,join,relative} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
@@ -17,11 +17,26 @@ import {FIRST_ROUND_TARGET_DEFINITION} from '../review6_2/first-round-target';
 import {DESIGNED_SOURCE_PROGRAM_PATHS} from '../review6_2/designed-source';
 import {commonDecisionIdentityForSnapshot} from '../review6_2/offline-label-source';
 
-const fake=vi.hoisted(()=>({runtime:null as any,constructions:0,proposalCalls:0,failLoad:false}));
-vi.mock('../review6_2/policy-loader',async importOriginal=>({...await importOriginal<any>(),resolveNodePolicy:async()=>{
- if(fake.failLoad)throw Error('fixture_model_load_failed');return fake.runtime.proposal;
-}}));
-vi.mock('../review6_2/first-round-parent',async importOriginal=>({...await importOriginal<any>(),resolveFirstRoundParent:async()=>fake.runtime.parent}));
+const fake=vi.hoisted(()=>({runtime:null as any,constructions:0,proposalCalls:0,failLoad:false,modelReads:[] as string[],afterModelRead:null as null|((kind:'proposal'|'student')=>void)}));
+// Keep both real Node adapters and their registered-path/file reads. Model
+// byte-integrity validation, identity and network construction are fake;
+// these tiny files prove change detection, not real model integrity.
+vi.mock('../../packages/ai/src/policy/resolve',async importOriginal=>{
+ const actual=await importOriginal<any>();return {...actual,
+  resolvePolicy:async(ref:string,runtime:any)=>{
+   if(fake.failLoad)throw Error('fixture_model_load_failed');
+   const descriptor=actual.validatePolicyIndex(runtime.registry).policies.find((p:any)=>p.policyId===ref);
+   if(!descriptor)throw Error('fixture_unknown_policy');
+   const location=descriptor.weightsPathOrUrl.nodePath;await runtime.readWeights(location);fake.modelReads.push(location);fake.afterModelRead?.('proposal');
+   return {...fake.runtime.proposal,descriptor};
+  },
+  resolveStudentScorer:async(value:any,runtime:any)=>{
+   const descriptor=actual.validateStudentScorerDescriptor(value),location=descriptor.weightsPathOrUrl.nodePath;
+   await runtime.readWeights(location);fake.modelReads.push(location);fake.afterModelRead?.('student');
+   return {descriptor,createNetwork:()=>fake.runtime.parent.studentCapture.network};
+  },
+ };
+});
 vi.mock('../review6_2/offline-selection',async importOriginal=>{
  const actual=await importOriginal<any>();return {...actual,createDesignedSelectionSession:async(...args:any[])=>{fake.constructions++;return actual.createDesignedSelectionSession(...args);}};
 });
@@ -31,7 +46,7 @@ import * as selector from '../review6_2/offline-selection';
 const repository=fileURLToPath(new URL('../../',import.meta.url)).replace(/\/$/,'');
 const output=join(repository,'lab/out/v542-rev46-local/session');
 const sha=(raw:string|Buffer)=>createHash('sha256').update(raw).digest('hex');
-afterEach(()=>{vi.restoreAllMocks();fake.failLoad=false;});
+afterEach(()=>{vi.restoreAllMocks();fake.failLoad=false;fake.afterModelRead=null;});
 
 async function fixture(){
  mkdirSync(output,{recursive:true});const root=realpathSync(mkdtempSync(join(output,'fixture-'))),controlRoot=join(root,'lab/out/control');mkdirSync(controlRoot,{recursive:true});
@@ -41,7 +56,12 @@ async function fixture(){
  const evidence=(id:string,value:any)=>{const file=put('evidence/'+id+'.json',value);evidenceFiles.set(id,file);return{id,sha256:file.sha256};};
  for(const path of DESIGNED_SOURCE_PROGRAM_PATHS){mkdirSync(dirname(join(root,path)),{recursive:true});copyFileSync(join(repository,path),join(root,path));}
  const engineSourceRef=ref('source',{baseCommit:'a'.repeat(40),files:DESIGNED_SOURCE_PROGRAM_PATHS.map(path=>({path,sha256:sha(readFileSync(join(root,path)))}))}),rulesRef=ref('rules',DEFAULT_RULES);
- const receipt=JSON.parse(readFileSync(join(repository,'lab/review6_2/checks/fixtures/s35-migration-metadata.json'),'utf8')),source=receipt.parentRef,migrationReceiptRef=evidence('migration',receipt);
+ const receipt=JSON.parse(readFileSync(join(repository,'lab/review6_2/checks/fixtures/s35-migration-metadata.json'),'utf8')),source=receipt.parentRef;
+ source.weightsPathOrUrl.nodePath='fixture-models/B-prime.f32';receipt.target.weightsPathOrUrl.nodePath='fixture-models/S0.f32';
+ const modelIndexPath=join(root,'lab/model-index.json'),proposalWeightPath=join(root,source.weightsPathOrUrl.nodePath),studentWeightPath=join(root,receipt.target.weightsPathOrUrl.nodePath);
+ put('lab/model-index.json',{schemaVersion:'gd-model-index-v1',defaultPolicyRef:source.policyId,policies:[source]});
+ for(const path of [proposalWeightPath,studentWeightPath]){mkdirSync(dirname(path),{recursive:true});writeFileSync(path,Buffer.from([1,2,3,4]),{mode:0o600});}
+ const migrationReceiptRef=evidence('migration',receipt);
  const identity={policyId:source.policyId,modelVersion:source.modelVersion,weightsSHA256:source.weightsSHA256,inputDim:399,encoderVersion:source.encoder.encoderVersion,candidateVersion:source.candidateSpecId,passEncoding:source.encoder.passEncoding,architectureId:source.architectureId,weightsLayoutVersion:source.weightsLayoutVersion,epsilon:0,tieBreakId:source.tieBreakId,tierSpecId:source.tierSpecId};
  const studentParentRef=ref('S0',{schema:'ohuo-student-parent-ref-v1',scorer:receipt.target,migrationReceiptRef,basePolicyIdentity:identity}),legacy=RELEASES.find(r=>r.releaseRef==='ohuo-1030-b-v1')!,baseRef=ref('B',{schema:'ohuo-release-ref-v1',release:legacy,policyIdentity:identity});
  const actingReleaseRef=ref('B-prime',{schema:'ohuo-candidate-research-release-ref-v1',parentRef:baseRef,release:{...legacy,releaseRef:'fixture-B-prime',label:'Fixture B prime',status:'development',parentRelease:legacy.releaseRef,candidateSpecRef:'first-target-offer12-v1',promptRef:'ohuo-engine-rules-v1/choose-only-v2'},policyIdentity:identity,candidatePolicy:FIRST_TARGET_CANDIDATE_POLICY});
@@ -83,9 +103,9 @@ async function fixture(){
   vi.spyOn(host,'assertActionTaskLineage').mockImplementation(()=>{calls.lineage++;if(!gates.lineage)throw Error('fixture_lineage_changed');});
   return host;
  };
- fake.constructions=0;fake.proposalCalls=0;
+ fake.constructions=0;fake.proposalCalls=0;fake.modelReads=[];
  const proof=(inputs:any)=>selector.verifyOfflineSelection(produced.selection,{...inputs,phase:'dataset'});
- return{root,spec,specRef,tasks,taskRefs,liveState,writeState,gates,calls,makeHost,proof,produced,sourcePath:join(root,evidenceFiles.get(sourceFile.id).path),sourceIndexPath,programPath:join(root,DESIGNED_SOURCE_PROGRAM_PATHS[0]),referencePath:join(root,'refs/'+sha(queueRef)+'.json')};
+ return{root,spec,specRef,tasks,taskRefs,liveState,writeState,gates,calls,makeHost,proof,produced,modelIndexPath,proposalWeightPath,studentWeightPath,sourcePath:join(root,evidenceFiles.get(sourceFile.id).path),sourceIndexPath,programPath:join(root,DESIGNED_SOURCE_PROGRAM_PATHS[0]),referencePath:join(root,'refs/'+sha(queueRef)+'.json')};
 }
 
 describe('FixedHostFiles owned designed selection session',()=>{
@@ -95,6 +115,7 @@ describe('FixedHostFiles owned designed selection session',()=>{
   expect(second).not.toBe(first);expect(second.phase).toBe('label-resume');expect(secondProof).toEqual(firstProof);
   expect(again.bundle.initialCandidateIds).toEqual(snapshot.bundle.initialCandidateIds);expect(commonDecisionIdentityForSnapshot(again)).toEqual(commonDecisionIdentityForSnapshot(snapshot));
   expect(fake.constructions).toBe(1);expect(fake.proposalCalls).toBe(captures);expect(second.designedSession).toBe(first.designedSession);
+  expect(fake.modelReads).toEqual(['fixture-models/B-prime.f32','fixture-models/S0.f32']);
   expect(f.calls).toEqual({authorization:2,action:2,prerequisites:2,lineage:2,source:2});
  });
  it('keeps different Tasks, instances and non-Task consumers cold',async()=>{
@@ -130,5 +151,31 @@ describe('FixedHostFiles owned designed selection session',()=>{
   const f=await fixture(),host=f.makeHost();fake.failLoad=true;
   await expect(host.offlineSelectionHostInputs(f.spec,{phase:'label-start',task:f.tasks[0]})).rejects.toThrow('fixture_model_load_failed');fake.failLoad=false;
   const inputs=await host.offlineSelectionHostInputs(f.spec,{phase:'label-start',task:f.tasks[0]});f.proof(inputs);expect(fake.constructions).toBe(2);
+ });
+ it.each([
+  ['proposalWeightPath','replace'],['proposalWeightPath','missing'],
+  ['studentWeightPath','replace'],['studentWeightPath','missing'],
+ ] as const)('rejects %s %s before hot reader reuse',async(pathKey,change)=>{
+  const f=await fixture(),host=f.makeHost(),first=await host.offlineSelectionHostInputs(f.spec,{phase:'label-start',task:f.tasks[0]});f.proof(first);
+  const path=f[pathKey];
+  if(change==='missing')unlinkSync(path);
+  else{writeFileSync(path+'.replacement',Buffer.from([4,3,2,1]),{mode:0o600});renameSync(path+'.replacement',path);}
+  await expect(host.offlineSelectionHostInputs(f.spec,{phase:'label-resume',task:structuredClone(f.tasks[0])})).rejects.toThrow(/designed_selection_model_input_changed/);
+  expect(()=>selector.readSelectionSnapshot(f.produced.selection.rows[0],first)).toThrow(/designed_selection_model_input_changed/);
+  expect(fake.constructions).toBe(1);expect(fake.modelReads).toHaveLength(2);
+ });
+ it.each(['proposal','student'] as const)('rejects model changes during the real %s loader and does not retain the session',async kind=>{
+  const f=await fixture(),host=f.makeHost();
+  fake.afterModelRead=loaded=>{if(loaded===kind)writeFileSync(kind==='proposal'?f.proposalWeightPath:f.studentWeightPath,Buffer.from([4,3,2,1]));};
+  await expect(host.offlineSelectionHostInputs(f.spec,{phase:'label-start',task:f.tasks[0]})).rejects.toThrow(/designed_selection_model_input_changed/);
+  fake.afterModelRead=null;
+  writeFileSync(kind==='proposal'?f.proposalWeightPath:f.studentWeightPath,Buffer.from([1,2,3,4]));
+  const inputs=await host.offlineSelectionHostInputs(f.spec,{phase:'label-start',task:f.tasks[0]});f.proof(inputs);expect(fake.constructions).toBe(2);
+ });
+ it('rejects registry rebinding before hot reader reuse',async()=>{
+  const f=await fixture(),host=f.makeHost();f.proof(await host.offlineSelectionHostInputs(f.spec,{phase:'label-start',task:f.tasks[0]}));
+  const index=JSON.parse(readFileSync(f.modelIndexPath,'utf8'));index.policies[0].weightsPathOrUrl.nodePath='fixture-models/other.f32';writeFileSync(f.modelIndexPath,JSON.stringify(index));
+  await expect(host.offlineSelectionHostInputs(f.spec,{phase:'label-resume',task:f.tasks[0]})).rejects.toThrow(/designed_selection_model_input_changed/);
+  expect(fake.constructions).toBe(1);expect(fake.modelReads).toHaveLength(2);
  });
 });

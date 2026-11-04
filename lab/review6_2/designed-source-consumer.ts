@@ -11,7 +11,8 @@ import {createTaskController} from './task-control.mjs';
 import {verifyDesignedFamilyReservationLink} from './designed-family-reservation';
 import {canonical,digest,strictObject,fixedReference,validateTask,isInputWorkloadLimits} from './task-schema.mjs';
 import {createMeteredRemote} from './match-consumer';
-import {createProfileDesigner,prepareDesignedSourceRequest,queryDesignedSource,type DesignedSourceRequest,type DesignedRequestCheckpoint} from './designed-source-request';
+import {createProfileDesigner,prepareDesignedSourceRequest,queryDesignedSource,type DesignedSourceRequest,type DesignedRequestCheckpoint,type DesignedRemoteResult} from './designed-source-request';
+import {DESIGNED_FIRST_GAME_V2_SCHEMA} from './designed-source';
 import {PROJECT_RULES_DESIGN_PROMPT_ID,PROJECT_RULES_DESIGN_SYSTEM_SHA256} from '../../packages/web/server/llm-project-rules-v541.mjs';
 import {freezeCopy} from '../../packages/ai/src/hybrid/protocol';
 
@@ -89,8 +90,8 @@ export function verifyDesignedSourceInputs({task:inputTask,refs,inputs}:any):Pre
 function privateDirectory(task:any){const root=realpathSync(task.outputRoot);need(root===task.outputRoot,'output_root');const dir=join(root,'designer-private');if(!existsSync(dir))mkdirSync(dir,{mode:0o700});const st=lstatSync(dir);need(st.isDirectory()&&!st.isSymbolicLink()&&realpathSync(dir)===dir&&(st.mode&0o077)===0,'private_directory');return dir;}
 function storePrivate(task:any,value:DesignedRequestCheckpoint):PrivateRef {const bytes=canonical(value),hash=sha(bytes),dir=privateDirectory(task),relativePath=`designer-private/query-${hash}.json`,path=join(dir,`query-${hash}.json`);if(existsSync(path)){readPrivate(task,{relativePath,sha256:hash});}else writeFileSync(path,bytes,{flag:'wx',mode:0o600});return {relativePath,sha256:hash};}
 function readPrivate(task:any,ref:PrivateRef):DesignedRequestCheckpoint {need(validPrivate(ref),'private_reference');privateDirectory(task);const path=join(task.outputRoot,ref.relativePath),st=lstatSync(path);need(st.isFile()&&!st.isSymbolicLink()&&realpathSync(path)===path&&(st.mode&0o077)===0,'private_file');const bytes=readFileSync(path);need(sha(bytes)===ref.sha256,'private_identity');return JSON.parse(bytes.toString('utf8'));}
-function storeCandidate(task:any,value:unknown):PrivateRef {const bytes=canonical(value),hash=sha(bytes),dir=privateDirectory(task),ref={relativePath:`designer-private/source-${hash}.json`,sha256:hash},path=join(dir,`source-${hash}.json`);if(existsSync(path))readCandidate(task,ref);else writeFileSync(path,bytes,{flag:'wx',mode:0o600});return ref;}
-function readCandidate(task:any,ref:PrivateRef){need(validCandidate(ref),'candidate_file_reference');privateDirectory(task);const path=join(task.outputRoot,ref.relativePath),st=lstatSync(path);need(st.isFile()&&!st.isSymbolicLink()&&realpathSync(path)===path&&(st.mode&0o077)===0,'candidate_private_file');const bytes=readFileSync(path);need(sha(bytes)===ref.sha256,'candidate_file_identity');return JSON.parse(bytes.toString('utf8'));}
+function storeCandidate(task:any,result:DesignedRemoteResult):PrivateRef {const bytes=result.response?.schema===DESIGNED_FIRST_GAME_V2_SCHEMA?result.privateResponseText:canonical(result.response);need(typeof bytes==='string','candidate_raw_response_required');const hash=sha(bytes!),dir=privateDirectory(task),ref={relativePath:`designer-private/source-${hash}.json`,sha256:hash},path=join(dir,`source-${hash}.json`);if(existsSync(path))readCandidate(task,ref);else writeFileSync(path,bytes!,{flag:'wx',mode:0o600});return ref;}
+function readCandidate(task:any,ref:PrivateRef){need(validCandidate(ref),'candidate_file_reference');privateDirectory(task);const path=join(task.outputRoot,ref.relativePath),st=lstatSync(path);need(st.isFile()&&!st.isSymbolicLink()&&realpathSync(path)===path&&(st.mode&0o077)===0,'candidate_private_file');const bytes=readFileSync(path);need(sha(bytes)===ref.sha256,'candidate_file_identity');return bytes;}
 export function createDesignedSourceConsumer({profileStore,fetchImpl}:{profileStore:any;fetchImpl?:typeof fetch}) {
  need(profileStore&&typeof profileStore.resolve==='function'&&(fetchImpl===undefined||typeof fetchImpl==='function'),'profile_store_required');
  const prepare=async(input:any):Promise<Prepared>=>{const p=verifyDesignedSourceInputs(input),reference=structuredClone(p.reference),record=structuredClone(profileStore.resolve(reference));const store={resolve:(r:any)=>{need(equal(r,reference),'profile_binding');return structuredClone(record);}};const publicProfile=createProfileDesigner({store,reference,fetchImpl:()=>{throw Error('prepare cannot send');}}).profile;need(equal(publicProfile,p.publicProfile),'resolved_profile_identity');return {...p,reference,store,publicProfile};};
@@ -108,7 +109,7 @@ export function createDesignedSourceConsumer({profileStore,fetchImpl}:{profileSt
     const q=readPrivate(task,row.privateRef);need(q.phase==='terminal','completed_query_phase');
     const reused=await queryDesignedSource({input:p.requests[i],signal,checkpoint:q,request:async()=>{throw Error('completed request cannot send');},onCheckpoint:async()=>{throw Error('completed request cannot rewrite');}}),r=reused.checkpoint.result!;
     need(r.status===row.status&&r.summary.requestCount===row.requestCount&&equal(r.summary.usage??{},row.usage),'completed_query_identity');
-    if(row.candidateSourceFile)need(equal(readCandidate(task,row.candidateSourceFile),r.response),'candidate_source_identity');
+    if(row.candidateSourceFile){const raw=readCandidate(task,row.candidateSourceFile);need(equal(JSON.parse(raw.toString('utf8')),r.response),'candidate_source_identity');if(r.response?.schema===DESIGNED_FIRST_GAME_V2_SCHEMA)need(raw.equals(Buffer.from(r.privateResponseText!,'utf8')),'candidate_raw_response_identity');}
    }
    while(cp.cursor<p.requests.length){
     if(signal.aborted)break;need(sha(readFileSync(p.sourceIndexPath))===p.sourceIndexSHA256,'source_index_changed');
@@ -122,7 +123,7 @@ export function createDesignedSourceConsumer({profileStore,fetchImpl}:{profileSt
     const q=result.checkpoint,r=q.result;need(cp.active!==null,'checkpoint_missing');
     if(result.status==='execution_uncertain'){cp.executionUnknown=true;await save();break;}
     need(q.phase==='terminal'&&r&&r.summary.requestCount!==null,'terminal_missing');
-    cp.rows.push({questionId:input.questionId,requestSHA256:digest(input),status:r!.status,reason:r!.status==='response'?null:r!.reason??'remote_failure',requestCount:r!.summary.requestCount,usage:r!.summary.usage??{},privateRef:cp.active.privateRef,candidateSourceFile:r!.status==='response'?storeCandidate(task,r!.response):null,sourceAccepted:false});cp.cursor++;cp.active=null;await save();
+    cp.rows.push({questionId:input.questionId,requestSHA256:digest(input),status:r!.status,reason:r!.status==='response'?null:r!.reason??'remote_failure',requestCount:r!.summary.requestCount,usage:r!.summary.usage??{},privateRef:cp.active.privateRef,candidateSourceFile:r!.status==='response'?storeCandidate(task,r!):null,sourceAccepted:false});cp.cursor++;cp.active=null;await save();
     // A known failure remains recorded, never retried in this inventory.
     if(local.signal.aborted)break;
    }

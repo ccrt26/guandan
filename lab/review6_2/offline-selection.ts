@@ -827,14 +827,28 @@ export async function createDesignedSelectionSession(repositoryRoot:string,specR
  const catalog=await originalUsedCatalog(repositoryRoot),spec=catalog.references.get(specRef) as OfflineSelectionSpec;
  if(!spec||referenceOf(`offline-selection-spec/${spec.outputId}`,spec)!==specRef)fail('designed_selection_fixed_spec');validateSpec(spec);
  const t=catalog.trusted(spec.sourceIndexRef),{contract}=designedContract(spec,t);
- const {createDesignedSourceReader}=await import('./designed-source'),{resolveNodePolicy}=await import('./policy-loader'),{resolveFirstRoundParent}=await import('./first-round-parent');
+ const {createDesignedSourceReader}=await import('./designed-source'),{readModelIndex,resolveNodePolicy}=await import('./policy-loader'),{resolveFirstRoundParent}=await import('./first-round-parent');
+ // Bind the loaders' registry and actual B′/S0 assets before any model read.
+ // Resolve again on each signal so a symlink retarget or target-file edit also
+ // invalidates the session. Hot checks only stat; they never reload/hash weights.
+ const modelRoot=realpathSync(repositoryRoot),modelFiles=new Map<string,string>();
+ const modelSignal=(path:string)=>{const real=realpathSync(path),rel=relative(modelRoot,real);if(rel.startsWith('..')||isAbsolute(rel))fail('designed_selection_model_path');return fixedFileSignal(real);};
+ const pinModelFile=(path:string)=>{const signal=modelSignal(path),prior=modelFiles.get(path);if(prior!==undefined&&prior!==signal)fail('designed_selection_model_input_changed');modelFiles.set(path,signal);};
+ const assertModelsUnchanged=()=>{try{for(const [path,signal]of modelFiles)if(modelSignal(path)!==signal)fail('designed_selection_model_input_changed');}catch{fail('designed_selection_model_input_changed');}};
+ pinModelFile(resolve(repositoryRoot,'lab/model-index.json'));
+ const modelIndex=await readModelIndex(repositoryRoot);assertModelsUnchanged();
  const runtimeCache=new Map<string,import('./designed-source').DesignedSourceRuntime>();
  const runtimeFor=async(comparisonRef:string)=>{
   if(runtimeCache.has(comparisonRef))return runtimeCache.get(comparisonRef)!;
   const c=refValue(comparisonRef,t);if(c.schema!=='ohuo-first-round-comparison-v1')fail('designed_selection_comparison_binding');
-  const proposalRef=resolveCandidateReleaseRef(refValue(c.proposalRef,t),(ref:string)=>refValue(ref,t),RELEASES),loaded=await resolveNodePolicy(proposalRef.release.proposalPolicyRef,repositoryRoot);
+  const proposalRef=resolveCandidateReleaseRef(refValue(c.proposalRef,t),(ref:string)=>refValue(ref,t),RELEASES),proposal=modelIndex.policies.find(p=>p.policyId===proposalRef.release.proposalPolicyRef),envelope=refValue(c.studentParentRef,t);
+  const proposalLocation=proposal?.weightsPathOrUrl.nodePath,parentLocation=envelope?.scorer?.weightsPathOrUrl?.nodePath;
+  if(typeof proposalLocation!=='string'||!proposalLocation||typeof parentLocation!=='string'||!parentLocation)fail('designed_selection_model_location');
+  pinModelFile(resolve(repositoryRoot,proposalLocation));pinModelFile(resolve(modelRoot,parentLocation));assertModelsUnchanged();
+  const loaded=await resolveNodePolicy(proposalRef.release.proposalPolicyRef,repositoryRoot);assertModelsUnchanged();
   if(!equal(JSON.parse(JSON.stringify(loaded.identity)),proposalRef.policyIdentity))fail('designed_selection_actual_B_identity');
-  const parent=await resolveFirstRoundParent({parentRef:c.studentParentRef,envelope:refValue(c.studentParentRef,t),readEvidence:f=>fileBytes(f,t),repositoryRoot}),runtime={proposal:{...loaded,candidatePolicy:proposalRef.candidatePolicy},parent};runtimeCache.set(comparisonRef,runtime);return runtime;
+  const parent=await resolveFirstRoundParent({parentRef:c.studentParentRef,envelope,readEvidence:f=>fileBytes(f,t),repositoryRoot});assertModelsUnchanged();
+  const runtime={proposal:{...loaded,candidatePolicy:proposalRef.candidatePolicy},parent};runtimeCache.set(comparisonRef,runtime);return runtime;
  };
  const readerCache=new Map<string,ReturnType<typeof createDesignedSourceReader>>(),readerFor=(indexRef:string)=>{
   if(!readerCache.has(indexRef))readerCache.set(indexRef,createDesignedSourceReader({...t,sourceIndexRef:indexRef,sourceIndexPath:catalog.sourceIndexPath(indexRef)}));return readerCache.get(indexRef)!;
@@ -855,7 +869,7 @@ export async function createDesignedSelectionSession(repositoryRoot:string,specR
   }
  }
  const inputs={repositoryRoot,sourceIndexPath:t.sourceIndexPath,sourceIndexRef:spec.sourceIndexRef,references:t.references,evidenceFiles:t.evidenceFiles},reader=readerFor(spec.sourceIndexRef),runtime=await runtimeFor(contract.comparisonRef),token=Object.freeze({});
- const assertUnchanged=()=>{catalog.assertUnchanged();history.catalog.assertUnchanged();for(const reader of readerCache.values())reader.assertUnchanged();};assertUnchanged();
+ const assertUnchanged=()=>{catalog.assertUnchanged();history.catalog.assertUnchanged();for(const reader of readerCache.values())reader.assertUnchanged();assertModelsUnchanged();};assertUnchanged();
  designedSessions.set(token,{assertUnchanged,repositoryRoot,specRef,spec:structuredClone(spec),catalog:freezeCopy(catalogView(t)),inputs,reader,runtime,used,usedSelectionRefs:usedSelectionRefs.sort(),usedCatalog,indexSuccessor});return token;
 }
 /** Opaque original-history readout for H's live run/unknown/ledger gates. */

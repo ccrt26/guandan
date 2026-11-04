@@ -85,7 +85,9 @@ describe('explicit v2 unique derived declaration fields',()=>{
   expect(()=>parseDesignedSourceResponse(JSON.stringify(source),next())).toThrow('invalid_designer_response');
  });
  it('never replaces a declared low wildcard pair with a stronger interpretation to beat the target',()=>{
-  const s=engineFixture([['S',10],['H',10]],2,{3:[['S',5],['H',2]]}),target=classify(s.hands[2].filter(c=>c.rank===10).slice(0,2),s.ctx,s.match.opts).find(c=>c.kind==='pair')!;applyMove(s,resolveLegalMove(s,{pass:false,combo:target}) as any);expect(s.turn).toBe(3);
-  const cards=[s.hands[3].find(c=>c.suit==='S'&&c.rank===5)!,s.hands[3].find(c=>c.suit==='H'&&c.rank===2)!],low=classify(cards,s.ctx,s.match.opts).find(c=>c.kind==='pair'&&c.mainRank===5)!;expect(low).toBeTruthy();expect(()=>resolveV2(s,partialMove(low))).toThrow();
+  const s=engineFixture([['S',10],['H',10]],2,{3:[['H',2],['H',2]]}),target=classify(s.hands[2].filter(c=>c.rank===10).slice(0,2),s.ctx,s.match.opts).find(c=>c.kind==='pair')!;applyMove(s,resolveLegalMove(s,{pass:false,combo:target}) as any);expect(s.turn).toBe(3);
+  const cards=s.hands[3].filter(c=>c.suit==='H'&&c.rank===2),interpretations=classify(cards,s.ctx,s.match.opts),low=interpretations.find(c=>c.kind==='pair'&&c.mainRank===5)!,high=interpretations.find(c=>c.kind==='pair'&&c.mainRank===14)!;
+  expect(cards).toHaveLength(2);expect(low).toBeTruthy();expect(high).toBeTruthy();expect(()=>resolveLegalMove(s,{pass:false,combo:jsonCopy(high)})).not.toThrow();
+  const declared=partialMove(low),before=JSON.stringify(declared);expect(()=>resolveV2(s,declared)).toThrow();expect(JSON.stringify(declared)).toBe(before);
  });
 });
