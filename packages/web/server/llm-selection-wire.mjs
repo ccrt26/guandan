@@ -90,12 +90,17 @@ const commonCard=v=>object(v,{card:x=>{if(typeof x!=='string'||!(/^(?:[SHDC](?:[
 const commonCards=array(commonCard,54);
 const commonKind=nullable(one(kinds));
 const relative=one(['partner','lower','upper']);
-const commonAction=v=>object(v,{pass:bool,cards:commonCards,kind:commonKind,comparisonRank:integer(0,41),size:integer(0,10),wildCount:integer(0,2)});
+// Keep the original rank range; the engine's joker-bomb sentinel is the sole exception.
+function commonRankedObject(v,required){
+ object(v,{...required,comparisonRank:integer(0,99)});
+ if(v.comparisonRank>41&&(v.kind!=='joker_bomb'||v.comparisonRank!==99))fail('invalid_request');
+}
+const commonAction=v=>commonRankedObject(v,{pass:bool,cards:commonCards,kind:commonKind,size:integer(0,10),wildCount:integer(0,2)});
 function commonState(v){
  const other=x=>object(x,{remainingCards:integer(0,27),reportedLow:bool,finishOrder:nullable(integer(1,4))});
- const recent=array(x=>object(x,{unknown:bool,pass:bool,kind:commonKind,comparisonRank:integer(0,41),size:integer(0,10)}),3,3);
+ const recent=array(x=>commonRankedObject(x,{unknown:bool,pass:bool,kind:commonKind,size:integer(0,10)}),3,3);
  const memory=x=>object(x,{J:integer(0,8),Q:integer(0,8),K:integer(0,8),LEVEL_OTHER:integer(0,8),SJ:integer(0,2),BJ:integer(0,2)});
- object(v,{myHand:commonCards,unplayedOutsideOwnHand:commonCards,currentTarget:x=>object(x,{cards:commonCards,leadingSeat:nullable(relative),kind:commonKind,comparisonRank:integer(0,41),size:integer(0,10)}),otherSeats:x=>object(x,{partner:other,lower:other,upper:other}),recentMoves:x=>object(x,{partner:recent,lower:recent,upper:recent}),levels:x=>object(x,{own:integer(2,14),opponent:integer(2,14),effectiveRank:nullable(integer(2,14)),ownTeamOnStage:bool}),ownWildCount:integer(0,2),encodedTributeBits:x=>object(x,{resistance:bool,selfIsTributeGiver:bool}),publicHighCardMemory:x=>object(x,{self:memory,partner:memory,upper:memory,lower:memory})});
+ object(v,{myHand:commonCards,unplayedOutsideOwnHand:commonCards,currentTarget:x=>commonRankedObject(x,{cards:commonCards,leadingSeat:nullable(relative),kind:commonKind,size:integer(0,10)}),otherSeats:x=>object(x,{partner:other,lower:other,upper:other}),recentMoves:x=>object(x,{partner:recent,lower:recent,upper:recent}),levels:x=>object(x,{own:integer(2,14),opponent:integer(2,14),effectiveRank:nullable(integer(2,14)),ownTeamOnStage:bool}),ownWildCount:integer(0,2),encodedTributeBits:x=>object(x,{resistance:bool,selfIsTributeGiver:bool}),publicHighCardMemory:x=>object(x,{self:memory,partner:memory,upper:memory,lower:memory})});
 }
 export function freezeCommonViewRequest(input){
  object(input,{schema:one([COMMON_VIEW_WIRE_SCHEMA]),decisionId:text(),modelPayloadBytes:text(MAX_INPUT_BYTES),addressMap:array(x=>object(x,{address:text(80),actionId:text(80),equivalentActionIds:array(text(80),12,1)}),12,1)});

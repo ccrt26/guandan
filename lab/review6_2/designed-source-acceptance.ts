@@ -37,6 +37,16 @@ export function isolateDesignedCandidateIndex(base:any,source:any,sourceFamilyId
 function coverage(snapshot:any){const v=snapshot.commonView.modelPayload,base=commonViewCoverageCell(v),own=v.state.myHand.reduce((n:number,c:any)=>n+c.count,0),target=v.state.currentTarget;return{...base,hasNaturalNonJokerOption:v.candidates.some((c:any)=>!c.action.pass&&c.action.kind===target.kind&&c.action.wildCount===0&&!c.action.cards.some((p:any)=>p.card==='SJ'||p.card==='BJ')),ownHasFewerCardsThanPartner:own<v.state.otherSeats.partner.remainingCards};}
 export function designedCandidateRejectionReason(snapshot:any,requestedCoverage:any,used:ReadonlySet<string>,accepted:ReadonlySet<string>){const identity=snapshot.normalizedDecisionIdentity.sha256;return used.has(identity)?'previously_selected_common_decision':accepted.has(identity)?'duplicate_common_decision':!equal(coverage(snapshot),requestedCoverage)?'requested_public_coverage_not_met':null;}
 function regular(root:string,f:File,privateFile=false){strictObject(f,'acceptanceFile',['path','sha256']);need(typeof f.path==='string'&&!isAbsolute(f.path)&&f.path.split(/[\\/]/).every(x=>x&&x!=='.'&&x!=='..')&&/^[a-f0-9]{64}$/.test(f.sha256),'file_shape');const path=join(root,f.path),st=lstatSync(path);need(st.isFile()&&!st.isSymbolicLink()&&realpathSync(path)===path&&st.size<=32*1024*1024&&(!privateFile||(st.mode&0o777)===0o600),'file_type_or_permissions');const bytes=readFileSync(path);need(sha(bytes)===f.sha256,'file_hash');return bytes;}
+/** Pins only this acceptance transaction; intermediate checks do not reread bytes. */
+export function createNaturalRecordPins(){
+ const pins=new Map<string,{names?:string[];sha256?:string;stamp:string}>();
+ const identity=(path:string,reason='natural_record_changed')=>{const st=lstatSync(path,{bigint:true});need(!st.isSymbolicLink()&&realpathSync(path)===path,reason);return{st,stamp:[st.dev,st.ino,st.size,st.mtimeNs,st.ctimeNs,st.mode,st.nlink].join(':')};};
+ const assertNaturalSignals=()=>{for(const [path,pin]of pins){const current=identity(path);need(current.stamp===pin.stamp,'natural_record_changed');need(pin.names?current.st.isDirectory()&&equal(readdirSync(path).sort(),pin.names):current.st.isFile(),'natural_record_changed');}};
+ const checkedHash=(path:string,stamp:string)=>{need(identity(path).stamp===stamp,'natural_record_changed');const hash=sha(readFileSync(path));need(identity(path).stamp===stamp,'natural_record_changed');return hash;};
+ const pinNatural=(directory:string)=>{if(pins.has(directory)){assertNaturalSignals();return;}const current=identity(directory,'natural_record_path');need(current.st.isDirectory(),'natural_record_path');const names=readdirSync(directory).sort();pins.set(directory,{names,stamp:current.stamp});for(const name of names){const path=join(directory,name),file=identity(path,'natural_record_file');need(file.st.isFile(),'natural_record_file');pins.set(path,{sha256:checkedHash(path,file.stamp),stamp:file.stamp});}assertNaturalSignals();};
+ const assertNaturalUnchanged=()=>{assertNaturalSignals();for(const [path,pin]of pins)if(pin.sha256)need(checkedHash(path,pin.stamp)===pin.sha256,'natural_record_changed');assertNaturalSignals();};
+ return{pinNatural,assertNaturalSignals,assertNaturalUnchanged};
+}
 function catalog(host:FixedHostFiles){const manifest=structuredClone(host.manifest),references=new Map<string,any>(),evidenceFiles=new Map<string,File>(manifest.evidenceFiles.map((r:any)=>[r.id,r.file]));for(const row of manifest.references)references.set(row.ref,host.resolveRef(row.ref));const get=(ref:string)=>{fixedReference(ref,'ref');const value=references.get(ref);need(value!==undefined&&digest(value)===ref.split(':').at(-1),'reference_identity');return value;};const indexPath=(ref:string)=>{const index=get(ref);need(index.schema==='ohuo-source-index-ref-v1','index_reference');const matches=[...manifest.inputBindings.map((b:any)=>b.sourceIndexFile),...evidenceFiles.values()].filter(f=>f.sha256===index.fileSHA256);need(matches.length>0,'index_file_missing');for(const f of matches)regular(host.repositoryRoot,f);return join(host.repositoryRoot,matches.map(f=>f.path).sort()[0]);};return{manifest,references,evidenceFiles,get,indexPath};}
 // Exact original replay failures caused by the candidate, never catalog,
 // source bytes, credentials, permissions, program or runtime identity failures.
@@ -44,6 +54,7 @@ const candidateSourceFailures=new Set([
  'designed_source_physical_conservation','designed_source_prefix_origin',
  'designed_source_target_not_active','designed_source_target_mismatch',
  'designed_source_both_teams_active','designed_source_target_candidates',
+ 'designed_source_v2_declaration_zero','designed_source_v2_declaration_ambiguous',
  'illegal move outside active play','illegal pass','illegal empty declared move',
  'duplicate physical resource identity','physical resource not owned',
  'selected physical-card identity differs from the actual owned card',
@@ -55,6 +66,21 @@ const candidateSourceFailures=new Set([
  'designed_acceptance_legacy_deal_cannot_be_reassigned',
 ]);
 export const isDesignedCandidateSourceFailure=(error:any)=>candidateSourceFailures.has(error?.message);
+
+/** One acceptance transaction: only legal candidates need historical identities.
+ * The lightweight original history snapshot still guards every final commit. */
+export function createDesignedCandidateAdmission(usedSnapshot:any,loadUsedIdentities:()=>Promise<ReadonlySet<string>>){
+ const initialHistory=structuredClone(usedSnapshot);let usedIdentities:Promise<ReadonlySet<string>>|undefined;
+ return{
+  async inspect({reader,locator,runtime,requestedCoverage,acceptedIdentities}:{reader:ReturnType<typeof createDesignedSourceReader>;locator:{sourceKind:'designed-synthetic';sourceRef:string};runtime:DesignedSourceRuntime;requestedCoverage:any;acceptedIdentities:ReadonlySet<string>}){
+   try{reader.readSource(locator);}catch(error){if(!isDesignedCandidateSourceFailure(error))throw error;return{snapshot:null,reason:String((error as Error).message)};}
+   let snapshot;try{snapshot=reader.readSnapshot(locator,runtime);}catch(error){if((error as Error)?.message!=='designed_source_target_candidates')throw error;return{snapshot:null,reason:String((error as Error).message)};}
+   // History/scoring/authority errors stay outside candidate-error handling.
+   const used=await(usedIdentities??=loadUsedIdentities());return{snapshot,reason:designedCandidateRejectionReason(snapshot,requestedCoverage,used,acceptedIdentities)};
+  },
+  assertHistory(current:any){need(equal(current,initialHistory),'used_history_changed');},
+ };
+}
 
 /** Same exact existing host, immutable files and append-only catalog. */
 export async function acceptDesignedSources({host,specRef}:{host:FixedHostFiles;specRef:string}){
@@ -79,9 +105,12 @@ export async function acceptDesignedSources({host,specRef}:{host:FixedHostFiles;
   need(c.get(spec.comparisonRef).proposalRef===task.parentPolicyRef,'fixed_proposal_binding');
   const runtime=await runtimeFor(spec.comparisonRef);
   const priorIndices=[...c.references].filter(([,v])=>v?.schema==='ohuo-source-index-ref-v1').map(([ref])=>({ref,index:JSON.parse(readFileSync(c.indexPath(ref),'utf8'))})),successor=mergeDesignedSourceIndices(JSON.parse(readFileSync(indexPath,'utf8')),priorIndices.map(x=>x.index));
-  const naturalPins=new Map<string,{names?:string[];sha256?:string}>(),pinNatural=(directory:string)=>{if(naturalPins.has(directory)){assertNaturalUnchanged();return;}need(realpathSync(directory)===directory&&!lstatSync(directory).isSymbolicLink(),'natural_record_path');const names=readdirSync(directory).sort();naturalPins.set(directory,{names});for(const name of names){const path=join(directory,name),st=lstatSync(path);need(st.isFile()&&!st.isSymbolicLink(),'natural_record_file');naturalPins.set(path,{sha256:sha(readFileSync(path))});}},assertNaturalUnchanged=()=>{for(const [path,pin]of naturalPins){need(realpathSync(path)===path&&!lstatSync(path).isSymbolicLink(),'natural_record_changed');need(pin.names?equal(readdirSync(path).sort(),pin.names):sha(readFileSync(path))===pin.sha256,'natural_record_changed');}};
-  const used=await readUsedCommonSelectionRows(root),usedIdentities=new Set<string>(),usedReaders=new Map<string,ReturnType<typeof createDesignedSourceReader>>(),naturalCache=new Map();
-  for(const entry of used.rows){const row:any=entry.row;let snapshot:any;if(entry.sourceKind==='designed-synthetic'){const registration=c.get(row.sourceRef);if(!usedReaders.has(registration.sourceIndexRef))usedReaders.set(registration.sourceIndexRef,createDesignedSourceReader({repositoryRoot:root,sourceIndexPath:c.indexPath(registration.sourceIndexRef),sourceIndexRef:registration.sourceIndexRef,references:c.references,evidenceFiles:c.evidenceFiles}));snapshot=usedReaders.get(registration.sourceIndexRef)!.readSnapshot(row,await runtimeFor(registration.comparisonRef));}else{pinNatural(row.recordRef.directory);snapshot=readOfflineSnapshot(row,naturalCache,row.split==='confirm'?{purpose:'first-round-new-test'}:undefined);assertNaturalUnchanged();}usedIdentities.add(commonDecisionIdentityForSnapshot(snapshot).sha256);}
+  const {pinNatural,assertNaturalSignals,assertNaturalUnchanged}=createNaturalRecordPins();
+  const used=await readUsedCommonSelectionRows(root),usedReaders=new Map<string,ReturnType<typeof createDesignedSourceReader>>(),naturalCache=new Map();
+  const candidateAdmission=createDesignedCandidateAdmission(used,async()=>{const usedIdentities=new Set<string>();
+  for(const entry of used.rows){const row:any=entry.row;let snapshot:any;if(entry.sourceKind==='designed-synthetic'){const registration=c.get(row.sourceRef);if(!usedReaders.has(registration.sourceIndexRef))usedReaders.set(registration.sourceIndexRef,createDesignedSourceReader({repositoryRoot:root,sourceIndexPath:c.indexPath(registration.sourceIndexRef),sourceIndexRef:registration.sourceIndexRef,references:c.references,evidenceFiles:c.evidenceFiles}));snapshot=usedReaders.get(registration.sourceIndexRef)!.readSnapshot(row,await runtimeFor(registration.comparisonRef));}else{pinNatural(row.recordRef.directory);snapshot=readOfflineSnapshot(row,naturalCache,row.split==='confirm'?{purpose:'first-round-new-test'}:undefined);assertNaturalSignals();}usedIdentities.add(commonDecisionIdentityForSnapshot(snapshot).sha256);}
+   return usedIdentities;
+  });
   const candidates:any[]=[],outcomes:any[]=[];
   for(const [i,row]of cp.rows.entries()){
    const request=prepareDesignedSourceRequest(inventory.requests[i]);need(request.engineSourceRef===task.sourceRevision&&request.rulesRef===task.rulesRef,'fixed_request_source');need(row.questionId===request.questionId&&row.requestSHA256===digest(request),'request_checkpoint_identity');
@@ -108,11 +137,9 @@ export async function acceptDesignedSources({host,specRef}:{host:FixedHostFiles;
    const locator={sourceKind:'designed-synthetic' as const,sourceRef};
    // Candidate-caused replay failures are handled before invoking B/S0. A same-
    // named error from trusted candidate/scoring execution must not be swallowed.
-   try{reader.readSource(locator);}catch(error){if(!isDesignedCandidateSourceFailure(error))throw error;outcomes.push({questionId:x.source.questionId,status:'rejected',reason:String((error as Error).message),sourceRef:null});continue;}
-   let snapshot;
-   try{snapshot=reader.readSnapshot(locator,runtime);}catch(error){if((error as Error)?.message!=='designed_source_target_candidates')throw error;outcomes.push({questionId:x.source.questionId,status:'rejected',reason:String((error as Error).message),sourceRef:null});continue;}
-   const identity=snapshot.normalizedDecisionIdentity.sha256,reason=designedCandidateRejectionReason(snapshot,x.request.coverage,usedIdentities,acceptedIdentities);
-   if(reason){outcomes.push({questionId:x.source.questionId,status:'rejected',reason,sourceRef:null});continue;}
+   const inspected=await candidateAdmission.inspect({reader,locator,runtime,requestedCoverage:x.request.coverage,acceptedIdentities});
+   if(inspected.reason){outcomes.push({questionId:x.source.questionId,status:'rejected',reason:inspected.reason,sourceRef:null});continue;}
+   const snapshot=inspected.snapshot!,identity=snapshot.normalizedDecisionIdentity.sha256;
    need(appendFamily(successor,x.source,x.sourceFamilyId)===x.rootFamilyId,'accepted_root_changed');
    acceptedIdentities.add(identity);admitted.push({x,sourceEvidence,registration,normalizedDecisionIdentity:snapshot.normalizedDecisionIdentity});
   }
@@ -129,7 +156,7 @@ export async function acceptDesignedSources({host,specRef}:{host:FixedHostFiles;
   // before publishing. New data never creates/changes a grant or run.
   const end=await h.readDesignedSourceAcceptance(spec);need(end.allowCreate&&equal(end.task,task)&&equal(end.run,run)&&equal(end.state,state)&&sha(readFileSync(hostPath))===beforeHostSHA256,'owner_inputs_changed');
   for(const p of priorIndices)need(equal(JSON.parse(readFileSync(c.indexPath(p.ref),'utf8')),p.index),'historical_index_changed');
-  const usedNow=await readUsedCommonSelectionRows(root);need(equal(usedNow,used),'used_history_changed');assertNaturalUnchanged();for(const r of candidateReaders)r.assertUnchanged();for(const r of usedReaders.values())r.assertUnchanged();
+  const usedNow=await readUsedCommonSelectionRows(root);candidateAdmission.assertHistory(usedNow);assertNaturalUnchanged();for(const r of candidateReaders)r.assertUnchanged();for(const r of usedReaders.values())r.assertUnchanged();
   const manifest={schema:'ohuo-designed-source-acceptance-v1',specRef,designerTaskRef:spec.designerTaskRef,designerRunId:run.runId,designerCheckpointSHA256:run.checkpointSHA256,previousSourceIndexRef:spec.sourceIndexRef,priorIndexRefs:priorIndices.map(p=>p.ref).sort(),sourceIndexRef,comparisonRef:spec.comparisonRef,queueRef,acceptedCount:queueRows.length,rejectedCount:outcomes.filter(x=>x.status==='rejected').length,usedSelectionRefs:used.selectionRefs,usedManifestRefs:used.manifestRefs,references:structuredClone(references),files:structuredClone(files),teacherCalls:0,targetMoves:0,qualification:'source-only-not-teacher-label-or-training'};
   const manifestFile=save('manifest.json',manifest),after=structuredClone(c.manifest);
   for(const entry of references){need(!after.references.some((r:any)=>r.ref===entry.ref),'reference_already_registered');after.references.push(entry);}

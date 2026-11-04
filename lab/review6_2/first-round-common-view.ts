@@ -24,6 +24,12 @@ function integer(v:number, divisor:number, min:number, max:number, field:string)
  if(!Number.isFinite(v)||Math.abs(v*divisor-n)>1e-5||n<min||n>max)throw Error(`common view invalid encoded grid: ${field}`);
  return n===0?0:n;
 }
+/** The unchanged engine/423 encoder uses 99 only for the joker-bomb sentinel. */
+function comparisonRank(v:number,kind:string|null,field:string):number {
+ const n=integer(v,41,0,kind==='joker_bomb'?99:41,field);
+ if(n>41&&n!==99)throw Error(`common view invalid encoded grid: ${field}`);
+ return n;
+}
 function bit(v:number, field:string):boolean { return integer(v,1,0,1,field)===1; }
 function oneHot(xs:readonly number[], field:string):number|null {
  const active=xs.flatMap((x,i)=>bit(x,field)?[i]:[]);
@@ -37,7 +43,7 @@ function action(x:readonly number[]){
  const pass=bit(x[64],'action.pass'), k=oneHot(x.slice(54,64),'action.kind');
  if(pass&&(k!==null||x.some((v,i)=>i!==64&&v!==0)))throw Error('common view invalid PASS encoding');
  if(!pass&&k===null)throw Error('common view missing action kind');
- return {pass,cards:cards(x.slice(0,54),'action.cards'),kind:k===null?null:KINDS[k],comparisonRank:integer(x[65],41,0,41,'action.rank'),size:integer(x[66],10,0,10,'action.size'),wildCount:integer(x[67],2,0,2,'action.wild')};
+ return {pass,cards:cards(x.slice(0,54),'action.cards'),kind:k===null?null:KINDS[k],comparisonRank:comparisonRank(x[65],k===null?null:KINDS[k],'action.rank'),size:integer(x[66],10,0,10,'action.size'),wildCount:integer(x[67],2,0,2,'action.wild')};
 }
 function state(x:readonly number[]){
  const targetSeat=oneHot(x.slice(162,165),'target.seat'), targetKind=oneHot(x.slice(165,175),'target.kind');
@@ -45,11 +51,11 @@ function state(x:readonly number[]){
  const recentMoves=Object.fromEntries(REL.map((r,i)=>[r,Array.from({length:3},(_,j)=>{
   const at=186+(i*3+j)*14, v=x.slice(at,at+14), k=oneHot(v.slice(0,10),'recent.kind'),pass=bit(v[10],'recent.pass'),none=bit(v[13],'recent.none');
   if((none&&(pass||k!==null))||(pass&&k!==null))throw Error('common view invalid recent move');
-  return {unknown:none,pass,kind:k===null?null:KINDS[k],comparisonRank:integer(v[11],41,0,41,'recent.rank'),size:integer(v[12],10,0,10,'recent.size')};
+  return {unknown:none,pass,kind:k===null?null:KINDS[k],comparisonRank:comparisonRank(v[11],k===null?null:KINDS[k],'recent.rank'),size:integer(v[12],10,0,10,'recent.size')};
  })]));
  const rank=oneHot(x.slice(317,330),'level.onehot');
  const publicHighCardMemory=Object.fromEntries(MEM_REL.map((r,i)=>[r,Object.fromEntries(MEM_SLOTS.map((s,j)=>[s,integer(x[399+i*6+j],MEM_DIV[j],0,MEM_DIV[j],'memory.count')]))])) as Record<typeof MEM_REL[number],Record<typeof MEM_SLOTS[number],number>>;
- return {myHand:cards(x.slice(0,54),'myHand'),unplayedOutsideOwnHand:cards(x.slice(54,108),'unplayedOutsideOwnHand'),currentTarget:{cards:cards(x.slice(108,162),'target.cards'),leadingSeat:targetSeat===null?null:REL[targetSeat],kind:targetKind===null?null:KINDS[targetKind],comparisonRank:integer(x[175],41,0,41,'target.rank'),size:integer(x[176],10,0,10,'target.size')},otherSeats,recentMoves,levels:{own:integer(x[312],12,0,12,'own.level')+2,opponent:integer(x[313],12,0,12,'opponent.level')+2,effectiveRank:rank===null?null:rank+2,ownTeamOnStage:bit(x[330],'ownTeamOnStage')},ownWildCount:integer(x[314],2,0,2,'ownWild'),encodedTributeBits:{resistance:bit(x[315],'resistance'),selfIsTributeGiver:bit(x[316],'selfIsTributeGiver')},publicHighCardMemory};
+ return {myHand:cards(x.slice(0,54),'myHand'),unplayedOutsideOwnHand:cards(x.slice(54,108),'unplayedOutsideOwnHand'),currentTarget:{cards:cards(x.slice(108,162),'target.cards'),leadingSeat:targetSeat===null?null:REL[targetSeat],kind:targetKind===null?null:KINDS[targetKind],comparisonRank:comparisonRank(x[175],targetKind===null?null:KINDS[targetKind],'target.rank'),size:integer(x[176],10,0,10,'target.size')},otherSeats,recentMoves,levels:{own:integer(x[312],12,0,12,'own.level')+2,opponent:integer(x[313],12,0,12,'opponent.level')+2,effectiveRank:rank===null?null:rank+2,ownTeamOnStage:bit(x[330],'ownTeamOnStage')},ownWildCount:integer(x[314],2,0,2,'ownWild'),encodedTributeBits:{resistance:bit(x[315],'resistance'),selfIsTributeGiver:bit(x[316],'selfIsTributeGiver')},publicHighCardMemory};
 }
 export function buildCommonTeacherView(rows:readonly CommonViewRow[],schema:CommonViewSchema){
  if(schema?.inputDim!==423||schema.passEncoding!=='action64')throw Error('common view requires frozen 423/action64 schema');

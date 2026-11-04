@@ -859,8 +859,10 @@ export async function createDesignedSelectionSession(repositoryRoot:string,specR
  designedSessions.set(token,{assertUnchanged,repositoryRoot,specRef,spec:structuredClone(spec),catalog:freezeCopy(catalogView(t)),inputs,reader,runtime,used,usedSelectionRefs:usedSelectionRefs.sort(),usedCatalog,indexSuccessor});return token;
 }
 /** Opaque original-history readout for H's live run/unknown/ledger gates. */
-export function readDesignedSelectionHistory(token:object){
- const value=designedSessions.get(token);if(!value)fail('designed_selection_owned_runtime_required');value.assertUnchanged();
+export function readDesignedSelectionHistory(token:object,expected?:Pick<OfflineSelectionTrustedInputs,'repositoryRoot'|'sourceIndexPath'|'references'|'evidenceFiles'>&{specRef:string}){
+ const value=designedSessions.get(token);if(!value)fail('designed_selection_owned_runtime_required');
+ if(expected&&(value.repositoryRoot!==expected.repositoryRoot||value.specRef!==expected.specRef||value.inputs.sourceIndexPath!==expected.sourceIndexPath||!equal(value.catalog,catalogView(expected))))fail('designed_selection_owned_runtime_required');
+ value.assertUnchanged();
  return {specRef:value.specRef,sourceIndexRef:value.spec.sourceIndexRef,usedSelectionRefs:structuredClone(value.usedSelectionRefs),indexSuccessor:structuredClone(value.indexSuccessor)};
 }
 function designedSession(spec:OfflineSelectionSpec,t:OfflineSelectionTrustedInputs){

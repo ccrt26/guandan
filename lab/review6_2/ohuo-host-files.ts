@@ -47,6 +47,7 @@ export class FixedHostFiles {
  private verifiedSourceOwner:string|null=null;
  private verifiedSourceFiles=new Map<string,{signal:string,sha256:string}>();
  #selectionReproductionSession:object|null=null;
+ #designedSelectionSession:{owner:string;session:object}|null=null;
  #roundProofSession:object|null=null;
  #roundProofOwner:string|null=null;
  private roundProofSessionFor(task:any):object|undefined{
@@ -583,7 +584,14 @@ export class FixedHostFiles {
   const actualBudget=this.resolveRef(contract.budgetRef);this.assertDesignedLedger(state,{planRef:spec.planRef,budgetRef:contract.budgetRef,authorizationRef:facts.grant.authorizationRef,researchBatchId:actualBudget.researchBatchId});
   this.verifySettledDesignedHistory(preRuntime,state,priorSelectionRefs,[]);
   if(options.task){const current=state.runs?.[options.task.runId],cp=current?.checkpoint;if(current?.executionUnknown===true||current?.observationStatus==='unknown'||cp?.executionUnknown===true||current?.stopReason==='execution_uncertain'||current?.failureReason==='execution_uncertain'||(cp?.rows??[]).some((r:any)=>r.requestCount===null)||Object.values(state.budgets?.[contract.budgetRef]?.reservations??{}).some((r:any)=>r.runId===options.task.runId&&r.status==='reserved_unknown'))fail('selection_execution_uncertain','designedHistory','current unknown run cannot load a fresh source runtime');}
-  const sourceIndexPath=this.relativePath(unique[0].path),specRef=`offline-selection-spec/${spec.outputId}@sha256:${digest(spec)}`,designedSession=await createDesignedSelectionSession(this.repositoryRoot,specRef);
+  const sourceIndexPath=this.relativePath(unique[0].path),specRef=`offline-selection-spec/${spec.outputId}@sha256:${digest(spec)}`;
+  // Only this H instance's identical label Task may retain its original reader.
+  // Every action/grant/prerequisite/history/ledger gate above still runs fresh.
+  const owner=options.task&&['label-start','label-resume'].includes(options.phase)?digest({task:options.task,specRef,sourceIndexRef:spec.sourceIndexRef,sourceIndexPath}):null,saved=this.#designedSelectionSession;
+  this.#designedSelectionSession=null;
+  const designedSession=owner&&saved?.owner===owner?saved.session:await createDesignedSelectionSession(this.repositoryRoot,specRef);
+  readDesignedSelectionHistory(designedSession,{repositoryRoot:this.repositoryRoot,specRef,sourceIndexPath,references,evidenceFiles});
+  if(owner)this.#designedSelectionSession={owner,session:designedSession};
   const trusted:any={repositoryRoot:this.repositoryRoot,references,evidenceFiles,sourceIndexPath,confirmedRecordRoots:[],controlRoot:this.root,mode:'research',phase:options.phase,designedSession,...(options.task?{task:options.task}:{}),...(options.phase==='freeze'?{outputDir}:{})};
   // Dataset history uses the very same committed source-kind proof, not a
   // fabricated natural complete-match run or a caller-supplied history list.

@@ -6,7 +6,7 @@ import {isDeepStrictEqual as equal} from 'node:util';
 import {createHash} from 'node:crypto';
 import {readFileSync,lstatSync,realpathSync} from 'node:fs';
 import {dirname,isAbsolute,relative,resolve} from 'node:path';
-import {applyMove,buildDeck,createMatch,DEFAULT_RULES,startGame,type Card,type GameState,type Move,type RuleOptions} from '@gd/engine';
+import {applyMove,buildDeck,classify,createMatch,DEFAULT_RULES,startGame,type Card,type Combo,type GameState,type Move,type RuleOptions} from '@gd/engine';
 import {canonicalActionId,resolveLegalMove} from '../../packages/ai/src/hybrid/legality';
 import {necessaryDeclarationKey} from '../review6/action-effect';
 import {createDecisionBundle} from '../../packages/ai/src/hybrid/candidates';
@@ -25,8 +25,10 @@ import {dealtFamilyBeforeExchange} from '../review6/training-ancestry';
 import {digest,fixedReference,strictObject,validateIdentifier,validateSourceFamily} from './task-schema.mjs';
 
 export const DESIGNED_FIRST_GAME_SCHEMA='ohuo-designed-first-game-source-v1' as const;
+export const DESIGNED_FIRST_GAME_V2_SCHEMA='ohuo-designed-first-game-source-v2' as const;
+export type DesignedSourceMove=Move|{pass:false;combo:Pick<Combo,'kind'|'cards'|'wildAs'>&Partial<Omit<Combo,'kind'|'cards'|'wildAs'>>};
 export interface DesignedFirstGameSource {
-  schema:typeof DESIGNED_FIRST_GAME_SCHEMA;
+  schema:typeof DESIGNED_FIRST_GAME_SCHEMA|typeof DESIGNED_FIRST_GAME_V2_SCHEMA;
   sourceKind:'designed-synthetic';
   questionId:string;
   designFamilyId:string;
@@ -36,7 +38,7 @@ export interface DesignedFirstGameSource {
   rules:RuleOptions;
   origin:{kind:'first-game';leaderSeed:number};
   initialIds:number[][];
-  moves:Array<{gameNo:1;actorSeat:number;move:Move}>;
+  moves:Array<{gameNo:1;actorSeat:number;move:DesignedSourceMove}>;
   target:{gameNo:1;moveNo:number;actorSeat:number;remainingCards:number[]};
 }
 export interface DesignedSourceLocator {sourceKind:'designed-synthetic';sourceRef:string}
@@ -67,25 +69,34 @@ export const DESIGNED_SOURCE_PROGRAM_PATHS=Object.freeze([
   'lab/review6/action-effect.ts','lab/review6_2/match-record.ts',
   'lab/review6_2/first-round-common-view.ts','lab/review6_2/first-round-target.ts',
 ]);
+// One reviewed representation-preserving repair: only joker_bomb gains the
+// engine's existing rank=99 decoding. Original Task/source/response stay pinned.
+// No third mapper, reverse correction or other program path is compatible.
+const JOKER_RANK_PROJECTION_CORRECTION=Object.freeze({
+  path:'lab/review6_2/first-round-common-view.ts',
+  beforeSHA256:'d06b7dcd518e67f55b3909306ee37f8b9cd8505b00ad89b3ff31b189782d834a',
+  afterSHA256:'8c6135254277b94ad6339e619cf6f817772daf65d9851e4970ac762a17c0ed50',
+});
 const need=(value:unknown,reason:string):void=>{if(!value)throw Error('designed_source_'+reason);};
 const integer=(value:unknown,min:number,max:number)=>Number.isSafeInteger(value)&&Number(value)>=min&&Number(value)<=max;
 const sha=(value:unknown)=>typeof value==='string'&&/^[a-f0-9]{64}$/.test(value);
 const rulesKeys=['levelMode','passA','pairSeqMin','pairSeqMax','trioSeqMin','trioSeqMax','flushLen','straightLen'];
 
-function moveShape(value:any):void {
+function moveShape(value:any,v2=false):void {
   need(value&&typeof value.pass==='boolean','move_boolean');
   strictObject(value,'designed.move',value.pass?['pass']:['pass','combo']);
   if(value.pass)return;
   const c=value.combo;
-  strictObject(c,'designed.combo',['kind','cards','size','keyRank','length','pairRanks','mainRank','wildAs',...(Object.hasOwn(c??{},'suit')?['suit']:[])]);
+  const required=v2?['kind','cards','wildAs',...(!['single','joker_bomb'].includes(c?.kind)?['mainRank']:[]),...(c?.kind==='trio_pair'?['pairRanks']:[]),...(c?.kind==='flush'?['suit']:[])]:['kind','cards','size','keyRank','length','pairRanks','mainRank','wildAs'];
+  strictObject(c,'designed.combo',[...required,...(v2?['size','keyRank','length','pairRanks','mainRank','suit'].filter(k=>!required.includes(k)&&Object.hasOwn(c??{},k)):Object.hasOwn(c??{},'suit')?['suit']:[])]);
   need(['single','pair','trio','trio_pair','straight','pair_seq','trio_seq','bomb','flush','joker_bomb'].includes(c.kind),'combo_kind');
   need(Array.isArray(c.cards)&&c.cards.length>0&&c.cards.length<=27,'combo_cards');
   for(const card of c.cards){strictObject(card,'designed.card',['id','suit','rank']);need(integer(card.id,0,107)&&['S','H','D','C','J'].includes(card.suit)&&integer(card.rank,2,17),'card_shape');}
-  need(['size','keyRank','length','mainRank'].every(k=>integer(c[k],0,108)),'combo_numbers');
-  need(Array.isArray(c.pairRanks)&&c.pairRanks.length<=13&&c.pairRanks.every((r:unknown)=>integer(r,2,17)),'pair_ranks');
-  need(c.suit===undefined||['S','H','D','C','J'].includes(c.suit),'combo_suit');
+  need(['size','keyRank','length','mainRank'].every(k=>v2&&!Object.hasOwn(c,k)||integer(c[k],0,108)),'combo_numbers');
+  if(!v2||Object.hasOwn(c,'pairRanks'))need(Array.isArray(c.pairRanks)&&c.pairRanks.length<=(v2?1:13)&&(!v2||c.pairRanks.length===(c.kind==='trio_pair'?1:0))&&c.pairRanks.every((r:unknown)=>integer(r,2,17)),'pair_ranks');
+  need(v2?!Object.hasOwn(c,'suit')||['S','H','D','C','J'].includes(c.suit):c.suit===undefined||['S','H','D','C','J'].includes(c.suit),'combo_suit');
   need(Array.isArray(c.wildAs)&&c.wildAs.length<=2,'wild_assignments');
-  for(const w of c.wildAs){strictObject(w,'designed.wild',['cardId','asRank',...(Object.hasOwn(w??{},'asSuit')?['asSuit']:[])]);need(integer(w.cardId,0,107)&&integer(w.asRank,2,14)&&(w.asSuit===undefined||['S','H','D','C'].includes(w.asSuit)),'wild_shape');}
+  for(const w of c.wildAs){strictObject(w,'designed.wild',['cardId','asRank',...(Object.hasOwn(w??{},'asSuit')?['asSuit']:[])]);need(integer(w.cardId,0,107)&&integer(w.asRank,2,14)&&((v2?!Object.hasOwn(w,'asSuit'):w.asSuit===undefined)||['S','H','D','C'].includes(w.asSuit)),'wild_shape');}
   // Ownership, physical face identity, classification, declared wild effects and
   // beats/pass legality belong exclusively to resolveLegalMove below.
 }
@@ -97,7 +108,7 @@ export function parseDesignedFirstGameSource(input:unknown):DesignedFirstGameSou
     try{value=JSON.parse(input);}catch{throw Error('designed_source_json');}
   }else value=structuredClone(input);
   strictObject(value,'designed.source',['schema','sourceKind','questionId','designFamilyId','split','engineSourceRef','rulesRef','rules','origin','initialIds','moves','target']);
-  need(value.schema===DESIGNED_FIRST_GAME_SCHEMA&&value.sourceKind==='designed-synthetic','schema');
+  need([DESIGNED_FIRST_GAME_SCHEMA,DESIGNED_FIRST_GAME_V2_SCHEMA].includes(value.schema)&&value.sourceKind==='designed-synthetic','schema');
   validateIdentifier(value.questionId,'designed.questionId');validateIdentifier(value.designFamilyId,'designed.designFamilyId');
   need(value.split==='train','train_only');
   fixedReference(value.engineSourceRef,'designed.engineSourceRef');fixedReference(value.rulesRef,'designed.rulesRef');
@@ -109,11 +120,33 @@ export function parseDesignedFirstGameSource(input:unknown):DesignedFirstGameSou
   need(integer(value.origin.leaderSeed,0,0xffffffff),'leader_seed');
   need(Array.isArray(value.initialIds)&&value.initialIds.length===4&&value.initialIds.every((hand:any)=>Array.isArray(hand)&&hand.length===27&&hand.every((id:unknown)=>integer(id,0,107))),'initial_deal_shape');
   need(Array.isArray(value.moves)&&value.moves.length<=2500,'bounded_prefix');
-  for(const row of value.moves){strictObject(row,'designed.prefix',['gameNo','actorSeat','move']);need(row.gameNo===1&&integer(row.actorSeat,0,3),'prefix_position');moveShape(row.move);}
+  for(const row of value.moves){strictObject(row,'designed.prefix',['gameNo','actorSeat','move']);need(row.gameNo===1&&integer(row.actorSeat,0,3),'prefix_position');moveShape(row.move,value.schema===DESIGNED_FIRST_GAME_V2_SCHEMA);}
   strictObject(value.target,'designed.target',['gameNo','moveNo','actorSeat','remainingCards']);
   need(value.target.gameNo===1&&value.target.moveNo===value.moves.length&&integer(value.target.actorSeat,0,3),'target_position');
   need(Array.isArray(value.target.remainingCards)&&value.target.remainingCards.length===4&&value.target.remainingCards.every((n:unknown)=>integer(n,0,27)),'target_counts');
   return value;
+}
+
+/** v2 only: fill absent derived fields after unique necessary interpretation.
+ * Never choose by strength/beats, edit cards/wildAs, or rewrite the raw source. */
+export function resolveDesignedSourceMoveV2(state:GameState,move:DesignedSourceMove):Move {
+  moveShape(move,true);
+  if(state.over||state.pendingReturns.length)throw Error('illegal move outside active play');
+  if(move.pass)return resolveLegalMove(state,move) as Move;
+  const declared=move.combo,ids=declared.cards.map(c=>c.id);
+  if(new Set(ids).size!==ids.length)throw Error('duplicate physical resource identity');
+  const cards=ids.map(id=>state.hands[state.turn].find(c=>c.id===id));
+  if(cards.some(c=>!c))throw Error('physical resource not owned');
+  if(cards.some((c,i)=>!equal(c,declared.cards[i])))throw Error('selected physical-card identity differs from the actual owned card');
+  const interpretations=new Map<string,Combo>();
+  for(const candidate of classify(cards as Card[],state.ctx,state.match.opts)){
+    if(candidate.kind!==declared.kind||(['size','keyRank','length','mainRank','pairRanks'] as const).some(k=>Object.hasOwn(declared,k)&&!equal(declared[k],candidate[k]))||candidate.kind==='flush'&&declared.suit!==candidate.suit)continue;
+    const filled={...structuredClone(declared),...Object.fromEntries((['size','keyRank','length','mainRank','pairRanks'] as const).map(k=>[k,Object.hasOwn(declared,k)?declared[k]:candidate[k]]))} as Combo;
+    const key=necessaryDeclarationKey(filled,state.ctx);
+    if(key===necessaryDeclarationKey(candidate,state.ctx))interpretations.set(key,filled);
+  }
+  need(interpretations.size===1,interpretations.size?'v2_declaration_ambiguous':'v2_declaration_zero');
+  return resolveLegalMove(state,{pass:false,combo:interpretations.values().next().value!}) as Move;
 }
 
 function conservation(state:GameState,played:readonly Card[],deck:ReadonlyMap<number,Card>):void {
@@ -149,7 +182,10 @@ function context(t:DesignedSourceInputs){
     if(verifiedPrograms.has(ref))return;
     const program=get(ref);strictObject(program,'sourceRevision',['baseCommit','files']);need(typeof program.baseCommit==='string'&&/^[a-f0-9]{40}$/.test(program.baseCommit)&&Array.isArray(program.files),'program_inventory');
     const filesByPath=new Map<string,any>();for(const file of program.files){strictObject(file,'sourceFile',['path','sha256']);need(typeof file.path==='string'&&!isAbsolute(file.path)&&!file.path.split(/[\\/]/).some((p:string)=>!p||p==='.'||p==='..')&&sha(file.sha256)&&!filesByPath.has(file.path),'program_inventory');filesByPath.set(file.path,file);}
-    for(const path of DESIGNED_SOURCE_PROGRAM_PATHS){const file=filesByPath.get(path);need(file,'program_inventory');need(bytesSHA256(readFile(path))===file.sha256,'program_identity');}
+    for(const path of DESIGNED_SOURCE_PROGRAM_PATHS){
+      const file=filesByPath.get(path);need(file,'program_inventory');const actualSHA256=bytesSHA256(readFile(path)),correction=JOKER_RANK_PROJECTION_CORRECTION;
+      need(actualSHA256===file.sha256||(path===correction.path&&file.sha256===correction.beforeSHA256&&actualSHA256===correction.afterSHA256),'program_identity');
+    }
     verifiedPrograms.add(ref);
   };
   const assertUnchanged=()=>{need(t.repositoryRoot===fixedContext.repositoryRoot&&t.sourceIndexPath===fixedContext.sourceIndexPath&&t.sourceIndexRef===fixedContext.sourceIndexRef&&t.references===fixedContext.references&&t.evidenceFiles===fixedContext.evidenceFiles,'fixed_context_changed');for(const [ref,value] of values)need(equal(t.references.get(ref),value),'fixed_reference_changed');for(const [id,file] of evidenceBindings)need(equal(t.evidenceFiles.get(id),file),'fixed_reference_changed');for(const [path,file] of files)need(stamp(path)===file.stamp,'fixed_file_changed');};
@@ -190,7 +226,7 @@ function replay(input:DesignedFirstGameSource){
   conservation(state,played,deck);
   for(const [i,row]of input.moves.entries()){
     need(!state.over&&state.match.winner===null&&!state.pendingReturns.length&&state.match.gameNo===row.gameNo&&state.moveNo===i&&state.turn===row.actorSeat,'prefix_origin');
-    const move=resolveLegalMove(state,row.move) as Move;
+    const move=input.schema===DESIGNED_FIRST_GAME_V2_SCHEMA?resolveDesignedSourceMoveV2(state,row.move):resolveLegalMove(state,row.move as Move) as Move;
     const priorTarget=structuredClone(state.lastCombo);
     effects.push({actorSeat:row.actorSeat,action:necessaryDeclarationKey(move.pass?null:move.combo,state.ctx)});
     if(!move.pass)played.push(...structuredClone(move.combo.cards));
@@ -202,7 +238,7 @@ function replay(input:DesignedFirstGameSource){
   // Ignore question/design labels, irrelevant seed changes with the same first
   // leader, and interchangeable physical copies when checking exact reuse.
   // This is a local causal replay identity, not an all-equivalences dedup claim.
-  const replaySHA256=digest({rules:input.rules,initialFaces,firstLeader,effects,target:{gameNo:state.match.gameNo,moveNo:state.moveNo,actorSeat:state.turn}});
+  const replaySHA256=digest({rules:input.rules,initialFaces,firstLeader,effects,target:{gameNo:state.match.gameNo,moveNo:state.moveNo,actorSeat:state.turn},...(input.schema===DESIGNED_FIRST_GAME_V2_SCHEMA?{sourceRevision:input.engineSourceRef}:{})});
   const inputSHA256=digest(input),matchId='designed:'+replaySHA256;
   const key:DecisionKey={controllerOrRunnerGeneration:'designed-synthetic:'+inputSHA256,matchId,gameNo:1,moveNo:state.moveNo,actorSeat:state.turn,requestSeq:state.moveNo};
   const history:PublicHistoryPrefix={matchId,gameNo:1,throughMoveNo:state.moveNo,steps};
