@@ -1,4 +1,4 @@
-import {PROJECT_RULES_TEACHER_WIRE_SCHEMA,serializeProjectRulesChat} from './llm-project-rules-v541.mjs';
+import {PROJECT_RULES_TEACHER_WIRE_SCHEMA,serializeProjectRulesChat} from './llm-project-rules-v543.mjs';
 /** No import-time I/O, credentials, listeners or fetch. B03 store is explicitly
  * supplied and resolved once; browser code must never import this Node entry. */
 import { SelectionWireError, fail, plain, freezeRequestView, responseContract, parseSelection, MAX_INPUT_BYTES, COMMON_VIEW_WIRE_SCHEMA, COMMON_VIEW_RESPONSE_CONTRACT, freezeCommonViewRequest, parseCommonViewSelection, freezeProjectRulesRequest, parseProjectRulesSelection } from './llm-selection-wire.mjs';

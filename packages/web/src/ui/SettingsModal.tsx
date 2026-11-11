@@ -286,6 +286,9 @@ export function SettingsModal({ onClose, fixture }: { onClose: () => void; fixtu
     }
   }
   function keyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    // The dialog also opens above a live table. Keep its keys away from the
+    // table's window shortcuts while preserving native input/button behavior.
+    event.stopPropagation();
     if (event.key === 'Escape') { event.preventDefault(); close(); }
     if (event.key !== 'Tab' || !panel.current) return;
     const items = Array.from(panel.current.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),select:not(:disabled),summary,[tabindex]'))

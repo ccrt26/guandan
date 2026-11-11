@@ -63,6 +63,22 @@ beforeEach(()=>{
  });vi.stubGlobal('fetch',fetcher);
 });
 afterEach(()=>vi.unstubAllGlobals());
+it('settings keyboard boundary keeps table shortcuts out without blocking native controls',async()=>{
+ const r=await settings(),dialog=r.nodes().find(n=>n.props?.role==='dialog');
+ // Real dialog handler, not a DOM propagation or live-game claim. Missing
+ // stopPropagation must fail even when the initially focused target is a div.
+ for(const key of [' ','Enter','p','P','h','H']){
+  const event={key,stopPropagation:vi.fn(),preventDefault:vi.fn()};
+  dialog.props.onKeyDown(event);
+  expect(event.stopPropagation).toHaveBeenCalledOnce();
+  expect(event.preventDefault).not.toHaveBeenCalled();
+ }
+ expect(r.props.onClose).not.toHaveBeenCalled();expect(posts()).toHaveLength(0);
+ const escape={key:'Escape',stopPropagation:vi.fn(),preventDefault:vi.fn()};
+ dialog.props.onKeyDown(escape);
+ expect(escape.stopPropagation).toHaveBeenCalledOnce();expect(escape.preventDefault).toHaveBeenCalledOnce();
+ expect(r.props.onClose).toHaveBeenCalledOnce();r.unmount();
+});
 it('opening presents only two fixed presets and reads shared state without provider/chat/binding writes',async()=>{
  records=[profile(),profile('deepseek')];const r=await settings();expect(r.nodes().filter(n=>n.type==='input')).toHaveLength(2);expect(r.nodes().some(n=>['select','textarea'].includes(n.type))).toBe(false);
  expect(r.text()).toContain('GLM-5.3');expect(r.text()).toContain('DeepSeek-V4.1-Flash');expect(r.text()).toContain('连接诊断通过（2026-10-31 18:58:35 UTC）');expect(r.text()).toContain('非网页业务调用验收');expect(r.text()).not.toContain('待确认关联');
@@ -96,7 +112,7 @@ it('unknown legacy shape is safe and does not prevent independent explicit DeepS
  const raw=JSON.stringify({baseUrl:'https://private.invalid',model:'old',apiKey:'LEGACY_SYNTHETIC_ONLY',extra:true});data.set('gd_llm_config',raw);const r=await settings();expect(r.text()).toContain('旧配置格式未识别');expect(r.text()).not.toContain('private.invalid');expect(r.text()).not.toContain('LEGACY_SYNTHETIC_ONLY');enter(r,'DeepSeek','FAKE_NEW_KEY');await r.button('保存设置').props.onClick();expect(posts()).toHaveLength(1);expect(data.get('gd_llm_config')).toBe(raw);
 });
 it.each(['取消','escape','overlay','unmount'])('unsaved %s drops drafts with zero POST or association write',async action=>{
- const r=await settings();enter(r,'DeepSeek','FAKE_DRAFT');if(action==='unmount')r.unmount();else if(action==='escape')r.nodes().find(n=>n.props?.role==='dialog').props.onKeyDown({key:'Escape',preventDefault(){}});else if(action==='overlay'){const node=r.nodes()[0];node.props.onClick({target:node,currentTarget:node});}else r.button(action).props.onClick();expect(posts()).toHaveLength(0);expect(writes).not.toContain(bindingKey);
+ const r=await settings();enter(r,'DeepSeek','FAKE_DRAFT');if(action==='unmount')r.unmount();else if(action==='escape')r.nodes().find(n=>n.props?.role==='dialog').props.onKeyDown({key:'Escape',preventDefault(){},stopPropagation(){}});else if(action==='overlay'){const node=r.nodes()[0];node.props.onClick({target:node,currentTarget:node});}else r.button(action).props.onClick();expect(posts()).toHaveLength(0);expect(writes).not.toContain(bindingKey);
 });
 it.each(['取消','unmount'])('busy %s aborts and rejects late private POST/cache/state completion',async action=>{
  records=[profile()];const r=await settings();edit(r,'GLM');enter(r,'GLM','FAKE_DRAFT');const hold=deferred();saveAction=()=>hold.promise;const pending=r.button('保存设置').props.onClick();r.render();expect(posts()).toHaveLength(1);const signal=posts()[0][1].signal;
@@ -167,7 +183,7 @@ it('modal visible focus ring includes summaries but wraps only after the last vi
  const first=node('button'),summary=node('summary'),folded=node('input',false),cancel=node('button'),save=node('button'),hidden=node('button',false),nodes=[first,summary,folded,cancel,save,hidden];
  dialog.ref.current={querySelectorAll:(selector:string)=>{queried=selector;return nodes.filter(n=>n.tag!=='summary'||selector.includes('summary'));}};
  vi.stubGlobal('getComputedStyle',()=>({visibility:'visible'}));
- const event=(shiftKey=false)=>({key:'Tab',shiftKey,preventDefault:vi.fn()});
+ const event=(shiftKey=false)=>({key:'Tab',shiftKey,preventDefault:vi.fn(),stopPropagation:vi.fn()});
  vi.stubGlobal('document',{activeElement:save});let e=event();dialog.props.onKeyDown(e);expect(e.preventDefault).toHaveBeenCalledTimes(1);expect(first.focus).toHaveBeenCalledTimes(1);expect(queried).toContain('summary');
  vi.stubGlobal('document',{activeElement:first});e=event(true);dialog.props.onKeyDown(e);expect(save.focus).toHaveBeenCalledTimes(1);
  vi.stubGlobal('document',{activeElement:summary});e=event();dialog.props.onKeyDown(e);expect(e.preventDefault).not.toHaveBeenCalled();

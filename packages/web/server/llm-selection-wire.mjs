@@ -1,4 +1,4 @@
-import {PROJECT_RULES_TEACHER_WIRE_SCHEMA,PROJECT_RULES_TEACHER_PROMPT_ID,PROJECT_RULES_TEACHER_SYSTEM_SHA256,PROJECT_RULES_TEACHER_RESPONSE_ID,assertProjectRuleOptions} from './llm-project-rules-v541.mjs';
+import {PROJECT_RULES_TEACHER_WIRE_SCHEMA,PROJECT_RULES_TEACHER_PROMPT_ID,PROJECT_RULES_TEACHER_SYSTEM_SHA256,PROJECT_RULES_TEACHER_RESPONSE_ID,assertProjectRuleOptions} from './llm-project-rules-v543.mjs';
 import {createHash} from 'node:crypto';
 /** B04 wire boundary for the B02 public projection. No I/O or local GameState. */
 export const RESPONSE_CONTRACT_VERSION = 'ohuo-choose-expand-v1';
@@ -49,9 +49,9 @@ function observation(v) {
 /** Exact recursive schema validation prevents unknown nested state/secret fields.
  * The trusted producer remains B02; this is a wire boundary, not a second engine. */
 export function freezeRequestView(input) {
-  const newSpec=input?.candidateSpec==='first-target-offer12-v1';
-  object(input,{observation,candidateSpec:one([newSpec?'first-target-offer12-v1':'ohuo-frozen-c8-expand4-v1']),expansionCount:one(newSpec?[0]:[0,1]),
-    ...(newSpec?{enumSpec:v=>object(v,{id:one(['full-house-attachment-ranks-v1']),enumerationMode:one(['all_supported_attachment_ranks'])})}:{}),
+  const newSpec=input?.candidateSpec==='first-target-offer12-rules-v543-v1';
+  object(input,{observation,candidateSpec:one([newSpec?'first-target-offer12-rules-v543-v1':'ohuo-frozen-c8-expand4-rules-v543-v1']),expansionCount:one(newSpec?[0]:[0,1]),
+    ...(newSpec?{enumSpec:v=>object(v,{id:one(['full-house-attachment-ranks-v1-rules-v543']),enumerationMode:one(['all_supported_attachment_ranks'])})}:{}),
     candidates:array(x=>object(x,{actionId:text(80),action:nullable(combo),remainingHand:faces}),12,1),
     expandableGroups:array(x=>object(x,{groupId:text(80),kind:one([...kinds,'pass']),size:integer(0,27),wildConsumption:integer(0,4),remainingCount:integer(1)}),200),
   });
@@ -60,7 +60,7 @@ export function freezeRequestView(input) {
   return JSON.parse(bytes);
 }
 export function responseContract(view) {
-  if(view?.candidateSpec==='first-target-offer12-v1')return 'ohuo-choose-only-v2\nReturn only a single JSON object. Choose exactly an actionId displayed in this request: {"kind":"choose","decisionId":"...","actionId":"..."}. An optional note must be at most 240 characters. This complete initial candidate specification forbids expansion and out-of-set actions. Do not output markdown, hidden reasoning, or additional fields. Use only the supplied rules and public information; passing does not imply inability.';
+  if(view?.candidateSpec==='first-target-offer12-rules-v543-v1')return 'ohuo-choose-only-v2\nReturn only a single JSON object. Choose exactly an actionId displayed in this request: {"kind":"choose","decisionId":"...","actionId":"..."}. An optional note must be at most 240 characters. This complete initial candidate specification forbids expansion and out-of-set actions. Do not output markdown, hidden reasoning, or additional fields. Use only the supplied rules and public information; passing does not imply inability.';
   return `${RESPONSE_CONTRACT_VERSION}\nReturn only a single JSON object. Choose exactly an actionId displayed in this request: {"kind":"choose","decisionId":"...","actionId":"..."}. An optional note must be at most 240 characters. Only when expansionCount=0, you may instead request one listed group: {"kind":"expand","decisionId":"...","groupId":"..."}. After expansion you must choose. Do not output markdown, hidden reasoning, or additional fields. Use only the supplied rules and public information; passing does not imply inability.`;
 }
 export function parseSelection(textValue, view) {
@@ -73,7 +73,7 @@ export function parseSelection(textValue, view) {
     if(typeof v.actionId!=='string'||!view.candidates.some(c=>c.actionId===v.actionId))fail('action_id_not_offered');
     if('note' in v&&(typeof v.note!=='string'||v.note.length>240))fail('invalid_response_shape');
   } else {
-    if(view.candidateSpec==='first-target-offer12-v1')fail('expansion_disabled_for_candidate_spec');
+    if(view.candidateSpec==='first-target-offer12-rules-v543-v1')fail('expansion_disabled_for_candidate_spec');
     if(view.expansionCount!==0)fail('expansion_already_used');
     if(typeof v.groupId!=='string'||!view.expandableGroups.some(g=>g.groupId===v.groupId))fail('group_id_not_expandable');
   }
@@ -126,7 +126,7 @@ export function parseCommonViewSelection(textValue,view){
  return {...v,decisionId:view.decisionId,actionId:mapped.actionId};
 }
 
-/** Explicit v5.4.1 envelope; the existing 423 payload/addresses remain strict. */
+/** Explicit v5.4.3 envelope; the existing 423 payload/addresses remain strict. */
 export function freezeProjectRulesRequest(input){
  object(input,{schema:one([PROJECT_RULES_TEACHER_WIRE_SCHEMA]),promptId:one([PROJECT_RULES_TEACHER_PROMPT_ID]),systemPromptSHA256:one([PROJECT_RULES_TEACHER_SYSTEM_SHA256]),ruleOptions:value=>{try{assertProjectRuleOptions(value);}catch{fail('invalid_request');}},decisionId:text(),modelPayloadBytes:text(MAX_INPUT_BYTES),addressMap:array(x=>object(x,{address:text(80),actionId:text(80),equivalentActionIds:array(text(80),12,1)}),12,1)});
  freezeCommonViewRequest({schema:COMMON_VIEW_WIRE_SCHEMA,decisionId:input.decisionId,modelPayloadBytes:input.modelPayloadBytes,addressMap:input.addressMap});

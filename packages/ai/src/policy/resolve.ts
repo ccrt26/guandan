@@ -54,7 +54,7 @@ export async function resolvePolicy(ref: string, runtime: PolicyRuntime): Promis
     passEncoding: descriptor.encoder.passEncoding, candidateCompat: encoder.candidateCompat,
     architectureId: descriptor.architectureId, weightsLayoutVersion: descriptor.weightsLayoutVersion,
     epsilon: descriptor.epsilon, tieBreakId: descriptor.tieBreakId, tierSpecId: descriptor.tierSpecId });
-  const createNetwork = (): MLP => { const network = new MLP(1, descriptor.inputDim); network.setWeights(weights); return network; };
+  const createNetwork = (): MLP => MLP.fromWeights(weights, descriptor.inputDim);
   const result: ResolvedPolicy = Object.freeze({ descriptor, identity, encoder, createNetwork,
     createDecider: (seat: number) => new NeuralDecider(seat, createNetwork(), descriptor.epsilon, () => 0, encoder) });
   resolvedInstances.add(result);
@@ -128,5 +128,5 @@ export async function resolveStudentScorer(value: unknown, runtime: Omit<PolicyR
     flat[i] = view.getFloat32(i * 4, true);
     if (!Number.isFinite(flat[i])) throw Error(`non-finite student weight at ${i}`);
   }
-  return Object.freeze({ descriptor, createNetwork: () => { const net = new MLP(1, 423); net.setWeights(flat); return net; } });
+  return Object.freeze({ descriptor, createNetwork: () => MLP.fromWeights(flat, descriptor.inputDim) });
 }

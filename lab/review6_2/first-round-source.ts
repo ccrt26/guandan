@@ -3,7 +3,7 @@
  * ancestry metadata, NEVER additional independent training roots. Existing
  * H/TC authorization and runtime admission remain mandatory after this step. */
 import {createHash} from 'node:crypto';
-import {existsSync,lstatSync,mkdirSync,readFileSync,realpathSync,writeFileSync,linkSync,unlinkSync} from 'node:fs';
+import {existsSync,lstatSync,mkdtempSync,readFileSync,realpathSync,writeFileSync,renameSync} from 'node:fs';
 import {dirname,isAbsolute,join,relative,resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {isDeepStrictEqual as equal} from 'node:util';
@@ -68,7 +68,7 @@ function validatePolicies(spec:any,t:FirstRoundSourceInputs,get:(ref:string)=>an
  const opponent=get(spec.bindings.opponentRef);need(equal(opponent.registryRef,spec.registryRef)&&opponent.policyId===spec.opponentPolicyId,'opponent_role_binding');validateFirstRoundRegistryPolicy({envelope:opponent,readEvidence:evidence,repositoryRoot:t.repositoryRoot,role:'opponent'});
  const comparison=get(spec.comparisonRef);strictObject(comparison,'sourceComparison',['schema','proposalRef','studentParentRef']);need(comparison.schema==='ohuo-first-round-comparison-v1','comparison');
  const proposer=resolveCandidateReleaseRef(get(comparison.proposalRef),get,RELEASES),parent=validateFirstRoundParentEnvelope({parentRef:comparison.studentParentRef,envelope:get(comparison.studentParentRef),readEvidence:evidence});
- need(proposer.candidatePolicy?.candidateSpec==='first-target-offer12-v1'&&proposer.release.mode==='local'&&proposer.release.tier==='hard'&&equal(proposer.policyIdentity,parent.basePolicyIdentity),'actual_Bprime_S0');
+ need(proposer.candidatePolicy?.candidateSpec==='first-target-offer12-rules-v543-v1'&&proposer.release.mode==='local'&&proposer.release.tier==='hard'&&equal(proposer.policyIdentity,parent.basePolicyIdentity),'actual_Bprime_S0');
  if(spec.bindings.s0Ref!==null){const s=get(spec.bindings.s0Ref);strictObject(s,'sourceS0',['schema','policyId','proposalRef','studentParentRef']);need(s.schema==='ohuo-first-round-s0-release-ref-v1'&&s.proposalRef===comparison.proposalRef&&s.studentParentRef===comparison.studentParentRef&&s.policyId===firstRoundS0PolicyId(comparison.proposalRef,comparison.studentParentRef),'S0_composite');}
  if(spec.bindings.s1Ref!==null){const s=get(spec.bindings.s1Ref);strictObject(s,'sourceS1',['schema','policyId','releaseSHA256']);need(s.schema==='ohuo-student-task-release-v1'&&s.releaseSHA256===spec.bindings.s1ReleaseFileRef.sha256,'S1_reference');const release=JSON.parse(evidence(spec.bindings.s1ReleaseFileRef).toString());
   strictObject(release,'sourceS1Release',['schema','trainingKind','policyId','proposer','proposalRef','learningParent','scorer','candidateSpecRef','candidatePolicy','tieBreakId','checkpoint','dataset','recipe','selection']);
@@ -123,10 +123,11 @@ export function prepareFirstRoundSources(t:FirstRoundSourceInputs){
   const manifest={schema:'ohuo-first-round-source-production-v1',...(spec.schema===COMMON_VIEW_SOURCE_SCHEMA?{protocolRef:spec.protocolRef,workloadMeaning:'frozen_this_batch_inputs_not_lifetime_quota'}:{}),specRef:t.specRef,reservationRef:spec.reservationRef,purpose:spec.purpose,planRef:spec.planRef,rulesRef:spec.rulesRef,seed:spec.seed,comparisonRef:spec.comparisonRef,registryRef:spec.registryRef,partnerPolicyIds:spec.partnerPolicyIds,opponentPolicyId:spec.opponentPolicyId,bindings:spec.bindings,confirmationPlanningRef:spec.confirmationPlanningRef,exclusionSources,exclusionFamilyCount:excluded.size,independentUnit:'reserved_initial_match_root_block',futureAncestryUnit:'actual_indexed_deal_not_independent_training_root',seedRule:'deriveSeed(stage.namespace,seed,slot0,source-match); indexedDealSeed(dealNamespace,sourceSeed,gameIndex0)',canonicalDealSHA256Meaning:'original_runCompleteMatch_pre_exchange_physical_sorted_hand_ids_JSON_SHA256_not_private_state_SHA',stages,references,files,qualification:{eligible:false,reasons:['mechanical_source_plan_not_dataset_or_completed_research']},actualMatches:0,modelForwardCalls:0,providerRequests:0,optimizerSteps:0,privateHandsEmitted:false,taskReady:false};
   const manifestBytes=bytes(manifest),manifestPath=join(outputRoot,'manifest.json');
   if(existsSync(outputRoot)){need(lstatSync(outputRoot).isDirectory()&&!lstatSync(outputRoot).isSymbolicLink()&&realpathSync(outputRoot)===outputRoot&&existsSync(manifestPath),'existing_output_conflict');need(regular(t.repositoryRoot,outputRelative+'/manifest.json').equals(Buffer.from(manifestBytes)),'existing_output_conflict');for(const f of files)need(sha(regular(t.repositoryRoot,f.file.path))===f.file.sha256,'existing_output_conflict');return {status:'unchanged',outputRoot,manifest,files,manifestSHA256:sha(manifestBytes),manifestRef:{id:spec.outputId+'-source-production',sha256:sha(manifestBytes)},manifestFile:{path:outputRelative+'/manifest.json',sha256:sha(manifestBytes)}};}
-  mkdirSync(outputRoot,{mode:0o700});for(const a of artifacts)writeFileSync(join(outputRoot,a.name),bytes(a.value),{flag:'wx',mode:0o600});
-  // Exclusive link publishes the complete manifest last and cannot clobber an
-  // existing result. Partial failures preserve their new output for inspection.
-  const temp=join(outputRoot,'manifest.pending');writeFileSync(temp,manifestBytes,{flag:'wx',mode:0o600});linkSync(temp,manifestPath);unlinkSync(temp);
+  // Keep the fixed final destination absent until every file is complete.
+  // A failed stage remains evidence; retry neither adopts nor removes it.
+  const staging=mkdtempSync(outputRoot+'.staging-');for(const a of artifacts)writeFileSync(join(staging,a.name),bytes(a.value),{flag:'wx',mode:0o600});
+  writeFileSync(join(staging,'manifest.json'),manifestBytes,{flag:'wx',mode:0o600});
+  need(!existsSync(outputRoot),'existing_output_conflict');renameSync(staging,outputRoot);
   return {status:'written',outputRoot,manifest,files,manifestSHA256:sha(manifestBytes),manifestRef:{id:spec.outputId+'-source-production',sha256:sha(manifestBytes)},manifestFile:{path:outputRelative+'/manifest.json',sha256:sha(manifestBytes)}};
  }finally{unlock();}
 }

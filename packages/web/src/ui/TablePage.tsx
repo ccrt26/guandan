@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { canPass, isReturnableCard, type GameRecord , describeCombo } from '@gd/engine';
+import { canPass, legalReturnCards, type GameRecord , describeCombo } from '@gd/engine';
 import './seat-config.css';
 import { HUMAN_SEAT, type MatchController } from '../game/controller';
 import { GameTable } from './gt/GameTable';
@@ -78,6 +78,8 @@ export function TablePage({
       : '牌局已暂停，暂时无法完成本手决定，请返回检查。'
     : scopedToast ?? (!isFixture && controller.waitingRemote ? '正在等待外部模型决定…' : null);
   const runtimeToastRole = decisionError ? 'alert' : 'status';
+  const saveError = isFixture ? null : controller.saveError;
+  const canAdvanceAfterGame = !isFixture && controller.canAdvanceAfterGame;
 
   const ctx = state?.ctx ?? null;
   const toBeat = state?.lastCombo ?? null;
@@ -95,18 +97,17 @@ export function TablePage({
     setHintInfo(null);
   }, [state?.moveNo, state?.match.gameNo]);
 
-  // 局末不设结算门：记录已随 gameEnd 自动落盘（战绩/复盘页可查），
-  // 停留约 1 秒看清末手后直接开下一局；过 A 比赛结束则退回首页。
+  // 局末保存成功后停留约1秒看清末手，再换局/退首页；写失败保留本页待重试。
   useEffect(() => {
-    if (isFixture || !state?.over || state.result === null) return;
+    if (!canAdvanceAfterGame || !state?.over || state.result === null) return;
     const timer = setTimeout(() => {
       const s = controller.state;
-      if (!s || !s.over) return;
+      if (!s || !s.over || !controller.canAdvanceAfterGame) return;
       if (s.match.winner === null) controller.startGame();
       else onExit();
     }, 1000);
     return () => clearTimeout(timer);
-  }, [state?.over, state?.result, controller, onExit, isFixture]);
+  }, [state?.over, state?.result, controller, onExit, canAdvanceAfterGame]);
 
   const selectedCards = useMemo(() => hand.filter((c) => selected.has(c.id)), [hand, selected]);
   const validCombo = !isFixture && controller.humanTurn && selectedCards.length > 0 && ctx
@@ -114,10 +115,11 @@ export function TablePage({
     : null;
   const canPassNow = !isFixture && state ? canPass(state) : false;
 
-  // 还贡阶段：轮到人类自选一张不大于 10 的牌还给贡牌方
+  // 人类选牌、点击过滤和引擎提交使用同一个手牌感知合法集合。
   const pendingReturn = state?.pendingReturns[0] ?? null;
   const myReturn = !isFixture && controller.humanReturning;
-  const returnCard = myReturn && selectedCards.length === 1 && ctx && isReturnableCard(selectedCards[0], ctx)
+  const returnableIds = new Set(ctx ? legalReturnCards(hand, ctx).map(card => card.id) : []);
+  const returnCard = myReturn && selectedCards.length === 1 && returnableIds.has(selectedCards[0].id)
     ? { card: selectedCards[0], to: pendingReturn!.to }
     : null;
 
@@ -239,7 +241,12 @@ export function TablePage({
     <>
     <GameTable
       vm={vm}
-      overlay={historyOpen && !isFixture ? <ExchangeHistory entries={controller.exchangeHistory} onClose={()=>setHistoryOpen(false)} /> : null}
+      overlay={saveError ? <section className="gt-history" role="alert" aria-label="本局保存未完成">
+        <header><h2>本局保存未完成</h2></header>
+        <p>{saveError}。已暂停后续出牌和自动换局，请保持本页，不要刷新或离开。</p>
+        <p>恢复浏览器存储后可以重试保存，不会重新出牌或重复计算已保存的战绩。</p>
+        <button onClick={() => controller.retryGameSave()}>重试保存</button>
+      </section> : historyOpen && !isFixture ? <ExchangeHistory entries={controller.exchangeHistory} onClose={()=>setHistoryOpen(false)} /> : null}
       toast={runtimeToast}
       toastRole={runtimeToastRole}
       demo={isFixture}
@@ -259,7 +266,7 @@ export function TablePage({
         if (id === null || Number.isNaN(id)) return;
         if (myReturn) {
           const card = hand.find((c) => c.id === id);
-          if (!card || (ctx !== null && !isReturnableCard(card, ctx))) return;
+          if (!card || !returnableIds.has(card.id)) return;
           setSelected(new Set([id]));
           return;
         }

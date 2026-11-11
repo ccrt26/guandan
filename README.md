@@ -130,6 +130,6 @@ packages/
 
 GitHub默认分支为main。上传范围、保留的历史材料和本机研究依赖见[同步说明](docs/engineering/GITHUB.md)；P1—P13只公开[汇总记录](docs/history/reviews/20261030-review62-p13-public-summary/README.md)。
 
-现行正式入口为 **《掼蛋项目实施方案和执行计划文档_v5.3.0.docx》＋《掼蛋项目需求文档_v5.3.0.docx》＋《掼蛋项目模型迭代说明文档_v1.0.0.docx》**；本步固定身份、读序和具体模块检查见 [AGENTS](AGENTS.md#current-software-delivery) 与 [模块检查表](AGENTS.md#module-checks)。B10、[B snapshot preparer](deliverables/ohuo-batches/B-probe-preparer/accepted-code.json) 和 provider 共享状态已有各自限定软件接收；命名、R14、两弹窗/按钮、R15 的实际阶段与缺口沿 [lab 工程状态](lab/README.md#current-engineering-status) 和真实回件查询，不预填全部完成。旧 P13 停止不跨停现行方案已授权步骤；真实研究/训练按 R29/NAV-00、具体授权及实际前置判定，不沿用编制时 `NOT_DUE` 重复审批。Git 操作按用户当次明确授权执行；Git 同步不阻软件交付，Library/Space 归档也不替代远端源码恢复证明。
+现行正式入口为 **《掼蛋项目实施方案和执行计划文档_v5.4.3.docx》＋《掼蛋项目需求文档_v5.4.3.docx》＋《掼蛋项目模型迭代说明文档_v1.0.0.docx》**；本步固定身份、读序和具体模块检查见 [AGENTS](AGENTS.md#current-software-delivery) 与 [模块检查表](AGENTS.md#module-checks)。B10、[B snapshot preparer](deliverables/ohuo-batches/B-probe-preparer/accepted-code.json) 和 provider 共享状态已有各自限定软件接收；命名、R14、两弹窗/按钮、R15 的实际阶段与缺口沿 [lab 工程状态](lab/README.md#current-engineering-status) 和真实回件查询，不预填全部完成。当前按用户最新指令暂停训练、构题、教学、screen、科研采样及参数学习，待与 GLM 沟通完成并依用户最新指令接续；只继续工程修复、必要离线验证和文档维护，不以旧持续执行授权恢复模型请求。Git 操作按用户当次明确授权执行；Git 同步不阻软件交付，Library/Space 归档也不替代远端源码恢复证明。
 
 本仓库不是完整训练恢复包；完整报告、原始数据、检查点和治理恢复资产留本机。

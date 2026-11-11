@@ -12,7 +12,7 @@ const count=(v:unknown):v is number=>Number.isSafeInteger(v)&&Number(v)>=0;
 const digest=(v:unknown)=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 const order=(a:string,b:string)=>Buffer.compare(Buffer.from(a),Buffer.from(b));
 const mean=(xs:number[])=>xs.reduce((a,b)=>a+b,0)/xs.length;
-const candidatePolicy={candidateSpec:'first-target-offer12-v1',enumSpec:{id:'full-house-attachment-ranks-v1',enumerationMode:'all_supported_attachment_ranks'}};
+const candidatePolicy={candidateSpec:'first-target-offer12-rules-v543-v1',enumSpec:{id:'full-house-attachment-ranks-v1-rules-v543',enumerationMode:'all_supported_attachment_ranks'}};
 const fixed=(s:unknown)=>typeof s==='string'&&/^.+@sha256:[a-f0-9]{64}$/.test(s);
 const unique=(xs:unknown)=>Array.isArray(xs)&&xs.every(text)&&new Set(xs).size===xs.length;
 
@@ -39,7 +39,7 @@ export function selectFirstRoundNewQuestions(plan:any,inventory:any[]){
   for(const q of r.rows){
    need(q.familyId===r.familyId&&text(q.questionId)&&hash(q.contextSHA256)&&hash(q.inputSHA256)&&['eligible','excluded'].includes(q.eligibility),'question_identity');
    if(q.eligibility==='excluded'){need(text(q.exclusionReason),'question_exclusion');exclusions.push({familyId:r.familyId,questionId:q.questionId,inputSHA256:q.inputSHA256,reason:q.exclusionReason});continue;}
-   need(q.candidateSpec==='first-target-offer12-v1'&&equal(q.candidatePolicy,candidatePolicy)&&unique(q.candidateIds)&&q.candidateIds.length>=1&&q.candidateIds.length<=12&&unique(q.canonicalIds)&&q.canonicalIds.length===q.candidateIds.length,'candidate_identity');
+   need(q.candidateSpec==='first-target-offer12-rules-v543-v1'&&equal(q.candidatePolicy,candidatePolicy)&&unique(q.candidateIds)&&q.candidateIds.length>=1&&q.candidateIds.length<=12&&unique(q.canonicalIds)&&q.canonicalIds.length===q.candidateIds.length,'candidate_identity');
    need(Array.isArray(q.features423)&&q.features423.length===q.candidateIds.length&&Array.isArray(q.proposalFeatures399)&&q.proposalFeatures399.length===q.candidateIds.length&&q.features423.every((f:any,i:number)=>Array.isArray(f)&&f.length===423&&f.every((v:any)=>finite(v)&&Math.fround(v)===v)&&equal(f.slice(0,399),q.proposalFeatures399[i])),'actual423_inputs');
    const id=digest([r.familyId,q.contextSHA256]),identity={candidateSpec:q.candidateSpec,candidatePolicy:q.candidatePolicy,canonicalIds:q.canonicalIds,features423:q.features423};let entry=questions.get(id);
    if(entry)need(equal(entry.identity,identity),'causal_input_conflict');

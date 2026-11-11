@@ -8,7 +8,7 @@ import{cleanSourceState,publicHistory,publicMatch,publicState,assertStrictVisibl
 const digest=(value:unknown)=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 type PublicMatch=Pick<GameState['match'],'opts'|'levels'|'gameNo'|'lastHead'|'lastResult'>;
 type PublicState=Pick<GameState,'levelsBefore'|'stageTeam'|'turn'|'leader'|'lastCombo'|'lastPlayer'|'passCount'|'finished'|'moveNo'|'tribute'|'trickPlays'>;
-export interface VisibleRoot{schemaVersion:'r6-visible-root-v1';actor:number;ownCards:Card[];counts:number[];matchPublic:PublicMatch;statePublic:PublicState;history:PublicStep[];modelState331:number[];representationGaps:string[];observationSHA256:string;}
+export interface VisibleRoot{schemaVersion:'r6-visible-root-rules-v543-v1';actor:number;ownCards:Card[];counts:number[];matchPublic:PublicMatch;statePublic:PublicState;history:PublicStep[];modelState331:number[];representationGaps:string[];observationSHA256:string;}
 function tracker(history:PublicStep[]){const result=new PublicTracker();for(const row of history)result.observe(row.events);return result;}
 function playedBy(history:PublicStep[]){const result=new Map<number,number>();for(const row of history)for(const event of row.events)if(event.type==='play')for(const card of event.combo.cards){if(result.has(card.id))throw new Error('public history repeats a physical play');result.set(card.id,event.player);}return result;}
 function transferOwners(state:PublicState){const result=new Map<number,number>();for(const t of[...(state.tribute?.tributes??[]),...(state.tribute?.returns??[])])result.set(t.card.id,t.to);return result;}
@@ -34,15 +34,20 @@ function exchangeRepresentationGaps(actor:number,own:Card[],counts:number[],matc
 export function toVisibleRoot(state:GameState,history:PublicStep[]):VisibleRoot{
  state=cleanSourceState(state);history=publicHistory(history);
  if(!isDeepStrictEqual(state.match.opts,DEFAULT_RULES))throw new Error('visible teacher requires frozen DEFAULT_RULES; alternate rules are not fully encoded');
- assertRootHistory(state,history);const actor=state.turn,ownCards=structuredClone(state.hands[actor]),counts=state.hands.map(h=>h.length),m=state.match;
+ assertRootHistory(state,history);return projectValidatedRoot(state,history);
+}
+/** Internal projection only: both callers validate the exact state/history
+ * immediately before entry, and the sampler already has strict public fields. */
+function projectValidatedRoot(state:GameState,history:PublicStep[]):VisibleRoot{
+ const actor=state.turn,ownCards=structuredClone(state.hands[actor]),counts=state.hands.map(h=>h.length),m=state.match;
  const matchPublic:PublicMatch=publicMatch(m),statePublic:PublicState=publicState(state);
  const encoded=new Float32Array(331);encodeStateV2(state,actor,tracker(history),encoded,'rule-context');if(!encoded.every(Number.isFinite))throw new Error('visible root encoding nonfinite');
- const content={schemaVersion:'r6-visible-root-v1' as const,actor,ownCards,counts,matchPublic,statePublic,history:structuredClone(history),modelState331:Array.from(encoded),representationGaps:exchangeRepresentationGaps(actor,ownCards,counts,matchPublic,statePublic,history)};
+ const content={schemaVersion:'r6-visible-root-rules-v543-v1' as const,actor,ownCards,counts,matchPublic,statePublic,history:structuredClone(history),modelState331:Array.from(encoded),representationGaps:exchangeRepresentationGaps(actor,ownCards,counts,matchPublic,statePublic,history)};
  return{...content,observationSHA256:digest(content)};
 }
 const visibleKeys=['schemaVersion','actor','ownCards','counts','matchPublic','statePublic','history','modelState331','representationGaps','observationSHA256'].sort();
-function checkVisible(obs:VisibleRoot){
- if(JSON.stringify(Object.keys(obs).sort())!==JSON.stringify(visibleKeys)||obs.schemaVersion!=='r6-visible-root-v1')throw new Error('unexpected non-visible root field');
+export function assertVisibleRoot(obs:VisibleRoot){
+ if(JSON.stringify(Object.keys(obs).sort())!==JSON.stringify(visibleKeys)||obs.schemaVersion!=='r6-visible-root-rules-v543-v1')throw new Error('unexpected or historical visible rule schema/field');
  assertStrictVisibleNested(obs);
  if(!isDeepStrictEqual(obs.matchPublic.opts,DEFAULT_RULES))throw new Error('visible teacher requires frozen DEFAULT_RULES');
  const{observationSHA256,...content}=obs;if(digest(content)!==observationSHA256)throw new Error('visible observation hash mismatch');
@@ -73,7 +78,7 @@ function restoreEngineHandOrder(state:GameState,history:PublicStep[],rng:RNG,act
  * and the actual engine hand ordering seen by frozen policies.
  * A pass never imposes an inability-to-beat restriction. */
 export function sampleVisibleWorld(obs:VisibleRoot,seed:number,maxAttempts=4096){
- checkVisible(obs);if(!Number.isSafeInteger(seed)||!Number.isSafeInteger(maxAttempts)||maxAttempts<1||maxAttempts>4096)throw new Error('bounded visible-world seed/attempt count required (1..4096)');
+ assertVisibleRoot(obs);if(!Number.isSafeInteger(seed)||!Number.isSafeInteger(maxAttempts)||maxAttempts<1||maxAttempts>4096)throw new Error('bounded visible-world seed/attempt count required (1..4096)');
  const deck=buildDeck(),byId=new Map(deck.map(c=>[c.id,c])),played=playedBy(obs.history),own=new Set(obs.ownCards.map(c=>c.id)),known=transferOwners(obs.statePublic),fixed:Card[][]=Array.from({length:4},()=>[]);fixed[obs.actor]=structuredClone(obs.ownCards);
  for(const[id,owner]of known){if(played.has(id))continue;if(owner===obs.actor){if(!own.has(id))throw new Error('known own transfer missing');continue;}if(own.has(id))throw new Error('known public owner conflicts with own hand');const card=byId.get(id);if(!card)throw new Error('unknown public transfer card');fixed[owner].push(card);}
  const fixedIds=new Set(fixed.flat().map(c=>c.id)),pool=deck.filter(c=>!fixedIds.has(c.id)&&!played.has(c.id));if(fixed.some((h,s)=>h.length>obs.counts[s])||pool.length!==obs.counts.reduce((n,c)=>n+c,0)-fixedIds.size)throw new Error('visible-world resource denominator mismatch');
@@ -82,7 +87,7 @@ export function sampleVisibleWorld(obs:VisibleRoot,seed:number,maxAttempts=4096)
   const rng=new RNG(deriveSeed('review6-visible-world-rejection-v1',seed,attempt,obs.observationSHA256)),available=shuffle([...pool],rng),hands=fixed.map(h=>[...h]);let offset=0;
   for(let seat=0;seat<4;seat++)if(seat!==obs.actor){const needed=obs.counts[seat]-hands[seat].length;hands[seat].push(...available.slice(offset,offset+needed));offset+=needed;}
   const s=obs.statePublic,state:GameState={...structuredClone(s),match:{...structuredClone(obs.matchPublic),winner:null,rngState:0},ctx:makeLevelCtx(s.levelsBefore,obs.matchPublic.opts.levelMode as any,s.stageTeam),hands,over:false,result:null,pendingReturns:[]};
-  try{restoreEngineHandOrder(state,obs.history,rng,obs.actor);assertRootHistory(state,obs.history);const repeated=toVisibleRoot(state,obs.history);if(repeated.observationSHA256!==obs.observationSHA256)throw new Error('sampled world changed own/public observation or encoding');return{state,attempts:attempt+1,seed,observationSHA256:obs.observationSHA256,hiddenLayoutSHA256:digest(state.hands.filter((_,seat)=>seat!==obs.actor))};}
+  try{restoreEngineHandOrder(state,obs.history,rng,obs.actor);assertRootHistory(state,obs.history);const repeated=projectValidatedRoot(state,obs.history);if(repeated.observationSHA256!==obs.observationSHA256)throw new Error('sampled world changed own/public observation or encoding');return{state,attempts:attempt+1,seed,observationSHA256:obs.observationSHA256,hiddenLayoutSHA256:digest(state.hands.filter((_,seat)=>seat!==obs.actor))};}
   catch(error){lastReason=(error as Error).message;}
  }
  throw new Error('bounded legal-world sampler exhausted without substituting true hidden cards: '+lastReason);

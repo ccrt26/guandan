@@ -70,7 +70,7 @@ export interface TributeInfo {
   leader: number;
 }
 
-/** 一笔待还的贡牌：from 须任选一张不大于 10 的牌还给 to */
+/** 一笔待还的贡牌：from 从 legalReturnCards 给出的集合任选一张还给 to */
 export interface PendingReturn {
   from: number;
   to: number;
@@ -126,7 +126,7 @@ export function startGame(match: MatchState, interactiveSeats: readonly number[]
  * 官方进贡还贡流程（从第二副起）：
  * - 下游方进贡：单贡=末游贡上游；双贡=三游/末游各贡手中最大牌（红心级牌不贡），
  *   较大者给上游、较小者给二游（同点按 finishOrder 顺序）
- * - 收贡方各还一张牌（官方：任选、牌点不得超过 10）
+ * - 收贡方各还一张牌：有 2—10 非万能牌时任选；没有时还最小非万能牌
  * - 抗贡：下游方两人合计抓有两大王 → 免贡，上游先出
  * - 首出：单贡=末游先出；双贡=贡牌较大者先出；抗贡=上游先出
  *
@@ -205,18 +205,24 @@ export function applyTribute(state: GameState, interactiveSeats: readonly number
   return { resist: false, tributes, returns, leader };
 }
 
-/** 还贡合法性（官方：还牌任选、牌点不得超过 10；红心级牌=万能牌不还） */
+/** 还贡优先的小牌集合；单张属性不能判断无小牌时的回退合法性 */
 export function isReturnableCard(card: Card, ctx: LevelCtx): boolean {
   return card.rank >= 2 && card.rank <= 10 && !isWildCard(card, ctx);
 }
 
-/** 还贡自动选牌（AI 席位口径）：可还的牌里"牌力最不要紧"的一张
- * ——按本局牌力序取最小（级牌/大牌自动避开）；极端无牌可还时退回任意非万能最小单张。 */
+/** 唯一手牌感知还贡集合。保留既有 rankOrder 与非万能语义，
+ * 无小牌时所有同牌力最小实体均可选；不按花色或副本任意收窄。 */
+export function legalReturnCards(hand: readonly Card[], ctx: LevelCtx): Card[] {
+  const small = hand.filter(card => isReturnableCard(card, ctx));
+  if (small.length > 0) return small;
+  const nonWild = hand.filter(card => !isWildCard(card, ctx));
+  const minimum = Math.min(...nonWild.map(card => rankOrder(card.rank, ctx)));
+  return nonWild.filter(card => rankOrder(card.rank, ctx) === minimum);
+}
+
+/** AI 在同一个合法集合内仍按既有牌力序及手牌顺序选最小。 */
 export function pickReturnCard(state: GameState, seat: number): Card {
-  const hand = state.hands[seat];
-  const nonWild = hand.filter((c) => !isWildCard(c, state.ctx));
-  const pool = nonWild.filter((c) => isReturnableCard(c, state.ctx));
-  const cands = pool.length > 0 ? pool : nonWild;
+  const cands = legalReturnCards(state.hands[seat], state.ctx);
   if (cands.length === 0) throw new Error('还贡方手中无牌可还');
   return cands.reduce((best, cur) => (rankOrder(cur.rank, state.ctx) < rankOrder(best.rank, state.ctx) ? cur : best));
 }
@@ -227,8 +233,10 @@ export function completeReturn(state: GameState, card: Card): void {
   const pending = state.pendingReturns[0];
   if (!pending || !state.tribute) throw new Error('当前没有待还的贡牌');
   const hand = state.hands[pending.from];
-  if (!hand.some((c) => c.id === card.id)) throw new Error('还贡的牌不在还牌方手中');
-  if (!isReturnableCard(card, state.ctx)) throw new Error('还贡必须是不大于 10 的非万能牌');
+  const owned = hand.find(c => c.id === card.id);
+  if (!owned) throw new Error('还贡的牌不在还牌方手中');
+  if (owned.rank !== card.rank || owned.suit !== card.suit) throw new Error('还贡实体牌与手牌不一致');
+  if (!legalReturnCards(hand, state.ctx).some(c => c.id === card.id)) throw new Error('还贡须选 2—10 非万能牌；无此类牌时须选最小非万能牌');
   hand.splice(hand.findIndex((c) => c.id === card.id), 1);
   state.hands[pending.to].push(card);
   state.tribute.returns.push({ from: pending.from, to: pending.to, card });

@@ -13,7 +13,7 @@ import {canonical,digest,strictObject,fixedReference,validateTask,isInputWorkloa
 import {createMeteredRemote} from './match-consumer';
 import {createProfileDesigner,prepareDesignedSourceRequest,queryDesignedSource,type DesignedSourceRequest,type DesignedRequestCheckpoint,type DesignedRemoteResult} from './designed-source-request';
 import {DESIGNED_FIRST_GAME_V2_SCHEMA} from './designed-source';
-import {PROJECT_RULES_DESIGN_PROMPT_ID,PROJECT_RULES_DESIGN_SYSTEM_SHA256} from '../../packages/web/server/llm-project-rules-v541.mjs';
+import {PROJECT_RULES_DESIGN_PROMPT_ID,PROJECT_RULES_DESIGN_SYSTEM_SHA256} from '../../packages/web/server/llm-project-rules-v543.mjs';
 import {freezeCopy} from '../../packages/ai/src/hybrid/protocol';
 
 export const DESIGNED_SOURCE_CAPABILITY={id:'B07.designed-source.v1',kind:'collect',mode:'research'} as const;

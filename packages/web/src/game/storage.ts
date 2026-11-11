@@ -95,8 +95,8 @@ export function listRecords(): RecordMeta[] {
   }
 }
 
-export function saveRecord(record: GameRecord): void {
-  if (!record.result) return;
+export function saveRecord(record: GameRecord): boolean {
+  if (!record.result) return false;
   const humanSeat = record.humanSeat ?? 0;
   const meta: RecordMeta = {
     id: record.id,
@@ -111,16 +111,27 @@ export function saveRecord(record: GameRecord): void {
     levelsBefore: record.levelsBefore,
     moves: record.moves.length,
   };
-  const index = listRecords().filter((m) => m.id !== meta.id);
-  index.unshift(meta);
-  const trimmed = index.slice(0, INDEX_LIMIT);
-  // 清掉被裁剪记录的正文与报告（报告与记录同生命周期）
-  for (const m of index.slice(INDEX_LIMIT)) {
-    localStorage.removeItem(RECORD_PREFIX + m.id);
-    removeReport(m.id);
+  let removed: RecordMeta[];
+  try {
+    // 读取失败/坏索引不能冒充空库，否则一次保存会覆盖旧记录入口。
+    const existing = JSON.parse(localStorage.getItem(INDEX_KEY) ?? '[]') as RecordMeta[];
+    if (!Array.isArray(existing)) return false;
+    if (existing.find((m) => m.id === meta.id)?.favorite) meta.favorite = true;
+    const index = [meta, ...existing.filter((m) => m.id !== meta.id)];
+    const body = JSON.stringify(record);
+    const encodedIndex = JSON.stringify(index.slice(0, INDEX_LIMIT));
+    removed = index.slice(INDEX_LIMIT);
+    // 正文先落盘，索引是可见提交点。索引失败最多留下新正文，重试可复用；
+    // 不为了挤出配额先删除任何旧记录或报告。
+    localStorage.setItem(RECORD_PREFIX + meta.id, body);
+    localStorage.setItem(INDEX_KEY, encodedIndex);
+  } catch { return false; }
+  // 只有正文和索引都提交后，才执行原有40局留存裁剪。
+  // 裁剪失败不会把已保存的新记录报告为失败，更不能触发破坏性重试。
+  for (const m of removed) {
+    try { localStorage.removeItem(RECORD_PREFIX + m.id); removeReport(m.id); } catch { /* retain old data */ }
   }
-  localStorage.setItem(INDEX_KEY, JSON.stringify(trimmed));
-  localStorage.setItem(RECORD_PREFIX + meta.id, JSON.stringify(record));
+  return true;
 }
 
 export function loadRecord(id: string): GameRecord | null {
@@ -150,12 +161,15 @@ export interface Stats {
   wins: number; // 人类所在队赢
   headFinish: number; // 人类头游次数
   byDifficulty: Record<number, { games: number; wins: number }>;
+  /** 与计数同键提交；最新局的跨刷新重试不能再次累加。不重算无标记旧账。 */
+  lastCountedRecord?: { matchId: string; recordId: string };
 }
 
 // ---------- 比赛进度：兼容旧局末档；新档在交换完成后保存起点和已执行动作 ----------
 
 export interface ActiveGameSave {
-  schemaVersion: 1;
+  /** v2 binds corrected 5.4.3 rules; v1 active games require diagnosis before execution. */
+  schemaVersion: 2;
   initial: InitialGameSnapshot;
   recorderMeta: Omit<GameRecord, 'moves' | 'result'>;
   moves: Move[];
@@ -193,19 +207,22 @@ export function saveCurrentMatch(save: MatchSave): boolean {
   try { localStorage.setItem(MATCH_KEY, JSON.stringify(save)); return true; } catch { return false; }
 }
 
-export function loadCurrentMatch(): MatchSave | null {
-  try {
-    const raw = localStorage.getItem(MATCH_KEY);
-    if (!raw) return null;
-    const save = JSON.parse(raw) as MatchSave;
-    // 基本形状校验：坏档直接当没有（宁可重开，不带着坏数据硬续）
-    if (!Array.isArray(save.levels) || save.levels.length !== 2 || typeof save.gameNo !== 'number' || !save.ruleOpts) return null;
-    return save;
-  } catch { return null; }
+/** 所有权检查需区分暂时不可读和确实缺失；保留读取/解析异常。 */
+export function readCurrentMatch(): MatchSave | null {
+  const raw = localStorage.getItem(MATCH_KEY);
+  if (!raw) return null;
+  const save = JSON.parse(raw) as MatchSave;
+  // 基本形状校验：坏档直接当没有（宁可重开，不带着坏数据硬续）
+  if (!Array.isArray(save.levels) || save.levels.length !== 2 || typeof save.gameNo !== 'number' || !save.ruleOpts) return null;
+  return save;
 }
 
-export function clearCurrentMatch(): void {
-  try { localStorage.removeItem(MATCH_KEY); } catch { /* ignore */ }
+export function loadCurrentMatch(): MatchSave | null {
+  try { return readCurrentMatch(); } catch { return null; }
+}
+
+export function clearCurrentMatch(): boolean {
+  try { localStorage.removeItem(MATCH_KEY); return true; } catch { return false; }
 }
 
 // ---------- LLM 配置（游戏内设置，存浏览器本地；代理优先读请求头里的这份配置） ----------
@@ -251,17 +268,21 @@ export function thinkingParams(effort: LLMConfig['effort']): { thinking?: unknow
   return { thinking: { type: 'enabled' }, maxTokens: 32768 };
 }
 
+function readStats(): Stats {
+  const raw = localStorage.getItem(STATS_KEY);
+  return raw === null ? { games: 0, wins: 0, headFinish: 0, byDifficulty: {} } : JSON.parse(raw) as Stats;
+}
+
 export function loadStats(): Stats {
-  try {
-    return JSON.parse(localStorage.getItem(STATS_KEY) ?? '') as Stats;
-  } catch {
-    return { games: 0, wins: 0, headFinish: 0, byDifficulty: {} };
-  }
+  try { return readStats(); }
+  catch { return { games: 0, wins: 0, headFinish: 0, byDifficulty: {} }; }
 }
 
 export function updateStats(record: GameRecord): void {
   if (!record.result || record.humanSeat === null) return;
-  const stats = loadStats();
+  // 展示可容忍不可读；写入不能将读取失败冒作零战绩覆盖已有累计值。
+  const stats = readStats();
+  if (stats.lastCountedRecord?.matchId === record.matchId && stats.lastCountedRecord.recordId === record.id) return;
   const humanSeat = record.humanSeat ?? 0;
   const humanTeamWon = record.result.winnerTeam === (humanSeat % 2 === 0 ? 0 : 1);
   const diff = Math.max(...(record.difficulties.filter((d) => d !== null) as number[]), 0);
@@ -272,6 +293,7 @@ export function updateStats(record: GameRecord): void {
   slot.games += 1;
   if (humanTeamWon) slot.wins += 1;
   stats.byDifficulty[diff] = slot;
+  stats.lastCountedRecord = { matchId: record.matchId, recordId: record.id };
   localStorage.setItem(STATS_KEY, JSON.stringify(stats));
 }
 

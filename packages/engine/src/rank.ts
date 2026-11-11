@@ -48,7 +48,7 @@ export function isLevelRank(rank: Rank, ctx: LevelCtx): boolean {
 /**
  * 序列位置模型（官方规则：A 在顺子/三连对/二连三/同花顺中既可作 1 也可作 K+1）。
  * 位置 1 = A 作 1；位置 2..14 = 2..K、A(14)。
- * 级牌对应位置剔除（级牌是主牌不入这些牌型）；A 非级牌时位置 1 与 14 同时可用。
+ * 级牌仍按原始点数参加序列；A（包括级 A）的 1 与 14 位置同时可用。
  * 连续段在位置域上计算；段最大位置即牌型比较权重（A2345=5 < 23456=6 < ... < 10JQKA=14）。
  */
 export interface SeqSlot {
@@ -56,11 +56,10 @@ export interface SeqSlot {
   rank: Rank;
 }
 
-export function seqSlots(ctx: LevelCtx): SeqSlot[] {
+export function seqSlots(_ctx: LevelCtx): SeqSlot[] {
   const out: SeqSlot[] = [];
   for (let pos = 1; pos <= 14; pos++) {
     const rank: Rank = pos === 1 ? 14 : pos;
-    if (ctx.ranks.has(rank)) continue;
     out.push({ pos, rank });
   }
   return out;

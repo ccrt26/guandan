@@ -13,11 +13,11 @@ interface StudentReleaseCommon {
 }
 export type StudentRelease = (StudentReleaseCommon & (
  | {schema:'ohuo-student-release-v1';candidateSpecRef:'ohuo-frozen-c8-expand4-v1';candidatePolicy?:never}
- | {schema:'ohuo-student-release-candidate-v2';candidateSpecRef:'first-target-offer12-v1';candidatePolicy:CandidatePolicySpec}
-)) | (Omit<StudentReleaseCommon,'scorer'>&{schema:'ohuo-student-release-first-round-v3';candidateSpecRef:'first-target-offer12-v1';candidatePolicy:CandidatePolicySpec;scorer:StudentScorerDescriptor;proposalRef:string;learningParent:{ref:string;scorer:StudentScorerDescriptor;migrationReceiptRef:FixedStudentRef}});
+ | {schema:'ohuo-student-release-candidate-v2';candidateSpecRef:'first-target-offer12-rules-v543-v1';candidatePolicy:CandidatePolicySpec}
+)) | (Omit<StudentReleaseCommon,'scorer'>&{schema:'ohuo-student-release-first-round-v3';candidateSpecRef:'first-target-offer12-rules-v543-v1';candidatePolicy:CandidatePolicySpec;scorer:StudentScorerDescriptor;proposalRef:string;learningParent:{ref:string;scorer:StudentScorerDescriptor;migrationReceiptRef:FixedStudentRef}});
 /** Candidate contract only; full scorer/checkpoint identities are still checked by the loader. */
 export function resolveStudentCandidatePolicy(release:Pick<StudentRelease,'schema'|'candidateSpecRef'|'candidatePolicy'>):CandidatePolicySpec {
- if(release.schema==='ohuo-student-release-v1'&&release.candidateSpecRef==='ohuo-frozen-c8-expand4-v1'&&release.candidatePolicy===undefined)return resolveCandidatePolicy();
+ if(release.schema==='ohuo-student-release-v1')throw Error('historical student release requires rule-specific revalidation');
  if((release.schema==='ohuo-student-release-candidate-v2'||release.schema==='ohuo-student-release-first-round-v3')&&release.candidateSpecRef===FIRST_TARGET_CANDIDATE_SPEC){
   const policy=resolveCandidatePolicy(release.candidatePolicy);
   if(policy.candidateSpec===release.candidateSpecRef)return policy;

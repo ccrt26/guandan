@@ -1,3 +1,4 @@
+import { legalReturnCards } from '@gd/engine';
 import { displaySeatLabel } from '@gd/review';
 import { canPass, isWild, RANK_NAME, cardLabel, type Card, type Combo, type GameState } from '@gd/engine';
 import type { MatchController } from '../../game/controller';
@@ -124,11 +125,13 @@ export function buildStageVM(controller: MatchController, state: GameState, ui: 
   if (state.over) {
     message = '本局已结束';
   } else if (myReturn) {
+    const returns = legalReturnCards(state.hands[pendingReturn!.from], ctx);
+    const rule = returns.some(card => card.rank <= 10) ? '2—10 的非万能牌' : '最小的非万能牌（手中无 2—10 非万能牌）';
     message = ui.returnCard
       ? `把 ${cardLabel(ui.returnCard.card)} 还给${SEAT_DISPLAY[seatName(pendingReturn!.to)]}（空格确认）`
       : selectedCount === 0
-        ? `收到贡牌——选一张不大于 10 的牌，还给${SEAT_DISPLAY[seatName(pendingReturn!.to)]}`
-        : '这张不能还：需为不大于 10 的牌（红心级牌除外）';
+        ? `收到贡牌——选一张${rule}，还给${SEAT_DISPLAY[seatName(pendingReturn!.to)]}`
+        : `这张不能还：请选择${rule}`;
   } else if (humanTurn) {
     message =
       selectedCount === 0

@@ -68,8 +68,8 @@ export class MatchRecorder {
   this.record.games.push({gameNo:state.match.gameNo,sourceSHA256:hashJSON(saved),levelsBefore:[...state.levelsBefore],tribute:structuredClone(state.tribute),...(sourceFamilyId?{sourceFamilyId}:{})});this.flush('game',this.record.games.at(-1),saved);
  }
  beginDecision(input:{key:DecisionKey;policyId:string;initialCandidateIds:readonly string[];offeredIds:readonly string[];bundle?:DecisionBundle;candidateInputs?:CandidateInputs;studentInputs?:StudentCandidateInputs}){
-  const {key}=input;if(key.matchId!==this.record.matchId||this.record.decisions.some(d=>keyOf(d.key)===keyOf(key))||!this.record.games.some(g=>g.gameNo===key.gameNo))throw Error('decision identity conflict');
-  const prefix=this.history(key.gameNo);if(prefix.throughMoveNo!==key.moveNo)throw Error('complete public prefix required before decision');
+  const {key}=input,serializedKey=keyOf(key);if(key.matchId!==this.record.matchId||this.record.decisions.some(d=>keyOf(d.key)===serializedKey)||!this.record.games.some(g=>g.gameNo===key.gameNo))throw Error('decision identity conflict');
+  if(this.confirmedRows(key.gameNo).length!==key.moveNo)throw Error('complete public prefix required before decision');
   const candidatePolicy=input.bundle?candidatePolicyForBundle(input.bundle):undefined;
   if(candidatePolicy?.candidateSpec===FIRST_TARGET_CANDIDATE_SPEC&&(!isDeepStrictEqual(input.initialCandidateIds,input.bundle!.initialCandidateIds)||!isDeepStrictEqual(input.offeredIds,input.bundle!.initialCandidateIds)||!input.candidateInputs||resolveCandidatePolicy(input.candidateInputs.candidatePolicy)!==candidatePolicy||!isDeepStrictEqual(input.candidateInputs.candidateIds,input.bundle!.initialCandidateIds)))throw Error('new candidate record set/spec mismatch');
   if(input.studentInputs&&(!input.bundle||!input.candidateInputs||candidatePolicy?.candidateSpec!==FIRST_TARGET_CANDIDATE_SPEC||!isDeepStrictEqual(input.studentInputs.candidateIds,input.bundle.initialCandidateIds)||input.studentInputs.inputDim!==423))throw Error('student capture/record set mismatch');
@@ -77,7 +77,7 @@ export class MatchRecorder {
   if(trainingInput&&keyOf(input.bundle!.key)!==keyOf(key))throw Error('private decision key mismatch');
   this.record.decisions.push({key:structuredClone(key),policyId:input.policyId,initialCandidateIds:[...input.initialCandidateIds],offeredIds:[...input.offeredIds],requestedActionId:null,actualActionId:null,actualMove:null,actualSource:null,status:'pending',reason:null,executionKind:'none',trainingInputSHA256:trainingInput?hashJSON(trainingInput):null,elapsedMs:null,requests:[],priorTarget:null,events:[]});this.flush('decision',this.record.decisions.at(-1),undefined,trainingInput);
  }
- private decision(key:DecisionKey){const d=this.record.decisions.find(d=>keyOf(d.key)===keyOf(key));if(!d)throw Error('unrecorded decision');return d;}
+ private decision(key:DecisionKey){const serializedKey=keyOf(key),d=this.record.decisions.find(d=>keyOf(d.key)===serializedKey);if(!d)throw Error('unrecorded decision');return d;}
  confirmAction(input:{key:DecisionKey;move:Move;events:EngineEvent[];priorTarget:Combo|null;actionId:string;requestedActionId:string|null;source:string;status:'selected'|'fallback'}){
   const d=this.decision(input.key);if(d.status!=='pending'||d.executionKind!=='none')throw Error('duplicate action confirmation');
   const events=publicEngineEvents(input.events);actionFrom(events,input.key,input.move);
@@ -91,9 +91,13 @@ export class MatchRecorder {
   if(input.status==='halted'&&input.reason==='execution_uncertain')d.executionKind='unknown';
   Object.assign(d,{status:input.status,reason:input.reason,elapsedMs:input.elapsedMs,offeredIds:[...input.offeredIds],requests:structuredClone(input.requests)});this.flush('decision',d);
  }
- history(gameNo:number):PublicHistoryPrefix{
+ private confirmedRows(gameNo:number){
   const rows=this.record.decisions.filter(d=>d.key.gameNo===gameNo&&d.executionKind==='confirmed');
   if(rows.some((d,i)=>d.key.moveNo!==i))throw Error('non-contiguous confirmed public prefix');
+  return rows;
+ }
+ history(gameNo:number):PublicHistoryPrefix{
+  const rows=this.confirmedRows(gameNo);
   return {matchId:this.record.matchId,gameNo,throughMoveNo:rows.length,steps:rows.map(d=>({events:structuredClone(d.events),priorTarget:structuredClone(d.priorTarget)}))};
  }
  finish(summary:NonNullable<MatchRecord['summary']>){
@@ -220,6 +224,14 @@ export function captureStudentCandidateInputs({bundle,state,tracker,candidateInp
  const candidatePolicy=candidatePolicyForBundle(bundle),scorer=validateStudentScorerDescriptor(student.scorer),obs=bundle.observation;
  if(candidatePolicy.candidateSpec!==FIRST_TARGET_CANDIDATE_SPEC||candidateInputs.inputDim!==399||!isDeepStrictEqual(candidateInputs.candidateIds,bundle.initialCandidateIds)||resolveCandidatePolicy(candidateInputs.candidatePolicy)!==candidatePolicy||student.network.inputDim!==423||typeof student.studentParentRef!=='string'||!/@sha256:[a-f0-9]{64}$/.test(student.studentParentRef))throw Error('student capture identities');
  const memory=buildPublicHighCardMemory({matchId:obs.matchId,gameNo:obs.gameNo,throughMoveNo:obs.moveNo,steps:obs.publicPrefix},{matchId:bundle.key.matchId,gameNo:bundle.key.gameNo},obs.effectiveLevelRanks);
- const rows=bundle.initialCandidateIds.map((id,i)=>{const c=bundle.pool.find(c=>c.actionId===id);if(!c)throw Error('student same C mapping');const x=encodeStudentInput399Plus24(state,tracker,c.canonical,bundle.key,memory);if(!isDeepStrictEqual([...x.subarray(0,399)],candidateInputs.candidateFeatures[i]))throw Error('student legacy segment differs from proposal capture');return [...x];});
+ // One synchronous decision owns this validated state/memory vector. Distinct
+ // actions still encode and match their original B399 rows; no witness escapes
+ // this call or survives a changed state, key, tracker or public-memory prefix.
+ let base:Float32Array|undefined;
+ const rows=bundle.initialCandidateIds.map((id,i)=>{const c=bundle.pool.find(c=>c.actionId===id);if(!c)throw Error('student same C mapping');
+  let x:Float32Array;
+  if(!base){x=encodeStudentInput399Plus24(state,tracker,c.canonical,bundle.key,memory);base=x;}
+  else{x=base.slice();const action=x.subarray(STATE_DIM_V2,INPUT_DIM_V2);action.fill(0);encodeAction(c.canonical,action,'action64');}
+  if(!isDeepStrictEqual([...x.subarray(0,399)],candidateInputs.candidateFeatures[i]))throw Error('student legacy segment differs from proposal capture');return [...x];});
  return captureStudent423InitialCandidates(bundle,{schema:'ohuo-student-candidate-input-v1' as const,studentParentRef:student.studentParentRef,scorer,inputDim:423 as const,inputContract:STUDENT_SCORER_ENCODER,candidatePolicy,candidateIds:[...bundle.initialCandidateIds],candidateFeatures:rows,publicHighCardMemory:memory},student.network);
 }

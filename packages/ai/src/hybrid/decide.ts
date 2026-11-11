@@ -2,6 +2,7 @@
  * A selected result is evidence of a confirmed apply, not merely HTTP success. */
 import type { GameState, Move } from '@gd/engine';
 import { resolveLegalMove } from './legality';
+import { candidatePolicyForBundle } from '../candidate-spec';
 import { freezeCopy, type DecisionBundle, type DecisionKey } from './protocol';
 import { selectRemoteDecision, isRemoteRequestSummary, type RemoteDecisionResult, type RemoteRequest } from './remote-selector';
 
@@ -62,6 +63,8 @@ export class PendingDecision {
     if (this.begun || this.terminal) return this.result;
     this.begun = true;
     const {bundle,request,localActionId}=this.options;
+    try { candidatePolicyForBundle(bundle); }
+    catch { this.settleRemote(null); this.finish({status:'halted',reason:'historical_or_invalid_candidate_identity'}); return this.result; }
     if (!request || bundle.isUniqueLegalAction) {
       this.settleRemote(null);
       this.commit(localActionId ?? bundle.fallbackActionId,'selected',bundle.isUniqueLegalAction?'local_unique':'local',bundle.offeredIds);

@@ -1,5 +1,5 @@
 import {screenRevalidationStatePath} from './screen-revalidation.mjs';
-import {PROJECT_RULES_TEACHER_PROMPT_SCHEMA,assertProjectRulesTerminal,assertProjectRuleOptions} from '../../packages/web/server/llm-project-rules-v541.mjs';
+import {PROJECT_RULES_TEACHER_PROMPT_SCHEMA,assertProjectRulesTerminal,assertProjectRuleOptions} from '../../packages/web/server/llm-project-rules-v543.mjs';
 /** R13 second phase inside the existing offline-label host: immutable GLM +
  * independent hard checks first, then metered complete continuation branches. */
 import {readFileSync,writeFileSync,renameSync} from 'node:fs';
@@ -133,14 +133,18 @@ export async function runFirstRoundScreen(ctx:any){
    const r=p.roots[cp.rootCursor];if(r.decision==='diagnostic'){cp.plans.push({rootIndex:cp.rootCursor,status:'diagnostic',inputSHA256:r.inputSHA256,hardCheckRef:r.hardCheckRef,labelTerminalRef:r.labelTerminalRef});cp.rootCursor++;await save();continue;}
    const continuation=firstRoundContinuation({actor:r.snapshot.row.actorSeat,proposalRef:f.proposalRef,parentRef:f.studentParentRef,proposal,parent,otherPolicies:r.otherPolicies}),frozen=freezeFirstRoundScreenPlan({snapshot:r.snapshot,proposalActionId:r.terminal.remote.actionId,worlds:r.worlds,continuation,...(commonView?{comparisonBatch:r.comparisonBatch,frozenWorlds:r.frozenWorlds}:{})});
    let record=cp.plans.find((x:any)=>x.rootIndex===cp.rootCursor);if(record){if(!equal(record.plan,frozen.plan)||record.planSHA256!==frozen.planSHA256)throw Error('screen prebranch freeze changed');}else{record={rootIndex:cp.rootCursor,status:'pending',inputSHA256:r.inputSHA256,hardCheckRef:r.hardCheckRef,labelTerminalRef:r.labelTerminalRef,plan:frozen.plan,planSHA256:frozen.planSHA256,screen:null};cp.plans.push(record);await save();}
-   let paused=false;const results:any[]=[];
+   let paused=false,knownIncomplete=false;const results:any[]=[];
    for(const world of frozen.plan.worlds)for(const action of frozen.plan.actions){
-    const past=cp.attempts.filter((a:any)=>a.rootIndex===cp.rootCursor&&a.row.worldId===world.worldId&&a.row.actionId===action.actionId),complete=past.find((a:any)=>a.row.result.complete);if(complete){results.push(complete.row);continue;}if(commonView&&past.length){results.push(past.at(-1).row);paused=true;continue;}
+    const past=cp.attempts.filter((a:any)=>a.rootIndex===cp.rootCursor&&a.row.worldId===world.worldId&&a.row.actionId===action.actionId),complete=past.find((a:any)=>a.row.result.complete);if(complete){results.push(complete.row);continue;}if(past.length){results.push(past.at(-1).row);knownIncomplete=true;paused=true;continue;}
     if(paused||signal.aborted||expired()){paused=true;continue;}
     if(!commonView&&(cp.attempts.length>=p.contract.maxBranchStarts||cp.attempts.filter((a:any)=>a.rootIndex===cp.rootCursor).length>=12)){capExhausted=true;paused=true;break;}
-    const row=await executeChargedFirstRoundBranch({ctx,cp,save,root:frozen.root,plan:frozen.plan,continuation,frozenWorlds:frozen.frozenWorlds,worldId:world.worldId,actionId:action.actionId});if(row===null){paused=true;continue;}results.push(row);if(!row.result.complete)paused=true;
+    const row=await executeChargedFirstRoundBranch({ctx,cp,save,root:frozen.root,plan:frozen.plan,continuation,frozenWorlds:frozen.frozenWorlds,worldId:world.worldId,actionId:action.actionId});if(row===null){paused=true;continue;}results.push(row);if(!row.result.complete){knownIncomplete=true;paused=true;}
    }
-   record.screen=summarizeFirstRoundScreen(frozen.plan,results);record.status=record.screen.status;await save();if(paused||record.status==='incomplete')break;cp.rootCursor++;await save();
+   record.screen=summarizeFirstRoundScreen(frozen.plan,results);record.status=record.screen.status;await save();
+   // No branch-level checkpoint exists here. A settled incomplete attempt is
+   // not a resumable boundary or permission to restart/exclude its frozen root.
+   if(knownIncomplete&&!signal.aborted)throw Error('screen_known_incomplete: original branch has no resumable checkpoint');
+   if(paused||record.status==='incomplete')break;cp.rootCursor++;await save();
   }
   return {completed:cp.rootCursor===p.roots.length,cleanupConfirmed:true,actualScope:scope,stopReason:signal.aborted?String(signal.reason??'user_stop'):capExhausted?'screen_fixed_branch_cap_exhausted':'run_boundary',artifactRefs:[summary()]};
  }catch(error){if(cp.active)cp.executionUnknown=true;try{await save();}catch{};Object.assign(error as object,{cleanupConfirmed:true,actualScope:scope});throw error;}

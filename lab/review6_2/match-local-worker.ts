@@ -21,7 +21,10 @@ if(!isMainThread){
   if(inputWorkload){strictObject(job.executionBoundary,'executionBoundary',['mode','resourcePolicyRef']);fixedReference(job.executionBoundary.resourcePolicyRef,'executionBoundary.resourcePolicyRef');if(Object.hasOwn(job,'deadlineEpochMs'))throw Error('input-workload local match cannot carry an artificial deadline');}
   else if(job?.executionBoundary!==undefined)throw Error('unsupported local match execution boundary');
   if(!job?.row||!Array.isArray(job.row.seats)||job.row.seats.some((s:any)=>s.mode!=='local')||!isDeepStrictEqual(job.identity.rules,DEFAULT_RULES)||!inputWorkload&&!Number.isFinite(job.deadlineEpochMs))throw Error('fixed local job required');
-  const policies=await Promise.all(job.policyRefs.map((ref:string)=>resolveNodePolicy(ref,job.policyRepositoryRoot)));
+  // This worker owns exactly one job. Repeated seats share verified policy
+  // bytes only; the existing seatFactory still creates an isolated decider.
+  const policyLoads=new Map<string,ReturnType<typeof resolveNodePolicy>>();
+  const policies=await Promise.all(job.policyRefs.map((ref:string)=>{let load=policyLoads.get(ref);if(!load){load=resolveNodePolicy(ref,job.policyRepositoryRoot);policyLoads.set(ref,load);}return load;}));
   if(policies.some((p:any,i:number)=>!isDeepStrictEqual(p.identity,job.policyIdentities[i])))throw Error('worker loaded different policy');
   const store=createMatchStore(job.outputRoot,job.identity),specs:PolicySpec[]=policies.map((p:any)=>({policyId:p.identity.policyId,kind:'neural'}));
   let sequence=0,bundle:DecisionBundle|null=null,decisionStarted=0;

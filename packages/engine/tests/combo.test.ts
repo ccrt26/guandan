@@ -70,11 +70,11 @@ describe('classify 基础牌型', () => {
     expect(classify(cds('S3,H4,D5,C6,S7,H8'), L2)).toHaveLength(0);
     expect(classify(cds('S3,H4,D5,C6,S7,H8,D9,C10,S11'), L2)).toHaveLength(0);
   });
-  it('顺子不含 2、不含级牌', () => {
-    expect(classify(cds('S2,H3,D4,C5,S6'), L2)).toHaveLength(0);
-    // 打 5 时 34567 不成立（5 为级牌）
+  it('顺子包含自然级牌，但仍拒绝真实缺点', () => {
+    expect(classify(cds('S2,H3,D4,C5,S6'), L2).some(c => c.kind === 'straight')).toBe(true);
+    // 真实缺 5 的 34678 不成立，不能机械改为合法
     expect(classify(cds('S3,H4,D6,C7,S8'), L5)).toHaveLength(0);
-    // 打 5 时 45678 也不成立
+    // 真实缺 5 的 46789 也不成立
     expect(classify(cds('S4,H6,D7,C8,S9'), L5)).toHaveLength(0);
   });
   it('三连对', () => {
@@ -110,12 +110,12 @@ describe('classify 逢人配', () => {
     expect(r.length).toBeGreaterThan(0);
     expect(r.every((c) => c.kind === 'pair')).toBe(true);
   });
-  it('红心级牌配顺子（级牌本身不入顺）', () => {
+  it('红心级牌可自然参加或替代非王点数', () => {
     // 打 5：♥5 万能 → 6,7,8,9 + ♥5 当 10 = 顺子 678910
     const r = classify(cds('S6,H7,D8,C9,H5'), L5);
     expect(r.some((c) => c.kind === 'straight')).toBe(true);
-    // 打 5 时 34567 因级牌占位不成立（级牌不入顺）
-    expect(classify(cds('S3,H4,D6,C7,H5'), L5)).toHaveLength(0);
+    // 打 5 时红心 5 自然参加 34567
+    expect(classify(cds('S3,H4,D6,C7,H5'), L5).some(c => c.kind === 'straight')).toBe(true);
   });
   it('双万能牌凑三张（both 双级模式）', () => {
     const r = classify(cds('H5,H9,S7'), L59);
@@ -194,12 +194,12 @@ describe('官方规则锁：A 作 1 且 2 参与序列（位置域模型）', ()
     expect(classify(cds('S2,H3,D4,C5,S6'), L8).some((c) => c.kind === 'straight' && c.keyRank === 6)).toBe(true);
     expect(classify(cds('S3,H4,D5,C6,S7'), L8).some((c) => c.kind === 'straight' && c.keyRank === 7)).toBe(true);
   });
-  it('打 2 局：2 是级牌，A2345 / 23456 均不可用', () => {
-    expect(classify(cds('S14,S2,H3,D4,C5'), L2)).toHaveLength(0);
-    expect(classify(cds('S2,H3,D4,C5,S6'), L2)).toHaveLength(0);
+  it('打 2 局：自然级 2 仍参加 A2345 / 23456', () => {
+    expect(classify(cds('S14,S2,H3,D4,C5'), L2).some(c => c.kind === 'straight' && c.keyRank === 5)).toBe(true);
+    expect(classify(cds('S2,H3,D4,C5,S6'), L2).some(c => c.kind === 'straight')).toBe(true);
   });
-  it('级牌在序列中即阻断（打 4 时 A2345 不可用，56789 仍可）', () => {
-    expect(classify(cds('S14,S2,H3,D4,C5'), L4)).toHaveLength(0);
+  it('级牌按自然点数参加序列（打 4 时 A2345 与 56789 均可）', () => {
+    expect(classify(cds('S14,S2,H3,D4,C5'), L4).some(c => c.kind === 'straight' && c.keyRank === 5)).toBe(true);
     expect(classify(cds('S5,H6,D7,C8,S9'), L4).some((c) => c.kind === 'straight')).toBe(true);
   });
   it('AA2233 / 223344 均为合法三连对；AAA222 / 222333 均为合法钢板（仅光板）', () => {

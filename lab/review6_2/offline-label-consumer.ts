@@ -1,4 +1,4 @@
-import {PROJECT_RULES_TEACHER_PROMPT_SCHEMA,validateProjectRulesPrompt,assertProjectRuleOptions} from '../../packages/web/server/llm-project-rules-v541.mjs';
+import {PROJECT_RULES_TEACHER_PROMPT_SCHEMA,validateProjectRulesPrompt,assertProjectRuleOptions} from '../../packages/web/server/llm-project-rules-v543.mjs';
 import {COMMON_VIEW_SYSTEM_PROMPT_SHA256} from '../../packages/web/server/llm-selection-wire.mjs';
 import {prepareCommonViewWorlds,validateCommonViewWorldBatch} from './first-round-screen-runtime';
 import {prepareBlindReviewProjection} from './first-round-blind-review';
@@ -162,15 +162,18 @@ export function createOfflineLabelConsumer({profileStore,mode='research',fetchIm
   const r2=!!p.commonViewTeacher;
   if(r2&&ctx.executionBoundary?.mode!=='input-workload-only')throw Error('common_view_execution_boundary');
   let cp:Checkpoint=ctx.checkpoint?structuredClone(ctx.checkpoint):{schema:'ohuo-offline-label-run-v1',taskSHA256:digest(task),selectionRef:task.datasetRefs[0],cursor:0,active:null,rows:[],executionUnknown:false,...(p.blindReview?{blindReview:p.blindReview.checkpointBinding}:{})};
-  let sequence=ctx.checkpointSequence,apiInvoked=false,worldPreparationEntered=false;const meters:Array<{drain:()=>Promise<void>}>=[],labels=join(task.outputRoot,'labels');mkdirSync(labels,{recursive:true,mode:0o700});
+  let sequence=ctx.checkpointSequence,apiInvoked=false,currentSent=false,phase:'unverified'|'boundary'|'pre-send'|'terminal-write'='unverified';const meters:Array<{drain:()=>Promise<void>}>=[],labels=join(task.outputRoot,'labels');mkdirSync(labels,{recursive:true,mode:0o700});
   const save=async()=>ctx.saveCheckpoint(cp,++sequence);
+  const reservationsSettled=()=>{try{const c=ctx.getConsumption();return ['reserved','reservedUnknown'].every(k=>c[k]&&Object.values(c[k]).every(n=>n===0));}catch{return false;}};
   const summary=()=>{const path=join(task.outputRoot,'offline-summary.json'),value={schema:'ohuo-offline-label-summary-v1',runId:task.runId,taskSHA256:cp.taskSHA256,selectionRef:cp.selectionRef,purpose:p.blindReview?.purpose??p.selection.purpose,...(p.blindReview?{blindReview:p.blindReview.checkpointBinding}:{}),cursor:cp.cursor,total:p.snapshots.length,rows:cp.rows,executionUnknown:cp.executionUnknown,consumption:ctx.getConsumption(),interpretation:'teacher suggestions only, never executed; no strength or training qualification claim'},tmp=`${path}.tmp-${process.pid}-${sequence}`;writeFileSync(tmp,JSON.stringify(value),{flag:'wx',mode:0o600});renameSync(tmp,path);return{path,sha256:sha(readFileSync(path)),purpose:'fixed offline selection terminals; private labels separately hash-bound'};};
   try{
    if(!equal(cp.blindReview??null,p.blindReview?.checkpointBinding??null))throw Error('offline blind diagnostic checkpoint binding differs');
    if(!validateCheckpoint(cp)||cp.taskSHA256!==digest(task)||cp.selectionRef!==task.datasetRefs[0]||cp.executionUnknown||(cp.active&&!(r2&&(cp.active as any).phase==='world-preparation'&&cp.active.index===cp.cursor&&cp.active.inputSHA256===p.snapshots[cp.cursor]?.row.inputSHA256))||cp.cursor>p.snapshots.length)throw Error('execution_uncertain: no clean offline query boundary');
    const files=readdirSync(labels).sort(),expected=cp.rows.map((_:any,i:number)=>`q${i}.json`).sort();if(!equal(files,expected))throw Error('execution_uncertain: uncheckpointed offline result');
    for(let i=0;i<cp.rows.length;i++){const r=cp.rows[i];if(r.resultRef.path!==join(labels,`q${i}.json`)||sha(plainFile(r.resultRef.path))!==r.resultRef.sha256||!equal(r.key,p.snapshots[i].row.key)||r.inputSHA256!==p.snapshots[i].row.inputSHA256)throw Error('offline terminal checkpoint identity differs');}
+   phase='boundary';
    while(cp.cursor<p.snapshots.length){
+    currentSent=false;phase='pre-send';
     if(signal.aborted||!r2&&performance.now()>=ctx.deadlineMonotonicMs)break;
     if(sha(plainFile(p.sourceIndexPath))!==p.sourceIndexSHA256)throw Error('source index changed');
     const s=p.snapshots[cp.cursor],sourceOutcome=offlineSnapshotActing(s);
@@ -179,7 +182,6 @@ export function createOfflineLabelConsumer({profileStore,mode='research',fetchIm
      try{commonView=commonViewForSnapshot(s);}catch(error){if(error instanceof Error&&error.message==='action_representation_ambiguous')preparationFailure=error.message;else throw error;}
      if(commonView){
       const priorRef=(cp.active as any)?.worldPreparation??null;
-      worldPreparationEntered=true;
       cp.active={index:cp.cursor,inputSHA256:s.row.inputSHA256,phase:'world-preparation',worldPreparation:priorRef} as any;await save();
       const directory=join(task.outputRoot,'worlds');mkdirSync(directory,{recursive:true,mode:0o700});
       const batchPlan=p.commonViewTeacher.worldPlanDocument.rows.find((r:any)=>r.inputSHA256===s.row.inputSHA256).batchPlan;
@@ -200,22 +202,29 @@ export function createOfflineLabelConsumer({profileStore,mode='research',fetchIm
     const local=new AbortController(),abort=()=>local.abort(signal.reason??'user_stop');signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();
     const timer=r2?null:setTimeout(()=>local.abort('run_boundary'),Math.max(0,ctx.deadlineMonotonicMs-performance.now()));
     let result:Awaited<ReturnType<typeof queryOfflineTeacher>>|null=null,unknown=false;const teacherResponses:any[]=[];
-    const meter=createMeteredRemote({store:p.store,reference:p.reference,reserve:ctx.reserve,settleReservation:ctx.settleReservation,cancel:(r:string)=>local.abort(r),keyPrefix:`l${cp.cursor}-${ctx.executionId}`,ownerSignal:signal,onSent:()=>{if(mode==='research')apiInvoked=true;},...(fetchImpl?{fetchImpl}:{})});meters.push(meter);
+    const meter=createMeteredRemote({store:p.store,reference:p.reference,reserve:ctx.reserve,settleReservation:ctx.settleReservation,cancel:(r:string)=>local.abort(r),keyPrefix:`l${cp.cursor}-${ctx.executionId}`,ownerSignal:signal,onSent:()=>{currentSent=true;if(mode==='research')apiInvoked=true;},...(fetchImpl?{fetchImpl}:{})});meters.push(meter);
     try{result=preparationFailure?{status:preparationFailure,remote:null,offlineLabel:null} as any:await queryOfflineTeacher({snapshot:s,teacher:p.teacher,...(r2?{commonView,...(p.commonViewTeacher.requestPrompt?{projectRulesPrompt:p.commonViewTeacher.requestPrompt}:{})}:{}),request:async(view,signal)=>{const response=await meter.request(view,signal);if(response.status==='response')teacherResponses.push(structuredClone(response.response));return response;},signal:local.signal});await meter.drain();unknown=local.signal.reason==='execution_uncertain'||result.remote?.attempts.some(a=>a.requestCount===null)===true;}
-    catch{unknown=true;try{await meter.drain();}catch{}}
+    catch(error){let drained=true;try{await meter.drain();}catch{drained=false;}if(!currentSent&&drained&&local.signal.reason!=='execution_uncertain'&&reservationsSettled())throw error;unknown=true;}
     finally{if(timer!==null)clearTimeout(timer);signal.removeEventListener('abort',abort);}
+    // A reservation can be durable even when its acknowledgement was lost.
+    unknown||=!reservationsSettled();phase='terminal-write';
     const terminal={schema:'ohuo-offline-label-result-v1',...(r2?{commonView:commonViewTerminal}:{}),...(p.blindReview?{blindReview:p.blindReview.checkpointBinding}:{}),...(s.input.schema==='ohuo-decision-input-first-round-v3'?{teacherResponses}:{}),purpose:p.blindReview?.purpose??p.selection.purpose,selectionRef:cp.selectionRef,index:cp.cursor,source:s.row,inputSHA256:s.row.inputSHA256,key:s.row.key,decisionId:s.bundle.decisionId,acting:sourceOutcome.acting,proposal:{policyId:s.input.candidateInputs!.policyId,policyIdentity:s.input.candidateInputs!.policyIdentity},teacher:p.teacher,status:unknown?'execution_uncertain':result!.status,labelKind:!p.blindReview&&(!r2||p.commonViewTeacher.routing.role!=='independent-review')&&!unknown&&result?.offlineLabel?.legality==='validated'?'offline_suggested':null,remote:result?.remote??null,offlineLabel:unknown||p.blindReview||r2&&p.commonViewTeacher.routing.role==='independent-review'?null:result?.offlineLabel??null};
     const path=join(labels,`q${cp.cursor}.json`),bytes=JSON.stringify(terminal);writeFileSync(path,bytes,{flag:'wx',mode:0o600});
     const selected=!unknown&&result?.remote?.status==='selected'?result.remote:null,seat=sourceOutcome.acting.seatSnapshot as any;
-    cp.rows.push({key:s.row.key,inputSHA256:s.row.inputSHA256,familyId:s.row.familyId,...(s.row.blockFamilyId?{blockFamilyId:s.row.blockFamilyId}:{}),split:s.row.split,actorSeat:s.row.actorSeat,...(sourceOutcome.sourceKind==='designed-synthetic'?{sourceKind:sourceOutcome.sourceKind,source:s.row}:{}),actingPolicyId:sourceOutcome.acting.policyId,proposalPolicyIdentity:s.input.candidateInputs!.policyIdentity,actingReleaseRef:seat?.releaseRef??null,studentReleaseSHA256:seat?.studentReleaseSHA256??null,scorerWeightsSHA256:seat?.studentRelease?.scorer?.weightsSHA256??null,studentCheckpointSHA256:seat?.studentRelease?.checkpoint?.sha256??null,actualActionId:sourceOutcome.acting.actionId,teacherActionId:selected?.actionId??null,teacherReleaseRef:p.teacher.releaseRef,inInitialCandidateSet:selected?.inInitialCandidateSet??null,actionAgreement:selected&&sourceOutcome.acting.actionId!==null?selected.actionId===sourceOutcome.acting.actionId:null,status:terminal.status,reason:unknown?'execution_uncertain':result?.remote&&result.remote.status!=='selected'?result.remote.reason:null,labelKind:terminal.labelKind,requestCount:unknown?null:result?.remote?result.remote.requestCount:0,resultRef:{path,sha256:sha(bytes)}});cp.cursor++;cp.active=null;cp.executionUnknown=unknown;await save();
+    cp.rows.push({key:s.row.key,inputSHA256:s.row.inputSHA256,familyId:s.row.familyId,...(s.row.blockFamilyId?{blockFamilyId:s.row.blockFamilyId}:{}),split:s.row.split,actorSeat:s.row.actorSeat,...(sourceOutcome.sourceKind==='designed-synthetic'?{sourceKind:sourceOutcome.sourceKind,source:s.row}:{}),actingPolicyId:sourceOutcome.acting.policyId,proposalPolicyIdentity:s.input.candidateInputs!.policyIdentity,actingReleaseRef:seat?.releaseRef??null,studentReleaseSHA256:seat?.studentReleaseSHA256??null,scorerWeightsSHA256:seat?.studentRelease?.scorer?.weightsSHA256??null,studentCheckpointSHA256:seat?.studentRelease?.checkpoint?.sha256??null,actualActionId:sourceOutcome.acting.actionId,teacherActionId:selected?.actionId??null,teacherReleaseRef:p.teacher.releaseRef,inInitialCandidateSet:selected?.inInitialCandidateSet??null,actionAgreement:selected&&sourceOutcome.acting.actionId!==null?selected.actionId===sourceOutcome.acting.actionId:null,status:terminal.status,reason:unknown?'execution_uncertain':result?.remote&&result.remote.status!=='selected'?result.remote.reason:null,labelKind:terminal.labelKind,requestCount:unknown?null:result?.remote?result.remote.requestCount:0,resultRef:{path,sha256:sha(bytes)}});cp.cursor++;cp.active=null;cp.executionUnknown=unknown;await save();phase='boundary';
     if(unknown)throw Error('execution_uncertain: offline request result unknown');
     if(local.signal.aborted||result?.status==='halted')break;
     await new Promise<void>(resolve=>setImmediate(resolve));
    }
    return {completed:cp.cursor===p.snapshots.length,cleanupConfirmed:true,actualScope:scope(apiInvoked),stopReason:signal.aborted?String(signal.reason??'user_stop'):'run_boundary',artifactRefs:[summary()]};
   }catch(error){
-   const beforeFirstProvider=worldPreparationEntered&&r2&&!apiInvoked&&meters.length===0&&cp.cursor===0&&cp.rows.length===0&&(cp.active as any)?.phase==='world-preparation';
-   cp.executionUnknown=!beforeFirstProvider;await Promise.allSettled(meters.map(m=>m.drain()));try{await save();}catch{}
+   const drains=await Promise.allSettled(meters.map(m=>m.drain()));
+   const knownBoundary=(phase==='boundary'||phase==='pre-send'&&!currentSent)&&drains.every(r=>r.status==='fulfilled')&&reservationsSettled();
+   cp.executionUnknown||=!knownBoundary;
+   // World preparation keeps its original checkpoint. A known pre-send
+   // provider boundary owns no invocation and may safely return to that input.
+   if(knownBoundary&&phase==='pre-send'&&(cp.active as any)?.phase!=='world-preparation')cp.active=null;
+   try{await save();}catch{}
    Object.assign(error as object,{cleanupConfirmed:true,actualScope:scope(apiInvoked)});throw error;
   }
  };

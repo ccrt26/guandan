@@ -18,12 +18,34 @@ export function mulberry32(seed: number): () => number {
   };
 }
 
+function validateWeights(flat: Float32Array, parameterCount: number): void {
+  if (flat.length !== parameterCount) throw Error(`weights length ${flat.length} != ${parameterCount}`);
+  if (!flat.every(Number.isFinite)) throw Error('non-finite weights');
+}
+
 export class MLP {
   readonly sizes: readonly number[];
   /** 输入维度（默认 v1=385；F 分支 399）——forward 行距按它取 */
   readonly inputDim: number;
   W: Float32Array[] = [];
   b: Float32Array[] = [];
+
+  /** Load independent layer arrays without generating discarded random weights. */
+  static fromWeights(flat: Float32Array, inputDim: number = INPUT_DIM): MLP {
+    if (!Number.isInteger(inputDim) || inputDim <= 0) throw Error('invalid input dimension');
+    const sizes = [inputDim, 256, 256, 1];
+    const parameterCount = sizes.slice(1).reduce((n, out, i) => n + sizes[i] * out + out, 0);
+    validateWeights(flat, parameterCount);
+    const W: Float32Array[] = [], b: Float32Array[] = [];
+    let o = 0;
+    for (let l = 0; l < sizes.length - 1; l++) {
+      const count = sizes[l] * sizes[l + 1];
+      W.push(flat.slice(o, o + count)); o += count;
+      b.push(flat.slice(o, o + sizes[l + 1])); o += sizes[l + 1];
+    }
+    // Supply every instance field directly; keep the seeded constructor unchanged.
+    return Object.assign(Object.create(MLP.prototype), { inputDim, sizes, W, b }) as MLP;
+  }
 
   constructor(seed = 20261025, inputDim: number = INPUT_DIM) {
     this.inputDim = inputDim;
@@ -65,8 +87,7 @@ export class MLP {
 
   setWeights(flat: Float32Array): void {
     // Validate before touching any layer: malformed loads must be atomic.
-    if (flat.length !== this.paramCount) throw Error(`weights length ${flat.length} != ${this.paramCount}`);
-    if (!flat.every(Number.isFinite)) throw Error('non-finite weights');
+    validateWeights(flat, this.paramCount);
     let o = 0;
     for (let l = 0; l < this.W.length; l++) {
       this.W[l].set(flat.subarray(o, o + this.W[l].length)); o += this.W[l].length;

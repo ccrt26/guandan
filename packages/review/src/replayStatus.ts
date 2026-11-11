@@ -57,6 +57,7 @@ export function classifyReplay(record: GameRecord): ReplayClass {
 
   for (const move of record.moves) {
     if (state.over) break;
+    let player = move.player;
 
     // 出牌人核对：牌张归属唯一 → 允许记为迁移；pass 无牌可归属，player 字段照单信任（与现代引擎一致）
     if (!move.pass && move.cards?.length) {
@@ -66,7 +67,17 @@ export function classifyReplay(record: GameRecord): ReplayClass {
         degrade('invalid', move.moveNo, `第 ${move.moveNo} 手的牌不属于任何一位玩家当时的手牌`);
         break;
       }
-      if (owner !== move.player) migrations.push({ moveNo: move.moveNo, kind: 'player_fixed_by_ownership' });
+      if (owner !== move.player) {
+        migrations.push({ moveNo: move.moveNo, kind: 'player_fixed_by_ownership' });
+        player = owner;
+      }
+    }
+
+    // 归属合法不代表此刻轮到该座位。现代记录不能强改 turn；历史轮次差异也不冒充 exact。
+    if (player !== state.turn) {
+      degrade((record.schemaVersion ?? 0) >= 2 ? 'invalid' : 'ambiguous', move.moveNo,
+        `第 ${move.moveNo} 手应轮到座位 ${state.turn}，记录出手座位为 ${player}，轮次不能唯一核实`);
+      break;
     }
 
     if (move.pass) {
@@ -77,7 +88,6 @@ export function classifyReplay(record: GameRecord): ReplayClass {
         verifiedPrefixEnd = move.moveNo;
         continue;
       }
-      state.turn = move.player;
       applyPass(state);
       verifiedPrefixEnd = move.moveNo;
       continue;
@@ -86,6 +96,14 @@ export function classifyReplay(record: GameRecord): ReplayClass {
     // 声明优先（2026-10-27）：与 replay.resolveCombo 同源——bestResponse 对领出会
     // 重选更强声明，含万能牌时与真实对局分歧（见 resolveDeclaredFirst 注释）
     const resolved = resolveDeclaredFirst(move, state, record);
+    if (resolved.source === 'invalidDeclaration') {
+      degrade('invalid', move.moveNo, `第 ${move.moveNo} 手完整声明与合法牌型不符`);
+      break;
+    }
+    if (resolved.source === 'ambiguous') {
+      degrade('ambiguous', move.moveNo, `第 ${move.moveNo} 手原声明不完整或不匹配，牌型语义无法唯一恢复`);
+      break;
+    }
     const combo = resolved.combo;
     if (combo) {
       if (state.lastCombo && !beats(combo, state.lastCombo)) {
@@ -93,7 +111,6 @@ export function classifyReplay(record: GameRecord): ReplayClass {
         degrade('ambiguous', move.moveNo, `第 ${move.moveNo} 手压不过上一牌型却出牌（旧引擎轮次差异，语义无法唯一恢复）`);
         break;
       }
-      state.turn = move.player;
       applyPlay(state, combo);
       verifiedPrefixEnd = move.moveNo;
       continue;
@@ -123,7 +140,6 @@ export function classifyReplay(record: GameRecord): ReplayClass {
       break;
     }
     migrations.push({ moveNo: move.moveNo, kind: 'legacy_combo_fallback_nowild' });
-    state.turn = move.player;
     applyPlay(state, fallback);
     verifiedPrefixEnd = move.moveNo;
   }

@@ -24,7 +24,7 @@ export function projectReleaseCatalog(value:unknown):readonly ReleaseDescriptor[
    ||raw.parentRelease!==null&&!text(raw.parentRelease)||refs.has(raw.releaseRef))throw Error('invalid_release_descriptor');
   refs.add(raw.releaseRef);
   return {...raw,remoteFallbackPolicyRef:raw.proposalPolicyRef,localSelector:'proposal',candidateSpecRef:CANDIDATE_SPEC,
-   observationSchema:OBSERVATION_SCHEMA,promptRef:'ohuo-engine-rules-v1/choose-expand-v1'} as unknown as ReleaseDescriptor;
+   observationSchema:OBSERVATION_SCHEMA,promptRef:'ohuo-engine-rules-v543-v1/choose-expand-v1'} as unknown as ReleaseDescriptor;
  });
  if(!exact(value.legacyProductLayouts,['easy','standard','hard']))throw Error('invalid_legacy_product_layouts');
  for(const layout of Object.values(value.legacyProductLayouts))if(!Array.isArray(layout)||layout.length!==4||layout[0]!=='human'||layout.slice(1).some(ref=>typeof ref!=='string'||!refs.has(ref)))throw Error('invalid_legacy_product_layouts');

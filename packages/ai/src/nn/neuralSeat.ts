@@ -66,7 +66,8 @@ export function takeDecisionEnumerationCount(decision: NeuralDecision, state: Ga
  * （对8 反例：♣8♦8 保 ♠5-9 同花顺 vs ♠8♣8 破坏之，v2 合并为 1 个候选坐实缺陷）；
  * 枚举按每 rank 自然牌花色多重集展开全部变体；双副同花色同点副本仍等价合并。
  * 既有 clean2 权重为 v2 动作空间下训练的政策，推理配套切换后候选分布变化如实记录。 */
-export const CANDIDATE_VERSION = 'cand-suit-v3';
+// 5.4.3：级牌按原点进入序列，旧候选空间的实测结论不重标为本版本。
+export const CANDIDATE_VERSION = 'cand-suit-v3-rules-v543';
 
 /** 候选去重：同物理消耗 + 同宣告 = 语义等价；不同宣告保留（含万能牌代入差异） */
 export function dedupCandidates(legal: Combo[], passAllowed: boolean): Array<{ combo: Combo | null }> {

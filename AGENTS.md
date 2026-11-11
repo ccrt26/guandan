@@ -1,17 +1,19 @@
 # 掼蛋项目执行约束
 
-## 当前软件交付入口（2026-11-01）
+## 当前软件交付入口（2026-11-04）
 
 <a id="current-software-delivery"></a>
 
-现行正式入口为需求与方案同业务版本 5.3.0，以及独立模型迭代说明 1.0.0；不能拼接旧版本作为执行步骤：
+现行正式入口为需求与方案同业务版本 5.4.3，以及独立模型迭代说明 1.0.0；不能拼接旧版本作为执行步骤：
 
-- **《掼蛋项目实施方案和执行计划文档_v5.3.0.docx》**：Library `libfile_3f00fde4b97481919c96e65c185d5e4b`。保留由需求解读得出的**当前需求明细**，并给出实际模块、实现步骤、测试与交接/完成条件。
-- **《掼蛋项目需求文档_v5.3.0.docx》**：Library `libfile_5d7f7f95fcf08191a9389c59c86a63ea`。保存需求来源、原话、需求解读、变更与历史审核，通过稳定 U/R 编号与方案明细对应；方案同步保留由这些解读形成的当前需求明细。
+- **《掼蛋项目实施方案和执行计划文档_v5.4.3.docx》**：Library `libfile_3f00fde4b97481919c96e65c185d5e4b`。保留由需求解读得出的**当前需求明细**，并给出实际模块、实现步骤、测试与交接/完成条件。
+- **《掼蛋项目需求文档_v5.4.3.docx》**：Library `libfile_5d7f7f95fcf08191a9389c59c86a63ea`。保存需求来源、原话、需求解读、变更与历史审核，通过稳定 U/R 编号与方案明细对应；方案同步保留由这些解读形成的当前需求明细。
 
 - **《掼蛋项目模型迭代说明文档_v1.0.0.docx》**：Library `libfile_ffb729e85ea88191b4aaa416f044d762`，区分编制基线、科研来源、正式产品与实际运行身份。
 
 本步实际使用的 Library version/SHA 由已核准 NAV-00 或精确 HANDOFF 固定；业务版本不等于 Library 历史版本，不把滚动状态反复复制到本说明。
+
+当前按用户最新指令暂停训练、构题、教学、screen、科研采样及参数学习，待与 GLM 沟通完成并依用户最新指令接续；只继续工程修复、必要离线验证和文档维护，不以本文件保留的旧持续执行授权恢复模型请求。具体检查仍以本批已授权范围为准，本次说明同步不启动测试、API 或部署。
 
 当前事实查既有《ohuo_项目背景与交接索引.json》（Library `libfile_a9318b2419108191b779067ffde42d6a`）的实际当前版本、`current_execution_ref`、`sourceBaseline.acceptedCurrentProjectCodeRef`、`currentEngineeringBlockers` 与 `nextSteps`，并核本批真实回件；旧索引快照只作历史，不拿过时 pending 阻断后继。正式文件已保存不等产品或本地说明已应用。旧 [5.2.1 执行计划](deliverables/ohuo-batches/v521-instructions-sync-20261031/execution-plan-5.2.1.md)、原执行包 `libfile_31fa5ef99c44819186f885b396e2dff4` v1 与 5.2.6/v14、5.2.7/v15 审核记录保持历史，不倒改旧 planRef/accepted/SHA；v15 曾有的接线缺口不能当作后继已接受版本的当前未完项。源码审、本地接受、日常启用、文件收尾和远端恢复分别取证。
 
@@ -34,7 +36,7 @@
 | 牌桌正常呈现/严格本地接续：§39第4A项 R14，F05/F06/F25 | 原 B04 `response-identity` 仅同源复用或受影响 selector；实际 controller/handler 核等待、取消/迟到、明确不可用、输入/身份错误和 commit 未知的真实 origin 到终态。移除手动接手；等待不按耗时推断失败，未知不补手。只原卡具名 finite/fake 组，不复制解析器矩阵或发真实 API。 |
 | 已批准两弹窗：§39第8/9项，F15/F24 | 原图/实际 winning CSS、长文本、header/body/footer、焦点及关闭确认；原1280×720与触发宽屏断点最多两 viewport 的真实 BCR/computed/paint，受影响键盘逻辑只核一次。原首页同源证据复用，不重设计尺寸或扩全浏览器矩阵。 |
 | 用户手动测试按钮：§39第10项，F17 | 真实 route/客户端/handler＋fake transport/临时 store 核 click 幂等、版本竞态、完整终态/持久化失败、dirty/取消/迟到四组；打开/保存0上游、一次 click 至多一次 fetch，unknown/写回失败不重发。本轮生产只观察可用/禁用，不点击真测，也不称新 Key 已测试。 |
-| 余牌数字/单位：§39第4B项 R15，F23 | 目标定向入口 `packages/web/tests/table-count-unit.test.tsx` 的三组：`count values and four-seat labels`、`return-pick 28 and tribute-result visibility`、`shared unit structure and unchanged actions`；实际 GameTable＋合成 VM，不建 MatchController。字体资源身份、状态与渲染按现行 R15 Task A/C5 只读联合方法核，不调用 `fonts.load` 或插入 DOM probe；四席 baseline/gap/BCR由有限浏览器层核，最多当前桌面及1366×768（当前相同则1800×874）；jsdom或静态CSS不能冒布局实测。 |
+| 余牌数字/单位：§39第4B项 R15，F23 | 目标定向入口 `packages/web/tests/table-count-unit.test.ts` 的三组：`count values and four-seat labels`、`return-pick 28 and tribute-result visibility`、`shared unit structure and unchanged actions`；实际 GameTable＋合成 VM，不建 MatchController。同身份已验结果复用，只补受影响组件检查与一次真实字体视觉观察；只有发现具体裁切或间距问题才量测该位置。字体文件字节溯源、旧版红测、固定双视口及全状态 baseline/gap/BCR 矩阵不是验收门；组件结果不冒真实布局已测。 |
 | 真实混合牌手与复盘：F07/F18/F19 | 配置/认证 probe 不等用户牌局决策提交或真实 coach 报告；旧局 list/load→resume/replay→analysis 使用受控记录、准确 analysisSeat 与固定身份。只有确要作用户真实链可用主张且有独有缺口，才沿原范围取得对应最小真实链证据；本轮不因表存在新开局、读取私局或生成报告。 |
 
 命名卡的六个 coach 子集使用 `npm test -- packages/web/tests/m-chat-ui.test.ts -t '^coach |^review: semantically unchanged'`；只在该批已冻结检查中使用，不运行整文件。

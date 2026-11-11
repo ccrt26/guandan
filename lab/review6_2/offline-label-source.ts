@@ -129,7 +129,7 @@ export async function queryOfflineTeacher({snapshot,teacher,request,signal,commo
  if(snapshot.bundle.isUniqueLegalAction)return {status:'excluded_unique' as const,remote:null,offlineLabel:null};
  const projection=commonView?commonViewForSnapshot(snapshot):undefined;
  if(commonView&&!isDeepStrictEqual(projection,commonView))throw Error('common_view_projection_changed');
- if(projectRulesPrompt&&(!projection||projectRulesPrompt.schema!=='ohuo-common-view-project-rules-request-v1'||!isDeepStrictEqual(snapshot.state.match.opts,projectRulesPrompt.ruleOptions)))throw Error('project_rules_source_options');
+ if(projectRulesPrompt&&(!projection||projectRulesPrompt.schema!=='ohuo-common-view-project-rules-request-v543-v1'||!isDeepStrictEqual(snapshot.state.match.opts,projectRulesPrompt.ruleOptions)))throw Error('project_rules_source_options');
  const remote=await selectRemoteDecision({bundle:snapshot.bundle,request,signal,...(projection?{requestProjection:()=>({...(projectRulesPrompt?{schema:projectRulesPrompt.schema,promptId:projectRulesPrompt.promptId,systemPromptSHA256:projectRulesPrompt.systemPromptSHA256,ruleOptions:projectRulesPrompt.ruleOptions}:{schema:'ohuo-common-view-request-r2' as const}),decisionId:snapshot.bundle.decisionId,modelPayloadBytes:projection.modelPayloadBytes,addressMap:projection.addressMap})}:{})});
  const offlineLabel=prepareOfflineLabel({input:snapshot.input,remote,state:snapshot.state,history:snapshot.history,teacher});
  return {status:remote.status,remote,offlineLabel};

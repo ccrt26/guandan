@@ -61,6 +61,7 @@ export interface DesignedSourceRuntime {
  * closure; this reader checks its relevant files once per fixed reader context. */
 export const DESIGNED_SOURCE_PROGRAM_PATHS=Object.freeze([
   ...['index','types','rank','rng','deck','combo','game','record'].map(p=>'packages/engine/src/'+p+'.ts'),
+  'packages/engine/src/rules-text.mjs','packages/engine/src/rules-text.d.mts',
   'packages/ai/src/hybrid/legality.ts','packages/ai/src/hybrid/observation.ts',
   'packages/ai/src/hybrid/candidates.ts','packages/ai/src/hybrid/candidateCoverage.ts',
   'packages/ai/src/hybrid/protocol.ts','packages/ai/src/candidate-spec.ts',

@@ -1,4 +1,4 @@
-import { buildDeck, isReturnableCard, makeLevelCtx, type Card, type GameState, type MatchState } from '@gd/engine';
+import { buildDeck, legalReturnCards, makeLevelCtx, type Card, type GameState, type MatchState } from '@gd/engine';
 
 export interface ExchangeTransfer { from: number; to: number; card: Readonly<Card> }
 export interface ExchangeResult {
@@ -60,7 +60,7 @@ export function readExchange(state: GameState, matchId: string): ExchangeResult 
     }
     giverSeats.add(tr.from); receiverSeats.add(tr.to); transferIds.add(tr.card.id);
     const returns = tribute.returns.filter((ret) => ret.from === tr.to && ret.to === tr.from);
-    if (returns.length !== 1 || !cardOK(returns[0].card) || !isReturnableCard(returns[0].card, state.ctx)) {
+    if (returns.length !== 1 || !cardOK(returns[0].card)) {
       throw new Error('还贡记录缺失、方向错误或牌张无效');
     }
     const ret = returns[0];
@@ -73,6 +73,19 @@ export function readExchange(state: GameState, matchId: string): ExchangeResult 
   if ([...giverSeats].some((seat) => receiverSeats.has(seat))) throw new Error('进贡与收贡席位关系不一致');
   for (const [id, owner] of assigned) {
     if (!state.hands[owner].some((card) => card.id === id)) throw new Error('交换记录与交换后手牌归属不一致');
+  }
+  // 从首手前的完整交换后手牌逆还牌，恢复每次提交时的原手牌。
+  // 贡/还两侧互斥已在上面核准，故各还牌不改变另一收贡方的合法集合。
+  const beforeReturns = state.hands.map(hand => [...hand]);
+  for (const ret of [...tribute.returns].reverse()) {
+    const index = beforeReturns[ret.to].findIndex(card => card.id === ret.card.id);
+    if (index < 0) throw new Error('还贡记录与实体归属不一致');
+    beforeReturns[ret.from].push(beforeReturns[ret.to].splice(index, 1)[0]);
+  }
+  for (const ret of tribute.returns) {
+    if (!legalReturnCards(beforeReturns[ret.from], state.ctx).some(card => card.id === ret.card.id)) {
+      throw new Error('还贡记录不符合原手牌的合法集合');
+    }
   }
   const content = { pairs, leader: tribute.leader };
   return freezeExchange({ ...content, gameNo: state.match.gameNo,

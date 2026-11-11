@@ -118,7 +118,7 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
   else if(ctx.executionBoundary!==undefined)throw Error('legacy match cannot inherit revised execution boundary');
   const deadlineReached=()=>!inputWorkload&&performance.now()>=deadlineMonotonicMs;
   let cp:RunCheckpoint=ctx.checkpoint?structuredClone(ctx.checkpoint):{schema:'ohuo-match-run-v1',taskSHA256:digest(task),queueRef:task.seatLayoutPlan,cursor:0,active:null,matches:[],executionUnknown:false};
-  let sequence=ctx.checkpointSequence,apiInvoked=false,cleanupConfirmed=true;
+  let sequence=ctx.checkpointSequence,apiInvoked=false,cleanupConfirmed=true,confirmedBoundary=false;
   const writeSummary=()=>{
    const summary={schema:'ohuo-match-summary-v1',runId:task.runId,taskId:task.taskId,taskSHA256:cp.taskSHA256,queueRef:cp.queueRef,checkpointSequence:sequence,attemptsAtBoundary:cp.cursor,activeMatch:cp.active,completedMatches:cp.matches.filter(m=>m.result.complete).length,incompleteMatches:cp.matches.filter(m=>!m.result.complete).length,optimizerSteps:0,consumption:ctx.getConsumption(),matches:cp.matches,executionUnknown:cp.executionUnknown,metricStatus:'raw complete-match outcomes only; paired statistics belong to B08'};
    const path=join(task.outputRoot,'summary.json'),temporary=`${path}.tmp-${process.pid}-${sequence}`;writeFileSync(temporary,JSON.stringify(summary),{flag:'wx',mode:0o600});renameSync(temporary,path);
@@ -129,8 +129,9 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
   const drain=async()=>{for(const meter of meters)await meter.drain();};
   try{
    if(cp.taskSHA256!==digest(task)||cp.queueRef!==task.seatLayoutPlan||cp.executionUnknown||cp.cursor>p.rows.length||cp.active&&(cp.active.matchId!==p.rows[cp.cursor]?.matchId||cp.active.kind==='local'||cp.active.recordRef===null))throw Error('execution_uncertain: incomplete or mismatched recovery boundary');
-   if(p.firstRound)await materializeFirstRoundSeats(p,policyRepositoryRoot);
    for(const past of cp.matches)loadMatchStore(past.recordRef,task.outputRoot);
+   confirmedBoundary=cp.active===null;
+   if(p.firstRound)await materializeFirstRoundSeats(p,policyRepositoryRoot);
    for(;cp.cursor<p.rows.length;){
     if(signal.aborted||deadlineReached())break;
     if(sha(readFileSync(p.sourceIndexPath))!==p.sourceIndexSHA256)throw Error('source index changed after freeze');
@@ -140,6 +141,7 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
     if(cp.active){store=loadMatchStore(cp.active.recordRef!,task.outputRoot);const saved=store.resume!;for(const field of ['runId','matchId','sourceRef','layoutRef','policyIds','rules','seatSnapshots','sourceFamilyId','split','evaluatedActor'] as const)if(!isDeepStrictEqual(saved.record[field],identity[field]))throw Error('recovery record identity differs');const replay=replayMatchResume(saved);if(replay.executionUnknown||!replay.state)throw Error('execution_uncertain: no confirmed replay origin');}
     else{
      const reservation=await reserve(`match-${cp.cursor}-${ctx.executionId}`,{...zeroCost,matchAttempts:1});
+     confirmedBoundary=false;
      if(signal.aborted){await settleReservation(reservation,{disposition:'not_sent',evidence:{kind:'confirmed_not_sent'}});break;}
      if(hybrid)store=createMatchStore(task.outputRoot,identity);
      cp.active={matchId:row.matchId,kind:hybrid?'hybrid':'local',recordRef:store?.ref()??null};await checkpoint();
@@ -170,12 +172,17 @@ export function createMatchTaskHost({root,adapter,policyRepositoryRoot=POLICY_RE
      if(disposition==='halt'){cp.executionUnknown=true;await checkpoint();throw Error(`execution_uncertain: ${result.incompleteReason}`);}
      await checkpoint();break; // same source/match resumes; no second match attempt.
     }
-    cp.matches.push({matchId:row.matchId,recordRef,result:{...result,layoutId:row.layoutId,sourceFamilyId:row.sourceFamilyId,actor:row.actor,metric:row.metric,group:row.group,side:row.side,variant:row.variant}});cp.cursor++;cp.active=null;await checkpoint();
+    cp.matches.push({matchId:row.matchId,recordRef,result:{...result,layoutId:row.layoutId,sourceFamilyId:row.sourceFamilyId,actor:row.actor,metric:row.metric,group:row.group,side:row.side,variant:row.variant}});cp.cursor++;cp.active=null;await checkpoint();confirmedBoundary=true;
     if(signal.aborted||deadlineReached()||result.incompleteReason==='execution_uncertain')break;
    }
    return {completed:cp.cursor===p.rows.length,cleanupConfirmed,actualScope:actualScope(apiInvoked),stopReason:signal.aborted?(typeof signal.reason==='string'?signal.reason:'user_stop'):'run_boundary',artifactRefs:[writeSummary(),...cp.matches.map(m=>m.recordRef)]};
   }catch(error){
-   cp.executionUnknown=true;try{await drain();}catch{};try{await checkpoint();}catch{};
+   // A local failure at a verified, committed boundary did not start the next
+   // match. Lost reserve acknowledgements and unconfirmed writes stay unknown.
+   let drained=true;try{await drain();}catch{drained=false;}
+   let unsettled=true;try{const c=ctx.getConsumption();unsettled=Object.values(c.reserved).some(n=>n!==0)||Object.values(c.reservedUnknown).some(n=>n!==0);}catch{}
+   cp.executionUnknown||=!(confirmedBoundary&&cp.active===null&&drained&&!unsettled);
+   try{await checkpoint();}catch{};
    Object.assign(error as object,{cleanupConfirmed,actualScope:actualScope(apiInvoked)});throw error;
   }
  };

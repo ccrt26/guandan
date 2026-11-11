@@ -1,4 +1,5 @@
 import type { Card, Combo, GameResult, RuleOptions } from './types';
+import { buildDeck } from './deck';
 
 /** 单步动作记录（复盘回放的最小单元） */
 export interface MoveRecord {
@@ -8,6 +9,8 @@ export interface MoveRecord {
   cards?: Card[];
   comboKind?: Combo['kind'];
   mainRank?: number;
+  /** 完整出牌声明。旧记录缺失时只能按可唯一恢复的语义回放，不能补造原声明。 */
+  declaration?: Omit<Combo, 'cards'>;
   /** 出牌后各玩家手牌数 */
   handsAfter: number[];
   /** 被压制的牌型主 rank（跟牌上下文） */
@@ -57,42 +60,71 @@ export interface RecordIntegrityIssue {
   message: string;
 }
 
-const isValidCard = (c: Card) =>
-  (c.suit === 'J' && (c.rank === 16 || c.rank === 17)) ||
-  (['S', 'H', 'D', 'C'].includes(c.suit) && c.rank >= 2 && c.rank <= 14);
+const canonicalCards = new Map(buildDeck().map((card) => [card.id, card]));
+const isCanonicalCard = (card: Card): boolean => {
+  if (!card || !Number.isInteger(card.id)) return false;
+  const expected = canonicalCards.get(card.id);
+  return expected !== undefined && card.suit === expected.suit && card.rank === expected.rank;
+};
 
 /** 记录完整性铁律校验（复盘前必跑；测试里作为记录器的回归门禁）。
- * 三条铁律，成立则"牌张归属驱动"的回放与真实牌局逐张吻合：
- * 1) 初始牌 108 张且张张合法；
- * 2) 每手牌的所有牌张 id 属于同一玩家当时的手牌（出牌人由归属唯一确定）；
- * 3) 按"初始手牌 − 已出 id"重建的各家手牌数与 handsAfter 逐手一致。
- * schemaVersion>=2 的记录还要求 player 字段与归属一致（旧版本记录允许错位，由 normalizeRecord 修）。 */
+ * 1) 四席各 27 张，108 个标准实体 id 各出现一次，id 与牌面对应；
+ * 2) 非 Pass 动作非空且无重复实体，牌面真实，所有 id 同属一席尚未打出的手牌；
+ * 3) 按"初始手牌 − 已出 id"重建的四席手牌数与完整 handsAfter 逐手一致。
+ * 有 schemaVersion 的记录沿既有约定要求 player 与归属一致；无版本旧记录可迁移。
+ * 只证明实体资源一致；牌型声明与合法轮次另由严格回放验证。 */
 export function checkRecordIntegrity(record: GameRecord): RecordIntegrityIssue[] {
   const issues: RecordIntegrityIssue[] = [];
-  const total = record.initialHands.reduce((s, h) => s + h.length, 0);
-  if (total !== 108) issues.push({ message: `初始牌共 ${total} 张，应为 108` });
-  record.initialHands.forEach((h, s) => h.forEach((c) => { if (!isValidCard(c)) issues.push({ message: `座位${s}初始手牌含非法牌 ${c.suit}${c.rank}` }); }));
+  if (!Array.isArray(record.initialHands) || record.initialHands.length !== 4
+    || [...record.initialHands].some((hand) => !Array.isArray(hand) || hand.length !== 27)) {
+    return [{ message: '初始手牌必须为四席各 27 张，共 108 张' }];
+  }
+  const seen = new Set<number>();
+  for (const [seat, hand] of record.initialHands.entries()) {
+    for (const card of hand) {
+      if (!isCanonicalCard(card)) {
+        issues.push({ message: `座位${seat}初始手牌含非法实体牌或 id 与牌面不符` });
+      } else if (seen.has(card.id)) {
+        issues.push({ message: `初始手牌重复使用实体牌 id=${card.id}` });
+      } else seen.add(card.id);
+    }
+  }
   if (issues.length > 0) return issues;
 
   const hands = record.initialHands.map((h) => new Set(h.map((c) => c.id)));
   for (const move of record.moves) {
-    if (!move.pass) {
-      const ids = (move.cards ?? []).map((c) => c.id);
-      if (ids.length > 0) {
-        const owner = hands.findIndex((h) => ids.every((id) => h.has(id)));
-        if (owner < 0) {
-          issues.push({ moveNo: move.moveNo, message: `第 ${move.moveNo} 手的牌不属于任何一位玩家的手牌` });
-          continue;
-        }
-        if (record.schemaVersion !== undefined && move.player !== owner) {
-          issues.push({ moveNo: move.moveNo, message: `第 ${move.moveNo} 手 player=${move.player}，但牌张归属座位 ${owner}（记录器回归）` });
-        }
-        for (const id of ids) hands[owner].delete(id);
+    if (move.pass) {
+      if (move.cards !== undefined && (!Array.isArray(move.cards) || move.cards.length > 0)) {
+        issues.push({ moveNo: move.moveNo, message: `第 ${move.moveNo} 手 Pass 不能含实体牌` });
+        break;
       }
+    } else {
+      if (!Array.isArray(move.cards) || move.cards.length === 0
+        || [...move.cards].some((card) => !isCanonicalCard(card))) {
+        issues.push({ moveNo: move.moveNo, message: `第 ${move.moveNo} 手缺少实体牌或 id 与真实牌面不符` });
+        break;
+      }
+      const ids = move.cards.map((card) => card.id);
+      if (new Set(ids).size !== ids.length) {
+        issues.push({ moveNo: move.moveNo, message: `第 ${move.moveNo} 手重复使用同一实体牌` });
+        break;
+      }
+      const owner = hands.findIndex((hand) => ids.every((id) => hand.has(id)));
+      if (owner < 0) {
+        issues.push({ moveNo: move.moveNo, message: `第 ${move.moveNo} 手的牌不属于任何一位玩家的手牌` });
+        break;
+      }
+      if (record.schemaVersion !== undefined && move.player !== owner) {
+        issues.push({ moveNo: move.moveNo, message: `第 ${move.moveNo} 手 player=${move.player}，但牌张归属座位 ${owner}（记录器回归）` });
+        break;
+      }
+      for (const id of ids) hands[owner].delete(id);
     }
     const sizes = hands.map((h) => h.size);
-    if (move.handsAfter && move.handsAfter.some((n, i) => n !== sizes[i])) {
+    if (!Array.isArray(move.handsAfter) || move.handsAfter.length !== 4
+      || sizes.some((n, i) => n !== move.handsAfter[i])) {
       issues.push({ moveNo: move.moveNo, message: `第 ${move.moveNo} 手 handsAfter=[${move.handsAfter}] 与牌张重建 [${sizes}] 不符` });
+      break;
     }
   }
   return issues;
@@ -113,13 +145,19 @@ export class Recorder {
     toBeat: Combo | null,
   ): void {
     this.moveNo += 1;
+    const combo = move.pass ? null : move.combo;
     this.moves.push({
       moveNo: this.moveNo,
       player,
       pass: move.pass,
-      cards: move.combo?.cards,
-      comboKind: move.combo?.kind,
-      mainRank: move.combo?.mainRank,
+      cards: combo?.cards.map((card) => ({ ...card })),
+      comboKind: combo?.kind,
+      mainRank: combo?.mainRank,
+      declaration: combo ? {
+        kind: combo.kind, size: combo.size, keyRank: combo.keyRank,
+        length: combo.length, mainRank: combo.mainRank, suit: combo.suit,
+        pairRanks: [...combo.pairRanks], wildAs: combo.wildAs.map((wild) => ({ ...wild })),
+      } : undefined,
       handsAfter: hands.map((h) => h.length),
       toBeatKind: toBeat?.kind,
       toBeatRank: toBeat?.mainRank,

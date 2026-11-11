@@ -1,7 +1,7 @@
 /** M6: one immutable manifest + grouped JSONL. Never calls a model, enumerates
  * candidates, repairs a label, runs a match, or updates parameters. */
 import {createHash} from 'node:crypto';
-import {existsSync,lstatSync,mkdirSync,readFileSync,realpathSync,writeFileSync} from 'node:fs';
+import {existsSync,lstatSync,mkdirSync,mkdtempSync,readFileSync,realpathSync,renameSync,writeFileSync} from 'node:fs';
 import {isAbsolute,join,relative,resolve} from 'node:path';
 import {isDeepStrictEqual} from 'node:util';
 import {canonicalActionId,resolveLegalMove} from '../../packages/ai/src/hybrid/legality';
@@ -380,15 +380,33 @@ function freezeDatasetInternal({plan,sourceIndexPath,sourceQueue,rows,outputDir,
  if(firstRoundResearch){const balanced=balanceFirstRoundFrozenKeep(samples,selectionRows!.selectedMetadata);samples=balanced.samples;for(const unused of balanced.unused){const original=admitted.find(a=>a.sample.decisionId===unused.decisionId)!;exclusions.push(exclusion(original.row,'ordinary_keep_not_used_after_demo_validation',plan));}}
  const cumulativeGrowth=cumulative?assertCumulativeGrowth(cumulative.previousSamples,samples):null,cumulativeEvidence=cumulative?{...cumulative.cumulativeEvidence,growth:cumulativeGrowth}:undefined;
  const frozenSummary=cumulativeSummary(summarize(samples,exclusions,plan),cumulativeEvidence,samples,plan);
- // Create a fresh directory. Manifest is the last file: a partial write has no
- // usable reference and is never mistaken for a committed frozen dataset.
- const directory=resolve(outputDir),outputRoot=resolve(new URL('../out/',import.meta.url).pathname),outputRelative=relative(outputRoot,directory);if(!outputRelative||isAbsolute(outputRelative)||outputRelative.startsWith('..'))reject('output_not_task_directory');if(existsSync(directory))reject('output_exists');
- const parent=resolve(directory,'..');mkdirSync(parent,{recursive:true});if(realpathSync(parent)!==parent)reject('output_symlink');mkdirSync(directory,{mode:0o700});
  const bytes=samples.map(s=>JSON.stringify(s)).join('\n')+(samples.length?'\n':'');
- writeFileSync(join(directory,'samples.jsonl'),bytes,{flag:'wx',mode:0o600});
  const manifest={schema:isFirstRoundPlan(plan)?FIRST_ROUND_DATASET_SCHEMA:planCandidatePolicy(plan).candidateSpec===FIRST_TARGET_CANDIDATE_SPEC?CANDIDATE_DATASET_SCHEMA:DATASET_SCHEMA,datasetId:plan.datasetId,plan:structuredClone(plan),identityRefs:{basePolicy:ref(plan.identities.basePolicy.policyId,plan.identities.basePolicy),teacher:ref(plan.identities.teacher.releaseRef,plan.identities.teacher)},samples:{path:'samples.jsonl',sha256:hash(bytes),bytes:Buffer.byteLength(bytes),decisions:samples.length},...frozenSummary,exclusions,...(cumulative?{cumulativeEvidence}:{}),...(isFirstRoundR2DatasetPlan(plan)?{teacherAttemptDiagnostics:selectionRows?.teacherAttemptDiagnostics??[]}:{}),...(isFirstRoundPlan(plan)?{labelConflicts:conflicts}:{})};
- const manifestBytes=JSON.stringify(manifest)+'\n';writeFileSync(join(directory,'manifest.json'),manifestBytes,{flag:'wx',mode:0o600});
- return {directory,manifestSHA256:hash(manifestBytes)};
+ return publishFrozenDataset(outputDir,bytes,JSON.stringify(manifest)+'\n');
+}
+/** Publication only, after the original source/teacher/screen checks above.
+ * The existing host writer lock remains the owner. We never adopt, remove or
+ * repair an unknown old directory. A failed fresh stage stays private evidence;
+ * retry can build the same bytes in a new stage at the same final datasetId. */
+function publishFrozenDataset(outputDir:string,sampleBytes:string,manifestBytes:string):FrozenDatasetRef {
+ const directory=resolve(outputDir),outputRoot=resolve(new URL('../out/',import.meta.url).pathname),outputRelative=relative(outputRoot,directory);
+ if(!outputRelative||isAbsolute(outputRelative)||outputRelative.startsWith('..'))reject('output_not_task_directory');
+ const parent=resolve(directory,'..');mkdirSync(parent,{recursive:true});if(realpathSync(parent)!==parent)reject('output_symlink');
+ const reference={directory,manifestSHA256:hash(manifestBytes)};
+ const reuse=()=>{
+  if(!lstatSync(directory).isDirectory()||lstatSync(directory).isSymbolicLink()||realpathSync(directory)!==directory)reject('output_conflict');
+  for(const [name,bytes]of [['manifest.json',manifestBytes],['samples.jsonl',sampleBytes]]){
+   const path=join(directory,name);if(!existsSync(path))reject('output_incomplete_or_conflict');const st=lstatSync(path);if(!st.isFile()||st.isSymbolicLink()||!readFileSync(path).equals(Buffer.from(bytes)))reject('output_identity_conflict');
+  }
+  return reference;
+ };
+ if(existsSync(directory))return reuse();
+ const temporary=mkdtempSync(directory+'.freeze-');
+ writeFileSync(join(temporary,'samples.jsonl'),sampleBytes,{flag:'wx',mode:0o600});
+ writeFileSync(join(temporary,'manifest.json'),manifestBytes,{flag:'wx',mode:0o600});
+ // Preserve the final identity check even under the existing exclusive writer.
+ if(existsSync(directory))return reuse();
+ renameSync(temporary,directory);return reference;
 }
 export function loadFrozenDataset(reference:FrozenDatasetRef,options:{expectedIdentities?:DatasetIdentities;requireTrainingEligible?:boolean}={}){
  const directory=resolve(reference.directory);if(!sha(reference.manifestSHA256)||realpathSync(directory)!==directory)reject('manifest_identity');
@@ -501,11 +519,10 @@ function freezeDesignedAugmentationFromHost(inputs:any,outputDir:string,onReprod
  const preselectedDemoMetadata=(checked.rows as DesignedExportRow[]).map(row=>({decisionId:row.privateInput.observation.decisionId,key:row.source.key,inputSHA256:row.source.inputSHA256,sourceRef:row.source.sourceRef,sourceIndexRef:row.sourceMetadata.sourceIndexRef,sourceSHA256:row.sourceMetadata.sourceFile.sha256,replaySHA256:row.sourceMetadata.replaySHA256,sourceFamily:row.source.blockFamilyId}));
  const designedEvidence={schema:'ohuo-designed-augmentation-evidence-v1',previousDatasetRef:a.previousDatasetRef,previousManifestSHA256:host.previousDataset.frozen.manifestSHA256,previousSamplesSHA256:previous.manifest.samples.sha256,retainedSamples:previous.samples.map((s:any)=>({decisionId:s.decisionId,sampleSHA256:dataHash(s)})),selectionRef:a.selectionRef,productionRef:plan.samplingRef,populationRef:verified.production.populationRef,selectedMetadataRef:verified.production.selectedMetadataRef,exclusionsRef:verified.production.exclusionsRef,preselectedDemoMetadata,ordinarySelectionRef:a.ordinarySelectionRef,ordinaryProductionRef:ordinary.selection.productionRef,ordinaryPopulationRef:ordinary.production.populationRef,ordinaryCandidateMetadata,newDemoIds:newSamples.map(s=>s.decisionId),addedKeepIds:addedKeep.map(s=>s.decisionId)};
  validateDesignedEvidence(designedEvidence,plan,samples,exclusions,dataHash);
- const summary=designedSummary(summarize(samples,exclusions,plan),designedEvidence,samples,exclusions,plan),directory=resolve(outputDir),outputRoot=resolve(new URL('../out/',import.meta.url).pathname),outputRelative=relative(outputRoot,directory);
- if(!outputRelative||isAbsolute(outputRelative)||outputRelative.startsWith('..'))reject('output_not_task_directory');if(existsSync(directory))reject('output_exists');const parent=resolve(directory,'..');mkdirSync(parent,{recursive:true});if(realpathSync(parent)!==parent)reject('output_symlink');mkdirSync(directory,{mode:0o700});
- const bytes=samples.map(s=>JSON.stringify(s)).join('\n')+(samples.length?'\n':'');writeFileSync(join(directory,'samples.jsonl'),bytes,{flag:'wx',mode:0o600});
+ const summary=designedSummary(summarize(samples,exclusions,plan),designedEvidence,samples,exclusions,plan);
+ const bytes=samples.map(s=>JSON.stringify(s)).join('\n')+(samples.length?'\n':'');
  const manifest={schema:FIRST_ROUND_DATASET_SCHEMA,datasetId:plan.datasetId,plan:structuredClone(plan),identityRefs:{basePolicy:ref(plan.identities.basePolicy.policyId,plan.identities.basePolicy),teacher:ref(plan.identities.teacher.releaseRef,plan.identities.teacher)},samples:{path:'samples.jsonl',sha256:hash(bytes),bytes:Buffer.byteLength(bytes),decisions:samples.length},...summary,exclusions,designedEvidence,teacherAttemptDiagnostics:[...(previous.manifest.teacherAttemptDiagnostics??[]),...checked.teacherAttemptDiagnostics],labelConflicts:conflicts};
- const manifestBytes=JSON.stringify(manifest)+'\n';writeFileSync(join(directory,'manifest.json'),manifestBytes,{flag:'wx',mode:0o600});return{directory,manifestSHA256:hash(manifestBytes)};
+ return publishFrozenDataset(outputDir,bytes,JSON.stringify(manifest)+'\n');
 }
 function designedSummary(summary:any,evidence:any,samples:DistillSample[],exclusions:Exclusion[],plan:DatasetPlan){
  if(!plan.designedAugmentation){if(evidence!==undefined)reject('designed_unexpected_evidence');return summary;}

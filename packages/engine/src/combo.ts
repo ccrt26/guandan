@@ -3,7 +3,7 @@ import {
   type Card, type Combo, type ComboKind, type Rank, type RuleOptions, type Suit, type WildAssign,
 } from './types';
 import { BIG_JOKER, SMALL_JOKER } from './types';
-import { contiguousRuns, isJoker, rankOrder, type LevelCtx } from './rank';
+import { contiguousRuns, isJoker, rankOrder, seqSlots, type LevelCtx } from './rank';
 
 /** 红心级牌 = 逢人配（万能牌） */
 export function isWild(card: Card, ctx: LevelCtx): boolean {
@@ -367,7 +367,7 @@ export function enumerateCombos(hand: Card[], ctx: LevelCtx, rules: RuleOptions 
 
   // --- 序列牌型：顺子 / 三连对 / 钢板（位置域统一模型）---
   // 官方规则：A 可作 1（A2345 最小）也可作 K+1（10JQKA 最大）；2 参与序列（23456/223344/222333 均合法）。
-  // 级牌对应位置剔除。段最大位置即比较权重：A2345=5 < 23456=6 < … < 10JQKA=14。
+  // 级牌按自然点数参与。段最大位置即比较权重：A2345=5 < 23456=6 < … < 10JQKA=14。
   const runs = posRuns(ctx);
   for (const run of runs) {
     if (rules.straightLen === 5 && run.len >= 5) {
@@ -530,7 +530,7 @@ function allNonJokerRanks(ctx: LevelCtx): Rank[] {
 
 // ---------------------------------------------------------------------------
 // 序列位置域（官方规则）：A 可作 1 也可作 K+1，2 参与序列。
-// 位置 1 = A 作 1；位置 2..14 = 2..K、A。级牌位置剔除。
+// 位置 1 = A 作 1；位置 2..14 = 2..K、A。级牌按原点参与。
 // 段最大位置即牌型比较权重（A2345=5 < 23456=6 < … < 10JQKA=14）。
 // ---------------------------------------------------------------------------
 function rankAtPos(pos: number): Rank {
@@ -538,11 +538,7 @@ function rankAtPos(pos: number): Rank {
 }
 
 function posRuns(ctx: LevelCtx): Array<{ from: number; len: number }> {
-  const slots: number[] = [];
-  for (let pos = 1; pos <= 14; pos++) {
-    if (!ctx.ranks.has(rankAtPos(pos))) slots.push(pos);
-  }
-  return contiguousRuns(slots);
+  return contiguousRuns(seqSlots(ctx).map(slot => slot.pos));
 }
 
 // ---------------------------------------------------------------------------
@@ -660,13 +656,12 @@ export function classify(cards: Card[], ctx: LevelCtx, rules: RuleOptions = DEFA
     return out;
   }
 
-  // 对子（含王对：两小王或两大王）
+  // 此处分支不含实体王；自然王对已在上方含王分支处理。
+  // 万能牌只能补普通点数，不得在全万能对子中代作小王或大王。
   if (size === 2) {
     for (const r of allNonJokerRanks(ctx)) {
       mk('pair', new Map([[r, 2]]), r, 1);
     }
-    mk('pair', new Map([[SMALL_JOKER, 2]]), SMALL_JOKER, 1);
-    mk('pair', new Map([[BIG_JOKER, 2]]), BIG_JOKER, 1);
     return out;
   }
 
@@ -696,7 +691,7 @@ export function classify(cards: Card[], ctx: LevelCtx, rules: RuleOptions = DEFA
   }
 
   // 顺子（固定 straightLen 张，官方 5 张不可超）
-  // 序列牌型（位置域统一模型：A 可作 1 也可作 K+1，2 参与序列，级牌位置剔除）
+  // 序列牌型（位置域统一模型：A 可作 1 也可作 K+1，2 参与序列，级牌按原点参与）
   const runs = posRuns(ctx);
   if (size === rules.straightLen) {
     for (const run of runs) {

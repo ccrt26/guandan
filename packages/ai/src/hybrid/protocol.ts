@@ -4,7 +4,7 @@ import type { CandidatePolicySpec, EnumSpec } from '../candidate-spec';
 import type { CandidateCoverage } from './candidateCoverage';
 
 export const OBSERVATION_SCHEMA = 'ohuo-public-observation-v1' as const;
-export const CANDIDATE_SPEC = 'ohuo-frozen-c8-expand4-v1' as const;
+export { CURRENT_CANDIDATE_SPEC as CANDIDATE_SPEC } from '../candidate-spec';
 export class DecisionHaltedError extends Error {
   readonly status = 'halted' as const;
   constructor(message: string) { super(message); this.name = 'DecisionHaltedError'; }

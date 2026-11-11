@@ -1,12 +1,13 @@
 import {
-  applyMove, beats, bestResponse, checkRecordIntegrity, classify, comboKey, createMatch, makeLevelCtx, rankOrder, startGame, teammateOf, teamOf,
+  applyMove, beats, checkRecordIntegrity, classify, comboKey, createMatch, makeLevelCtx, rankOrder, startGame, teammateOf, teamOf,
   type Combo, type GameState, type GameRecord, type MoveRecord, type EngineEvent,
 } from '@gd/engine';
 import { PlayMemory } from '@gd/ai';
+import { necessaryDeclarationKey } from '../../ai/src/hybrid/legality';
 
 /**
  * 确定性回放：从对局记录重建任意时刻的完整局面（含四家手牌）。
- * 记录里存的是"实际打出的牌"，跟牌时用 bestResponse 重建牌型解释。
+ * 新记录保留实际牌和完整声明；旧记录的显示回放可尽力解释，严格可信度另由 classifyReplay 把关。
  */
 export interface ReplayFrame {
   move: MoveRecord;
@@ -41,27 +42,55 @@ export function buildInitialState(record: GameRecord): GameState {
 
 /** 旧版引擎下的对局（含现已删除的"钢板带两对"等牌型）重新判型会失败；
  * 此时信任记录里存的 comboKind/mainRank 直接构造回放用牌型，让旧对局仍可复盘。 */
-/** 声明优先解析：记录带 comboKind/mainRank 时按声明在 classify 枚举中筛选
- * （引擎真实出牌的声明是权威；bestResponse 对领出会重选更强声明，含万能牌时
- * 与真实打法分歧）。返回来源供分类层区分信任级别。 */
+/** 完整声明须匹配当前规则的合法解释，但回放保留原始声明及无语义影响的注释。
+ * 旧 comboKind/mainRank 只提供部分身份；多个不等价解释不得因排序取首而声称 exact。
+ * ambiguous 的 combo 仅为旧显示回放提供确定性兼容，不能用于可信分析。 */
 export function resolveDeclaredFirst(
   move: MoveRecord, state: GameState, record: GameRecord,
-): { combo: Combo | null; source: 'declaration' | 'bestResponse' } {
-  if (move.comboKind && move.mainRank != null && move.cards?.length) {
-    const variants = classify(move.cards, state.ctx, record.ruleOpts)
-      .filter((c) => c.kind === move.comboKind && c.mainRank === move.mainRank)
-      .sort((a, b) => (comboKey(a) < comboKey(b) ? -1 : 1));
-    if (variants.length > 0) return { combo: variants[0], source: 'declaration' };
+): { combo: Combo | null; source: 'declaration' | 'bestResponse' | 'ambiguous' | 'invalidDeclaration' } {
+  const all = classify(move.cards ?? [], state.ctx, record.ruleOpts).filter((candidate) => {
+    // 历史 classifier 曾允许万能牌代王；必要声明校验拒绝的候选不能成为 exact 依据。
+    try { necessaryDeclarationKey(candidate, state.ctx); return true; } catch { return false; }
+  });
+  if (move.declaration !== undefined) {
+    try {
+      const declared: Combo = { ...move.declaration, cards: move.cards ?? [] };
+      if ((move.comboKind !== undefined && move.comboKind !== declared.kind)
+        || (move.mainRank !== undefined && move.mainRank !== declared.mainRank)) {
+        return { combo: null, source: 'invalidDeclaration' };
+      }
+      const key = necessaryDeclarationKey(declared, state.ctx);
+      if (all.some((candidate) => necessaryDeclarationKey(candidate, state.ctx) === key)) {
+        return { combo: declared, source: 'declaration' };
+      }
+    } catch { /* 缺字段或非法代入不是旧格式，不得重选声明掩盖损坏。 */ }
+    return { combo: null, source: 'invalidDeclaration' };
   }
+  const isAmbiguous = (variants: Combo[]): boolean =>
+    new Set(variants.map((candidate) => necessaryDeclarationKey(candidate, state.ctx))).size > 1;
+  if (move.comboKind && move.mainRank != null && move.cards?.length) {
+    const variants = all
+      .filter((c) => c.kind === move.comboKind && c.mainRank === move.mainRank)
+      .sort((a, b) => comboKey(a) < comboKey(b) ? -1 : comboKey(a) > comboKey(b) ? 1 : 0);
+    if (variants.length > 0) return {
+      combo: variants[0], source: isAmbiguous(variants) ? 'ambiguous' : 'declaration',
+    };
+  }
+  const alternatives = all.filter((candidate) => beats(candidate, state.lastCombo));
+  const hasUnmatchedHint = move.comboKind !== undefined || move.mainRank !== undefined;
   return {
-    combo: bestResponse(move.cards ?? [], state.lastCombo, state.ctx, record.ruleOpts),
-    source: 'bestResponse',
+    // 与 bestResponse 相同的强度选择，但只在必要声明已合法的候选中选择。
+    combo: alternatives.reduce<Combo | null>((best, candidate) => !best || beats(candidate, best) ? candidate : best, null),
+    source: alternatives.length > 0 && (hasUnmatchedHint || isAmbiguous(alternatives)) ? 'ambiguous' : 'bestResponse',
   };
 }
 
 export function resolveCombo(move: MoveRecord, state: GameState, record: GameRecord): Combo | null {
   if (move.pass || !move.cards?.length) return null;
   const declared = resolveDeclaredFirst(move, state, record);
+  if (declared.source === 'invalidDeclaration') {
+    throw new Error(`回放失败：第 ${move.moveNo} 手完整声明与合法牌型不符`);
+  }
   if (declared.combo) return declared.combo;
   // 声明与 bestResponse 都解释不了（旧记录损坏）→ 旧兜底：按记录声明硬构造
   if (!move.comboKind || move.mainRank == null) {
@@ -116,6 +145,13 @@ function applyRecordedMove(state: GameState, move: MoveRecord, record: GameRecor
 /** 修正历史记录的 player 字段（旧记录器把出牌人记成了下家）：
  * 出牌手取"牌张 id 属于谁的手牌"，Pass 手取状态机轮到的玩家。返回修正后的副本。 */
 export function normalizeRecord(record: GameRecord): GameRecord {
+  // 现代记录的 player 是原始证据，尤其 pass 无牌可核；不能先重写再判为 exact。
+  if ((record.schemaVersion ?? 0) >= 2) return { ...record, moves: record.moves.map((move) => ({ ...move })) };
+  // UI 先 normalize 后 validate；这里只预检实体，保留旧版按归属纠正 player 的既有迁移。
+  // 损坏旧档保留原证据供同一完整性入口报告，不能先强行回放。
+  if (checkRecordIntegrity({ ...record, schemaVersion: undefined }).length > 0) {
+    return { ...record, moves: record.moves.map((move) => ({ ...move })) };
+  }
   const state = buildInitialState(record);
   const moves = record.moves.map((move) => {
     let player = state.turn;

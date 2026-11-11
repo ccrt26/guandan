@@ -8,7 +8,7 @@ import {
 } from '@gd/engine';
 import { createAI, createNeuralAI, serializeSavedLocalPolicy, resolveSavedLocalPolicy, decideMove, MLP, mulberry32, NEURAL_MODEL_VERSION, NeuralDecider, PlayMemory, scoreCandidates, type NeuralTier, type ResolvedPolicy } from '@gd/ai';
 import type { AIPlayer, Difficulty, Move } from '@gd/ai';
-import { clearCurrentMatch, loadCurrentMatch, saveCurrentMatch, saveRecord, updateStats, type ActiveGameSave, type MatchSave } from './storage';
+import { clearCurrentMatch, readCurrentMatch, saveCurrentMatch, saveRecord, updateStats, type ActiveGameSave, type MatchSave } from './storage';
 import {
   copyJson, freezeExchange, readExchange, restoreInitialGame, snapshotInitialGame,
   type ExchangeHistoryEntry, type ExchangeResult,
@@ -27,7 +27,8 @@ import { createRemotePlayRequest } from './remote-play';
 export const HUMAN_SEAT = 0;
 export const SEAT_NAMES = [0, 1, 2, 3].map(seat => displaySeatLabel(seat).label);
 
-/** 历史只是展示元数据；损坏项丢弃，不能使有效活动牌局崩溃或改变其确认门。 */
+/** 历史只是展示元数据；缺原手牌时仅校结构/实体，不冒充还牌合法性证明。
+ * 损坏项丢弃，不能使有效活动牌局崩溃或改变其确认门。 */
 function restoreExchangeHistory(value: unknown, matchId: string, gameNo: number): readonly ExchangeHistoryEntry[] {
   if (!Array.isArray(value)) return Object.freeze([]);
   const deck = buildDeck();
@@ -55,7 +56,7 @@ function restoreExchangeHistory(value: unknown, matchId: string, gameNo: number)
     for (const pair of entry.pairs) {
       const tribute = transfer(pair?.tribute), ret = transfer(pair?.ret);
       if (!tribute || !ret || ret.from !== tribute.to || ret.to !== tribute.from
-        || ret.card.rank < 2 || ret.card.rank > 10 || givers.has(tribute.from) || receivers.has(tribute.to)
+        || givers.has(tribute.from) || receivers.has(tribute.to)
         || entities.has(tribute.card.id) || entities.has(ret.card.id)) break;
       givers.add(tribute.from); receivers.add(tribute.to);
       entities.add(tribute.card.id); entities.add(ret.card.id);
@@ -112,6 +113,9 @@ export class MatchController {
   record: GameRecord | null = null;
   thinking = false;
   lastGameResult: GameResult | null = null;
+  /** 未保存的数据仍在本页内存；暂停后续动作与自动换局，原位仅重试写入。 */
+  saveError: string | null = null;
+  private finishedGameSaved = { record: false, stats: false, match: false };
 
   private players = new Map<number, AIPlayer>();
   /** 神经陪练回退次数（异常时回启发式；>0 时 UI 可提示） */
@@ -130,6 +134,8 @@ export class MatchController {
   private reviveBound = (): void => this.reviveIfStalled();
   private readonly matchId: string;
   private savedRevision: string | null;
+  /** 第一次写入前允许替换当时已观察的旧档，但重试不能覆盖随后出现的新档。 */
+  private initialSnapshotIdentity: string | undefined;
   private resumeGame: ActiveGameSave | undefined;
   private activeGame: ActiveGameSave | undefined;
   private replaying = false;
@@ -245,7 +251,13 @@ export class MatchController {
 
   /** 开始新的一局（保留比赛级数）。人类收贡须自选还牌：还贡阶段完成前不开始记录与出牌。 */
   startGame(): void {
-    if (this.destroyed || this.executionState !== 'confirmed') return;
+    if (this.destroyed || this.executionState !== 'confirmed' || this.saveError) return;
+    // 确认所有权后才清理上一局内存；暂时不可读时保留可重试的局末界面。
+    if (!this.ownsLocalSnapshot()) {
+      if (!this.saveError) this.state = null;
+      this.notify();
+      return;
+    }
     this.pendingDecision?.cancel('new_game');
     this.pendingDecision = null;
     this.generation++;
@@ -253,6 +265,7 @@ export class MatchController {
     this.seatDeciders.clear();
     this.decisionError = null;
     this.lastDecision = null;
+    this.finishedGameSaved = { record: false, stats: false, match: false };
     if (this.aiTimer) clearTimeout(this.aiTimer);
     if (this.watchdog) clearTimeout(this.watchdog);
     this.aiTimer = this.watchdog = null;
@@ -264,17 +277,15 @@ export class MatchController {
     this.acknowledgedVersion = null;
     this.exchangeValidationError = this.exchangeActionError = this.recoveryError = null;
     this.activeGame = undefined;
-    if (!this.ownsLocalSnapshot()) {
-      this.state = null;
-      this.notify();
-      return;
-    }
     const resume = this.resumeGame;
     this.resumeGame = undefined;
     // 还贡选择权只属于人类座位；自动驾驶（?autopilot=1）全席自动还
     let state: GameState;
     try {
-      if (resume && resume.schemaVersion !== 1) throw new Error('不支持的续局版本');
+      if (resume && resume.schemaVersion !== 2) {
+        this.resumeGame = resume; // 再次尝试仍停在同一旧存档，不能落入新发牌分支。
+        throw new Error('旧规则活动存档需先诊断，原存档已保留，未按新规则续局');
+      }
       state = resume ? restoreInitialGame(resume.initial, this.match)
         : startGame(this.match, this.hasHumanSeat ? [HUMAN_SEAT] : []);
       if (resume && (!resume.recorderMeta || !Array.isArray(resume.moves)
@@ -386,7 +397,7 @@ export class MatchController {
         this.exchangeAckPending = true;
       } finally { this.replaying = false; }
     }
-    if (!this.exchangeError) this.persistActiveGame();
+    if (!this.exchangeError) this.saveActiveGameOrPause();
     this.notify();
     this.scheduleNext();
   }
@@ -408,7 +419,7 @@ export class MatchController {
   get canAcknowledgeExchange(): boolean {
     this.armExchangeGate();
     return this.exchangeAckPending && !!this.exchangeSnapshot
-      && !this.recoveryError && !this.exchangeValidationError;
+      && !this.recoveryError && !this.exchangeValidationError && !this.saveError;
   }
 
   get exchangeHistory(): readonly ExchangeHistoryEntry[] { return this.history; }
@@ -449,6 +460,7 @@ export class MatchController {
 
   /** 人工确认「已查看贡还结果」：只解除门控并恢复引擎既定调度（轮到谁由引擎决定），不执行任何牌局动作 */
   acknowledgeExchange(viewedVersion: string): boolean {
+    if (this.saveError) { this.notify(); return false; }
     if (!this.ownsLocalSnapshot()) { this.notify(); return false; }
     this.armExchangeGate();
     const result = this.exchangeSnapshot;
@@ -478,7 +490,7 @@ export class MatchController {
 
   get humanTurn(): boolean {
     this.armExchangeGate();
-    return this.hasHumanSeat && !this.destroyed && this.state !== null && !this.state.over
+    return this.hasHumanSeat && !this.destroyed && !this.saveError && this.state !== null && !this.state.over
       && (this.replaying || this.ownsLocalSnapshot())
       && !this.exchangeAckPending && !this.exchangeError
       && this.state.pendingReturns.length === 0
@@ -488,7 +500,7 @@ export class MatchController {
   /** 还贡阶段轮到人类选牌（UI 据此切换选牌/按钮语义） */
   get humanReturning(): boolean {
     const p = this.state?.pendingReturns[0];
-    return this.hasHumanSeat && !this.destroyed && !this.exchangeError && p !== undefined && p.from === HUMAN_SEAT;
+    return this.hasHumanSeat && !this.destroyed && !this.saveError && !this.exchangeError && p !== undefined && p.from === HUMAN_SEAT;
   }
 
   /** 还贡提示：与 AI 自动还同口径的建议牌 */
@@ -500,13 +512,14 @@ export class MatchController {
 
   /** 提交一张还贡牌（人类选牌或 AI/自动驾驶定时器共用）；还完无人再还则正式开牌 */
   submitReturn(card: Card): void {
+    if (this.saveError) return;
     if (!this.ownsLocalSnapshot()) { this.notify(); return; }
     const state = this.state;
     if (!state || state.over || state.pendingReturns.length === 0) return;
     completeReturn(state, card);
     if (state.pendingReturns.length === 0 && !this.recorder) this.beginPlay();
     this.armExchangeGate();
-    this.persistActiveGame();
+    this.saveActiveGameOrPause();
     this.notify();
     this.scheduleNext();
   }
@@ -534,13 +547,13 @@ export class MatchController {
     }
     this.recorder.recordTributes(state.tribute);
     this.activeGame = {
-      schemaVersion: 1, initial: snapshotInitialGame(state), recorderMeta: copyJson(this.recorder.meta),
+      schemaVersion: 2, initial: snapshotInitialGame(state), recorderMeta: copyJson(this.recorder.meta),
       moves: [], acknowledgedVersion: resume?.acknowledgedVersion ?? null,
       ...(this.opts.seats ? { decisionRecords: copyJson(resume?.decisionRecords ?? []) } : {}),
     };
   }
 
-  private persistActiveGame(): boolean {
+  private persistActiveGame(retryableRead = false): boolean {
     if (!this.activeGame || !this.state || this.state.over || this.replaying) return true;
     if (this.state.moveNo === 0 && !this.exchangeValidationError && this.recorder) {
       this.activeGame.initial = snapshotInitialGame(this.state);
@@ -550,14 +563,52 @@ export class MatchController {
     }
     this.activeGame.acknowledgedVersion = this.acknowledgedVersion;
     // 测试/无 DOM 嵌入环境不具备本地存储；浏览器写失败则明确拒绝确认。
-    return this.persistMatchSave(this.matchSavePoint());
+    return this.persistMatchSave(this.matchSavePoint(), retryableRead);
+  }
+
+  /** 普通动作已经执行；只暂停下一步，不回滚/重做当前动作。 */
+  private saveActiveGameOrPause(): boolean {
+    if (this.persistActiveGame(true)) return true;
+    this.saveError ??= '当前牌局进度未保存';
+    this.thinking = false;
+    if (this.aiTimer) clearTimeout(this.aiTimer);
+    if (this.watchdog) clearTimeout(this.watchdog);
+    this.aiTimer = this.watchdog = null;
+    return false;
+  }
+
+  retryGameSave(): boolean {
+    if (this.state?.over) return this.retryFinishedGameSave();
+    if (this.destroyed || !this.state || !this.activeGame || !this.saveError || this.pendingDecision
+      || this.decisionError || this.recoveryError || this.executionState !== 'confirmed') return false;
+    const saved = this.saveActiveGameOrPause();
+    if (saved) this.saveError = null;
+    this.notify();
+    if (saved) this.scheduleNext();
+    return saved;
   }
 
   /** 同步 localStorage 的乐观修订检查；不是服务器锁或跨设备确认协议。 */
-  private ownsLocalSnapshot(): boolean {
-    if (!this.savedRevision || typeof localStorage === 'undefined') return true;
-    const latest = loadCurrentMatch();
-    if (latest?.snapshotRevision === this.savedRevision && latest.matchId === this.matchId) return true;
+  private ownsLocalSnapshot(retryableRead = false): boolean {
+    if (typeof localStorage === 'undefined') return true;
+    let latest: MatchSave | null | undefined;
+    try { latest = readCurrentMatch(); }
+    catch {
+      if (!this.savedRevision && this.initialSnapshotIdentity === undefined) {
+        this.recoveryError = '本地存储不可读，暂不能安全开始新局，请恢复存储后重新进入';
+        return false;
+      }
+      // 保存重试不能把暂时读失败冒作其他页面已接管，留下不可解除的恢复门。
+      if (this.state?.over || this.saveError || retryableRead) { this.saveError = '暂时无法读取比赛存档，请恢复浏览器存储后重试'; return false; }
+      latest = undefined; // 读取失败不等于已观察到空档，正常出牌检查仍保守终止。
+    }
+    if (this.savedRevision) {
+      if (latest?.snapshotRevision === this.savedRevision && latest.matchId === this.matchId) return true;
+    } else if (latest !== undefined) {
+      const identity = JSON.stringify(latest);
+      if (this.initialSnapshotIdentity === undefined) this.initialSnapshotIdentity = identity;
+      if (identity === this.initialSnapshotIdentity) return true;
+    }
     this.pendingDecision?.cancel('lost_ownership');
     this.recoveryError = '牌局已在其他页面更新，请回到首页继续最新存档';
     this.exchangeAckPending = true;
@@ -568,13 +619,56 @@ export class MatchController {
     return false;
   }
 
-  private persistMatchSave(save: MatchSave): boolean {
+  private persistMatchSave(save: MatchSave, retryableRead = false): boolean {
     if (typeof localStorage === 'undefined') return true;
-    if (!this.ownsLocalSnapshot()) return false;
+    if (!this.ownsLocalSnapshot(retryableRead)) return false;
     const revision = `${newRecordId()}-${Math.random().toString(36).slice(2)}`;
     if (!saveCurrentMatch({ ...save, snapshotRevision: revision })) return false;
     this.savedRevision = revision;
     this.snapshotEpoch++;
+    return true;
+  }
+
+  /** 普通局和四席局共用的局末门；未确认的 AI 动作不允许通过保存重试补手。 */
+  get canAdvanceAfterGame(): boolean {
+    return !!this.state?.over && !this.destroyed && !this.pendingDecision && !this.decisionError && !this.recoveryError
+      && this.executionState === 'confirmed' && !this.saveError
+      && this.finishedGameSaved.record && this.finishedGameSaved.stats && this.finishedGameSaved.match;
+  }
+
+  retryFinishedGameSave(): boolean {
+    if (this.destroyed || !this.state?.over || this.pendingDecision || this.decisionError || this.recoveryError
+      || this.executionState !== 'confirmed') return false;
+    if (!this.ownsLocalSnapshot()) { this.notify(); return false; }
+    const saved = this.persistFinishedGame();
+    this.notify();
+    return saved;
+  }
+
+  private persistFinishedMatch(): boolean {
+    if (this.finishedGameSaved.match) return true;
+    if (!this.ownsLocalSnapshot()) return false;
+    const saved = this.match.winner === null ? this.persistMatchSave(this.matchSavePoint()) : clearCurrentMatch();
+    if (saved) {
+      this.finishedGameSaved.match = true;
+      if (this.match.winner !== null) { this.savedRevision = null; this.initialSnapshotIdentity = 'null'; }
+    }
+    return saved;
+  }
+
+  private persistFinishedGame(): boolean {
+    if (!this.record || !this.state?.over) return false;
+    if (!this.finishedGameSaved.record) {
+      if (!saveRecord(this.record)) { this.saveError = '本局复盘记录未保存'; return false; }
+      this.finishedGameSaved.record = true;
+    }
+    if (!this.finishedGameSaved.stats) {
+      try { if (!this.opts.seats || this.hasHumanSeat) updateStats(this.record); }
+      catch { this.saveError = '本局战绩未保存'; return false; }
+      this.finishedGameSaved.stats = true;
+    }
+    if (!this.persistFinishedMatch()) { this.saveError = '比赛进度未保存'; return false; }
+    this.saveError = null;
     return true;
   }
 
@@ -669,6 +763,7 @@ export class MatchController {
 
   /** 应用一步（人类或 AI 共用），更新桌面展示与记录 */
   private step(move: Move, decision?: DecisionOutcome): boolean {
+    if (!this.replaying && this.saveError) return false;
     if (!this.replaying && (this.destroyed || !this.ownsLocalSnapshot())) { this.notify(); return false; }
     this.armExchangeGate();
     if (!this.state || this.state.over || this.exchangeAckPending || this.exchangeError || this.state.pendingReturns.length) return false;
@@ -714,17 +809,14 @@ export class MatchController {
           console.error('[record] 记录完整性校验失败：', issues);
         }
         this.record = record;
-        saveRecord(record);
-        if (!this.opts.seats || this.hasHumanSeat) updateStats(record);
-        // 存档点=每局打完：没过 A 就记进度，过 A 清档（比赛结束）
-        if (state.match.winner === null) this.persistMatchSave(this.matchSavePoint());
-        else clearCurrentMatch();
+        // 四席 AI 由 apply 回调先完成 confirmed 写回；存档失败不混作动作拒绝。
+        if (!decision) this.persistFinishedGame();
       }
     }
     if (!this.replaying) {
       const hasApplyingMarker = decision !== undefined && this.persistedApplyMarker?.decision === decision
         && this.persistedApplyMarker.owner === this.pendingDecision && this.executionState === 'applying';
-      if (state.over || !hasApplyingMarker) this.persistActiveGame();
+      if (state.over || !hasApplyingMarker) this.saveActiveGameOrPause();
       this.notify();
     }
     return true;
@@ -735,7 +827,7 @@ export class MatchController {
    * 用 5 秒看门狗自愈：thinking 仍为 true 就重排一次。
    * 还贡阶段也由此调度：AI 席位延迟自动还，人类席位挂起等 UI 提交。 */
   private scheduleNext(): void {
-    if (this.destroyed || this.pendingDecision || this.decisionError || this.executionState !== 'confirmed') return;
+    if (this.destroyed || this.saveError || this.pendingDecision || this.decisionError || this.executionState !== 'confirmed') return;
     if (this.aiTimer) clearTimeout(this.aiTimer);
     if (this.watchdog) clearTimeout(this.watchdog);
     this.aiTimer = this.watchdog = null;
@@ -836,8 +928,9 @@ export class MatchController {
           } finally { this.persistedApplyMarker = null; }
           this.executionState = 'confirmed';
           const persisted = this.state?.over
-            ? this.match.winner !== null || this.persistMatchSave(this.matchSavePoint()) : this.persistActiveGame();
+            ? this.persistFinishedMatch() : this.persistActiveGame();
           if (!persisted) { this.executionState = 'execution_uncertain'; throw Error('confirmation_not_saved'); }
+          if (this.state?.over) this.persistFinishedGame();
         },
       }});
       this.pendingDecision = pending;

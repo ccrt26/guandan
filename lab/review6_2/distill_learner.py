@@ -117,6 +117,11 @@ FIRST_TARGET_CANDIDATE_POLICY = {
     'candidateSpec': 'first-target-offer12-v1',
     'enumSpec': {'id': 'full-house-attachment-ranks-v1',
                  'enumerationMode': 'all_supported_attachment_ranks'}}
+RULES_V543_CANDIDATE_POLICY = {
+    'candidateSpec': 'first-target-offer12-rules-v543-v1',
+    'enumSpec': {'id': 'full-house-attachment-ranks-v1-rules-v543',
+                 'enumerationMode': 'all_supported_attachment_ranks'}}
+
 LEGACY_CANDIDATE_POLICY = {
     'candidateSpec': 'ohuo-frozen-c8-expand4-v1',
     'enumSpec': {'id': 'cand-suit-v3', 'enumerationMode': 'legacy_best_pair'}}
@@ -124,8 +129,10 @@ LEGACY_CANDIDATE_POLICY = {
 
 def candidate_contract(value):
     policy = value.get('candidatePolicy')
-    fresh = value.get('candidateSpecRef') == FIRST_TARGET_CANDIDATE_POLICY['candidateSpec']
-    require((fresh and policy == FIRST_TARGET_CANDIDATE_POLICY) or
+    supported = (FIRST_TARGET_CANDIDATE_POLICY, RULES_V543_CANDIDATE_POLICY)
+    matching = next((p for p in supported if value.get('candidateSpecRef') == p['candidateSpec']), None)
+    fresh = matching is not None
+    require((fresh and policy == matching) or
             (not fresh and policy is None), 'complete candidate policy/schema required')
     return fresh
 
@@ -634,8 +641,8 @@ class DistillLearner:
             self.shape = first_round_shape(self.recipe, self.refs.get('phase'), len(self.demo), len(self.keep))
             require(self.input_contract == STUDENT_INPUT_CONTRACT and self.refs.get('recipe') == self.recipe and
                     self.refs.get('seed') == seed and self.refs.get('encoder') == self.input_contract['encoderVersion'] and
-                    self.refs.get('candidatePolicy') == FIRST_TARGET_CANDIDATE_POLICY and
-                    self.refs.get('candidate') == FIRST_TARGET_CANDIDATE_POLICY['candidateSpec'] and
+                    any(self.refs.get('candidatePolicy') == p and self.refs.get('candidate') == p['candidateSpec']
+                        for p in (FIRST_TARGET_CANDIDATE_POLICY, RULES_V543_CANDIDATE_POLICY)) and
                     self.refs.get('B') != self.refs.get('parent') and self.refs.get('parent') and
                     self.refs.get('parentIdentity', {}).get('inputDim') == 423 and
                     self.refs.get('proposalIdentity', {}).get('inputDim') == 399 and

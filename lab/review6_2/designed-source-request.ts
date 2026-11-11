@@ -7,7 +7,7 @@ import {buildDeck,classify,createMatch,rankOrder,startGame,type LevelCtx,type Ru
 import {freezeCopy} from '../../packages/ai/src/hybrid/protocol';
 import {createProfileTextTransport} from '../../packages/web/server/llm-select.mjs';
 import {SelectionWireError} from '../../packages/web/server/llm-selection-wire.mjs';
-import {PROJECT_RULES_DESIGN_PROMPT_ID,PROJECT_RULES_DESIGN_SYSTEM_SHA256,assertProjectRuleOptions,serializeProjectRulesChat} from '../../packages/web/server/llm-project-rules-v541.mjs';
+import {PROJECT_RULES_DESIGN_PROMPT_ID,PROJECT_RULES_DESIGN_SYSTEM_SHA256,assertProjectRuleOptions,serializeProjectRulesChat} from '../../packages/web/server/llm-project-rules-v543.mjs';
 import {DESIGNED_FIRST_GAME_SCHEMA,DESIGNED_FIRST_GAME_V2_SCHEMA,parseDesignedFirstGameSource,type DesignedFirstGameSource} from './designed-source';
 import {FIRST_ROUND_TARGET_DEFINITION} from './first-round-target';
 import {digest,fixedReference,strictObject,validateIdentifier} from './task-schema.mjs';

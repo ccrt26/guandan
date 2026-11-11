@@ -37,15 +37,18 @@ def commit_checkpoint(run_dir, learner, committed_facts, *, publish=True):
     weights = array.array('f', learner.model.flat().tolist())
     if sys.byteorder != 'little': weights.byteswap()
     with open(tmp / 'weights.f32', 'xb') as out: weights.tofile(out); out.flush(); os.fsync(out.fileno())
+    weights_sha256 = sha((tmp / 'weights.f32').read_bytes())
     facts = {'schema': 'ohuo-supervised-checkpoint-first-round-v2' if learner.first_round else 'ohuo-supervised-checkpoint-student423-v1' if learner.input_contract is not None else 'ohuo-supervised-checkpoint-v1',
              **({'inputContract': learner.input_contract} if learner.input_contract is not None else {}), 'trainingKind': 'supervised_rerank',
              'optimizerSteps': learner.optimizerSteps, 'completedEpochs': learner.epoch,
              'frozenRefs': learner.refs, 'recipe': learner.recipe, 'exposure': learner.exposure_summary(),
-             'weightsSHA256': sha((tmp / 'weights.f32').read_bytes()), 'facts': committed_facts}
+             'weightsSHA256': weights_sha256, 'facts': committed_facts}
     if learner.first_round:
         facts['perDecisionExposure'] = state['exposures']
     write_json_new(tmp / 'state.json', facts)
-    files = {p: sha((tmp / p).read_bytes()) for p in ('learner.pt', 'weights.f32', 'state.json')}
+    # Reuse only this transaction's digest; publication still validates disk.
+    files = {p: weights_sha256 if p == 'weights.f32' else sha((tmp / p).read_bytes())
+             for p in ('learner.pt', 'weights.f32', 'state.json')}
     write_json_new(tmp / 'manifest.json', {'schema': 'ohuo-supervised-commit-v1', 'optimizerSteps': learner.optimizerSteps, 'files': files})
     sync_dir(tmp); final = root / name; os.rename(tmp, final); sync_dir(root)
     ref = {'schema': 'ohuo-supervised-pointer-v1', 'path': 'checkpoints/' + name,

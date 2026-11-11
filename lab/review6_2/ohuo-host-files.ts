@@ -2,7 +2,7 @@ import {verifyDesignedProtocolLineage} from './designed-protocol-lineage.mjs';
 import {verifyDesignedFamilyReservationLink} from './designed-family-reservation';
 import {isDesignedSourceCheckpoint,verifyDesignedSourceInputs} from './designed-source-consumer';
 import {assertScreenRevalidationContext} from './screen-revalidation.mjs';
-import {PROJECT_RULES_TEACHER_PROMPT_SCHEMA,validateProjectRulesPrompt,assertProjectRuleOptions} from '../../packages/web/server/llm-project-rules-v541.mjs';
+import {PROJECT_RULES_TEACHER_PROMPT_SCHEMA,validateProjectRulesPrompt,assertProjectRuleOptions} from '../../packages/web/server/llm-project-rules-v543.mjs';
 import {DESIGNED_SELECTION_SPEC_SCHEMA,DESIGNED_SELECTION_RULE_SCHEMA,createDesignedSelectionSession,readDesignedSelectionHistory,readUsedCommonSelectionRows,readUsedCommonSelectionRowsAtCommit,verifyDesignedSourceIndexSuccessor,verifyOfflineSelection,verifyCommonViewRoundAdmission,verifyTrainCoverageRevision,withCoverageEligibilityScope,createCommonViewRoundProofSession} from './offline-selection';
 import {knownUnsentWorldPreparationFailure} from './first-round-prequery-failure.mjs';
 import {COMMON_VIEW_SYSTEM_PROMPT_SHA256} from '../../packages/web/server/llm-selection-wire.mjs';
@@ -516,8 +516,9 @@ export class FixedHostFiles {
   }
   if(closed||observed.unresolved.length||observed.status!=='not_executed'&&!later)fail(closed?'plan_closed':'original_action_conflict','offlineSelection','new freeze requires the original available action or a verified settled later-round chain; only actual fixed commit permits recovery');
  }
- async offlineSelectionHostInputs(spec:any,options:any){
-  this.currentProducerSource();strictObject(options,'offlineSelectionOptions',['phase',...(Object.hasOwn(options,'task')?['task']:[]),...(Object.hasOwn(options,'outputDir')?['outputDir']:[])]);if(!['freeze','label-start','label-resume','dataset'].includes(options.phase))fail('unsupported_value','phase','fixed offline selection phase required');
+ async offlineSelectionHostInputs(spec:any,options:any){return this.offlineSelectionHostInputsScoped(spec,options);}
+ private async offlineSelectionHostInputsScoped(spec:any,options:any,producerSourceRef?:string){
+  this.currentProducerSource(producerSourceRef);strictObject(options,'offlineSelectionOptions',['phase',...(Object.hasOwn(options,'task')?['task']:[]),...(Object.hasOwn(options,'outputDir')?['outputDir']:[])]);if(!['freeze','label-start','label-resume','dataset'].includes(options.phase))fail('unsupported_value','phase','fixed offline selection phase required');
   const facts=this.readNonrunnerAction(spec,'offline-selection'),outputDir=join(this.repositoryRoot,'lab/out',spec.outputId),state=this.checkExistingRoot();
   if(options.outputDir!==undefined&&resolve(options.outputDir)!==outputDir)fail('invalid_output_root','offlineSelection','only original repository lab/out/outputId allowed');
   for(const path of [join(this.repositoryRoot,'lab/out'),outputDir])if(existsSync(path)&&(!lstatSync(path).isDirectory()||realpathSync(path)!==path))fail('invalid_output_root','offlineSelection','real original artifact root required');
@@ -1011,7 +1012,9 @@ export class FixedHostFiles {
  }
  private async offlineSelectionInputs(task:any,refs:Map<string,any>,result:any){
   if(task.datasetRefs.length!==1)fail('selection_task_binding','datasetRefs','one original full selection required');const selection=refs.get(task.datasetRefs[0]);if(selection?.schema==='ohuo-first-round-new-test-selection-result-v1')return this.firstRoundNewTestLabelInputs(task,refs,result);if(selection?.schema!=='ohuo-offline-label-selection-v2')fail('selection_production_required','datasetRefs','research labels require the fixed v2 production proof');
-  const production=this.resolveRef(selection.productionRef),spec=this.resolveRef(production.specRef),state=this.checkExistingRoot(),run=state.runs[state.tasks[task.taskId]],phase=run?.checkpoint?'label-resume':'label-start',trusted=await this.offlineSelectionHostInputs(spec,{phase,task}),quota=this.jsonBytes(this.evidenceBytes(spec.quotaBasisRef));
+  // Only the current execution Task selects its exact producer source. Public
+  // label-start calls also serve historical dataset audits and stay unbound.
+  const production=this.resolveRef(selection.productionRef),spec=this.resolveRef(production.specRef),state=this.checkExistingRoot(),run=state.runs[state.tasks[task.taskId]],phase=run?.checkpoint?'label-resume':'label-start',trusted=await this.offlineSelectionHostInputsScoped(spec,{phase,task},task.sourceRevision),quota=this.jsonBytes(this.evidenceBytes(spec.quotaBasisRef));
   const entry=this.taskEntry(task,this.readGrant()),receipts=entry.prerequisiteReceipts.filter((p:any)=>this.resolveRef(p.requirementRef).kind==='selection-production');if(receipts.length!==1)fail('prerequisites_missing','selection-production','one independently bound original production prerequisite required');const receipt=this.prerequisiteReceipt(receipts[0].receiptRef,task,receipts[0].requirementRef),productionFile=this.references.get(selection.productionRef);
   const bindsProduction=receipt.evidence_refs.some((f:any)=>{const file=this.evidence.get(f.id);if(productionFile&&file?.path===productionFile.path&&f.sha256===productionFile.sha256)return true;const bytes=this.evidenceBytes(f);let value:any;try{value=JSON.parse(bytes.toString('utf8'));}catch{return false;}return value.schema==='ohuo-offline-selection-commit-v1'&&value.specRef===production.specRef&&value.productionRef===selection.productionRef&&value.selectionRef===task.datasetRefs[0];});
   const rule=this.resolveRef(this.readApprovedAction(task).action.acceptanceRuleRef),expectedStage=spec.purpose==='b_training_source'?4:6;
@@ -1118,10 +1121,11 @@ export class FixedHostFiles {
   if(diagnostic.schema!=='ohuo-calibration-qualification-v1'||diagnostic.taskRef!==c.taskRef||diagnostic.runId!==c.runId||!equal(diagnostic.summaryRef,c.summaryRef)||!equal(diagnostic.controlStateRef,c.controlStateRef)||!equal(diagnostic.checkpointFactsRefs,c.checkpointFactsRefs))fail('prerequisites_missing','diagnostic','original qualification diagnostic binding differs');
   return this.calibrationFacts(c,diagnostic.checks);
  }
- private currentProducerSource(){
+ private currentProducerSource(sourceRef?:string){
   if(this.screenRevalidation){this.screenRevalidation.assertLive();return this.screenRevalidation.sourceRef;}
   for(const name of ['ai','engine','review'])if(realpathSync(req.resolve('@gd/'+name))!==join(this.repositoryRoot,'packages',name,'src/index.ts'))fail('input_identity_unverified','workspace','actual workspace import resolves outside fixed source tree');
-  const actualFiles=new Map<string,{signal:string|null,sha256:string|null}>(),matches:string[]=[];for(const [ref] of this.references){const value=this.resolveRef(ref);if(!value||!equal(Object.keys(value).sort(),['baseCommit','files'])||!Array.isArray(value.files))continue;
+  const sourceRefs=sourceRef===undefined?this.references.keys():[sourceRef];
+  const actualFiles=new Map<string,{signal:string|null,sha256:string|null}>(),matches:string[]=[];for(const ref of sourceRefs){const value=this.resolveRef(ref);if(!value||!equal(Object.keys(value).sort(),['baseCommit','files'])||!Array.isArray(value.files))continue;
    if(!/^[a-f0-9]{40}$/.test(value.baseCommit)||value.files.length>10000)continue;
    const paths=new Set<string>();let current=true;for(const f of value.files){this.fileShape(f);if(paths.has(f.path))fail('input_identity_unverified','source.files','duplicate source');paths.add(f.path);const path=this.relativePath(f.path),signal=existsSync(path)?this.fixedSourceSignal(path):null;let actual=actualFiles.get(path);if(!actual||actual.signal!==signal){actual={signal,sha256:signal===null?null:sha(this.regular(path))};actualFiles.set(path,actual);}if(actual.sha256!==f.sha256)current=false;}
    if(current&&[...HOST_SOURCE_FILES,...FIRST_ROUND_SOURCE_FILES].every(p=>paths.has(p)))matches.push(ref);
@@ -1424,6 +1428,8 @@ export const HOST_SOURCE_FILES:string[]=[
  "packages/engine/src/game.ts",
  "packages/engine/src/index.ts",
  "packages/engine/src/rank.ts",
+ "packages/engine/src/rules-text.mjs",
+ "packages/engine/src/rules-text.d.mts",
  "packages/engine/src/record.ts",
  "packages/engine/src/rng.ts",
  "packages/engine/src/types.ts",
@@ -1431,6 +1437,7 @@ export const HOST_SOURCE_FILES:string[]=[
  "packages/review/src/index.ts",
  "packages/web/server/llm-profiles.mjs",
  "packages/web/server/llm-project-rules-v541.mjs",
+ "packages/web/server/llm-project-rules-v543.mjs",
  "packages/web/server/llm-select.mjs",
  "packages/web/server/llm-selection-wire.mjs"
 ];

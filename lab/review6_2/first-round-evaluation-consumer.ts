@@ -76,17 +76,21 @@ export async function runFirstRoundNewTest(ctx:any){
    let record=cp.plans.find((r:any)=>r.rootIndex===cp.rootCursor);
    if(record){if(!equal(record.plan,plan)||record.planSHA256!==frozen.planSHA256)throw Error('new_test_prebranch_freeze_changed');}
    else {record={rootIndex:cp.rootCursor,status:'pending',plan,planSHA256:frozen.planSHA256,readout:null};cp.plans.push(record);await save();}
-   let paused=false;const results:any[]=[];
+   let paused=false,knownIncomplete=false;const results:any[]=[];
    for(const world of plan.worlds)for(const action of plan.actions){
-    const attempts=cp.attempts.filter((a:any)=>a.rootIndex===cp.rootCursor&&a.row.worldId===world.worldId&&a.row.actionId===action.actionId),complete=attempts.filter((a:any)=>a.row.result.complete);if(complete.length>1)throw Error('new_test_duplicate_completed_branch');if(complete.length){results.push(complete[0].row);continue;}if(commonView&&attempts.length){results.push(attempts.at(-1).row);paused=true;continue;}
+    const attempts=cp.attempts.filter((a:any)=>a.rootIndex===cp.rootCursor&&a.row.worldId===world.worldId&&a.row.actionId===action.actionId),complete=attempts.filter((a:any)=>a.row.result.complete);if(complete.length>1)throw Error('new_test_duplicate_completed_branch');if(complete.length){results.push(complete[0].row);continue;}if(attempts.length){results.push(attempts.at(-1).row);knownIncomplete=true;paused=true;continue;}
     if(paused||signal.aborted||expired()){paused=true;continue;}
     if(!commonView&&(cp.attempts.length>=c.maxBranchStarts||cp.attempts.filter((a:any)=>a.rootIndex===cp.rootCursor).length>=8)){paused=true;stopReason='new_test_fixed_branch_cap_exhausted';continue;}
     const id='new-test-'+digest({rootCursor:cp.rootCursor,worldId:world.worldId,actionId:action.actionId,attemptCount:cp.attempts.length,executionId:ctx.executionId}),reservation=await ctx.reserve(id,{...zero,matchAttempts:1});
     if(signal.aborted){await ctx.settleReservation(reservation,{disposition:'not_sent',evidence:{kind:'confirmed_not_sent'}});paused=true;continue;}
     cp.active={rootIndex:cp.rootCursor,worldId:world.worldId,actionId:action.actionId,reservation};await save();await ctx.settleReservation(reservation,{disposition:'consumed',evidence:{kind:'match_started'}});
-    const row=executeFirstRoundScreenBranch({root:frozen.root,plan,continuation:frozen.continuation,worldId:world.worldId,actionId:action.actionId,deadlineMonotonicMs:ctx.deadlineMonotonicMs,executionBoundary:ctx.executionBoundary,frozenWorlds:frozen.frozenWorlds});cp.attempts.push({rootIndex:cp.rootCursor,reservation,row});cp.active=null;await save();results.push(row);if(!row.result.complete)paused=true;
+    const row=executeFirstRoundScreenBranch({root:frozen.root,plan,continuation:frozen.continuation,worldId:world.worldId,actionId:action.actionId,deadlineMonotonicMs:ctx.deadlineMonotonicMs,executionBoundary:ctx.executionBoundary,frozenWorlds:frozen.frozenWorlds});cp.attempts.push({rootIndex:cp.rootCursor,reservation,row});cp.active=null;await save();results.push(row);if(!row.result.complete){knownIncomplete=true;paused=true;}
    }
-   record.readout=summarizeFirstRoundNewRoot(plan,results);record.status=record.readout.status;await save();if(paused||record.status==='incomplete')break;cp.rootCursor++;await save();
+   record.readout=summarizeFirstRoundNewRoot(plan,results);record.status=record.readout.status;await save();
+   // Preserve the fixed denominator and failed evidence. A completed attempt
+   // without a branch checkpoint cannot be resumed by replaying its seed.
+   if(knownIncomplete&&!signal.aborted)throw Error('new_test_known_incomplete: original branch has no resumable checkpoint');
+   if(paused||record.status==='incomplete')break;cp.rootCursor++;await save();
   }
   return{completed:cp.rootCursor===c.questionIds.length,cleanupConfirmed:true,actualScope:scope,stopReason:signal.aborted?String(signal.reason??'user_stop'):stopReason,artifactRefs:[summary()]};
  }catch(error){if(cp.active)cp.executionUnknown=true;try{await save();}catch{};Object.assign(error as object,{cleanupConfirmed:true,actualScope:scope});throw error;}
