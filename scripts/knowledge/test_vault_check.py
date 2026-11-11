@@ -4,12 +4,11 @@
 import os, sys, json, shutil, subprocess, tempfile, hashlib, unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PY = '/Library/Developer/CommandLineTools/usr/bin/python3'
-BACKEND = os.path.join(HERE, 'vault_check.py')
+TOOL = os.path.join(HERE, 'vault-check.mjs')
 
 
 def run_cli(args):
-    r = subprocess.run([PY, '-B', BACKEND] + args, capture_output=True, text=True)
+    r = subprocess.run(['node', TOOL] + args, capture_output=True, text=True)
     return r.returncode, r.stdout + r.stderr
 
 
@@ -72,7 +71,8 @@ fragments:
 
 class VaultFixture:
     def __init__(self):
-        self.root = tempfile.mkdtemp(prefix='vcheck-')
+        self.workspace = tempfile.mkdtemp(prefix='vcheck-')
+        self.root = os.path.join(self.workspace, 'vault')
         for d in ['02-经验/02-牌权与让接', '03-来源资料/戴长胜视频', '03-来源资料/WEB文章', '04-实战手册', '90-知识库维护', '99-历史存档/停用内容']:
             os.makedirs(os.path.join(self.root, d), exist_ok=True)
         self.w('90-知识库维护/分类登记表.md', '| category_id | path | name | scope | boundary | status | successor_ids | created |\n|---|---|---|---|---|---|---|---|\n| CAT-002 | 02-经验/02-牌权与让接 | 牌权 | s | b | active | | 2026-11-12 |\n')
@@ -91,7 +91,7 @@ class VaultFixture:
 
     def validate(self):
         self.rep_i += 1
-        rep = os.path.join(self.root, f'.rep-{self.rep_i}.json')
+        rep = os.path.join(self.workspace, f'.rep-{self.rep_i}.json')
         if os.path.exists(rep): os.remove(rep)
         code, out = run_cli(['validate', '--root', self.root, '--report', rep])
         data = json.load(open(rep)) if os.path.exists(rep) else {'errors': [], 'warnings': []}
@@ -99,14 +99,14 @@ class VaultFixture:
 
     def reverse(self, source):
         self.rep_i += 1
-        rep = os.path.join(self.root, f'.rep-{self.rep_i}.json')
+        rep = os.path.join(self.workspace, f'.rep-{self.rep_i}.json')
         if os.path.exists(rep): os.remove(rep)
         code, out = run_cli(['reverse', '--root', self.root, '--source', source, '--report', rep])
         data = json.load(open(rep)) if os.path.exists(rep) else {}
         return code, data
 
     def clean(self):
-        shutil.rmtree(self.root, ignore_errors=True)
+        shutil.rmtree(self.workspace, ignore_errors=True)
 
 
 def full_vault(**kw):
@@ -184,7 +184,8 @@ class V07_Links(unittest.TestCase):
         codes = [e['code'] for e in d['errors']]
         self.assertIn('md_link_broken', codes); self.assertIn('wiki_link_broken', codes); v.clean()
         v2 = full_vault()
-        v2.w('04-实战手册/核心手册.md', '合法锚点 [索引](可用经验索引.md#索引) 与角括号 <可用经验索引.md>。')
+        v2.w('04-实战手册/核心手册.md', '合法锚点 [索引](可用经验索引.md#索引) 与 [空格路径](<合法 文件.md#标题>)。')
+        v2.w('04-实战手册/合法 文件.md', '# 标题\n')
         c2, d2 = v2.validate(); self.assertEqual(c2, 0, [e for e in d2['errors'][:3]]); v2.clean()
 
 
@@ -200,7 +201,12 @@ class V08_BodyRefs(unittest.TestCase):
 
 class V09_AdoptionCombos(unittest.TestCase):
     def runTest(self):
-        # web adopted 无 review
+        # Reject an adopted WEB record without review; keep the reference control below.
+        no_review = full_vault(exp_over={'source_class': 'web', 'adoption_basis': 'none'})
+        code, data = no_review.validate()
+        self.assertEqual(code, 1)
+        self.assertIn('adopted_with_none_basis', [e['code'] for e in data['errors']])
+        no_review.clean()
         v = full_vault(exp_over={'source_class': 'web', 'adoption_basis': 'none', 'status': 'reference'},
                         reg_exps=[{'id': 'GD-PR-001', 'path': '02-经验/02-牌权与让接/GD-PR-001-a.md', 'status': 'reference', 'merged_into': None}])
         v.w('04-实战手册/可用经验索引.md', '# 索引\n\n（无可用）\n')
@@ -226,7 +232,11 @@ class V10_Tombstones(unittest.TestCase):
         v.w('99-历史存档/停用内容/A-停用说明.md', tomb('GD-A', 'GD-B'))
         v.w('99-历史存档/停用内容/B-停用说明.md', tomb('GD-B', 'GD-A'))
         c, d = v.validate(); self.assertTrue(any(e['code'] in ('tomb_cycle', 'tomb_target_missing') for e in d['errors'])); v.clean()
-        v3 = full_vault(); v3.w('99-历史存档/停用内容/C-停用说明.md', tomb('GD-C', 'null')); v3.reg()
+        v3 = full_vault(); v3.w('99-历史存档/停用内容/C-停用说明.md', tomb('GD-C', 'null'))
+        v3.reg(exps=[
+            {'id': 'GD-PR-001', 'path': '02-经验/02-牌权与让接/GD-PR-001-a.md', 'status': 'adopted', 'merged_into': None},
+            {'id': 'GD-C', 'path': '99-历史存档/停用内容/C-停用说明.md', 'status': 'retired', 'merged_into': None},
+        ])
         c3, d3 = v3.validate(); self.assertEqual(c3, 0, d3['errors'][:2]); v3.clean()
 
 
